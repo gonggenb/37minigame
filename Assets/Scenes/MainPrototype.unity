@@ -2632,21 +2632,19 @@ MonoBehaviour:
   playerStats: {fileID: 285907368}
   battleManager: {fileID: 755778986}
   playerIdleFrames:
-  - {fileID: -7915210059842803663, guid: 1d38b1c791bd44c6483b759d355ce2cf, type: 3}
-  - {fileID: -985773156536696307, guid: 1d38b1c791bd44c6483b759d355ce2cf, type: 3}
-  - {fileID: -402004918610355466, guid: 1d38b1c791bd44c6483b759d355ce2cf, type: 3}
-  - {fileID: 5754168252756749266, guid: 1d38b1c791bd44c6483b759d355ce2cf, type: 3}
-  - {fileID: 6875498849900570493, guid: 1d38b1c791bd44c6483b759d355ce2cf, type: 3}
-  - {fileID: -487347014929367919, guid: 1d38b1c791bd44c6483b759d355ce2cf, type: 3}
-  - {fileID: 6241714052192994796, guid: 1d38b1c791bd44c6483b759d355ce2cf, type: 3}
-  - {fileID: 4354444202727843353, guid: 1d38b1c791bd44c6483b759d355ce2cf, type: 3}
+  - {fileID: 1283079673, guid: dd1c8b6edc7f84b9a857ab4a067fbc48, type: 3}
+  - {fileID: -1965154847, guid: dd1c8b6edc7f84b9a857ab4a067fbc48, type: 3}
+  - {fileID: 1358089103, guid: dd1c8b6edc7f84b9a857ab4a067fbc48, type: 3}
+  - {fileID: -558596793, guid: dd1c8b6edc7f84b9a857ab4a067fbc48, type: 3}
+  - {fileID: -216845699, guid: dd1c8b6edc7f84b9a857ab4a067fbc48, type: 3}
+  - {fileID: 1703768611, guid: dd1c8b6edc7f84b9a857ab4a067fbc48, type: 3}
   playerRunFrames:
-  - {fileID: -2553684454752968172, guid: 0819229ef2cdf456f83902beb1336454, type: 3}
-  - {fileID: 5766533117683295243, guid: 0819229ef2cdf456f83902beb1336454, type: 3}
-  - {fileID: -7839978344077804992, guid: 0819229ef2cdf456f83902beb1336454, type: 3}
-  - {fileID: -8602713986393169397, guid: 0819229ef2cdf456f83902beb1336454, type: 3}
-  - {fileID: -638742374853751968, guid: 0819229ef2cdf456f83902beb1336454, type: 3}
-  - {fileID: 1083289303, guid: 0819229ef2cdf456f83902beb1336454, type: 3}
+  - {fileID: -1244457618, guid: d8f1b5e6525cf42c68fb53a095dfc6b3, type: 3}
+  - {fileID: 1349045163, guid: d8f1b5e6525cf42c68fb53a095dfc6b3, type: 3}
+  - {fileID: 1421888429, guid: d8f1b5e6525cf42c68fb53a095dfc6b3, type: 3}
+  - {fileID: -1999628337, guid: d8f1b5e6525cf42c68fb53a095dfc6b3, type: 3}
+  - {fileID: 749831471, guid: d8f1b5e6525cf42c68fb53a095dfc6b3, type: 3}
+  - {fileID: 1579595322, guid: d8f1b5e6525cf42c68fb53a095dfc6b3, type: 3}
   enemyIdleFrames:
   - {fileID: -7915210059842803663, guid: 61ae72cf511fb49d38bd9c24fb41e1e0, type: 3}
   - {fileID: -985773156536696307, guid: 61ae72cf511fb49d38bd9c24fb41e1e0, type: 3}
@@ -2658,6 +2656,8 @@ MonoBehaviour:
   - {fileID: 4354444202727843353, guid: 61ae72cf511fb49d38bd9c24fb41e1e0, type: 3}
   merchantTexture: {fileID: 2800000, guid: f57731138f3a04e158b19d28e19570c4, type: 3}
   treasureTexture: {fileID: 2800000, guid: b7633679a8d9248b1afcc1e2090ffc0e, type: 3}
+  caveMoveSpeed: 0.52
+  playerSpriteScale: 1.35
 --- !u!114 &755778984
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2675,19 +2675,18 @@ MonoBehaviour:
   battleManager: {fileID: 755778986}
   actorTexture: {fileID: 2800000, guid: a603bd7f505c24e2bb0fa99e20ee1f7a, type: 3}
   playerIdleFrames:
-  - {fileID: -7915210059842803663, guid: 1d38b1c791bd44c6483b759d355ce2cf, type: 3}
-  - {fileID: -985773156536696307, guid: 1d38b1c791bd44c6483b759d355ce2cf, type: 3}
-  - {fileID: -402004918610355466, guid: 1d38b1c791bd44c6483b759d355ce2cf, type: 3}
-  - {fileID: 5754168252756749266, guid: 1d38b1c791bd44c6483b759d355ce2cf, type: 3}
-  - {fileID: 6875498849900570493, guid: 1d38b1c791bd44c6483b759d355ce2cf, type: 3}
-  - {fileID: -487347014929367919, guid: 1d38b1c791bd44c6483b759d355ce2cf, type: 3}
-  - {fileID: 6241714052192994796, guid: 1d38b1c791bd44c6483b759d355ce2cf, type: 3}
-  - {fileID: 4354444202727843353, guid: 1d38b1c791bd44c6483b759d355ce2cf, type: 3}
+  - {fileID: 1283079673, guid: dd1c8b6edc7f84b9a857ab4a067fbc48, type: 3}
+  - {fileID: -1965154847, guid: dd1c8b6edc7f84b9a857ab4a067fbc48, type: 3}
+  - {fileID: 1358089103, guid: dd1c8b6edc7f84b9a857ab4a067fbc48, type: 3}
+  - {fileID: -558596793, guid: dd1c8b6edc7f84b9a857ab4a067fbc48, type: 3}
+  - {fileID: -216845699, guid: dd1c8b6edc7f84b9a857ab4a067fbc48, type: 3}
+  - {fileID: 1703768611, guid: dd1c8b6edc7f84b9a857ab4a067fbc48, type: 3}
   playerAttackFrames:
-  - {fileID: -411013568785078790, guid: 5701a766d5093490bbb09f2a05d4619e, type: 3}
-  - {fileID: 6548251211144283711, guid: 5701a766d5093490bbb09f2a05d4619e, type: 3}
-  - {fileID: -269454780364195378, guid: 5701a766d5093490bbb09f2a05d4619e, type: 3}
-  - {fileID: 4324098830374101240, guid: 5701a766d5093490bbb09f2a05d4619e, type: 3}
+  - {fileID: -1729148696, guid: d236688669ad9419a9046f50e49afe1b, type: 3}
+  - {fileID: -1370509769, guid: d236688669ad9419a9046f50e49afe1b, type: 3}
+  - {fileID: -639121921, guid: d236688669ad9419a9046f50e49afe1b, type: 3}
+  - {fileID: -661446123, guid: d236688669ad9419a9046f50e49afe1b, type: 3}
+  - {fileID: -1526241724, guid: d236688669ad9419a9046f50e49afe1b, type: 3}
   enemyIdleFrames:
   - {fileID: -7915210059842803663, guid: 9e1a8f141acf7402c91427aaa0a1e4cf, type: 3}
   - {fileID: -985773156536696307, guid: 9e1a8f141acf7402c91427aaa0a1e4cf, type: 3}
@@ -2730,6 +2729,7 @@ MonoBehaviour:
   - {fileID: 997809145, guid: 7c382ef2e776341eb84b9eecc93e315b, type: 3}
   - {fileID: 993891689, guid: 7c382ef2e776341eb84b9eecc93e315b, type: 3}
   - {fileID: -1154619742, guid: 7c382ef2e776341eb84b9eecc93e315b, type: 3}
+  playerSpriteScale: 1.35
 --- !u!114 &755778985
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2775,6 +2775,7 @@ MonoBehaviour:
     dodgeChance: 0
     moveSpeed: 5
   battleLog: "\u5C1A\u672A\u8FDB\u5165\u6218\u6597"
+  battleSpeedMultiplier: 1.5
 --- !u!114 &755778987
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3607,7 +3608,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0.8, z: 0}
-  m_LocalScale: {x: 1.3, y: 1.3, z: 1.3}
+  m_LocalScale: {x: 2.1, y: 2.1, z: 2.1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 285907372}
@@ -3625,21 +3626,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WuxiaRoguelite.Visual.SpriteFrameAnimator
   idleFrames:
-  - {fileID: -7915210059842803663, guid: 1d38b1c791bd44c6483b759d355ce2cf, type: 3}
-  - {fileID: -985773156536696307, guid: 1d38b1c791bd44c6483b759d355ce2cf, type: 3}
-  - {fileID: -402004918610355466, guid: 1d38b1c791bd44c6483b759d355ce2cf, type: 3}
-  - {fileID: 5754168252756749266, guid: 1d38b1c791bd44c6483b759d355ce2cf, type: 3}
-  - {fileID: 6875498849900570493, guid: 1d38b1c791bd44c6483b759d355ce2cf, type: 3}
-  - {fileID: -487347014929367919, guid: 1d38b1c791bd44c6483b759d355ce2cf, type: 3}
-  - {fileID: 6241714052192994796, guid: 1d38b1c791bd44c6483b759d355ce2cf, type: 3}
-  - {fileID: 4354444202727843353, guid: 1d38b1c791bd44c6483b759d355ce2cf, type: 3}
+  - {fileID: 1283079673, guid: dd1c8b6edc7f84b9a857ab4a067fbc48, type: 3}
+  - {fileID: -1965154847, guid: dd1c8b6edc7f84b9a857ab4a067fbc48, type: 3}
+  - {fileID: 1358089103, guid: dd1c8b6edc7f84b9a857ab4a067fbc48, type: 3}
+  - {fileID: -558596793, guid: dd1c8b6edc7f84b9a857ab4a067fbc48, type: 3}
+  - {fileID: -216845699, guid: dd1c8b6edc7f84b9a857ab4a067fbc48, type: 3}
+  - {fileID: 1703768611, guid: dd1c8b6edc7f84b9a857ab4a067fbc48, type: 3}
   moveFrames:
-  - {fileID: -2553684454752968172, guid: 0819229ef2cdf456f83902beb1336454, type: 3}
-  - {fileID: 5766533117683295243, guid: 0819229ef2cdf456f83902beb1336454, type: 3}
-  - {fileID: -7839978344077804992, guid: 0819229ef2cdf456f83902beb1336454, type: 3}
-  - {fileID: -8602713986393169397, guid: 0819229ef2cdf456f83902beb1336454, type: 3}
-  - {fileID: -638742374853751968, guid: 0819229ef2cdf456f83902beb1336454, type: 3}
-  - {fileID: 1083289303, guid: 0819229ef2cdf456f83902beb1336454, type: 3}
+  - {fileID: -1244457618, guid: d8f1b5e6525cf42c68fb53a095dfc6b3, type: 3}
+  - {fileID: 1349045163, guid: d8f1b5e6525cf42c68fb53a095dfc6b3, type: 3}
+  - {fileID: 1421888429, guid: d8f1b5e6525cf42c68fb53a095dfc6b3, type: 3}
+  - {fileID: -1999628337, guid: d8f1b5e6525cf42c68fb53a095dfc6b3, type: 3}
+  - {fileID: 749831471, guid: d8f1b5e6525cf42c68fb53a095dfc6b3, type: 3}
+  - {fileID: 1579595322, guid: d8f1b5e6525cf42c68fb53a095dfc6b3, type: 3}
   movementSource: {fileID: 285907367}
   framesPerSecond: 10
   randomizeStart: 1
@@ -3705,7 +3704,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 10
   m_MaskInteraction: 0
-  m_Sprite: {fileID: -7915210059842803663, guid: 1d38b1c791bd44c6483b759d355ce2cf, type: 3}
+  m_Sprite: {fileID: 1283079673, guid: dd1c8b6edc7f84b9a857ab4a067fbc48, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

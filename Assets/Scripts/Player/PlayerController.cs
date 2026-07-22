@@ -15,6 +15,7 @@ namespace WuxiaRoguelite.Player
         private Vector3 spawnPosition;
 
         public bool IsMoving => canMove && moveInput.sqrMagnitude > 0.01f;
+        public float HorizontalInput => canMove ? moveInput.x : 0f;
 
         public void SetMovementEnabled(bool enabled)
         {

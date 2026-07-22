@@ -25,10 +25,12 @@ namespace WuxiaRoguelite.EditorTools
         private const string ScenePath = "Assets/Scenes/MainPrototype.unity";
         private const string SpritePath = "Assets/Art/Generated/prototype_square.png";
         private const string TinyRoot = "Assets/Art/ThirdParty/TinySwords";
+        private const string CrimsonRoot = "Assets/Art/ThirdParty/CrimsonWarrior/Player";
         private const string KayKitRoot = "Assets/Art/ThirdParty/KayKitMedieval/Models";
-        private const string PlayerIdlePath = TinyRoot + "/Units/BlueWarrior/Warrior_Idle.png";
-        private const string PlayerRunPath = TinyRoot + "/Units/BlueWarrior/Warrior_Run.png";
-        private const string PlayerAttackPath = TinyRoot + "/Units/BlueWarrior/Warrior_Attack1.png";
+        private const string PlayerIdlePath = CrimsonRoot + "/CrimsonWarrior_Idle_Right.png";
+        private const string PlayerRunPath = CrimsonRoot + "/CrimsonWarrior_Run_Right.png";
+        private const string PlayerAttackPath = CrimsonRoot + "/CrimsonWarrior_SwordAttack_Right.png";
+        private const float PlayerWorldVisualScale = 2.1f;
         private const string EnemyIdlePath = TinyRoot + "/Units/RedWarrior/Warrior_Idle.png";
         private const string EnemyRunPath = TinyRoot + "/Units/RedWarrior/Warrior_Run.png";
         private const string EnemyAttackPath = TinyRoot + "/Units/RedWarrior/Warrior_Attack1.png";
@@ -94,7 +96,7 @@ namespace WuxiaRoguelite.EditorTools
             BattleScreenController battleScreen = root.AddComponent<BattleScreenController>();
             CaveRoomController caveRoom = root.AddComponent<CaveRoomController>();
 
-            GameObject player = CreateSpriteActor("Player", playerIdle, playerRun, Vector3.zero, 1.3f);
+            GameObject player = CreateSpriteActor("Player", playerIdle, playerRun, Vector3.zero, PlayerWorldVisualScale);
             Rigidbody playerBody = player.AddComponent<Rigidbody>();
             playerBody.useGravity = false;
             playerBody.constraints = RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezeRotation;
@@ -179,6 +181,62 @@ namespace WuxiaRoguelite.EditorTools
             Debug.Log($"Main prototype scene generated: {ScenePath}");
         }
 
+        [MenuItem("37 MiniGame/Refresh Player Art")]
+        public static void RefreshPlayerArt()
+        {
+            ConfigurePlayerArtAssets();
+            Sprite fallbackSprite = GetOrCreatePrototypeSprite();
+            Sprite[] playerIdle = LoadFrames(PlayerIdlePath, fallbackSprite);
+            Sprite[] playerRun = LoadFrames(PlayerRunPath, fallbackSprite);
+            Sprite[] playerAttack = LoadFrames(PlayerAttackPath, fallbackSprite);
+
+            GameObject player = GameObject.Find("Player");
+            if (player == null)
+            {
+                Debug.LogError("Cannot refresh player art: Player was not found in the active scene.");
+                return;
+            }
+
+            SpriteFrameAnimator animator = player.GetComponentInChildren<SpriteFrameAnimator>();
+            SpriteRenderer renderer = player.GetComponentInChildren<SpriteRenderer>();
+            if (animator == null || renderer == null)
+            {
+                Debug.LogError("Cannot refresh player art: SpriteFrameAnimator or SpriteRenderer is missing.");
+                return;
+            }
+
+            animator.idleFrames = playerIdle;
+            animator.moveFrames = playerRun;
+            animator.transform.localScale = Vector3.one * PlayerWorldVisualScale;
+            renderer.sprite = playerIdle[0];
+            EditorUtility.SetDirty(animator);
+            EditorUtility.SetDirty(renderer);
+            EditorUtility.SetDirty(animator.transform);
+
+            BattleScreenController battleScreen = UnityEngine.Object.FindAnyObjectByType<BattleScreenController>();
+            if (battleScreen != null)
+            {
+                battleScreen.playerIdleFrames = playerIdle;
+                battleScreen.playerAttackFrames = playerAttack;
+                battleScreen.playerSpriteScale = 1.35f;
+                EditorUtility.SetDirty(battleScreen);
+            }
+
+            CaveRoomController caveRoom = UnityEngine.Object.FindAnyObjectByType<CaveRoomController>();
+            if (caveRoom != null)
+            {
+                caveRoom.playerIdleFrames = playerIdle;
+                caveRoom.playerRunFrames = playerRun;
+                caveRoom.playerSpriteScale = 1.35f;
+                EditorUtility.SetDirty(caveRoom);
+            }
+
+            EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
+            EditorSceneManager.SaveOpenScenes();
+            AssetDatabase.SaveAssets();
+            Debug.Log("Crimson Warrior player art refreshed in the active scene.");
+        }
+
         private static void ValidateEquipmentModel()
         {
             GameObject validationObject = new GameObject("Equipment Model Validation");
@@ -259,15 +317,16 @@ namespace WuxiaRoguelite.EditorTools
 
         private static void PrepareArtAssets()
         {
-            string[] sheets =
+            ConfigurePlayerArtAssets();
+
+            string[] tinySwordsSheets =
             {
-                PlayerIdlePath, PlayerRunPath, PlayerAttackPath,
                 EnemyIdlePath, EnemyRunPath, EnemyAttackPath,
                 EliteIdlePath, EliteRunPath, EliteAttackPath,
                 CaveIdlePath, CaveRunPath, CaveAttackPath
             };
 
-            foreach (string path in sheets)
+            foreach (string path in tinySwordsSheets)
             {
                 ConfigureSpriteSheet(path, 192, 192, 64f);
             }
@@ -278,6 +337,13 @@ namespace WuxiaRoguelite.EditorTools
             ConfigureUiTexture(EquipmentIconPath);
             ConfigureUiTexture(HealthBarBasePath);
             ConfigureUiTexture(HealthBarFillPath);
+        }
+
+        private static void ConfigurePlayerArtAssets()
+        {
+            ConfigureSpriteSheet(PlayerIdlePath, 80, 80, 32f);
+            ConfigureSpriteSheet(PlayerRunPath, 80, 80, 32f);
+            ConfigureSpriteSheet(PlayerAttackPath, 80, 80, 32f);
         }
 
         private static void ConfigureSpriteSheet(string path, int frameWidth, int frameHeight, float pixelsPerUnit)

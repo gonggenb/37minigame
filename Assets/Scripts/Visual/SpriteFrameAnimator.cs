@@ -24,6 +24,11 @@ namespace WuxiaRoguelite.Visual
 
         private void Update()
         {
+            if (movementSource != null && Mathf.Abs(movementSource.HorizontalInput) > 0.01f)
+            {
+                spriteRenderer.flipX = movementSource.HorizontalInput < 0f;
+            }
+
             Sprite[] frames = movementSource != null && movementSource.IsMoving && moveFrames != null && moveFrames.Length > 0
                 ? moveFrames
                 : idleFrames;

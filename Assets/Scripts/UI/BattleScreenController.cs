@@ -21,6 +21,7 @@ namespace WuxiaRoguelite.UI
         public Sprite[] eliteAttackFrames;
         public Sprite[] caveIdleFrames;
         public Sprite[] caveAttackFrames;
+        [Min(0.5f)] public float playerSpriteScale = 1.35f;
 
         private GUIStyle titleStyle;
         private GUIStyle nameStyle;
@@ -115,7 +116,9 @@ namespace WuxiaRoguelite.UI
             bool enemyAttacking = actionProgress < 1f;
             Sprite[] currentEnemyIdleFrames = SelectEnemyFrames(false);
             Sprite[] currentEnemyAttackFrames = SelectEnemyFrames(true);
-            Rect playerRect = new Rect(playerX, baseY - actorSize, actorSize, actorSize);
+            float playerActorSize = actorSize * playerSpriteScale;
+            Rect playerRect = new Rect(playerX + (actorSize - playerActorSize) * 0.5f,
+                baseY - playerActorSize, playerActorSize, playerActorSize);
             Rect enemyRect = new Rect(enemyX, baseY - actorSize, actorSize, actorSize);
             DrawFighter(playerRect, PlayerColor, "侠", false,
                 playerAttacking ? playerAttackFrames : playerIdleFrames, playerAttacking, actionProgress);

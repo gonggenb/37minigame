@@ -18,6 +18,7 @@ namespace WuxiaRoguelite.Cave
         public Texture2D merchantTexture;
         public Texture2D treasureTexture;
         [Min(0.1f)] public float caveMoveSpeed = 0.52f;
+        [Min(0.5f)] public float playerSpriteScale = 1.35f;
 
         public bool IsRoomActive { get; private set; }
         public CaveContentType CurrentContent { get; private set; }
@@ -210,8 +211,9 @@ namespace WuxiaRoguelite.Cave
             Vector2 exitCenter = RoomPoint(floor, exitPosition);
             bool moving = Mathf.Abs(Input.GetAxisRaw("Horizontal")) + Mathf.Abs(Input.GetAxisRaw("Vertical")) > 0.01f;
             DrawExit(exitCenter, actorSize * 0.75f);
-            DrawSpriteCentered(playerCenter, actorSize, moving ? playerRunFrames : playerIdleFrames, facingLeft);
-            GUI.Label(new Rect(playerCenter.x - 60f, playerCenter.y + actorSize * 0.43f, 120f, 22f), "无名少侠", centeredStyle);
+            float playerActorSize = actorSize * playerSpriteScale;
+            DrawSpriteCentered(playerCenter, playerActorSize, moving ? playerRunFrames : playerIdleFrames, facingLeft);
+            GUI.Label(new Rect(playerCenter.x - 60f, playerCenter.y + playerActorSize * 0.43f, 120f, 22f), "无名少侠", centeredStyle);
 
             if (!eventCompleted)
             {
