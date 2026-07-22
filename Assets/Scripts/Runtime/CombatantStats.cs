@@ -1,0 +1,57 @@
+using System;
+using UnityEngine;
+
+namespace WuxiaRoguelite.Runtime
+{
+    [Serializable]
+    public class CombatantStats
+    {
+        public string displayName = "少侠";
+        public float maxHealth = 100f;
+        public float currentHealth = 100f;
+        public float attack = 12f;
+        public float defense = 3f;
+        public float attackSpeed = 1f;
+        [Range(0f, 1f)] public float critChance = 0.05f;
+        public float critMultiplier = 1.5f;
+        [Range(0f, 1f)] public float lifeSteal = 0f;
+        [Range(0f, 1f)] public float dodgeChance = 0f;
+        public float moveSpeed = 5f;
+
+        public bool IsDead => currentHealth <= 0f;
+        public float HealthRatio => maxHealth <= 0f ? 0f : Mathf.Clamp01(currentHealth / maxHealth);
+
+        public CombatantStats Clone()
+        {
+            return new CombatantStats
+            {
+                displayName = displayName,
+                maxHealth = maxHealth,
+                currentHealth = currentHealth,
+                attack = attack,
+                defense = defense,
+                attackSpeed = attackSpeed,
+                critChance = critChance,
+                critMultiplier = critMultiplier,
+                lifeSteal = lifeSteal,
+                dodgeChance = dodgeChance,
+                moveSpeed = moveSpeed
+            };
+        }
+
+        public void ResetHealth()
+        {
+            currentHealth = maxHealth;
+        }
+
+        public void Heal(float amount)
+        {
+            currentHealth = Mathf.Min(maxHealth, currentHealth + Mathf.Max(0f, amount));
+        }
+
+        public void TakeDamage(float amount)
+        {
+            currentHealth = Mathf.Max(0f, currentHealth - Mathf.Max(0f, amount));
+        }
+    }
+}
