@@ -28,8 +28,24 @@ namespace WuxiaRoguelite.UI
         private GUIStyle timerStyle;
         private GUIStyle actorMarkStyle;
         private GUIStyle damageStyle;
+        private GUIStyle damageShadowStyle;
+        private GUIStyle criticalDamageStyle;
+        private GUIStyle criticalDamageShadowStyle;
         private int observedAttackSequence;
         private float attackStartedAt = -10f;
+        private CombatantStats trackedPlayer;
+        private CombatantStats trackedEnemy;
+        private float previousPlayerHealth;
+        private float previousEnemyHealth;
+        private float playerDamageAmount;
+        private float enemyDamageAmount;
+        private float playerDamageStartedAt = -10f;
+        private float enemyDamageStartedAt = -10f;
+        private bool playerDamageWasCritical;
+        private bool enemyDamageWasCritical;
+
+        private const float DamageDisplayDuration = 0.72f;
+        private const float HealthFlashDuration = 0.34f;
 
         private static readonly Color Backdrop = new Color(0.055f, 0.075f, 0.09f, 1f);
         private static readonly Color DistantMountain = new Color(0.11f, 0.19f, 0.20f, 1f);
@@ -38,8 +54,6 @@ namespace WuxiaRoguelite.UI
         private static readonly Color PlayerColor = new Color(0.18f, 0.68f, 0.88f, 1f);
         private static readonly Color EnemyColor = new Color(0.82f, 0.22f, 0.17f, 1f);
         private static readonly Color HealthColor = new Color(0.24f, 0.78f, 0.40f, 1f);
-        private static readonly Color DamageColor = new Color(1f, 0.78f, 0.28f, 1f);
-
         private void OnGUI()
         {
             if (battleManager == null || playerStats == null || gameFlow == null ||
@@ -51,6 +65,7 @@ namespace WuxiaRoguelite.UI
             GUI.depth = -1000;
             EnsureStyles();
             TrackLatestAttack();
+            TrackHealthChanges();
 
             float width = Screen.width;
             float height = Screen.height;
@@ -100,12 +115,16 @@ namespace WuxiaRoguelite.UI
             bool enemyAttacking = actionProgress < 1f;
             Sprite[] currentEnemyIdleFrames = SelectEnemyFrames(false);
             Sprite[] currentEnemyAttackFrames = SelectEnemyFrames(true);
-            DrawFighter(new Rect(playerX, baseY - actorSize, actorSize, actorSize), PlayerColor, "侠", false,
+            Rect playerRect = new Rect(playerX, baseY - actorSize, actorSize, actorSize);
+            Rect enemyRect = new Rect(enemyX, baseY - actorSize, actorSize, actorSize);
+            DrawFighter(playerRect, PlayerColor, "侠", false,
                 playerAttacking ? playerAttackFrames : playerIdleFrames, playerAttacking, actionProgress);
-            DrawFighter(new Rect(enemyX, baseY - actorSize, actorSize, actorSize), EnemyColor, "敌", true,
+            DrawFighter(enemyRect, EnemyColor, "敌", true,
                 enemyAttacking ? currentEnemyAttackFrames : currentEnemyIdleFrames, enemyAttacking, actionProgress);
-            DrawHealthPanel(playerHealthRect, playerStats.runtimeStats);
-            DrawHealthPanel(enemyHealthRect, battleManager.currentEnemy);
+            DrawHealthPanel(playerHealthRect, playerStats.runtimeStats, playerDamageAmount, playerDamageStartedAt);
+            DrawHealthPanel(enemyHealthRect, battleManager.currentEnemy, enemyDamageAmount, enemyDamageStartedAt);
+            DrawDamagePopup(playerRect, playerDamageAmount, playerDamageStartedAt, playerDamageWasCritical, true);
+            DrawDamagePopup(enemyRect, enemyDamageAmount, enemyDamageStartedAt, enemyDamageWasCritical, false);
             DrawCombatMessage(stageRect, messageRect, actionProgress);
         }
 
@@ -121,7 +140,10 @@ namespace WuxiaRoguelite.UI
             centerStyle = CreateStyle(14, FontStyle.Normal, TextAnchor.MiddleCenter, Color.white);
             timerStyle = CreateStyle(15, FontStyle.Bold, TextAnchor.MiddleCenter, new Color(1f, 0.9f, 0.58f));
             actorMarkStyle = CreateStyle(32, FontStyle.Bold, TextAnchor.MiddleCenter, Color.white);
-            damageStyle = CreateStyle(19, FontStyle.Bold, TextAnchor.MiddleCenter, DamageColor);
+            damageStyle = CreateStyle(32, FontStyle.Bold, TextAnchor.MiddleCenter, Color.white);
+            damageShadowStyle = CreateStyle(32, FontStyle.Bold, TextAnchor.MiddleCenter, new Color(0f, 0f, 0f, 0.9f));
+            criticalDamageStyle = CreateStyle(38, FontStyle.Bold, TextAnchor.MiddleCenter, Color.white);
+            criticalDamageShadowStyle = CreateStyle(38, FontStyle.Bold, TextAnchor.MiddleCenter, new Color(0f, 0f, 0f, 0.95f));
         }
 
         private void TrackLatestAttack()
@@ -140,6 +162,41 @@ namespace WuxiaRoguelite.UI
 
             observedAttackSequence = battleManager.AttackSequence;
             attackStartedAt = Time.unscaledTime;
+        }
+
+        private void TrackHealthChanges()
+        {
+            CombatantStats currentPlayer = playerStats.runtimeStats;
+            CombatantStats currentEnemy = battleManager.currentEnemy;
+            if (!ReferenceEquals(trackedPlayer, currentPlayer) || !ReferenceEquals(trackedEnemy, currentEnemy))
+            {
+                trackedPlayer = currentPlayer;
+                trackedEnemy = currentEnemy;
+                previousPlayerHealth = currentPlayer.currentHealth;
+                previousEnemyHealth = currentEnemy.currentHealth;
+                playerDamageAmount = 0f;
+                enemyDamageAmount = 0f;
+                playerDamageStartedAt = -10f;
+                enemyDamageStartedAt = -10f;
+                return;
+            }
+
+            if (currentPlayer.currentHealth < previousPlayerHealth - 0.01f)
+            {
+                playerDamageAmount = previousPlayerHealth - currentPlayer.currentHealth;
+                playerDamageStartedAt = Time.unscaledTime;
+                playerDamageWasCritical = !battleManager.LastAttackWasPlayer && battleManager.LastAttackWasCritical;
+            }
+
+            if (currentEnemy.currentHealth < previousEnemyHealth - 0.01f)
+            {
+                enemyDamageAmount = previousEnemyHealth - currentEnemy.currentHealth;
+                enemyDamageStartedAt = Time.unscaledTime;
+                enemyDamageWasCritical = battleManager.LastAttackWasPlayer && battleManager.LastAttackWasCritical;
+            }
+
+            previousPlayerHealth = currentPlayer.currentHealth;
+            previousEnemyHealth = currentEnemy.currentHealth;
         }
 
         private void DrawBackdrop(float width, float height)
@@ -244,15 +301,62 @@ namespace WuxiaRoguelite.UI
             GUI.DrawTextureWithTexCoords(rect, sprite.texture, uv, true);
         }
 
-        private void DrawHealthPanel(Rect rect, CombatantStats stats)
+        private void DrawHealthPanel(Rect rect, CombatantStats stats, float recentDamage, float damageStartedAt)
         {
+            float hitAge = Time.unscaledTime - damageStartedAt;
+            float flash = 1f - Mathf.Clamp01(hitAge / HealthFlashDuration);
+            if (recentDamage > 0f && flash > 0f)
+            {
+                FillRect(new Rect(rect.x - 4f, rect.y - 4f, rect.width + 8f, rect.height + 8f),
+                    new Color(1f, 0.12f, 0.08f, 0.82f * flash));
+            }
+
             FillRect(rect, new Color(0f, 0f, 0f, 0.52f));
             GUI.Label(new Rect(rect.x + 8f, rect.y + 2f, rect.width - 16f, 24f), stats.displayName, nameStyle);
 
             Rect bar = new Rect(rect.x + 10f, rect.y + rect.height - 22f, rect.width - 20f, 14f);
             FillRect(bar, Ink);
-            FillRect(new Rect(bar.x + 2f, bar.y + 2f, (bar.width - 4f) * stats.HealthRatio, bar.height - 4f), HealthColor);
+            float innerWidth = bar.width - 4f;
+            float currentRatio = stats.HealthRatio;
+            FillRect(new Rect(bar.x + 2f, bar.y + 2f, innerWidth * currentRatio, bar.height - 4f), HealthColor);
+            float damageAge = Time.unscaledTime - damageStartedAt;
+            if (recentDamage > 0f && damageAge < DamageDisplayDuration && stats.maxHealth > 0f)
+            {
+                float beforeHitRatio = Mathf.Clamp01((stats.currentHealth + recentDamage) / stats.maxHealth);
+                float lossWidth = innerWidth * Mathf.Max(0f, beforeHitRatio - currentRatio);
+                float lossAlpha = 1f - Mathf.Clamp01(damageAge / DamageDisplayDuration);
+                FillRect(new Rect(bar.x + 2f + innerWidth * currentRatio, bar.y + 2f, lossWidth, bar.height - 4f),
+                    new Color(1f, 0.16f, 0.10f, 0.95f * lossAlpha));
+            }
             GUI.Label(new Rect(bar.x, bar.y - 1f, bar.width, bar.height + 2f), $"{stats.currentHealth:0} / {stats.maxHealth:0}", centerStyle);
+        }
+
+        private void DrawDamagePopup(Rect targetRect, float damage, float startedAt, bool critical, bool playerTarget)
+        {
+            float age = Time.unscaledTime - startedAt;
+            if (damage <= 0f || age < 0f || age >= DamageDisplayDuration)
+            {
+                return;
+            }
+
+            float progress = age / DamageDisplayDuration;
+            float alpha = 1f - Mathf.Clamp01((progress - 0.58f) / 0.42f);
+            float rise = Mathf.Lerp(0f, 48f, progress);
+            float width = critical ? 240f : 190f;
+            float height = critical ? 52f : 44f;
+            Rect popup = new Rect(targetRect.center.x - width * 0.5f, targetRect.y - 16f - rise, width, height);
+            string text = critical ? $"暴击  -{damage:0}" : $"气血  -{damage:0}";
+            GUIStyle foreground = critical ? criticalDamageStyle : damageStyle;
+            GUIStyle shadow = critical ? criticalDamageShadowStyle : damageShadowStyle;
+
+            Color previous = GUI.color;
+            GUI.color = new Color(1f, 1f, 1f, alpha);
+            GUI.Label(new Rect(popup.x + 3f, popup.y + 4f, popup.width, popup.height), text, shadow);
+            GUI.color = playerTarget
+                ? new Color(1f, 0.25f, 0.20f, alpha)
+                : new Color(1f, 0.78f, 0.24f, alpha);
+            GUI.Label(popup, text, foreground);
+            GUI.color = previous;
         }
 
         private void DrawCombatMessage(Rect stageRect, Rect messageRect, float actionProgress)
@@ -261,16 +365,11 @@ namespace WuxiaRoguelite.UI
             FillRect(new Rect(messageRect.x, messageRect.y, messageRect.width, 2f), new Color(0.65f, 0.52f, 0.28f, 0.72f));
             GUI.Label(messageRect, battleManager.battleLog, centerStyle);
 
-            if (battleManager.AttackSequence > 0 && actionProgress < 1f)
+            if (battleManager.AttackSequence > 0 && actionProgress < 1f && battleManager.LastAttackWasDodged)
             {
-                string damage = battleManager.LastAttackWasDodged
-                    ? "闪避"
-                    : battleManager.LastAttackWasCritical
-                        ? $"暴击 -{battleManager.LastDamage:0}"
-                        : $"-{battleManager.LastDamage:0}";
                 float targetX = battleManager.LastAttackWasPlayer ? stageRect.width * 0.70f : stageRect.width * 0.16f;
                 float rise = actionProgress * 34f;
-                GUI.Label(new Rect(targetX, stageRect.y + stageRect.height * 0.26f - rise, stageRect.width * 0.14f, 32f), damage, damageStyle);
+                GUI.Label(new Rect(targetX, stageRect.y + stageRect.height * 0.26f - rise, stageRect.width * 0.14f, 42f), "闪避", damageStyle);
             }
 
             if (playerStats.runtimeStats.IsDead || battleManager.currentEnemy.IsDead)
