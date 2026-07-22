@@ -160,12 +160,12 @@ namespace WuxiaRoguelite.EditorTools
             CreateEncounter("南坡恶狼", enemyIdle, enemyRun, new Vector3(6.5f, 0f, -9f), EncounterType.NormalEnemy, Stats("南坡恶狼", 42, 7, 1, 1.3f), 13, 3);
             CreateEncounter("玄衣刀客", eliteIdle, eliteRun, new Vector3(-8f, 0f, 9f), EncounterType.EliteEnemy, Stats("玄衣刀客", 135, 13, 4, 0.9f), 34, 12);
 
-            CreateEncounter("断崖石窟", caveIdle, caveRun, new Vector3(-11f, 0f, -6f), EncounterType.HiddenCave,
-                Stats("守洞武人", 160, 14, 4, 0.85f), 35, 12, 1.15f, CaveContentType.Enemy);
-            CreateEncounter("隐市岩洞", caveIdle, caveRun, new Vector3(11f, 0f, -7f), EncounterType.HiddenCave,
-                Stats("云游商人", 1, 0, 0, 1f), 0, 0, 1.15f, CaveContentType.Merchant);
-            CreateEncounter("古藏秘窟", caveIdle, caveRun, new Vector3(-10.5f, 0f, 8f), EncounterType.HiddenCave,
-                Stats("秘藏古匣", 1, 0, 0, 1f), 18, 10, 1.15f, CaveContentType.Treasure);
+            CreateCaveEncounter("断崖石窟", new Vector3(-11f, 0f, -6f),
+                Stats("守洞武人", 160, 14, 4, 0.85f), 35, 12, CaveContentType.Enemy);
+            CreateCaveEncounter("隐市岩洞", new Vector3(11f, 0f, -7f),
+                Stats("云游商人", 1, 0, 0, 1f), 0, 0, CaveContentType.Merchant);
+            CreateCaveEncounter("古藏秘窟", new Vector3(-10.5f, 0f, 8f),
+                Stats("秘藏古匣", 1, 0, 0, 1f), 18, 10, CaveContentType.Treasure);
 
             CreateEncounter("东市宝箱", new[] { goldSprite }, null, new Vector3(10.5f, 0f, 7.5f), EncounterType.Treasure, Stats("宝箱", 1, 0, 0, 1f), 15, 8, 0.9f);
             CreateEncounter("西路宝箱", new[] { goldSprite }, null, new Vector3(-12f, 0f, 1.5f), EncounterType.Treasure, Stats("宝箱", 1, 0, 0, 1f), 12, 6, 0.9f);
@@ -218,7 +218,8 @@ namespace WuxiaRoguelite.EditorTools
             {
                 battleScreen.playerIdleFrames = playerIdle;
                 battleScreen.playerAttackFrames = playerAttack;
-                battleScreen.playerSpriteScale = 1.35f;
+                battleScreen.playerSpriteScale = ActorVisualScale.Medium;
+                battleScreen.bossSpriteScale = ActorVisualScale.Large;
                 EditorUtility.SetDirty(battleScreen);
             }
 
@@ -227,7 +228,7 @@ namespace WuxiaRoguelite.EditorTools
             {
                 caveRoom.playerIdleFrames = playerIdle;
                 caveRoom.playerRunFrames = playerRun;
-                caveRoom.playerSpriteScale = 1.35f;
+                caveRoom.playerSpriteScale = ActorVisualScale.Medium;
                 EditorUtility.SetDirty(caveRoom);
             }
 
@@ -510,16 +511,16 @@ namespace WuxiaRoguelite.EditorTools
             PlaceModel("market", "Roadside Market", scenery.transform, new Vector3(6.2f, 0f, 6.1f), 3.1f, -35f);
             PlaceModel("market", "Western Caravan", scenery.transform, new Vector3(-11.5f, 0f, 3.8f), 2.8f, 25f);
             PlaceModel("well", "Village Well", scenery.transform, new Vector3(3.7f, 0f, 1.9f), 1.3f, 0f);
-            PlaceModel("mine", "Cliff Cave Entrance", scenery.transform, new Vector3(-12.2f, 0f, -6.1f), 3.4f, 82f);
-            PlaceModel("mine", "Hidden Market Cave", scenery.transform, new Vector3(12.2f, 0f, -7.1f), 3.2f, -70f);
-            PlaceModel("mine", "Ancient Vault Cave", scenery.transform, new Vector3(-11.7f, 0f, 8.1f), 3.3f, 100f);
+            PlaceModel("mine", "Cliff Cave Entrance", scenery.transform, new Vector3(-12.2f, 0f, -6.1f), 4.5f, 82f);
+            PlaceModel("mine", "Hidden Market Cave", scenery.transform, new Vector3(12.2f, 0f, -7.1f), 4.3f, -70f);
+            PlaceModel("mine", "Ancient Vault Cave", scenery.transform, new Vector3(-11.7f, 0f, 8.1f), 4.4f, 100f);
             PlaceModel("watchtower", "Northwest Watchtower", scenery.transform, new Vector3(-13f, 0f, 11f), 2.3f, 15f);
             PlaceModel("watchtower", "Southeast Watchtower", scenery.transform, new Vector3(13f, 0f, -10.8f), 2.3f, 195f);
             PlaceModel("wall_gate", "Northern Gate", scenery.transform, new Vector3(0f, 0f, 12.1f), 4.2f, 0f);
             PlaceModel("bridge", "Old Road Bridge", scenery.transform, new Vector3(0f, 0f, -3.7f), 3.4f, 90f);
 
             PlaceModel("detail_treeA", "Tree A1", scenery.transform, new Vector3(-8f, 0f, 2.8f), 2.1f, 25f);
-            PlaceModel("detail_treeB", "Tree B1", scenery.transform, new Vector3(-7.5f, 0f, -6.8f), 2.3f, -20f);
+            PlaceModel("detail_treeB", "Tree B1", scenery.transform, new Vector3(-7.2f, 0f, -3.4f), 2.3f, -20f);
             PlaceModel("detail_treeC", "Tree C1", scenery.transform, new Vector3(7.6f, 0f, 5.2f), 2f, 30f);
             PlaceModel("detail_treeA", "Tree A2", scenery.transform, new Vector3(8f, 0f, -2.5f), 2.2f, 145f);
             PlaceModel("detail_treeB", "Tree B2", scenery.transform, new Vector3(-3.7f, 0f, 7.7f), 2f, 90f);
@@ -641,6 +642,25 @@ namespace WuxiaRoguelite.EditorTools
             collider.isTrigger = true;
             EncounterTrigger trigger = token.AddComponent<EncounterTrigger>();
             trigger.encounterType = type;
+            trigger.enemyStats = stats;
+            trigger.cultivationReward = cultivation;
+            trigger.copperReward = copper;
+            trigger.caveContent = caveContent;
+        }
+
+        private static void CreateCaveEncounter(string name, Vector3 position, CombatantStats stats,
+            int cultivation, int copper, CaveContentType caveContent)
+        {
+            GameObject entrance = new GameObject(name);
+            entrance.transform.position = position;
+
+            SphereCollider collider = entrance.AddComponent<SphereCollider>();
+            collider.radius = 1.1f;
+            collider.center = new Vector3(0f, 0.75f, 0f);
+            collider.isTrigger = true;
+
+            EncounterTrigger trigger = entrance.AddComponent<EncounterTrigger>();
+            trigger.encounterType = EncounterType.HiddenCave;
             trigger.enemyStats = stats;
             trigger.cultivationReward = cultivation;
             trigger.copperReward = copper;

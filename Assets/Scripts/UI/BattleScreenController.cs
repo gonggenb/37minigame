@@ -3,6 +3,7 @@ using WuxiaRoguelite.Battle;
 using WuxiaRoguelite.GameFlow;
 using WuxiaRoguelite.Player;
 using WuxiaRoguelite.Runtime;
+using WuxiaRoguelite.Visual;
 
 namespace WuxiaRoguelite.UI
 {
@@ -21,7 +22,8 @@ namespace WuxiaRoguelite.UI
         public Sprite[] eliteAttackFrames;
         public Sprite[] caveIdleFrames;
         public Sprite[] caveAttackFrames;
-        [Min(0.5f)] public float playerSpriteScale = 1.35f;
+        [Min(0.5f)] public float playerSpriteScale = ActorVisualScale.Medium;
+        [Min(0.5f)] public float bossSpriteScale = ActorVisualScale.Large;
 
         private GUIStyle titleStyle;
         private GUIStyle nameStyle;
@@ -117,9 +119,14 @@ namespace WuxiaRoguelite.UI
             Sprite[] currentEnemyIdleFrames = SelectEnemyFrames(false);
             Sprite[] currentEnemyAttackFrames = SelectEnemyFrames(true);
             float playerActorSize = actorSize * playerSpriteScale;
+            float enemySpriteScale = gameFlow.CurrentPhase == GamePhase.BossBattle
+                ? bossSpriteScale
+                : ActorVisualScale.Medium;
+            float enemyActorSize = actorSize * enemySpriteScale;
             Rect playerRect = new Rect(playerX + (actorSize - playerActorSize) * 0.5f,
                 baseY - playerActorSize, playerActorSize, playerActorSize);
-            Rect enemyRect = new Rect(enemyX, baseY - actorSize, actorSize, actorSize);
+            Rect enemyRect = new Rect(enemyX + (actorSize - enemyActorSize) * 0.5f,
+                baseY - enemyActorSize, enemyActorSize, enemyActorSize);
             DrawFighter(playerRect, PlayerColor, "侠", false,
                 playerAttacking ? playerAttackFrames : playerIdleFrames, playerAttacking, actionProgress);
             DrawFighter(enemyRect, EnemyColor, "敌", true,

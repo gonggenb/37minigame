@@ -4,6 +4,7 @@ using WuxiaRoguelite.GameFlow;
 using WuxiaRoguelite.Map;
 using WuxiaRoguelite.Player;
 using WuxiaRoguelite.Runtime;
+using WuxiaRoguelite.Visual;
 
 namespace WuxiaRoguelite.Cave
 {
@@ -18,7 +19,7 @@ namespace WuxiaRoguelite.Cave
         public Texture2D merchantTexture;
         public Texture2D treasureTexture;
         [Min(0.1f)] public float caveMoveSpeed = 0.52f;
-        [Min(0.5f)] public float playerSpriteScale = 1.35f;
+        [Min(0.5f)] public float playerSpriteScale = ActorVisualScale.Medium;
 
         public bool IsRoomActive { get; private set; }
         public CaveContentType CurrentContent { get; private set; }
