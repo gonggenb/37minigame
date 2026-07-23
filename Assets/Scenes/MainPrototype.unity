@@ -2680,18 +2680,16 @@ MonoBehaviour:
   battleManager: {fileID: 755778986}
   actorTexture: {fileID: 2800000, guid: a603bd7f505c24e2bb0fa99e20ee1f7a, type: 3}
   playerIdleFrames:
-  - {fileID: 1283079673, guid: dd1c8b6edc7f84b9a857ab4a067fbc48, type: 3}
-  - {fileID: -1965154847, guid: dd1c8b6edc7f84b9a857ab4a067fbc48, type: 3}
-  - {fileID: 1358089103, guid: dd1c8b6edc7f84b9a857ab4a067fbc48, type: 3}
-  - {fileID: -558596793, guid: dd1c8b6edc7f84b9a857ab4a067fbc48, type: 3}
-  - {fileID: -216845699, guid: dd1c8b6edc7f84b9a857ab4a067fbc48, type: 3}
-  - {fileID: 1703768611, guid: dd1c8b6edc7f84b9a857ab4a067fbc48, type: 3}
+  - {fileID: 584744719, guid: 75143ab42d73f414c935841835e63472, type: 3}
   playerAttackFrames:
-  - {fileID: -1729148696, guid: d236688669ad9419a9046f50e49afe1b, type: 3}
-  - {fileID: -1370509769, guid: d236688669ad9419a9046f50e49afe1b, type: 3}
-  - {fileID: -639121921, guid: d236688669ad9419a9046f50e49afe1b, type: 3}
-  - {fileID: -661446123, guid: d236688669ad9419a9046f50e49afe1b, type: 3}
-  - {fileID: -1526241724, guid: d236688669ad9419a9046f50e49afe1b, type: 3}
+  - {fileID: 1831638244, guid: 577bf361372234e6d88857d96a134679, type: 3}
+  - {fileID: -966015562, guid: 577bf361372234e6d88857d96a134679, type: 3}
+  - {fileID: -1060247209, guid: 577bf361372234e6d88857d96a134679, type: 3}
+  - {fileID: -2018342018, guid: 577bf361372234e6d88857d96a134679, type: 3}
+  - {fileID: 2065143078, guid: 577bf361372234e6d88857d96a134679, type: 3}
+  - {fileID: 655786058, guid: 577bf361372234e6d88857d96a134679, type: 3}
+  - {fileID: -1842854899, guid: 577bf361372234e6d88857d96a134679, type: 3}
+  - {fileID: 1873659647, guid: 577bf361372234e6d88857d96a134679, type: 3}
   enemyIdleFrames:
   - {fileID: -7915210059842803663, guid: 9e1a8f141acf7402c91427aaa0a1e4cf, type: 3}
   - {fileID: -985773156536696307, guid: 9e1a8f141acf7402c91427aaa0a1e4cf, type: 3}
