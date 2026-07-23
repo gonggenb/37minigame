@@ -3688,22 +3688,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WuxiaRoguelite.Visual.SpriteFrameAnimator
   idleFrames:
-  - {fileID: 1283079673, guid: dd1c8b6edc7f84b9a857ab4a067fbc48, type: 3}
-  - {fileID: -1965154847, guid: dd1c8b6edc7f84b9a857ab4a067fbc48, type: 3}
-  - {fileID: 1358089103, guid: dd1c8b6edc7f84b9a857ab4a067fbc48, type: 3}
-  - {fileID: -558596793, guid: dd1c8b6edc7f84b9a857ab4a067fbc48, type: 3}
-  - {fileID: -216845699, guid: dd1c8b6edc7f84b9a857ab4a067fbc48, type: 3}
-  - {fileID: 1703768611, guid: dd1c8b6edc7f84b9a857ab4a067fbc48, type: 3}
+  - {fileID: 584744719, guid: 75143ab42d73f414c935841835e63472, type: 3}
   moveFrames:
-  - {fileID: -1244457618, guid: d8f1b5e6525cf42c68fb53a095dfc6b3, type: 3}
-  - {fileID: 1349045163, guid: d8f1b5e6525cf42c68fb53a095dfc6b3, type: 3}
-  - {fileID: 1421888429, guid: d8f1b5e6525cf42c68fb53a095dfc6b3, type: 3}
-  - {fileID: -1999628337, guid: d8f1b5e6525cf42c68fb53a095dfc6b3, type: 3}
-  - {fileID: 749831471, guid: d8f1b5e6525cf42c68fb53a095dfc6b3, type: 3}
-  - {fileID: 1579595322, guid: d8f1b5e6525cf42c68fb53a095dfc6b3, type: 3}
+  - {fileID: 584744719, guid: 75143ab42d73f414c935841835e63472, type: 3}
+  - {fileID: -417452213, guid: 75143ab42d73f414c935841835e63472, type: 3}
+  - {fileID: -2051538869, guid: 75143ab42d73f414c935841835e63472, type: 3}
+  - {fileID: 212797631, guid: 75143ab42d73f414c935841835e63472, type: 3}
+  - {fileID: -1093508133, guid: 75143ab42d73f414c935841835e63472, type: 3}
+  - {fileID: -366871148, guid: 75143ab42d73f414c935841835e63472, type: 3}
+  - {fileID: 1971833031, guid: 75143ab42d73f414c935841835e63472, type: 3}
+  - {fileID: -1672307250, guid: 75143ab42d73f414c935841835e63472, type: 3}
   movementSource: {fileID: 285907367}
-  framesPerSecond: 10
-  randomizeStart: 1
+  framesPerSecond: 8
+  randomizeStart: 0
 --- !u!114 &979273219
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3766,7 +3763,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 10
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 1283079673, guid: dd1c8b6edc7f84b9a857ab4a067fbc48, type: 3}
+  m_Sprite: {fileID: 584744719, guid: 75143ab42d73f414c935841835e63472, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
