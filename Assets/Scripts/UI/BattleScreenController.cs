@@ -337,6 +337,9 @@ namespace WuxiaRoguelite.UI
             // Tight bounds vary per animation frame and would be stretched to this
             // fixed actor rect, making the character visibly resize while attacking.
             Rect textureRect = sprite.rect;
+            Rect visibleRect = sprite.textureRect;
+            float bottomPaddingRatio = Mathf.Max(0f, visibleRect.yMin - textureRect.yMin) / textureRect.height;
+            rect.y += rect.height * bottomPaddingRatio;
             Rect uv = new Rect(
                 textureRect.x / sprite.texture.width,
                 textureRect.y / sprite.texture.height,
