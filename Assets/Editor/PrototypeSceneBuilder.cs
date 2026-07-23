@@ -24,6 +24,8 @@ namespace WuxiaRoguelite.EditorTools
     {
         private const string ScenePath = "Assets/Scenes/MainPrototype.unity";
         private const string SpritePath = "Assets/Art/Generated/prototype_square.png";
+        private const string GroundTexturePath = "Assets/Art/Generated/Environment/tex_mainmap_grass_albedo.png";
+        private const string GroundMaterialPath = "Assets/Art/Generated/Environment/mat_mainmap_grass.mat";
         private const string TinyRoot = "Assets/Art/ThirdParty/TinySwords";
         private const string CrimsonRoot = "Assets/Art/ThirdParty/CrimsonWarrior/Player";
         private const string EnemyVarietyRoot = "Assets/Art/ThirdParty/CraftPixEnemyVariety/Enemies";
@@ -187,6 +189,7 @@ namespace WuxiaRoguelite.EditorTools
             CreateEncounter("南桥药草", new[] { herbSprite }, null, new Vector3(0f, 0f, -10f), EncounterType.Herb, Stats("药草", 1, 0, 0, 1f), 0, 0, 0.85f);
             CreateEncounter("北门药草", new[] { herbSprite }, null, new Vector3(1.5f, 0f, 10f), EncounterType.Herb, Stats("药草", 1, 0, 0, 1f), 0, 0, 0.85f);
 
+            ApplyMainMapExpansion(enemyIdle, enemyRun, eliteIdle, eliteRun, ratRun, riderRun, ballistaFly, goldSprite, herbSprite);
             ValidateEquipmentModel();
             EditorSceneManager.SaveScene(scene, ScenePath);
             EditorBuildSettings.scenes = new[] { new EditorBuildSettingsScene(ScenePath, true) };
@@ -251,6 +254,65 @@ namespace WuxiaRoguelite.EditorTools
             EditorSceneManager.SaveOpenScenes();
             AssetDatabase.SaveAssets();
             Debug.Log("Crimson Warrior player art refreshed in the active scene.");
+        }
+
+        [MenuItem("37 MiniGame/Refresh Main Map Ground")]
+        public static void RefreshMainMapGround()
+        {
+            if (EditorApplication.isPlaying)
+            {
+                Debug.LogError("Exit Play Mode before refreshing the main map ground.");
+                return;
+            }
+
+            EnsureFolders();
+            GameObject groundObject = GameObject.Find("Walkable Ground");
+            Renderer groundRenderer = groundObject != null ? groundObject.GetComponent<Renderer>() : null;
+            if (groundRenderer == null)
+            {
+                Debug.LogError("Cannot refresh the main map ground: Walkable Ground or its Renderer was not found.");
+                return;
+            }
+
+            groundRenderer.sharedMaterial = GetOrCreateMainMapGroundMaterial();
+            EditorUtility.SetDirty(groundRenderer);
+            EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
+            EditorSceneManager.SaveOpenScenes();
+            AssetDatabase.SaveAssets();
+            Debug.Log("Formal tiled grass material applied to Walkable Ground.");
+        }
+
+        [MenuItem("37 MiniGame/Expand Main Map")]
+        public static void ExpandMainMap()
+        {
+            if (EditorApplication.isPlaying)
+            {
+                Debug.LogError("Exit Play Mode before expanding the main map.");
+                return;
+            }
+
+            if (GameObject.Find("3D Prototype Map") == null)
+            {
+                Debug.LogError("Cannot expand the main map: 3D Prototype Map was not found in the active scene.");
+                return;
+            }
+
+            Sprite fallbackSprite = GetOrCreatePrototypeSprite();
+            Sprite[] enemyIdle = LoadFrames(EnemyIdlePath, fallbackSprite);
+            Sprite[] enemyRun = LoadFrames(EnemyRunPath, fallbackSprite);
+            Sprite[] eliteIdle = LoadFrames(EliteIdlePath, fallbackSprite);
+            Sprite[] eliteRun = LoadFrames(EliteRunPath, fallbackSprite);
+            Sprite[] ratRun = LoadFrames(RatRunPath, fallbackSprite);
+            Sprite[] riderRun = LoadFrames(RiderRunPath, fallbackSprite);
+            Sprite[] ballistaFly = LoadFrames(BallistaFlyPath, fallbackSprite);
+            Sprite goldSprite = LoadSingleSprite(GoldPath, fallbackSprite);
+            Sprite herbSprite = LoadSingleSprite(HerbPath, fallbackSprite);
+
+            ApplyMainMapExpansion(enemyIdle, enemyRun, eliteIdle, eliteRun, ratRun, riderRun, ballistaFly, goldSprite, herbSprite);
+            EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
+            EditorSceneManager.SaveOpenScenes();
+            AssetDatabase.SaveAssets();
+            Debug.Log("Main map expanded to 44 x 38 with four additional exploration regions.");
         }
 
         [MenuItem("37 MiniGame/Refresh Enemy Variety")]
@@ -395,6 +457,7 @@ namespace WuxiaRoguelite.EditorTools
             CreateFolderIfMissing("Assets", "Scenes");
             CreateFolderIfMissing("Assets", "Art");
             CreateFolderIfMissing("Assets/Art", "Generated");
+            CreateFolderIfMissing("Assets/Art/Generated", "Environment");
         }
 
         private static void CreateFolderIfMissing(string parent, string child)
@@ -612,7 +675,7 @@ namespace WuxiaRoguelite.EditorTools
 
         private static void CreateMapGeometry()
         {
-            Material ground = Material("Prototype_Ground", new Color(0.18f, 0.36f, 0.22f));
+            Material ground = GetOrCreateMainMapGroundMaterial();
             Material path = Material("Prototype_Path", new Color(0.38f, 0.32f, 0.24f));
             Material wall = Material("Prototype_Wall", new Color(0.22f, 0.2f, 0.18f));
 
@@ -635,6 +698,79 @@ namespace WuxiaRoguelite.EditorTools
             CreateInvisibleBoundary("East Boundary", mapRoot.transform, new Vector3(15.2f, 0.55f, 0f), new Vector3(0.45f, 1.1f, 26f), wall);
 
             PlaceKayKitScenery(mapRoot.transform);
+        }
+
+        private static Material GetOrCreateMainMapGroundMaterial()
+        {
+            if (!File.Exists(GroundTexturePath))
+            {
+                Debug.LogWarning($"Missing formal ground texture: {GroundTexturePath}");
+                return Material("Prototype_Ground", new Color(0.18f, 0.36f, 0.22f));
+            }
+
+            AssetDatabase.ImportAsset(GroundTexturePath, ImportAssetOptions.ForceSynchronousImport);
+            TextureImporter importer = AssetImporter.GetAtPath(GroundTexturePath) as TextureImporter;
+            if (importer != null)
+            {
+                importer.textureType = TextureImporterType.Default;
+                importer.npotScale = TextureImporterNPOTScale.ToNearest;
+                importer.wrapMode = TextureWrapMode.Repeat;
+                importer.filterMode = FilterMode.Bilinear;
+                importer.textureCompression = TextureImporterCompression.CompressedHQ;
+                importer.mipmapEnabled = true;
+                importer.sRGBTexture = true;
+                importer.maxTextureSize = 1024;
+                importer.SaveAndReimport();
+            }
+
+            Texture2D groundTexture = AssetDatabase.LoadAssetAtPath<Texture2D>(GroundTexturePath);
+            Material groundMaterial = AssetDatabase.LoadAssetAtPath<Material>(GroundMaterialPath);
+            Shader shader = Shader.Find("Universal Render Pipeline/Lit") ?? Shader.Find("Standard");
+            if (groundMaterial == null)
+            {
+                groundMaterial = new Material(shader)
+                {
+                    name = "MainMap_Grass"
+                };
+                AssetDatabase.CreateAsset(groundMaterial, GroundMaterialPath);
+            }
+            else if (shader != null && groundMaterial.shader != shader)
+            {
+                groundMaterial.shader = shader;
+            }
+
+            if (groundMaterial.HasProperty("_BaseMap"))
+            {
+                groundMaterial.SetTexture("_BaseMap", groundTexture);
+                groundMaterial.SetTextureScale("_BaseMap", new Vector2(8f, 7f));
+                groundMaterial.SetColor("_BaseColor", new Color(0.68f, 0.74f, 0.64f, 1f));
+                groundMaterial.SetFloat("_Smoothness", 0f);
+                groundMaterial.SetFloat("_Metallic", 0f);
+            }
+            else
+            {
+                groundMaterial.SetTexture("_MainTex", groundTexture);
+                groundMaterial.SetTextureScale("_MainTex", new Vector2(8f, 7f));
+                groundMaterial.SetColor("_Color", new Color(0.68f, 0.74f, 0.64f, 1f));
+                groundMaterial.SetFloat("_Glossiness", 0f);
+                groundMaterial.SetFloat("_Metallic", 0f);
+            }
+
+            if (groundMaterial.HasProperty("_SpecularHighlights"))
+            {
+                groundMaterial.SetFloat("_SpecularHighlights", 0f);
+            }
+            if (groundMaterial.HasProperty("_GlossyReflections"))
+            {
+                groundMaterial.SetFloat("_GlossyReflections", 0f);
+            }
+            if (groundMaterial.HasProperty("_EnvironmentReflections"))
+            {
+                groundMaterial.SetFloat("_EnvironmentReflections", 0f);
+            }
+
+            EditorUtility.SetDirty(groundMaterial);
+            return groundMaterial;
         }
 
         private static void PlaceKayKitScenery(Transform parent)
@@ -668,6 +804,127 @@ namespace WuxiaRoguelite.EditorTools
             PlaceModel("detail_treeC", "Tree C3", scenery.transform, new Vector3(11.8f, 0f, -2.8f), 2.1f, 120f);
             PlaceModel("detail_rocks", "North Ridge Rocks", scenery.transform, new Vector3(-6f, 0f, 10.7f), 1.7f, 40f);
             PlaceModel("detail_rocks_small", "South Road Rocks", scenery.transform, new Vector3(8.8f, 0f, -11f), 1.3f, 10f);
+        }
+
+        private static void ApplyMainMapExpansion(
+            Sprite[] enemyIdle, Sprite[] enemyRun, Sprite[] eliteIdle, Sprite[] eliteRun,
+            Sprite[] ratRun, Sprite[] riderRun, Sprite[] ballistaFly, Sprite goldSprite, Sprite herbSprite)
+        {
+            GameObject mapRoot = GameObject.Find("3D Prototype Map");
+            if (mapRoot == null)
+            {
+                return;
+            }
+
+            Transform previousExpansion = mapRoot.transform.Find("Expanded Main Map Content");
+            if (previousExpansion != null)
+            {
+                UnityEngine.Object.DestroyImmediate(previousExpansion.gameObject);
+            }
+
+            ResizeMapObject(mapRoot.transform, "Walkable Ground", Vector3.zero, new Vector3(4.4f, 1f, 3.8f));
+            ResizeMapObject(mapRoot.transform, "Main Dirt Road", new Vector3(0f, 0.025f, 0f), new Vector3(3.2f, 0.05f, 34f));
+            ResizeMapObject(mapRoot.transform, "Cross Dirt Road", new Vector3(0f, 0.03f, 0.8f), new Vector3(40f, 0.05f, 2.5f));
+            ResizeMapObject(mapRoot.transform, "North Ridge Road", new Vector3(-8.2f, 0.028f, 7.2f), new Vector3(16f, 0.05f, 2.1f));
+            ResizeMapObject(mapRoot.transform, "South Cave Road", new Vector3(8.5f, 0.028f, -7.2f), new Vector3(17f, 0.05f, 2.1f));
+
+            ResizeMapObject(mapRoot.transform, "North Boundary", new Vector3(0f, 0.55f, 19.2f), new Vector3(44f, 1.1f, 0.45f));
+            ResizeMapObject(mapRoot.transform, "South Boundary", new Vector3(0f, 0.55f, -19.2f), new Vector3(44f, 1.1f, 0.45f));
+            ResizeMapObject(mapRoot.transform, "West Boundary", new Vector3(-22.2f, 0.55f, 0f), new Vector3(0.45f, 1.1f, 38f));
+            ResizeMapObject(mapRoot.transform, "East Boundary", new Vector3(22.2f, 0.55f, 0f), new Vector3(0.45f, 1.1f, 38f));
+
+            Material path = GetMapMaterial(mapRoot.transform, "Main Dirt Road", "Prototype_Path", new Color(0.38f, 0.32f, 0.24f));
+            GameObject expansion = new GameObject("Expanded Main Map Content");
+            expansion.transform.SetParent(mapRoot.transform);
+
+            GameObject roads = new GameObject("Regional Roads");
+            roads.transform.SetParent(expansion.transform);
+            CreateCube("East Village Road", roads.transform, new Vector3(16f, 0.028f, 7.5f), new Vector3(2.2f, 0.05f, 13.5f), path);
+            CreateCube("East Village Loop", roads.transform, new Vector3(16f, 0.029f, 13.5f), new Vector3(11f, 0.05f, 2.1f), path);
+            CreateCube("North Ridge Trail", roads.transform, new Vector3(-5f, 0.028f, 15f), new Vector3(27f, 0.05f, 2.05f), path);
+            CreateCube("West Forest Road", roads.transform, new Vector3(-16f, 0.028f, -6.5f), new Vector3(2.1f, 0.05f, 15f), path);
+            CreateCube("West Forest Loop", roads.transform, new Vector3(-15.5f, 0.029f, -13.5f), new Vector3(12f, 0.05f, 2f), path);
+            CreateCube("South Mine Trail", roads.transform, new Vector3(6f, 0.028f, -14.5f), new Vector3(29f, 0.05f, 2.1f), path);
+
+            GameObject scenery = new GameObject("Expanded KayKit Scenery");
+            scenery.transform.SetParent(expansion.transform);
+
+            PlaceModel("house", "East Hamlet House A", scenery.transform, new Vector3(13.2f, 0f, 12f), 3.1f, 15f);
+            PlaceModel("house", "East Hamlet House B", scenery.transform, new Vector3(19f, 0f, 11.7f), 3f, -20f);
+            PlaceModel("market", "East Hamlet Market", scenery.transform, new Vector3(18.2f, 0f, 5.2f), 3f, -60f);
+            PlaceModel("well", "East Hamlet Well", scenery.transform, new Vector3(13.5f, 0f, 9f), 1.25f, 0f);
+            PlaceModel("wall_gate", "East Hamlet Gate", scenery.transform, new Vector3(21f, 0f, 8.8f), 3.5f, 90f);
+            PlaceModel("watchtower", "East Hamlet Watchtower", scenery.transform, new Vector3(20.2f, 0f, 16.4f), 2.2f, 200f);
+
+            PlaceModel("watchtower", "West Forest Watchtower", scenery.transform, new Vector3(-20f, 0f, -2.2f), 2.25f, 20f);
+            PlaceModel("wall_gate", "West Forest Gate", scenery.transform, new Vector3(-16f, 0f, -11.5f), 3.7f, 0f);
+            PlaceModel("market", "West Road Caravan", scenery.transform, new Vector3(-18.6f, 0f, -15.8f), 2.7f, 35f);
+            PlaceModel("bridge", "West Creek Bridge", scenery.transform, new Vector3(-15.5f, 0f, -8.8f), 3.2f, 0f);
+
+            PlaceModel("mine", "South Ridge Mine", scenery.transform, new Vector3(19.8f, 0f, -14.8f), 4.5f, -90f);
+            PlaceModel("watchtower", "South Gate Watchtower", scenery.transform, new Vector3(12.8f, 0f, -17.1f), 2.2f, 170f);
+            PlaceModel("wall_straight", "South Gate Wall A", scenery.transform, new Vector3(9f, 0f, -17.4f), 3.8f, 0f);
+            PlaceModel("wall_straight", "South Gate Wall B", scenery.transform, new Vector3(16.2f, 0f, -17.4f), 3.8f, 0f);
+
+            PlaceModel("detail_treeA", "North Pine A", scenery.transform, new Vector3(-18.5f, 0f, 16.5f), 2.3f, 20f);
+            PlaceModel("detail_treeB", "North Pine B", scenery.transform, new Vector3(-14f, 0f, 12.8f), 2.2f, -30f);
+            PlaceModel("detail_treeC", "North Pine C", scenery.transform, new Vector3(-9.5f, 0f, 17.2f), 2.1f, 80f);
+            PlaceModel("detail_treeA", "West Tree A", scenery.transform, new Vector3(-20f, 0f, -9f), 2.2f, 120f);
+            PlaceModel("detail_treeB", "West Tree B", scenery.transform, new Vector3(-18f, 0f, -13f), 2.35f, 15f);
+            PlaceModel("detail_treeC", "East Tree A", scenery.transform, new Vector3(20f, 0f, 2f), 2.15f, 45f);
+            PlaceModel("detail_treeA", "East Tree B", scenery.transform, new Vector3(12f, 0f, 16.5f), 2.2f, 150f);
+            PlaceModel("detail_rocks", "North Ridge Rock Cluster", scenery.transform, new Vector3(-3f, 0f, 17.2f), 1.8f, 25f);
+            PlaceModel("detail_rocks", "South Mine Rock Cluster", scenery.transform, new Vector3(17.4f, 0f, -11.8f), 1.9f, 80f);
+            PlaceModel("detail_rocks_small", "West Trail Stones", scenery.transform, new Vector3(-12f, 0f, -14.8f), 1.25f, 30f);
+            PlaceModel("detail_rocks_small", "East Hamlet Stones", scenery.transform, new Vector3(18f, 0f, 15f), 1.3f, 110f);
+
+            GameObject eastBandit = CreateEncounter("东郊流寇", enemyIdle, enemyRun, new Vector3(16f, 0f, 8f),
+                EncounterType.NormalEnemy, Stats("东郊流寇", 52, 8, 2, 1.05f), 16, 5);
+            GameObject northBallista = CreateEncounter("北岭机关车", ballistaFly, ballistaFly, new Vector3(-1f, 0f, 15f),
+                EncounterType.NormalEnemy, Stats("北岭机关车", 62, 9, 3, 0.95f, "ballista"), 18, 6);
+            GameObject westRat = CreateEncounter("西林灰鼠", ratRun, ratRun, new Vector3(-16f, 0f, -6f),
+                EncounterType.NormalEnemy, Stats("西林灰鼠", 38, 6, 1, 1.4f, "rat"), 12, 3);
+            GameObject southRider = CreateEncounter("南关赤骑", riderRun, riderRun, new Vector3(12.5f, 0f, -14.5f),
+                EncounterType.NormalEnemy, Stats("南关赤骑", 72, 10, 3, 0.9f, "rider"), 21, 7);
+            GameObject northElite = CreateEncounter("边城黑衣客", eliteIdle, eliteRun, new Vector3(-15.5f, 0f, 14.8f),
+                EncounterType.EliteEnemy, Stats("边城黑衣客", 155, 15, 5, 0.85f), 40, 14);
+            GameObject southCave = CreateCaveEncounter("岩壁密窟", new Vector3(19.2f, 0f, -14.8f),
+                Stats("岩窟守卫", 175, 16, 5, 0.82f), 42, 14, CaveContentType.Enemy);
+            GameObject northTreasure = CreateEncounter("北岭宝箱", new[] { goldSprite }, null, new Vector3(-7f, 0f, 16.2f),
+                EncounterType.Treasure, Stats("宝箱", 1, 0, 0, 1f), 18, 10, 0.9f);
+            GameObject eastHerb = CreateEncounter("东郊药草", new[] { herbSprite }, null, new Vector3(19.5f, 0f, 1.8f),
+                EncounterType.Herb, Stats("药草", 1, 0, 0, 1f), 0, 0, 0.85f);
+
+            GameObject[] regionalEncounters =
+            {
+                eastBandit, northBallista, westRat, southRider, northElite, southCave, northTreasure, eastHerb
+            };
+            foreach (GameObject regionalEncounter in regionalEncounters)
+            {
+                regionalEncounter.transform.SetParent(expansion.transform, true);
+            }
+        }
+
+        private static void ResizeMapObject(Transform root, string objectName, Vector3 position, Vector3 scale)
+        {
+            Transform target = root.Find(objectName);
+            if (target == null)
+            {
+                Debug.LogWarning($"Cannot resize map object: {objectName} was not found.");
+                return;
+            }
+
+            target.position = position;
+            target.localScale = scale;
+        }
+
+        private static Material GetMapMaterial(Transform root, string objectName, string fallbackName, Color fallbackColor)
+        {
+            Transform target = root.Find(objectName);
+            Renderer renderer = target != null ? target.GetComponent<Renderer>() : null;
+            return renderer != null && renderer.sharedMaterial != null
+                ? renderer.sharedMaterial
+                : Material(fallbackName, fallbackColor);
         }
 
         private static GameObject PlaceModel(string assetName, string objectName, Transform parent, Vector3 position, float targetFootprint, float yRotation)
@@ -769,7 +1026,7 @@ namespace WuxiaRoguelite.EditorTools
             return actor;
         }
 
-        private static void CreateEncounter(string name, Sprite[] idleFrames, Sprite[] moveFrames, Vector3 position, EncounterType type, CombatantStats stats, int cultivation, int copper, float visualScale = 1.15f, CaveContentType caveContent = CaveContentType.Random)
+        private static GameObject CreateEncounter(string name, Sprite[] idleFrames, Sprite[] moveFrames, Vector3 position, EncounterType type, CombatantStats stats, int cultivation, int copper, float visualScale = 1.15f, CaveContentType caveContent = CaveContentType.Random)
         {
             GameObject token = CreateSpriteActor(name, idleFrames, moveFrames, position, visualScale);
             SphereCollider collider = token.AddComponent<SphereCollider>();
@@ -782,9 +1039,10 @@ namespace WuxiaRoguelite.EditorTools
             trigger.cultivationReward = cultivation;
             trigger.copperReward = copper;
             trigger.caveContent = caveContent;
+            return token;
         }
 
-        private static void CreateCaveEncounter(string name, Vector3 position, CombatantStats stats,
+        private static GameObject CreateCaveEncounter(string name, Vector3 position, CombatantStats stats,
             int cultivation, int copper, CaveContentType caveContent)
         {
             GameObject entrance = new GameObject(name);
@@ -801,6 +1059,7 @@ namespace WuxiaRoguelite.EditorTools
             trigger.cultivationReward = cultivation;
             trigger.copperReward = copper;
             trigger.caveContent = caveContent;
+            return entrance;
         }
 
         private static CombatantStats Stats(string displayName, float hp, float attack, float defense,
