@@ -46,12 +46,22 @@ namespace WuxiaRoguelite.EditorTools
         private const string CaveIdlePath = TinyRoot + "/Units/PurpleWarrior/Warrior_Idle.png";
         private const string CaveRunPath = TinyRoot + "/Units/PurpleWarrior/Warrior_Run.png";
         private const string CaveAttackPath = TinyRoot + "/Units/PurpleWarrior/Warrior_Attack1.png";
+        private const string BlueIdlePath = TinyRoot + "/Units/BlueWarrior/Warrior_Idle.png";
+        private const string BlueRunPath = TinyRoot + "/Units/BlueWarrior/Warrior_Run.png";
+        private const string BlueAttackPath = TinyRoot + "/Units/BlueWarrior/Warrior_Attack1.png";
         private const string RatRunPath = EnemyVarietyRoot + "/Rat_Run.png";
         private const string RatAttackPath = EnemyVarietyRoot + "/Rat_Attack.png";
         private const string RiderRunPath = EnemyVarietyRoot + "/Rider_Run.png";
         private const string RiderAttackPath = EnemyVarietyRoot + "/Rider_Attack.png";
         private const string BallistaFlyPath = EnemyVarietyRoot + "/Ballista_Fly.png";
         private const string BallistaAttackPath = EnemyVarietyRoot + "/Ballista_Attack.png";
+        private const string GeneratedEnemyRoot = "Assets/Art/Generated/Characters/Enemies";
+        private const string InkWolfIdlePath = GeneratedEnemyRoot + "/InkWolf/spr_enemy_ink_wolf_idle_right_8f_v01.png";
+        private const string InkWolfAttackPath = GeneratedEnemyRoot + "/InkWolf/spr_enemy_ink_wolf_attack_right_8f_v01.png";
+        private const string StoneApeIdlePath = GeneratedEnemyRoot + "/StoneApe/spr_enemy_stone_ape_idle_right_8f_v01.png";
+        private const string StoneApeAttackPath = GeneratedEnemyRoot + "/StoneApe/spr_enemy_stone_ape_attack_right_8f_v01.png";
+        private const string BambooPuppetIdlePath = GeneratedEnemyRoot + "/BambooPuppet/spr_enemy_bamboo_puppet_idle_right_8f_v01.png";
+        private const string BambooPuppetAttackPath = GeneratedEnemyRoot + "/BambooPuppet/spr_enemy_bamboo_puppet_attack_right_8f_v01.png";
         private const string GoldPath = TinyRoot + "/World/Gold_Resource.png";
         private const string HerbPath = TinyRoot + "/World/Bush.png";
         private const string StatusIconPath = TinyRoot + "/UI/Avatars_01.png";
@@ -77,12 +87,21 @@ namespace WuxiaRoguelite.EditorTools
             Sprite[] caveIdle = LoadFrames(CaveIdlePath, fallbackSprite);
             Sprite[] caveRun = LoadFrames(CaveRunPath, fallbackSprite);
             Sprite[] caveAttack = LoadFrames(CaveAttackPath, fallbackSprite);
+            Sprite[] blueIdle = LoadFrames(BlueIdlePath, fallbackSprite);
+            Sprite[] blueRun = LoadFrames(BlueRunPath, fallbackSprite);
+            Sprite[] blueAttack = LoadFrames(BlueAttackPath, fallbackSprite);
             Sprite[] ratRun = LoadFrames(RatRunPath, fallbackSprite);
             Sprite[] ratAttack = LoadFrames(RatAttackPath, fallbackSprite);
             Sprite[] riderRun = LoadFrames(RiderRunPath, fallbackSprite);
             Sprite[] riderAttack = LoadFrames(RiderAttackPath, fallbackSprite);
             Sprite[] ballistaFly = LoadFrames(BallistaFlyPath, fallbackSprite);
             Sprite[] ballistaAttack = LoadFrames(BallistaAttackPath, fallbackSprite);
+            Sprite[] inkWolfIdle = LoadFrames(InkWolfIdlePath, fallbackSprite);
+            Sprite[] inkWolfAttack = LoadFrames(InkWolfAttackPath, fallbackSprite);
+            Sprite[] stoneApeIdle = LoadFrames(StoneApeIdlePath, fallbackSprite);
+            Sprite[] stoneApeAttack = LoadFrames(StoneApeAttackPath, fallbackSprite);
+            Sprite[] bambooPuppetIdle = LoadFrames(BambooPuppetIdlePath, fallbackSprite);
+            Sprite[] bambooPuppetAttack = LoadFrames(BambooPuppetAttackPath, fallbackSprite);
             Sprite goldSprite = LoadSingleSprite(GoldPath, fallbackSprite);
             Sprite herbSprite = LoadSingleSprite(HerbPath, fallbackSprite);
 
@@ -155,34 +174,41 @@ namespace WuxiaRoguelite.EditorTools
             battleScreen.actorTexture = AssetDatabase.LoadAssetAtPath<Texture2D>(SpritePath);
             battleScreen.playerIdleFrames = playerIdle;
             battleScreen.playerAttackFrames = playerAttack;
-            battleScreen.enemyIdleFrames = enemyIdle;
-            battleScreen.enemyAttackFrames = enemyAttack;
+            battleScreen.enemyIdleFrames = bambooPuppetIdle;
+            battleScreen.enemyAttackFrames = bambooPuppetAttack;
             battleScreen.eliteIdleFrames = eliteIdle;
             battleScreen.eliteAttackFrames = eliteAttack;
-            battleScreen.caveIdleFrames = caveIdle;
-            battleScreen.caveAttackFrames = caveAttack;
+            battleScreen.caveIdleFrames = stoneApeIdle;
+            battleScreen.caveAttackFrames = stoneApeAttack;
             battleScreen.enemyVisualProfiles = CreateEnemyVisualProfiles(
-                ratRun, ratAttack, riderRun, riderAttack, ballistaFly, ballistaAttack);
+                ratRun, ratAttack, riderRun, riderAttack, ballistaFly, ballistaAttack,
+                inkWolfIdle, inkWolfAttack, stoneApeIdle, stoneApeAttack,
+                bambooPuppetIdle, bambooPuppetAttack);
             caveRoom.gameFlow = gameFlow;
             caveRoom.playerStats = playerStats;
             caveRoom.battleManager = battleManager;
             caveRoom.playerIdleFrames = playerIdle;
             caveRoom.playerRunFrames = playerRun;
-            caveRoom.enemyIdleFrames = caveIdle;
+            caveRoom.enemyIdleFrames = stoneApeIdle;
             caveRoom.merchantTexture = AssetDatabase.LoadAssetAtPath<Texture2D>(StatusIconPath);
             caveRoom.treasureTexture = AssetDatabase.LoadAssetAtPath<Texture2D>(GoldPath);
 
-            CreateEncounter("山贼喽啰", enemyIdle, enemyRun, new Vector3(-5f, 0f, 3f), EncounterType.NormalEnemy, Stats("山贼喽啰", 35, 5, 1, 0.9f), 10, 2);
+            CreateEncounter("山贼喽啰", bambooPuppetIdle, bambooPuppetIdle, new Vector3(-5f, 0f, 3f),
+                EncounterType.NormalEnemy, Stats("山贼喽啰", 35, 5, 1, 0.9f, "bamboo_puppet"), 10, 2, 1.15f);
             CreateEncounter("灰岩巨鼠", ratRun, ratRun, new Vector3(-2.2f, 0f, -4.6f), EncounterType.NormalEnemy, Stats("灰岩巨鼠", 28, 4, 0, 1.35f, "rat"), 9, 1);
-            CreateEncounter("流寇", enemyIdle, enemyRun, new Vector3(2.4f, 0f, 4f), EncounterType.NormalEnemy, Stats("流寇", 45, 6, 1, 1f), 12, 3);
-            CreateEncounter("黑风刀客", eliteIdle, eliteRun, new Vector3(5.4f, 0f, -2f), EncounterType.EliteEnemy, Stats("黑风刀客", 120, 12, 3, 0.85f), 30, 10);
+            CreateEncounter("流寇", bambooPuppetIdle, bambooPuppetIdle, new Vector3(2.4f, 0f, 4f),
+                EncounterType.NormalEnemy, Stats("流寇", 45, 6, 1, 1f, "bamboo_puppet"), 12, 3, 1.15f);
+            CreateEncounter("黑风刀客", stoneApeIdle, stoneApeIdle, new Vector3(5.4f, 0f, -2f),
+                EncounterType.EliteEnemy, Stats("黑风刀客", 120, 12, 3, 0.85f, "stone_ape"), 30, 10, 1.25f);
             CreateEncounter("机关弩车", ballistaFly, ballistaFly, new Vector3(-9f, 0f, 5.5f), EncounterType.NormalEnemy, Stats("机关弩车", 50, 7, 2, 1f, "ballista"), 14, 4);
             CreateEncounter("赤骑枪客", riderRun, riderRun, new Vector3(10f, 0f, 2.2f), EncounterType.NormalEnemy, Stats("赤骑枪客", 58, 8, 2, 0.95f, "rider"), 16, 5);
-            CreateEncounter("南坡恶徒", enemyIdle, enemyRun, new Vector3(6.5f, 0f, -9f), EncounterType.NormalEnemy, Stats("南坡恶徒", 42, 7, 1, 1.3f), 13, 3);
-            CreateEncounter("玄衣刀客", eliteIdle, eliteRun, new Vector3(-8f, 0f, 9f), EncounterType.EliteEnemy, Stats("玄衣刀客", 135, 13, 4, 0.9f), 34, 12);
+            CreateEncounter("南坡恶徒", bambooPuppetIdle, bambooPuppetIdle, new Vector3(6.5f, 0f, -9f),
+                EncounterType.NormalEnemy, Stats("南坡恶徒", 42, 7, 1, 1.3f, "bamboo_puppet"), 13, 3, 1.15f);
+            CreateEncounter("玄衣刀客", stoneApeIdle, stoneApeIdle, new Vector3(-8f, 0f, 9f),
+                EncounterType.EliteEnemy, Stats("玄衣刀客", 135, 13, 4, 0.9f, "stone_ape"), 34, 12, 1.25f);
 
             CreateCaveEncounter("断崖石窟", new Vector3(-11f, 0f, -6f),
-                Stats("守洞武人", 160, 14, 4, 0.85f), 35, 12, CaveContentType.Enemy);
+                Stats("守洞武人", 160, 14, 4, 0.85f, "stone_ape"), 35, 12, CaveContentType.Enemy);
             CreateCaveEncounter("隐市岩洞", new Vector3(11f, 0f, -7f),
                 Stats("云游商人", 1, 0, 0, 1f), 0, 0, CaveContentType.Merchant);
             CreateCaveEncounter("古藏秘窟", new Vector3(-10.5f, 0f, 8f),
@@ -193,7 +219,10 @@ namespace WuxiaRoguelite.EditorTools
             CreateEncounter("南桥药草", new[] { herbSprite }, null, new Vector3(0f, 0f, -10f), EncounterType.Herb, Stats("药草", 1, 0, 0, 1f), 0, 0, 0.85f);
             CreateEncounter("北门药草", new[] { herbSprite }, null, new Vector3(1.5f, 0f, 10f), EncounterType.Herb, Stats("药草", 1, 0, 0, 1f), 0, 0, 0.85f);
 
-            ApplyMainMapExpansion(enemyIdle, enemyRun, eliteIdle, eliteRun, ratRun, riderRun, ballistaFly, goldSprite, herbSprite);
+            ApplyMainMapExpansion(
+                enemyIdle, enemyRun, eliteIdle, eliteRun, blueIdle, blueRun, caveIdle, caveRun,
+                ratRun, riderRun, ballistaFly,
+                inkWolfIdle, stoneApeIdle, bambooPuppetIdle, goldSprite, herbSprite);
             ValidateEquipmentModel();
             EditorSceneManager.SaveScene(scene, ScenePath);
             EditorBuildSettings.scenes = new[] { new EditorBuildSettingsScene(ScenePath, true) };
@@ -358,28 +387,59 @@ namespace WuxiaRoguelite.EditorTools
                 return;
             }
 
+            PrepareArtAssets();
             Sprite fallbackSprite = GetOrCreatePrototypeSprite();
             Sprite[] enemyIdle = LoadFrames(EnemyIdlePath, fallbackSprite);
             Sprite[] enemyRun = LoadFrames(EnemyRunPath, fallbackSprite);
             Sprite[] eliteIdle = LoadFrames(EliteIdlePath, fallbackSprite);
             Sprite[] eliteRun = LoadFrames(EliteRunPath, fallbackSprite);
+            Sprite[] blueIdle = LoadFrames(BlueIdlePath, fallbackSprite);
+            Sprite[] blueRun = LoadFrames(BlueRunPath, fallbackSprite);
+            Sprite[] blueAttack = LoadFrames(BlueAttackPath, fallbackSprite);
+            Sprite[] caveIdle = LoadFrames(CaveIdlePath, fallbackSprite);
+            Sprite[] caveRun = LoadFrames(CaveRunPath, fallbackSprite);
+            Sprite[] caveAttack = LoadFrames(CaveAttackPath, fallbackSprite);
             Sprite[] ratRun = LoadFrames(RatRunPath, fallbackSprite);
+            Sprite[] ratAttack = LoadFrames(RatAttackPath, fallbackSprite);
             Sprite[] riderRun = LoadFrames(RiderRunPath, fallbackSprite);
+            Sprite[] riderAttack = LoadFrames(RiderAttackPath, fallbackSprite);
             Sprite[] ballistaFly = LoadFrames(BallistaFlyPath, fallbackSprite);
+            Sprite[] ballistaAttack = LoadFrames(BallistaAttackPath, fallbackSprite);
+            Sprite[] inkWolfIdle = LoadFrames(InkWolfIdlePath, fallbackSprite);
+            Sprite[] inkWolfAttack = LoadFrames(InkWolfAttackPath, fallbackSprite);
+            Sprite[] stoneApeIdle = LoadFrames(StoneApeIdlePath, fallbackSprite);
+            Sprite[] stoneApeAttack = LoadFrames(StoneApeAttackPath, fallbackSprite);
+            Sprite[] bambooPuppetIdle = LoadFrames(BambooPuppetIdlePath, fallbackSprite);
+            Sprite[] bambooPuppetAttack = LoadFrames(BambooPuppetAttackPath, fallbackSprite);
             Sprite goldSprite = LoadSingleSprite(GoldPath, fallbackSprite);
             Sprite herbSprite = LoadSingleSprite(HerbPath, fallbackSprite);
 
-            ApplyMainMapExpansion(enemyIdle, enemyRun, eliteIdle, eliteRun, ratRun, riderRun, ballistaFly, goldSprite, herbSprite);
+            ApplyMainMapExpansion(
+                enemyIdle, enemyRun, eliteIdle, eliteRun, blueIdle, blueRun, caveIdle, caveRun,
+                ratRun, riderRun, ballistaFly,
+                inkWolfIdle, stoneApeIdle, bambooPuppetIdle, goldSprite, herbSprite);
+
+            BattleScreenController battleScreen = UnityEngine.Object.FindAnyObjectByType<BattleScreenController>();
+            if (battleScreen != null)
+            {
+                battleScreen.enemyVisualProfiles = CreateEnemyVisualProfiles(
+                    ratRun, ratAttack, riderRun, riderAttack, ballistaFly, ballistaAttack,
+                    inkWolfIdle, inkWolfAttack, stoneApeIdle, stoneApeAttack,
+                    bambooPuppetIdle, bambooPuppetAttack);
+                EditorUtility.SetDirty(battleScreen);
+            }
+
             EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
             EditorSceneManager.SaveOpenScenes();
             AssetDatabase.SaveAssets();
-            Debug.Log("Main map expanded to 44 x 38 with four additional exploration regions.");
+            Debug.Log("Main map refined to 44 x 38 with denser regional landmarks and six additional enemy encounters.");
         }
 
         [MenuItem("37 MiniGame/Refresh Enemy Variety")]
         public static void RefreshEnemyVariety()
         {
             ConfigureEnemyVarietyAssets();
+            ConfigureGeneratedMonsterAssets();
             Sprite fallbackSprite = GetOrCreatePrototypeSprite();
             Sprite[] ratRun = LoadFrames(RatRunPath, fallbackSprite);
             Sprite[] ratAttack = LoadFrames(RatAttackPath, fallbackSprite);
@@ -387,18 +447,69 @@ namespace WuxiaRoguelite.EditorTools
             Sprite[] riderAttack = LoadFrames(RiderAttackPath, fallbackSprite);
             Sprite[] ballistaFly = LoadFrames(BallistaFlyPath, fallbackSprite);
             Sprite[] ballistaAttack = LoadFrames(BallistaAttackPath, fallbackSprite);
+            Sprite[] blueIdle = LoadFrames(BlueIdlePath, fallbackSprite);
+            Sprite[] blueAttack = LoadFrames(BlueAttackPath, fallbackSprite);
+            Sprite[] caveIdle = LoadFrames(CaveIdlePath, fallbackSprite);
+            Sprite[] caveAttack = LoadFrames(CaveAttackPath, fallbackSprite);
+            Sprite[] inkWolfIdle = LoadFrames(InkWolfIdlePath, fallbackSprite);
+            Sprite[] inkWolfAttack = LoadFrames(InkWolfAttackPath, fallbackSprite);
+            Sprite[] stoneApeIdle = LoadFrames(StoneApeIdlePath, fallbackSprite);
+            Sprite[] stoneApeAttack = LoadFrames(StoneApeAttackPath, fallbackSprite);
+            Sprite[] bambooPuppetIdle = LoadFrames(BambooPuppetIdlePath, fallbackSprite);
+            Sprite[] bambooPuppetAttack = LoadFrames(BambooPuppetAttackPath, fallbackSprite);
 
             ApplyEncounterVisual("野狼", "灰岩巨鼠", "rat", ratRun, 1.15f);
             ApplyEncounterVisual("北岭流寇", "机关弩车", "ballista", ballistaFly, 1.15f);
             ApplyEncounterVisual("东道悍匪", "赤骑枪客", "rider", riderRun, 1.15f);
             RenameEncounter("南坡恶狼", "南坡恶徒");
 
+            foreach (string encounterName in new[] { "山贼喽啰", "流寇", "南坡恶徒", "东郊流寇", "紫衣毒客" })
+            {
+                ApplyEncounterVisual(encounterName, encounterName, "bamboo_puppet", bambooPuppetIdle, 1.15f);
+            }
+
+            foreach (string encounterName in new[] { "青衣快剑", "南矿毒刃" })
+            {
+                ApplyEncounterVisual(encounterName, encounterName, "ink_wolf", inkWolfIdle, 1.35f);
+            }
+
+            foreach (string encounterName in new[] { "黑风刀客", "玄衣刀客", "边城黑衣客" })
+            {
+                ApplyEncounterVisual(encounterName, encounterName, "stone_ape", stoneApeIdle, 1.25f);
+            }
+
             BattleScreenController battleScreen = UnityEngine.Object.FindAnyObjectByType<BattleScreenController>();
             if (battleScreen != null)
             {
+                battleScreen.enemyIdleFrames = bambooPuppetIdle;
+                battleScreen.enemyAttackFrames = bambooPuppetAttack;
+                battleScreen.caveIdleFrames = stoneApeIdle;
+                battleScreen.caveAttackFrames = stoneApeAttack;
                 battleScreen.enemyVisualProfiles = CreateEnemyVisualProfiles(
-                    ratRun, ratAttack, riderRun, riderAttack, ballistaFly, ballistaAttack);
+                    ratRun, ratAttack, riderRun, riderAttack, ballistaFly, ballistaAttack,
+                    inkWolfIdle, inkWolfAttack, stoneApeIdle, stoneApeAttack,
+                    bambooPuppetIdle, bambooPuppetAttack);
                 EditorUtility.SetDirty(battleScreen);
+            }
+
+            CaveRoomController caveRoom = UnityEngine.Object.FindAnyObjectByType<CaveRoomController>();
+            if (caveRoom != null)
+            {
+                caveRoom.enemyIdleFrames = stoneApeIdle;
+                EditorUtility.SetDirty(caveRoom);
+            }
+
+            foreach (EncounterTrigger caveEncounter in
+                UnityEngine.Object.FindObjectsByType<EncounterTrigger>(FindObjectsInactive.Include, FindObjectsSortMode.None))
+            {
+                if (caveEncounter.encounterType != EncounterType.HiddenCave ||
+                    caveEncounter.caveContent != CaveContentType.Enemy)
+                {
+                    continue;
+                }
+
+                caveEncounter.enemyStats.visualId = "stone_ape";
+                EditorUtility.SetDirty(caveEncounter);
             }
 
             EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
@@ -431,6 +542,11 @@ namespace WuxiaRoguelite.EditorTools
             trigger.enemyStats.visualId = visualId;
             animator.idleFrames = frames;
             animator.moveFrames = frames;
+            bool usesFootPivot = frames[0].pivot.y <= frames[0].rect.height * 0.2f;
+            animator.transform.localPosition = new Vector3(
+                animator.transform.localPosition.x,
+                usesFootPivot ? 0f : 0.8f,
+                animator.transform.localPosition.z);
             animator.transform.localScale = Vector3.one * visualScale;
             renderer.sprite = frames[0];
             EditorUtility.SetDirty(trigger);
@@ -458,18 +574,27 @@ namespace WuxiaRoguelite.EditorTools
 
         private static BattleScreenController.EnemyVisualProfile[] CreateEnemyVisualProfiles(
             Sprite[] ratRun, Sprite[] ratAttack, Sprite[] riderRun, Sprite[] riderAttack,
-            Sprite[] ballistaFly, Sprite[] ballistaAttack)
+            Sprite[] ballistaFly, Sprite[] ballistaAttack,
+            Sprite[] inkWolfIdle, Sprite[] inkWolfAttack,
+            Sprite[] stoneApeIdle, Sprite[] stoneApeAttack,
+            Sprite[] bambooPuppetIdle, Sprite[] bambooPuppetAttack)
         {
             return new[]
             {
+                CreateEnemyVisualProfile("blue", inkWolfIdle, inkWolfAttack, ActorVisualScale.Medium, true),
+                CreateEnemyVisualProfile("purple", bambooPuppetIdle, bambooPuppetAttack, ActorVisualScale.Medium, true),
                 CreateEnemyVisualProfile("rat", ratRun, ratAttack, ActorVisualScale.Small),
                 CreateEnemyVisualProfile("rider", riderRun, riderAttack, ActorVisualScale.Medium),
-                CreateEnemyVisualProfile("ballista", ballistaFly, ballistaAttack, ActorVisualScale.Medium)
+                CreateEnemyVisualProfile("ballista", ballistaFly, ballistaAttack, ActorVisualScale.Medium),
+                CreateEnemyVisualProfile("ink_wolf", inkWolfIdle, inkWolfAttack, ActorVisualScale.Medium, true),
+                CreateEnemyVisualProfile("stone_ape", stoneApeIdle, stoneApeAttack, 1.12f, true),
+                CreateEnemyVisualProfile("bamboo_puppet", bambooPuppetIdle, bambooPuppetAttack, ActorVisualScale.Medium, true)
             };
         }
 
         private static BattleScreenController.EnemyVisualProfile CreateEnemyVisualProfile(
-            string id, Sprite[] idleFrames, Sprite[] attackFrames, float scale)
+            string id, Sprite[] idleFrames, Sprite[] attackFrames, float scale,
+            bool flipHorizontally = false)
         {
             return new BattleScreenController.EnemyVisualProfile
             {
@@ -477,7 +602,7 @@ namespace WuxiaRoguelite.EditorTools
                 idleFrames = idleFrames,
                 attackFrames = attackFrames,
                 scale = scale,
-                flipHorizontally = false
+                flipHorizontally = flipHorizontally
             };
         }
 
@@ -565,12 +690,14 @@ namespace WuxiaRoguelite.EditorTools
         {
             ConfigurePlayerArtAssets();
             ConfigureEnemyVarietyAssets();
+            ConfigureGeneratedMonsterAssets();
 
             string[] tinySwordsSheets =
             {
                 EnemyIdlePath, EnemyRunPath, EnemyAttackPath,
                 EliteIdlePath, EliteRunPath, EliteAttackPath,
-                CaveIdlePath, CaveRunPath, CaveAttackPath
+                CaveIdlePath, CaveRunPath, CaveAttackPath,
+                BlueIdlePath, BlueRunPath, BlueAttackPath
             };
 
             foreach (string path in tinySwordsSheets)
@@ -608,7 +735,23 @@ namespace WuxiaRoguelite.EditorTools
             }
         }
 
-        private static void ConfigureSpriteSheet(string path, int frameWidth, int frameHeight, float pixelsPerUnit)
+        private static void ConfigureGeneratedMonsterAssets()
+        {
+            string[] sheets =
+            {
+                InkWolfIdlePath, InkWolfAttackPath,
+                StoneApeIdlePath, StoneApeAttackPath,
+                BambooPuppetIdlePath, BambooPuppetAttackPath
+            };
+
+            foreach (string path in sheets)
+            {
+                ConfigureSpriteSheet(path, 256, 256, 160f, new Vector2(0.5f, 0.125f));
+            }
+        }
+
+        private static void ConfigureSpriteSheet(string path, int frameWidth, int frameHeight,
+            float pixelsPerUnit, Vector2? customPivot = null)
         {
             if (!File.Exists(path))
             {
@@ -629,6 +772,29 @@ namespace WuxiaRoguelite.EditorTools
             int rows = Mathf.Max(1, sourceTexture.height / frameHeight);
             UnityEngine.Object.DestroyImmediate(sourceTexture);
 
+            // A newly added PNG starts as a single/default texture. Persist the
+            // Multiple-Sprite importer state before asking the data provider for
+            // SpriteRects, otherwise Unity 6 discards the first rect write.
+            importer.textureType = TextureImporterType.Sprite;
+            importer.spriteImportMode = SpriteImportMode.Multiple;
+            importer.spritePixelsPerUnit = pixelsPerUnit;
+            importer.npotScale = TextureImporterNPOTScale.None;
+            importer.filterMode = FilterMode.Point;
+            importer.wrapMode = TextureWrapMode.Clamp;
+            importer.textureCompression = TextureImporterCompression.Uncompressed;
+            importer.mipmapEnabled = false;
+            importer.alphaIsTransparency = true;
+            importer.SaveAndReimport();
+            importer = AssetImporter.GetAtPath(path) as TextureImporter;
+
+            SpriteDataProviderFactories factory = new SpriteDataProviderFactories();
+            factory.Init();
+            ISpriteEditorDataProvider dataProvider = factory.GetSpriteEditorDataProviderFromObject(importer);
+            dataProvider.InitSpriteEditorDataProvider();
+            Dictionary<string, GUID> existingIds = dataProvider.GetSpriteRects()
+                .GroupBy(spriteRect => spriteRect.name)
+                .ToDictionary(group => group.Key, group => group.First().spriteID);
+
             List<SpriteRect> spriteRects = new List<SpriteRect>(columns * rows);
             List<SpriteNameFileIdPair> nameIdPairs = new List<SpriteNameFileIdPair>(columns * rows);
             string baseName = Path.GetFileNameWithoutExtension(path);
@@ -637,15 +803,17 @@ namespace WuxiaRoguelite.EditorTools
             {
                 for (int column = 0; column < columns; column++)
                 {
-                    GUID spriteId = GUID.Generate();
                     string spriteName = $"{baseName}_{index:D2}";
+                    GUID spriteId = existingIds.TryGetValue(spriteName, out GUID existingId)
+                        ? existingId
+                        : GUID.Generate();
                     spriteRects.Add(new SpriteRect
                     {
                         name = spriteName,
                         spriteID = spriteId,
                         rect = new Rect(column * frameWidth, row * frameHeight, frameWidth, frameHeight),
-                        alignment = SpriteAlignment.Center,
-                        pivot = new Vector2(0.5f, 0.5f)
+                        alignment = customPivot.HasValue ? SpriteAlignment.Custom : SpriteAlignment.Center,
+                        pivot = customPivot ?? new Vector2(0.5f, 0.5f)
                     });
                     nameIdPairs.Add(new SpriteNameFileIdPair(spriteName, spriteId));
                     index++;
@@ -657,14 +825,11 @@ namespace WuxiaRoguelite.EditorTools
             importer.spritePixelsPerUnit = pixelsPerUnit;
             importer.npotScale = TextureImporterNPOTScale.None;
             importer.filterMode = FilterMode.Point;
+            importer.wrapMode = TextureWrapMode.Clamp;
             importer.textureCompression = TextureImporterCompression.Uncompressed;
             importer.mipmapEnabled = false;
             importer.alphaIsTransparency = true;
 
-            SpriteDataProviderFactories factory = new SpriteDataProviderFactories();
-            factory.Init();
-            ISpriteEditorDataProvider dataProvider = factory.GetSpriteEditorDataProviderFromObject(importer);
-            dataProvider.InitSpriteEditorDataProvider();
             dataProvider.SetSpriteRects(spriteRects.ToArray());
             ISpriteNameFileIdDataProvider nameProvider = dataProvider.GetDataProvider<ISpriteNameFileIdDataProvider>();
             nameProvider.SetNameFileIdPairs(nameIdPairs);
@@ -935,7 +1100,10 @@ namespace WuxiaRoguelite.EditorTools
 
         private static void ApplyMainMapExpansion(
             Sprite[] enemyIdle, Sprite[] enemyRun, Sprite[] eliteIdle, Sprite[] eliteRun,
-            Sprite[] ratRun, Sprite[] riderRun, Sprite[] ballistaFly, Sprite goldSprite, Sprite herbSprite)
+            Sprite[] blueIdle, Sprite[] blueRun, Sprite[] purpleIdle, Sprite[] purpleRun,
+            Sprite[] ratRun, Sprite[] riderRun, Sprite[] ballistaFly,
+            Sprite[] inkWolfIdle, Sprite[] stoneApeIdle, Sprite[] bambooPuppetIdle,
+            Sprite goldSprite, Sprite herbSprite)
         {
             GameObject mapRoot = GameObject.Find("3D Prototype Map");
             if (mapRoot == null)
@@ -1005,18 +1173,74 @@ namespace WuxiaRoguelite.EditorTools
             PlaceModel("detail_rocks_small", "West Trail Stones", scenery.transform, new Vector3(-12f, 0f, -14.8f), 1.25f, 30f);
             PlaceModel("detail_rocks_small", "East Hamlet Stones", scenery.transform, new Vector3(18f, 0f, 15f), 1.3f, 110f);
 
-            GameObject eastBandit = CreateEncounter("东郊流寇", enemyIdle, enemyRun, new Vector3(16f, 0f, 8f),
-                EncounterType.NormalEnemy, Stats("东郊流寇", 52, 8, 2, 1.05f), 16, 5);
+            GameObject detailClusters = new GameObject("Regional Detail Clusters");
+            detailClusters.transform.SetParent(scenery.transform);
+
+            PlaceModel("wall_straight", "East Hamlet Wall North", detailClusters.transform, new Vector3(21f, 0f, 13.8f), 3.6f, 90f);
+            PlaceModel("wall_straight", "East Hamlet Wall South", detailClusters.transform, new Vector3(21f, 0f, 4.2f), 3.6f, 90f);
+            PlaceModel("detail_treeA", "East Orchard Tree A", detailClusters.transform, new Vector3(11.2f, 0f, 5.2f), 2.05f, 35f);
+            PlaceModel("detail_treeB", "East Orchard Tree B", detailClusters.transform, new Vector3(20.2f, 0f, 2.8f), 2.2f, 120f);
+            PlaceModel("detail_treeC", "East Orchard Tree C", detailClusters.transform, new Vector3(11.5f, 0f, 10.2f), 1.9f, -20f);
+            PlaceModel("detail_rocks_small", "East Road Marker Stones", detailClusters.transform, new Vector3(12.2f, 0f, 2.8f), 1.15f, 70f);
+
+            PlaceModel("wall_straight", "North Checkpoint Wall West", detailClusters.transform, new Vector3(-19.5f, 0f, 17.8f), 3.5f, 0f);
+            PlaceModel("detail_treeA", "North Ridge Pine D", detailClusters.transform, new Vector3(-19.5f, 0f, 11.2f), 2.25f, 45f);
+            PlaceModel("detail_treeC", "North Ridge Pine E", detailClusters.transform, new Vector3(7f, 0f, 17.3f), 2.05f, 135f);
+            PlaceModel("detail_rocks", "North Pass Boulder A", detailClusters.transform, new Vector3(-11.8f, 0f, 11.5f), 1.65f, 20f);
+            PlaceModel("detail_rocks_small", "North Pass Boulder B", detailClusters.transform, new Vector3(2.8f, 0f, 17.5f), 1.2f, 105f);
+
+            PlaceModel("detail_treeA", "West Forest Tree C", detailClusters.transform, new Vector3(-20.3f, 0f, -6.2f), 2.3f, 20f);
+            PlaceModel("detail_treeB", "West Forest Tree D", detailClusters.transform, new Vector3(-12.4f, 0f, -5.4f), 2.15f, 80f);
+            PlaceModel("detail_treeC", "West Forest Tree E", detailClusters.transform, new Vector3(-20.5f, 0f, -15.8f), 2.2f, 160f);
+            PlaceModel("detail_treeA", "West Forest Tree F", detailClusters.transform, new Vector3(-10.5f, 0f, -11.6f), 2.05f, -25f);
+            PlaceModel("detail_rocks", "West Ruin Rocks", detailClusters.transform, new Vector3(-12.2f, 0f, -17.1f), 1.7f, 65f);
+            PlaceModel("detail_rocks_small", "West Creek Stones", detailClusters.transform, new Vector3(-19.6f, 0f, -9.8f), 1.15f, 10f);
+
+            PlaceModel("wall_straight", "South Mine Stockade", detailClusters.transform, new Vector3(18.8f, 0f, -10.1f), 3.7f, 90f);
+            PlaceModel("detail_treeB", "South Slope Tree A", detailClusters.transform, new Vector3(-5.2f, 0f, -17.2f), 2.1f, 40f);
+            PlaceModel("detail_treeC", "South Slope Tree B", detailClusters.transform, new Vector3(8.8f, 0f, -10.8f), 2f, 125f);
+            PlaceModel("detail_rocks", "South Quarry Rocks A", detailClusters.transform, new Vector3(3.5f, 0f, -17.2f), 1.8f, 20f);
+            PlaceModel("detail_rocks", "South Quarry Rocks B", detailClusters.transform, new Vector3(20.3f, 0f, -17.4f), 1.65f, 95f);
+            PlaceModel("detail_rocks_small", "South Trail Stones", detailClusters.transform, new Vector3(-7f, 0f, -12f), 1.2f, 145f);
+
+            GameObject eastBandit = CreateEncounter("东郊流寇", bambooPuppetIdle, bambooPuppetIdle, new Vector3(16f, 0f, 8f),
+                EncounterType.NormalEnemy, Stats("东郊流寇", 52, 8, 2, 1.05f, "bamboo_puppet"), 16, 5, 1.15f);
             GameObject northBallista = CreateEncounter("北岭机关车", ballistaFly, ballistaFly, new Vector3(-1f, 0f, 15f),
                 EncounterType.NormalEnemy, Stats("北岭机关车", 62, 9, 3, 0.95f, "ballista"), 18, 6);
-            GameObject westRat = CreateEncounter("西林灰鼠", ratRun, ratRun, new Vector3(-16f, 0f, -6f),
-                EncounterType.NormalEnemy, Stats("西林灰鼠", 38, 6, 1, 1.4f, "rat"), 12, 3);
+            GameObject westWolf = CreateEncounter("墨鬃妖狼", inkWolfIdle, inkWolfIdle, new Vector3(-16f, 0f, -6f),
+                EncounterType.NormalEnemy,
+                Stats("墨鬃妖狼", 52, 9, 1, 1.4f, "ink_wolf", critChance: 0.08f, dodgeChance: 0.10f),
+                16, 5, 1.35f);
             GameObject southRider = CreateEncounter("南关赤骑", riderRun, riderRun, new Vector3(12.5f, 0f, -14.5f),
                 EncounterType.NormalEnemy, Stats("南关赤骑", 72, 10, 3, 0.9f, "rider"), 21, 7);
-            GameObject northElite = CreateEncounter("边城黑衣客", eliteIdle, eliteRun, new Vector3(-15.5f, 0f, 14.8f),
-                EncounterType.EliteEnemy, Stats("边城黑衣客", 155, 15, 5, 0.85f), 40, 14);
+            GameObject northElite = CreateEncounter("边城黑衣客", stoneApeIdle, stoneApeIdle, new Vector3(-15.5f, 0f, 14.8f),
+                EncounterType.EliteEnemy, Stats("边城黑衣客", 155, 15, 5, 0.85f, "stone_ape"), 40, 14, 1.25f);
+            GameObject eastQuickblade = CreateEncounter("青衣快剑", inkWolfIdle, inkWolfIdle, new Vector3(11.7f, 0f, 7.2f),
+                EncounterType.NormalEnemy,
+                Stats("青衣快剑", 44, 8, 1, 1.45f, "ink_wolf", critChance: 0.08f, dodgeChance: 0.12f),
+                17, 5, 1.35f);
+            GameObject westPoisoner = CreateEncounter("紫衣毒客", bambooPuppetIdle, bambooPuppetIdle, new Vector3(-19f, 0f, -11.4f),
+                EncounterType.NormalEnemy,
+                Stats("紫衣毒客", 66, 9, 2, 1.05f, "bamboo_puppet", dodgeChance: 0.05f, lifeSteal: 0.16f),
+                20, 7, 1.15f);
+            GameObject northGuard = CreateEncounter("岩甲山魈", stoneApeIdle, stoneApeIdle, new Vector3(5.8f, 0f, 15.8f),
+                EncounterType.EliteEnemy,
+                Stats("岩甲山魈", 150, 15, 6, 0.72f, "stone_ape", critChance: 0.04f),
+                38, 12, 1.25f);
+            GameObject southAssassin = CreateEncounter("南矿毒刃", inkWolfIdle, inkWolfIdle, new Vector3(3.2f, 0f, -14.7f),
+                EncounterType.NormalEnemy,
+                Stats("南矿毒刃", 76, 11, 2, 1.12f, "ink_wolf", critChance: 0.10f, dodgeChance: 0.08f, lifeSteal: 0.08f),
+                24, 8, 1.35f);
+            GameObject westSiegeBow = CreateEncounter("西关重弩", ballistaFly, ballistaFly, new Vector3(-9.5f, 0f, -13.6f),
+                EncounterType.NormalEnemy,
+                Stats("西关重弩", 88, 14, 4, 0.62f, "ballista", critChance: 0.07f),
+                25, 9, 1.2f);
+            GameObject eastScout = CreateEncounter("青竹机关傀", bambooPuppetIdle, bambooPuppetIdle, new Vector3(19f, 0f, 7.3f),
+                EncounterType.NormalEnemy,
+                Stats("青竹机关傀", 82, 12, 4, 0.92f, "bamboo_puppet", dodgeChance: 0.04f),
+                24, 8, 1.15f);
             GameObject southCave = CreateCaveEncounter("岩壁密窟", new Vector3(19.2f, 0f, -14.8f),
-                Stats("岩窟守卫", 175, 16, 5, 0.82f), 42, 14, CaveContentType.Enemy);
+                Stats("岩窟守卫", 175, 16, 5, 0.82f, "stone_ape"), 42, 14, CaveContentType.Enemy);
             GameObject northTreasure = CreateEncounter("北岭宝箱", new[] { goldSprite }, null, new Vector3(-7f, 0f, 16.2f),
                 EncounterType.Treasure, Stats("宝箱", 1, 0, 0, 1f), 18, 10, 0.9f);
             GameObject eastHerb = CreateEncounter("东郊药草", new[] { herbSprite }, null, new Vector3(19.5f, 0f, 1.8f),
@@ -1024,7 +1248,9 @@ namespace WuxiaRoguelite.EditorTools
 
             GameObject[] regionalEncounters =
             {
-                eastBandit, northBallista, westRat, southRider, northElite, southCave, northTreasure, eastHerb
+                eastBandit, northBallista, westWolf, southRider, northElite,
+                eastQuickblade, westPoisoner, northGuard, southAssassin, westSiegeBow, eastScout,
+                southCave, northTreasure, eastHerb
             };
             foreach (GameObject regionalEncounter in regionalEncounters)
             {
@@ -1138,10 +1364,13 @@ namespace WuxiaRoguelite.EditorTools
 
             GameObject visual = new GameObject("SpriteVisual");
             visual.transform.SetParent(actor.transform);
-            visual.transform.localPosition = new Vector3(0f, 0.8f, 0f);
+            Sprite firstFrame = idleFrames != null && idleFrames.Length > 0 ? idleFrames[0] : null;
+            bool usesFootPivot = firstFrame != null &&
+                firstFrame.pivot.y <= firstFrame.rect.height * 0.2f;
+            visual.transform.localPosition = new Vector3(0f, usesFootPivot ? 0f : 0.8f, 0f);
             visual.transform.localScale = new Vector3(visualScale, visualScale, visualScale);
             SpriteRenderer renderer = visual.AddComponent<SpriteRenderer>();
-            renderer.sprite = idleFrames != null && idleFrames.Length > 0 ? idleFrames[0] : null;
+            renderer.sprite = firstFrame;
             renderer.color = Color.white;
             renderer.sortingOrder = 10;
             visual.AddComponent<BillboardSprite>();
@@ -1166,6 +1395,10 @@ namespace WuxiaRoguelite.EditorTools
             trigger.cultivationReward = cultivation;
             trigger.copperReward = copper;
             trigger.caveContent = caveContent;
+            if (type == EncounterType.NormalEnemy || type == EncounterType.EliteEnemy)
+            {
+                token.AddComponent<EnemyLevelLabel>();
+            }
             return token;
         }
 
@@ -1190,7 +1423,8 @@ namespace WuxiaRoguelite.EditorTools
         }
 
         private static CombatantStats Stats(string displayName, float hp, float attack, float defense,
-            float attackSpeed, string visualId = "")
+            float attackSpeed, string visualId = "", float critChance = 0.03f,
+            float dodgeChance = 0f, float lifeSteal = 0f)
         {
             return new CombatantStats
             {
@@ -1201,10 +1435,10 @@ namespace WuxiaRoguelite.EditorTools
                 attack = attack,
                 defense = defense,
                 attackSpeed = attackSpeed,
-                critChance = 0.03f,
+                critChance = critChance,
                 critMultiplier = 1.5f,
-                lifeSteal = 0f,
-                dodgeChance = 0f,
+                lifeSteal = lifeSteal,
+                dodgeChance = dodgeChance,
                 moveSpeed = 0f
             };
         }

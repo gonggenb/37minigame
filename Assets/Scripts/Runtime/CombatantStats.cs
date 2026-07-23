@@ -8,6 +8,7 @@ namespace WuxiaRoguelite.Runtime
     {
         public string displayName = "少侠";
         public string visualId = string.Empty;
+        [Min(0)] public int level;
         public float maxHealth = 100f;
         public float currentHealth = 100f;
         public float attack = 12f;
@@ -21,6 +22,20 @@ namespace WuxiaRoguelite.Runtime
 
         public bool IsDead => currentHealth <= 0f;
         public float HealthRatio => maxHealth <= 0f ? 0f : Mathf.Clamp01(currentHealth / maxHealth);
+        public int DisplayLevel
+        {
+            get
+            {
+                if (level > 0)
+                {
+                    return level;
+                }
+
+                float durability = maxHealth / 35f + defense / 3f;
+                float damagePerSecond = attack * Mathf.Max(0.1f, attackSpeed) / 6f;
+                return Mathf.Clamp(Mathf.RoundToInt((durability + damagePerSecond) * 0.85f), 1, 99);
+            }
+        }
 
         public CombatantStats Clone()
         {
@@ -28,6 +43,7 @@ namespace WuxiaRoguelite.Runtime
             {
                 displayName = displayName,
                 visualId = visualId,
+                level = level,
                 maxHealth = maxHealth,
                 currentHealth = currentHealth,
                 attack = attack,
