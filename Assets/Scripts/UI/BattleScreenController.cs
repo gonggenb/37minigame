@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using WuxiaRoguelite.Battle;
 using WuxiaRoguelite.GameFlow;
@@ -10,6 +11,16 @@ namespace WuxiaRoguelite.UI
     [DisallowMultipleComponent]
     public class BattleScreenController : MonoBehaviour
     {
+        [Serializable]
+        public class EnemyVisualProfile
+        {
+            public string id;
+            public Sprite[] idleFrames;
+            public Sprite[] attackFrames;
+            [Min(0.5f)] public float scale = ActorVisualScale.Medium;
+            public bool flipHorizontally;
+        }
+
         public GameFlowController gameFlow;
         public PlayerStats playerStats;
         public BattleManager battleManager;
@@ -22,6 +33,7 @@ namespace WuxiaRoguelite.UI
         public Sprite[] eliteAttackFrames;
         public Sprite[] caveIdleFrames;
         public Sprite[] caveAttackFrames;
+        public EnemyVisualProfile[] enemyVisualProfiles;
         [Min(0.5f)] public float playerSpriteScale = ActorVisualScale.Medium;
         [Min(0.5f)] public float bossSpriteScale = ActorVisualScale.Large;
 
@@ -116,12 +128,13 @@ namespace WuxiaRoguelite.UI
 
             bool playerAttacking = actionProgress < 1f;
             bool enemyAttacking = actionProgress < 1f;
-            Sprite[] currentEnemyIdleFrames = SelectEnemyFrames(false);
-            Sprite[] currentEnemyAttackFrames = SelectEnemyFrames(true);
+            EnemyVisualProfile enemyVisual = SelectEnemyVisualProfile();
+            Sprite[] currentEnemyIdleFrames = SelectEnemyFrames(enemyVisual, false);
+            Sprite[] currentEnemyAttackFrames = SelectEnemyFrames(enemyVisual, true);
             float playerActorSize = actorSize * playerSpriteScale;
             float enemySpriteScale = gameFlow.CurrentPhase == GamePhase.BossBattle
                 ? bossSpriteScale
-                : ActorVisualScale.Medium;
+                : enemyVisual != null ? enemyVisual.scale : ActorVisualScale.Medium;
             float enemyActorSize = actorSize * enemySpriteScale;
             Rect playerRect = new Rect(playerX + (actorSize - playerActorSize) * 0.5f,
                 baseY - playerActorSize, playerActorSize, playerActorSize);
@@ -129,7 +142,7 @@ namespace WuxiaRoguelite.UI
                 baseY - enemyActorSize, enemyActorSize, enemyActorSize);
             DrawFighter(playerRect, PlayerColor, "侠", false,
                 playerAttacking ? playerAttackFrames : playerIdleFrames, playerAttacking, actionProgress);
-            DrawFighter(enemyRect, EnemyColor, "敌", true,
+            DrawFighter(enemyRect, EnemyColor, "敌", enemyVisual != null ? enemyVisual.flipHorizontally : true,
                 enemyAttacking ? currentEnemyAttackFrames : currentEnemyIdleFrames, enemyAttacking, actionProgress);
             DrawHealthPanel(playerHealthRect, playerStats.runtimeStats, playerDamageAmount, playerDamageStartedAt);
             DrawHealthPanel(enemyHealthRect, battleManager.currentEnemy, enemyDamageAmount, enemyDamageStartedAt);
@@ -278,8 +291,32 @@ namespace WuxiaRoguelite.UI
             return frames[index];
         }
 
-        private Sprite[] SelectEnemyFrames(bool attacking)
+        private EnemyVisualProfile SelectEnemyVisualProfile()
         {
+            string visualId = battleManager.currentEnemy.visualId;
+            if (string.IsNullOrEmpty(visualId) || enemyVisualProfiles == null)
+            {
+                return null;
+            }
+
+            foreach (EnemyVisualProfile profile in enemyVisualProfiles)
+            {
+                if (profile != null && profile.id == visualId)
+                {
+                    return profile;
+                }
+            }
+
+            return null;
+        }
+
+        private Sprite[] SelectEnemyFrames(EnemyVisualProfile profile, bool attacking)
+        {
+            if (profile != null)
+            {
+                return attacking ? profile.attackFrames : profile.idleFrames;
+            }
+
             string enemyName = battleManager.currentEnemy.displayName;
             if (enemyName.Contains("守洞"))
             {

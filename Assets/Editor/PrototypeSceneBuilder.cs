@@ -26,6 +26,7 @@ namespace WuxiaRoguelite.EditorTools
         private const string SpritePath = "Assets/Art/Generated/prototype_square.png";
         private const string TinyRoot = "Assets/Art/ThirdParty/TinySwords";
         private const string CrimsonRoot = "Assets/Art/ThirdParty/CrimsonWarrior/Player";
+        private const string EnemyVarietyRoot = "Assets/Art/ThirdParty/CraftPixEnemyVariety/Enemies";
         private const string KayKitRoot = "Assets/Art/ThirdParty/KayKitMedieval/Models";
         private const string PlayerIdlePath = CrimsonRoot + "/CrimsonWarrior_Idle_Right.png";
         private const string PlayerRunPath = CrimsonRoot + "/CrimsonWarrior_Run_Right.png";
@@ -40,6 +41,12 @@ namespace WuxiaRoguelite.EditorTools
         private const string CaveIdlePath = TinyRoot + "/Units/PurpleWarrior/Warrior_Idle.png";
         private const string CaveRunPath = TinyRoot + "/Units/PurpleWarrior/Warrior_Run.png";
         private const string CaveAttackPath = TinyRoot + "/Units/PurpleWarrior/Warrior_Attack1.png";
+        private const string RatRunPath = EnemyVarietyRoot + "/Rat_Run.png";
+        private const string RatAttackPath = EnemyVarietyRoot + "/Rat_Attack.png";
+        private const string RiderRunPath = EnemyVarietyRoot + "/Rider_Run.png";
+        private const string RiderAttackPath = EnemyVarietyRoot + "/Rider_Attack.png";
+        private const string BallistaFlyPath = EnemyVarietyRoot + "/Ballista_Fly.png";
+        private const string BallistaAttackPath = EnemyVarietyRoot + "/Ballista_Attack.png";
         private const string GoldPath = TinyRoot + "/World/Gold_Resource.png";
         private const string HerbPath = TinyRoot + "/World/Bush.png";
         private const string StatusIconPath = TinyRoot + "/UI/Avatars_01.png";
@@ -65,6 +72,12 @@ namespace WuxiaRoguelite.EditorTools
             Sprite[] caveIdle = LoadFrames(CaveIdlePath, fallbackSprite);
             Sprite[] caveRun = LoadFrames(CaveRunPath, fallbackSprite);
             Sprite[] caveAttack = LoadFrames(CaveAttackPath, fallbackSprite);
+            Sprite[] ratRun = LoadFrames(RatRunPath, fallbackSprite);
+            Sprite[] ratAttack = LoadFrames(RatAttackPath, fallbackSprite);
+            Sprite[] riderRun = LoadFrames(RiderRunPath, fallbackSprite);
+            Sprite[] riderAttack = LoadFrames(RiderAttackPath, fallbackSprite);
+            Sprite[] ballistaFly = LoadFrames(BallistaFlyPath, fallbackSprite);
+            Sprite[] ballistaAttack = LoadFrames(BallistaAttackPath, fallbackSprite);
             Sprite goldSprite = LoadSingleSprite(GoldPath, fallbackSprite);
             Sprite herbSprite = LoadSingleSprite(HerbPath, fallbackSprite);
 
@@ -142,6 +155,8 @@ namespace WuxiaRoguelite.EditorTools
             battleScreen.eliteAttackFrames = eliteAttack;
             battleScreen.caveIdleFrames = caveIdle;
             battleScreen.caveAttackFrames = caveAttack;
+            battleScreen.enemyVisualProfiles = CreateEnemyVisualProfiles(
+                ratRun, ratAttack, riderRun, riderAttack, ballistaFly, ballistaAttack);
             caveRoom.gameFlow = gameFlow;
             caveRoom.playerStats = playerStats;
             caveRoom.battleManager = battleManager;
@@ -152,12 +167,12 @@ namespace WuxiaRoguelite.EditorTools
             caveRoom.treasureTexture = AssetDatabase.LoadAssetAtPath<Texture2D>(GoldPath);
 
             CreateEncounter("山贼喽啰", enemyIdle, enemyRun, new Vector3(-5f, 0f, 3f), EncounterType.NormalEnemy, Stats("山贼喽啰", 35, 5, 1, 0.9f), 10, 2);
-            CreateEncounter("野狼", enemyIdle, enemyRun, new Vector3(-2.2f, 0f, -4.6f), EncounterType.NormalEnemy, Stats("野狼", 28, 4, 0, 1.35f), 9, 1);
+            CreateEncounter("灰岩巨鼠", ratRun, ratRun, new Vector3(-2.2f, 0f, -4.6f), EncounterType.NormalEnemy, Stats("灰岩巨鼠", 28, 4, 0, 1.35f, "rat"), 9, 1);
             CreateEncounter("流寇", enemyIdle, enemyRun, new Vector3(2.4f, 0f, 4f), EncounterType.NormalEnemy, Stats("流寇", 45, 6, 1, 1f), 12, 3);
             CreateEncounter("黑风刀客", eliteIdle, eliteRun, new Vector3(5.4f, 0f, -2f), EncounterType.EliteEnemy, Stats("黑风刀客", 120, 12, 3, 0.85f), 30, 10);
-            CreateEncounter("北岭流寇", enemyIdle, enemyRun, new Vector3(-9f, 0f, 5.5f), EncounterType.NormalEnemy, Stats("北岭流寇", 50, 7, 2, 1f), 14, 4);
-            CreateEncounter("东道悍匪", enemyIdle, enemyRun, new Vector3(10f, 0f, 2.2f), EncounterType.NormalEnemy, Stats("东道悍匪", 58, 8, 2, 0.95f), 16, 5);
-            CreateEncounter("南坡恶狼", enemyIdle, enemyRun, new Vector3(6.5f, 0f, -9f), EncounterType.NormalEnemy, Stats("南坡恶狼", 42, 7, 1, 1.3f), 13, 3);
+            CreateEncounter("机关弩车", ballistaFly, ballistaFly, new Vector3(-9f, 0f, 5.5f), EncounterType.NormalEnemy, Stats("机关弩车", 50, 7, 2, 1f, "ballista"), 14, 4);
+            CreateEncounter("赤骑枪客", riderRun, riderRun, new Vector3(10f, 0f, 2.2f), EncounterType.NormalEnemy, Stats("赤骑枪客", 58, 8, 2, 0.95f, "rider"), 16, 5);
+            CreateEncounter("南坡恶徒", enemyIdle, enemyRun, new Vector3(6.5f, 0f, -9f), EncounterType.NormalEnemy, Stats("南坡恶徒", 42, 7, 1, 1.3f), 13, 3);
             CreateEncounter("玄衣刀客", eliteIdle, eliteRun, new Vector3(-8f, 0f, 9f), EncounterType.EliteEnemy, Stats("玄衣刀客", 135, 13, 4, 0.9f), 34, 12);
 
             CreateCaveEncounter("断崖石窟", new Vector3(-11f, 0f, -6f),
@@ -236,6 +251,111 @@ namespace WuxiaRoguelite.EditorTools
             EditorSceneManager.SaveOpenScenes();
             AssetDatabase.SaveAssets();
             Debug.Log("Crimson Warrior player art refreshed in the active scene.");
+        }
+
+        [MenuItem("37 MiniGame/Refresh Enemy Variety")]
+        public static void RefreshEnemyVariety()
+        {
+            ConfigureEnemyVarietyAssets();
+            Sprite fallbackSprite = GetOrCreatePrototypeSprite();
+            Sprite[] ratRun = LoadFrames(RatRunPath, fallbackSprite);
+            Sprite[] ratAttack = LoadFrames(RatAttackPath, fallbackSprite);
+            Sprite[] riderRun = LoadFrames(RiderRunPath, fallbackSprite);
+            Sprite[] riderAttack = LoadFrames(RiderAttackPath, fallbackSprite);
+            Sprite[] ballistaFly = LoadFrames(BallistaFlyPath, fallbackSprite);
+            Sprite[] ballistaAttack = LoadFrames(BallistaAttackPath, fallbackSprite);
+
+            ApplyEncounterVisual("野狼", "灰岩巨鼠", "rat", ratRun, 1.15f);
+            ApplyEncounterVisual("北岭流寇", "机关弩车", "ballista", ballistaFly, 1.15f);
+            ApplyEncounterVisual("东道悍匪", "赤骑枪客", "rider", riderRun, 1.15f);
+            RenameEncounter("南坡恶狼", "南坡恶徒");
+
+            BattleScreenController battleScreen = UnityEngine.Object.FindAnyObjectByType<BattleScreenController>();
+            if (battleScreen != null)
+            {
+                battleScreen.enemyVisualProfiles = CreateEnemyVisualProfiles(
+                    ratRun, ratAttack, riderRun, riderAttack, ballistaFly, ballistaAttack);
+                EditorUtility.SetDirty(battleScreen);
+            }
+
+            EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
+            EditorSceneManager.SaveOpenScenes();
+            AssetDatabase.SaveAssets();
+            Debug.Log("Enemy variety art refreshed in the active scene.");
+        }
+
+        private static void ApplyEncounterVisual(string currentName, string displayName, string visualId,
+            Sprite[] frames, float visualScale)
+        {
+            GameObject encounterObject = GameObject.Find(currentName) ?? GameObject.Find(displayName);
+            if (encounterObject == null)
+            {
+                Debug.LogWarning($"Cannot refresh enemy art: {currentName} was not found.");
+                return;
+            }
+
+            encounterObject.name = displayName;
+            EncounterTrigger trigger = encounterObject.GetComponent<EncounterTrigger>();
+            SpriteFrameAnimator animator = encounterObject.GetComponentInChildren<SpriteFrameAnimator>();
+            SpriteRenderer renderer = encounterObject.GetComponentInChildren<SpriteRenderer>();
+            if (trigger == null || animator == null || renderer == null)
+            {
+                Debug.LogWarning($"Cannot refresh enemy art: {displayName} is missing required components.");
+                return;
+            }
+
+            trigger.enemyStats.displayName = displayName;
+            trigger.enemyStats.visualId = visualId;
+            animator.idleFrames = frames;
+            animator.moveFrames = frames;
+            animator.transform.localScale = Vector3.one * visualScale;
+            renderer.sprite = frames[0];
+            EditorUtility.SetDirty(trigger);
+            EditorUtility.SetDirty(animator);
+            EditorUtility.SetDirty(renderer);
+            EditorUtility.SetDirty(animator.transform);
+        }
+
+        private static void RenameEncounter(string currentName, string displayName)
+        {
+            GameObject encounterObject = GameObject.Find(currentName) ?? GameObject.Find(displayName);
+            if (encounterObject == null)
+            {
+                return;
+            }
+
+            encounterObject.name = displayName;
+            EncounterTrigger trigger = encounterObject.GetComponent<EncounterTrigger>();
+            if (trigger != null)
+            {
+                trigger.enemyStats.displayName = displayName;
+                EditorUtility.SetDirty(trigger);
+            }
+        }
+
+        private static BattleScreenController.EnemyVisualProfile[] CreateEnemyVisualProfiles(
+            Sprite[] ratRun, Sprite[] ratAttack, Sprite[] riderRun, Sprite[] riderAttack,
+            Sprite[] ballistaFly, Sprite[] ballistaAttack)
+        {
+            return new[]
+            {
+                CreateEnemyVisualProfile("rat", ratRun, ratAttack, ActorVisualScale.Small),
+                CreateEnemyVisualProfile("rider", riderRun, riderAttack, ActorVisualScale.Medium),
+                CreateEnemyVisualProfile("ballista", ballistaFly, ballistaAttack, ActorVisualScale.Medium)
+            };
+        }
+
+        private static BattleScreenController.EnemyVisualProfile CreateEnemyVisualProfile(
+            string id, Sprite[] idleFrames, Sprite[] attackFrames, float scale)
+        {
+            return new BattleScreenController.EnemyVisualProfile
+            {
+                id = id,
+                idleFrames = idleFrames,
+                attackFrames = attackFrames,
+                scale = scale,
+                flipHorizontally = false
+            };
         }
 
         private static void ValidateEquipmentModel()
@@ -319,6 +439,7 @@ namespace WuxiaRoguelite.EditorTools
         private static void PrepareArtAssets()
         {
             ConfigurePlayerArtAssets();
+            ConfigureEnemyVarietyAssets();
 
             string[] tinySwordsSheets =
             {
@@ -345,6 +466,21 @@ namespace WuxiaRoguelite.EditorTools
             ConfigureSpriteSheet(PlayerIdlePath, 80, 80, 32f);
             ConfigureSpriteSheet(PlayerRunPath, 80, 80, 32f);
             ConfigureSpriteSheet(PlayerAttackPath, 80, 80, 32f);
+        }
+
+        private static void ConfigureEnemyVarietyAssets()
+        {
+            string[] sheets =
+            {
+                RatRunPath, RatAttackPath,
+                RiderRunPath, RiderAttackPath,
+                BallistaFlyPath, BallistaAttackPath
+            };
+
+            foreach (string path in sheets)
+            {
+                ConfigureSpriteSheet(path, 96, 96, 32f);
+            }
         }
 
         private static void ConfigureSpriteSheet(string path, int frameWidth, int frameHeight, float pixelsPerUnit)
@@ -667,11 +803,13 @@ namespace WuxiaRoguelite.EditorTools
             trigger.caveContent = caveContent;
         }
 
-        private static CombatantStats Stats(string displayName, float hp, float attack, float defense, float attackSpeed)
+        private static CombatantStats Stats(string displayName, float hp, float attack, float defense,
+            float attackSpeed, string visualId = "")
         {
             return new CombatantStats
             {
                 displayName = displayName,
+                visualId = visualId,
                 maxHealth = hp,
                 currentHealth = hp,
                 attack = attack,

@@ -27,3 +27,11 @@ The paid Tiny Swords Enemy Pack was not purchased or included.
 - Downloaded: 2026-07-22
 - License shown on the source page: free for commercial use; credit is appreciated but not required.
 - Project use: player idle, run, and sword attack animation sheets using the right-facing side view.
+
+## CraftPix Free Enemy Pixel Pack
+
+- Source: https://free-game-assets.itch.io/free-enemy-pixel-pack-for-top-down-defense
+- Creator: Free Game Assets / CraftPix
+- Downloaded: 2026-07-23
+- License: CraftPix Freebie License permits commercial projects and modification; attribution is not required. Standalone source-art redistribution is prohibited.
+- Project use: grey rock rat, mounted spear fighter, and mechanical ballista run/fly and attack animations.

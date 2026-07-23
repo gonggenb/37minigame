@@ -358,7 +358,7 @@ GameObject:
   - component: {fileID: 166236686}
   - component: {fileID: 166236685}
   m_Layer: 0
-  m_Name: "\u5357\u5761\u6076\u72FC"
+  m_Name: "\u5357\u5761\u6076\u5F92"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -378,7 +378,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WuxiaRoguelite.Map.EncounterTrigger
   encounterType: 0
   enemyStats:
-    displayName: "\u5357\u5761\u6076\u72FC"
+    displayName: "\u5357\u5761\u6076\u5F92"
+    visualId: 
     maxHealth: 42
     currentHealth: 42
     attack: 7
@@ -737,6 +738,7 @@ MonoBehaviour:
   encounterType: 3
   enemyStats:
     displayName: "\u5B9D\u7BB1"
+    visualId: 
     maxHealth: 1
     currentHealth: 1
     attack: 0
@@ -839,6 +841,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WuxiaRoguelite.Player.PlayerStats
   baseStats:
     displayName: "\u65E0\u540D\u5C11\u4FA0"
+    visualId: 
     maxHealth: 100
     currentHealth: 100
     attack: 12
@@ -851,6 +854,7 @@ MonoBehaviour:
     moveSpeed: 5
   runtimeStats:
     displayName: "\u5C11\u4FA0"
+    visualId: 
     maxHealth: 100
     currentHealth: 100
     attack: 12
@@ -1459,6 +1463,7 @@ MonoBehaviour:
   encounterType: 3
   enemyStats:
     displayName: "\u5B9D\u7BB1"
+    visualId: 
     maxHealth: 1
     currentHealth: 1
     attack: 0
@@ -1523,7 +1528,7 @@ GameObject:
   - component: {fileID: 502752694}
   - component: {fileID: 502752693}
   m_Layer: 0
-  m_Name: "\u4E1C\u9053\u608D\u532A"
+  m_Name: "\u8D64\u9A91\u67AA\u5BA2"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1543,7 +1548,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WuxiaRoguelite.Map.EncounterTrigger
   encounterType: 0
   enemyStats:
-    displayName: "\u4E1C\u9053\u608D\u532A"
+    displayName: "\u8D64\u9A91\u67AA\u5BA2"
+    visualId: rider
     maxHealth: 58
     currentHealth: 58
     attack: 8
@@ -1855,21 +1861,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WuxiaRoguelite.Visual.SpriteFrameAnimator
   idleFrames:
-  - {fileID: -7915210059842803663, guid: 9e1a8f141acf7402c91427aaa0a1e4cf, type: 3}
-  - {fileID: -985773156536696307, guid: 9e1a8f141acf7402c91427aaa0a1e4cf, type: 3}
-  - {fileID: -402004918610355466, guid: 9e1a8f141acf7402c91427aaa0a1e4cf, type: 3}
-  - {fileID: 5754168252756749266, guid: 9e1a8f141acf7402c91427aaa0a1e4cf, type: 3}
-  - {fileID: 6875498849900570493, guid: 9e1a8f141acf7402c91427aaa0a1e4cf, type: 3}
-  - {fileID: -487347014929367919, guid: 9e1a8f141acf7402c91427aaa0a1e4cf, type: 3}
-  - {fileID: 6241714052192994796, guid: 9e1a8f141acf7402c91427aaa0a1e4cf, type: 3}
-  - {fileID: 4354444202727843353, guid: 9e1a8f141acf7402c91427aaa0a1e4cf, type: 3}
+  - {fileID: -49056450, guid: d8801311fe62b413e9573b65ec6128e2, type: 3}
+  - {fileID: -1100630591, guid: d8801311fe62b413e9573b65ec6128e2, type: 3}
+  - {fileID: -654859660, guid: d8801311fe62b413e9573b65ec6128e2, type: 3}
+  - {fileID: 1026657153, guid: d8801311fe62b413e9573b65ec6128e2, type: 3}
+  - {fileID: -986948086, guid: d8801311fe62b413e9573b65ec6128e2, type: 3}
+  - {fileID: -1815401175, guid: d8801311fe62b413e9573b65ec6128e2, type: 3}
   moveFrames:
-  - {fileID: -2553684454752968172, guid: 98b8f39b843a646a29d3c264a2bd7e2e, type: 3}
-  - {fileID: 5766533117683295243, guid: 98b8f39b843a646a29d3c264a2bd7e2e, type: 3}
-  - {fileID: -7839978344077804992, guid: 98b8f39b843a646a29d3c264a2bd7e2e, type: 3}
-  - {fileID: -8602713986393169397, guid: 98b8f39b843a646a29d3c264a2bd7e2e, type: 3}
-  - {fileID: -638742374853751968, guid: 98b8f39b843a646a29d3c264a2bd7e2e, type: 3}
-  - {fileID: 1095205337, guid: 98b8f39b843a646a29d3c264a2bd7e2e, type: 3}
+  - {fileID: -49056450, guid: d8801311fe62b413e9573b65ec6128e2, type: 3}
+  - {fileID: -1100630591, guid: d8801311fe62b413e9573b65ec6128e2, type: 3}
+  - {fileID: -654859660, guid: d8801311fe62b413e9573b65ec6128e2, type: 3}
+  - {fileID: 1026657153, guid: d8801311fe62b413e9573b65ec6128e2, type: 3}
+  - {fileID: -986948086, guid: d8801311fe62b413e9573b65ec6128e2, type: 3}
+  - {fileID: -1815401175, guid: d8801311fe62b413e9573b65ec6128e2, type: 3}
   movementSource: {fileID: 0}
   framesPerSecond: 10
   randomizeStart: 1
@@ -1935,7 +1939,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 10
   m_MaskInteraction: 0
-  m_Sprite: {fileID: -7915210059842803663, guid: 9e1a8f141acf7402c91427aaa0a1e4cf, type: 3}
+  m_Sprite: {fileID: -49056450, guid: d8801311fe62b413e9573b65ec6128e2, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -2431,6 +2435,7 @@ MonoBehaviour:
   encounterType: 0
   enemyStats:
     displayName: "\u6D41\u5BC7"
+    visualId: 
     maxHealth: 45
     currentHealth: 45
     attack: 6
@@ -2729,6 +2734,58 @@ MonoBehaviour:
   - {fileID: 997809145, guid: 7c382ef2e776341eb84b9eecc93e315b, type: 3}
   - {fileID: 993891689, guid: 7c382ef2e776341eb84b9eecc93e315b, type: 3}
   - {fileID: -1154619742, guid: 7c382ef2e776341eb84b9eecc93e315b, type: 3}
+  enemyVisualProfiles:
+  - id: rat
+    idleFrames:
+    - {fileID: 364000533, guid: 7260dbfbc82744cc5849f72d6b6853fc, type: 3}
+    - {fileID: 1314980587, guid: 7260dbfbc82744cc5849f72d6b6853fc, type: 3}
+    - {fileID: -1737611470, guid: 7260dbfbc82744cc5849f72d6b6853fc, type: 3}
+    - {fileID: -804166223, guid: 7260dbfbc82744cc5849f72d6b6853fc, type: 3}
+    - {fileID: -1940822718, guid: 7260dbfbc82744cc5849f72d6b6853fc, type: 3}
+    - {fileID: 1521164243, guid: 7260dbfbc82744cc5849f72d6b6853fc, type: 3}
+    attackFrames:
+    - {fileID: 634454795, guid: fac43edb552b84c56a5f4d453187cefb, type: 3}
+    - {fileID: 1930135821, guid: fac43edb552b84c56a5f4d453187cefb, type: 3}
+    - {fileID: -1403754527, guid: fac43edb552b84c56a5f4d453187cefb, type: 3}
+    - {fileID: -2083357407, guid: fac43edb552b84c56a5f4d453187cefb, type: 3}
+    - {fileID: -1041864663, guid: fac43edb552b84c56a5f4d453187cefb, type: 3}
+    - {fileID: -1099703978, guid: fac43edb552b84c56a5f4d453187cefb, type: 3}
+    scale: 0.85
+    flipHorizontally: 0
+  - id: rider
+    idleFrames:
+    - {fileID: -49056450, guid: d8801311fe62b413e9573b65ec6128e2, type: 3}
+    - {fileID: -1100630591, guid: d8801311fe62b413e9573b65ec6128e2, type: 3}
+    - {fileID: -654859660, guid: d8801311fe62b413e9573b65ec6128e2, type: 3}
+    - {fileID: 1026657153, guid: d8801311fe62b413e9573b65ec6128e2, type: 3}
+    - {fileID: -986948086, guid: d8801311fe62b413e9573b65ec6128e2, type: 3}
+    - {fileID: -1815401175, guid: d8801311fe62b413e9573b65ec6128e2, type: 3}
+    attackFrames:
+    - {fileID: 586957979, guid: 1db74639b41c842ee84b5107d8299cdb, type: 3}
+    - {fileID: 649930431, guid: 1db74639b41c842ee84b5107d8299cdb, type: 3}
+    - {fileID: -1792156358, guid: 1db74639b41c842ee84b5107d8299cdb, type: 3}
+    - {fileID: 838356766, guid: 1db74639b41c842ee84b5107d8299cdb, type: 3}
+    - {fileID: -818582935, guid: 1db74639b41c842ee84b5107d8299cdb, type: 3}
+    - {fileID: -174079473, guid: 1db74639b41c842ee84b5107d8299cdb, type: 3}
+    scale: 1
+    flipHorizontally: 0
+  - id: ballista
+    idleFrames:
+    - {fileID: -114909530, guid: 75cd94caef6ce43a4ae5e5866c08e021, type: 3}
+    - {fileID: -1710736053, guid: 75cd94caef6ce43a4ae5e5866c08e021, type: 3}
+    - {fileID: 1889078726, guid: 75cd94caef6ce43a4ae5e5866c08e021, type: 3}
+    - {fileID: 1281531548, guid: 75cd94caef6ce43a4ae5e5866c08e021, type: 3}
+    - {fileID: 581259506, guid: 75cd94caef6ce43a4ae5e5866c08e021, type: 3}
+    - {fileID: 45413093, guid: 75cd94caef6ce43a4ae5e5866c08e021, type: 3}
+    attackFrames:
+    - {fileID: 1815707886, guid: f9bf1ebecfb0941efbedef1768209758, type: 3}
+    - {fileID: -117538244, guid: f9bf1ebecfb0941efbedef1768209758, type: 3}
+    - {fileID: -569862471, guid: f9bf1ebecfb0941efbedef1768209758, type: 3}
+    - {fileID: -85353082, guid: f9bf1ebecfb0941efbedef1768209758, type: 3}
+    - {fileID: 1472526583, guid: f9bf1ebecfb0941efbedef1768209758, type: 3}
+    - {fileID: 1896986482, guid: f9bf1ebecfb0941efbedef1768209758, type: 3}
+    scale: 1
+    flipHorizontally: 0
   playerSpriteScale: 1
   bossSpriteScale: 1.35
 --- !u!114 &755778985
@@ -2765,6 +2822,7 @@ MonoBehaviour:
   playerStats: {fileID: 285907368}
   currentEnemy:
     displayName: "\u5C11\u4FA0"
+    visualId: 
     maxHealth: 100
     currentHealth: 100
     attack: 12
@@ -2798,6 +2856,7 @@ MonoBehaviour:
   bossBattleTime: 0
   bossStats:
     displayName: "\u9ED1\u98CE\u5BE8\u4E3B"
+    visualId: 
     maxHealth: 550
     currentHealth: 550
     attack: 18
@@ -2972,6 +3031,7 @@ MonoBehaviour:
   encounterType: 1
   enemyStats:
     displayName: "\u7384\u8863\u5200\u5BA2"
+    visualId: 
     maxHealth: 135
     currentHealth: 135
     attack: 13
@@ -3131,6 +3191,7 @@ MonoBehaviour:
   encounterType: 4
   enemyStats:
     displayName: "\u836F\u8349"
+    visualId: 
     maxHealth: 1
     currentHealth: 1
     attack: 0
@@ -3290,6 +3351,7 @@ MonoBehaviour:
   encounterType: 2
   enemyStats:
     displayName: "\u5B88\u6D1E\u6B66\u4EBA"
+    visualId: 
     maxHealth: 160
     currentHealth: 160
     attack: 14
@@ -3960,6 +4022,7 @@ MonoBehaviour:
   encounterType: 0
   enemyStats:
     displayName: "\u5C71\u8D3C\u55BD\u5570"
+    visualId: 
     maxHealth: 35
     currentHealth: 35
     attack: 5
@@ -4530,6 +4593,7 @@ MonoBehaviour:
   encounterType: 4
   enemyStats:
     displayName: "\u836F\u8349"
+    visualId: 
     maxHealth: 1
     currentHealth: 1
     attack: 0
@@ -4801,6 +4865,7 @@ MonoBehaviour:
   encounterType: 1
   enemyStats:
     displayName: "\u9ED1\u98CE\u5200\u5BA2"
+    visualId: 
     maxHealth: 120
     currentHealth: 120
     attack: 12
@@ -5038,21 +5103,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WuxiaRoguelite.Visual.SpriteFrameAnimator
   idleFrames:
-  - {fileID: -7915210059842803663, guid: 9e1a8f141acf7402c91427aaa0a1e4cf, type: 3}
-  - {fileID: -985773156536696307, guid: 9e1a8f141acf7402c91427aaa0a1e4cf, type: 3}
-  - {fileID: -402004918610355466, guid: 9e1a8f141acf7402c91427aaa0a1e4cf, type: 3}
-  - {fileID: 5754168252756749266, guid: 9e1a8f141acf7402c91427aaa0a1e4cf, type: 3}
-  - {fileID: 6875498849900570493, guid: 9e1a8f141acf7402c91427aaa0a1e4cf, type: 3}
-  - {fileID: -487347014929367919, guid: 9e1a8f141acf7402c91427aaa0a1e4cf, type: 3}
-  - {fileID: 6241714052192994796, guid: 9e1a8f141acf7402c91427aaa0a1e4cf, type: 3}
-  - {fileID: 4354444202727843353, guid: 9e1a8f141acf7402c91427aaa0a1e4cf, type: 3}
+  - {fileID: 364000533, guid: 7260dbfbc82744cc5849f72d6b6853fc, type: 3}
+  - {fileID: 1314980587, guid: 7260dbfbc82744cc5849f72d6b6853fc, type: 3}
+  - {fileID: -1737611470, guid: 7260dbfbc82744cc5849f72d6b6853fc, type: 3}
+  - {fileID: -804166223, guid: 7260dbfbc82744cc5849f72d6b6853fc, type: 3}
+  - {fileID: -1940822718, guid: 7260dbfbc82744cc5849f72d6b6853fc, type: 3}
+  - {fileID: 1521164243, guid: 7260dbfbc82744cc5849f72d6b6853fc, type: 3}
   moveFrames:
-  - {fileID: -2553684454752968172, guid: 98b8f39b843a646a29d3c264a2bd7e2e, type: 3}
-  - {fileID: 5766533117683295243, guid: 98b8f39b843a646a29d3c264a2bd7e2e, type: 3}
-  - {fileID: -7839978344077804992, guid: 98b8f39b843a646a29d3c264a2bd7e2e, type: 3}
-  - {fileID: -8602713986393169397, guid: 98b8f39b843a646a29d3c264a2bd7e2e, type: 3}
-  - {fileID: -638742374853751968, guid: 98b8f39b843a646a29d3c264a2bd7e2e, type: 3}
-  - {fileID: 1095205337, guid: 98b8f39b843a646a29d3c264a2bd7e2e, type: 3}
+  - {fileID: 364000533, guid: 7260dbfbc82744cc5849f72d6b6853fc, type: 3}
+  - {fileID: 1314980587, guid: 7260dbfbc82744cc5849f72d6b6853fc, type: 3}
+  - {fileID: -1737611470, guid: 7260dbfbc82744cc5849f72d6b6853fc, type: 3}
+  - {fileID: -804166223, guid: 7260dbfbc82744cc5849f72d6b6853fc, type: 3}
+  - {fileID: -1940822718, guid: 7260dbfbc82744cc5849f72d6b6853fc, type: 3}
+  - {fileID: 1521164243, guid: 7260dbfbc82744cc5849f72d6b6853fc, type: 3}
   movementSource: {fileID: 0}
   framesPerSecond: 10
   randomizeStart: 1
@@ -5118,7 +5181,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 10
   m_MaskInteraction: 0
-  m_Sprite: {fileID: -7915210059842803663, guid: 9e1a8f141acf7402c91427aaa0a1e4cf, type: 3}
+  m_Sprite: {fileID: 364000533, guid: 7260dbfbc82744cc5849f72d6b6853fc, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -5236,6 +5299,7 @@ MonoBehaviour:
   encounterType: 2
   enemyStats:
     displayName: "\u79D8\u85CF\u53E4\u5323"
+    visualId: 
     maxHealth: 1
     currentHealth: 1
     attack: 0
@@ -5320,6 +5384,7 @@ MonoBehaviour:
   encounterType: 2
   enemyStats:
     displayName: "\u4E91\u6E38\u5546\u4EBA"
+    visualId: 
     maxHealth: 1
     currentHealth: 1
     attack: 0
@@ -5873,7 +5938,7 @@ GameObject:
   - component: {fileID: 1825095482}
   - component: {fileID: 1825095481}
   m_Layer: 0
-  m_Name: "\u91CE\u72FC"
+  m_Name: "\u7070\u5CA9\u5DE8\u9F20"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5893,7 +5958,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WuxiaRoguelite.Map.EncounterTrigger
   encounterType: 0
   enemyStats:
-    displayName: "\u91CE\u72FC"
+    displayName: "\u7070\u5CA9\u5DE8\u9F20"
+    visualId: rat
     maxHealth: 28
     currentHealth: 28
     attack: 4
@@ -5993,21 +6059,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WuxiaRoguelite.Visual.SpriteFrameAnimator
   idleFrames:
-  - {fileID: -7915210059842803663, guid: 9e1a8f141acf7402c91427aaa0a1e4cf, type: 3}
-  - {fileID: -985773156536696307, guid: 9e1a8f141acf7402c91427aaa0a1e4cf, type: 3}
-  - {fileID: -402004918610355466, guid: 9e1a8f141acf7402c91427aaa0a1e4cf, type: 3}
-  - {fileID: 5754168252756749266, guid: 9e1a8f141acf7402c91427aaa0a1e4cf, type: 3}
-  - {fileID: 6875498849900570493, guid: 9e1a8f141acf7402c91427aaa0a1e4cf, type: 3}
-  - {fileID: -487347014929367919, guid: 9e1a8f141acf7402c91427aaa0a1e4cf, type: 3}
-  - {fileID: 6241714052192994796, guid: 9e1a8f141acf7402c91427aaa0a1e4cf, type: 3}
-  - {fileID: 4354444202727843353, guid: 9e1a8f141acf7402c91427aaa0a1e4cf, type: 3}
+  - {fileID: -114909530, guid: 75cd94caef6ce43a4ae5e5866c08e021, type: 3}
+  - {fileID: -1710736053, guid: 75cd94caef6ce43a4ae5e5866c08e021, type: 3}
+  - {fileID: 1889078726, guid: 75cd94caef6ce43a4ae5e5866c08e021, type: 3}
+  - {fileID: 1281531548, guid: 75cd94caef6ce43a4ae5e5866c08e021, type: 3}
+  - {fileID: 581259506, guid: 75cd94caef6ce43a4ae5e5866c08e021, type: 3}
+  - {fileID: 45413093, guid: 75cd94caef6ce43a4ae5e5866c08e021, type: 3}
   moveFrames:
-  - {fileID: -2553684454752968172, guid: 98b8f39b843a646a29d3c264a2bd7e2e, type: 3}
-  - {fileID: 5766533117683295243, guid: 98b8f39b843a646a29d3c264a2bd7e2e, type: 3}
-  - {fileID: -7839978344077804992, guid: 98b8f39b843a646a29d3c264a2bd7e2e, type: 3}
-  - {fileID: -8602713986393169397, guid: 98b8f39b843a646a29d3c264a2bd7e2e, type: 3}
-  - {fileID: -638742374853751968, guid: 98b8f39b843a646a29d3c264a2bd7e2e, type: 3}
-  - {fileID: 1095205337, guid: 98b8f39b843a646a29d3c264a2bd7e2e, type: 3}
+  - {fileID: -114909530, guid: 75cd94caef6ce43a4ae5e5866c08e021, type: 3}
+  - {fileID: -1710736053, guid: 75cd94caef6ce43a4ae5e5866c08e021, type: 3}
+  - {fileID: 1889078726, guid: 75cd94caef6ce43a4ae5e5866c08e021, type: 3}
+  - {fileID: 1281531548, guid: 75cd94caef6ce43a4ae5e5866c08e021, type: 3}
+  - {fileID: 581259506, guid: 75cd94caef6ce43a4ae5e5866c08e021, type: 3}
+  - {fileID: 45413093, guid: 75cd94caef6ce43a4ae5e5866c08e021, type: 3}
   movementSource: {fileID: 0}
   framesPerSecond: 10
   randomizeStart: 1
@@ -6073,7 +6137,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 10
   m_MaskInteraction: 0
-  m_Sprite: {fileID: -7915210059842803663, guid: 9e1a8f141acf7402c91427aaa0a1e4cf, type: 3}
+  m_Sprite: {fileID: -114909530, guid: 75cd94caef6ce43a4ae5e5866c08e021, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -6096,7 +6160,7 @@ GameObject:
   - component: {fileID: 1836495903}
   - component: {fileID: 1836495902}
   m_Layer: 0
-  m_Name: "\u5317\u5CAD\u6D41\u5BC7"
+  m_Name: "\u673A\u5173\u5F29\u8F66"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6116,7 +6180,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WuxiaRoguelite.Map.EncounterTrigger
   encounterType: 0
   enemyStats:
-    displayName: "\u5317\u5CAD\u6D41\u5BC7"
+    displayName: "\u673A\u5173\u5F29\u8F66"
+    visualId: ballista
     maxHealth: 50
     currentHealth: 50
     attack: 7

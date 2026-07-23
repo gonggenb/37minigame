@@ -7,6 +7,7 @@ namespace WuxiaRoguelite.Runtime
     public class CombatantStats
     {
         public string displayName = "少侠";
+        public string visualId = string.Empty;
         public float maxHealth = 100f;
         public float currentHealth = 100f;
         public float attack = 12f;
@@ -26,6 +27,7 @@ namespace WuxiaRoguelite.Runtime
             return new CombatantStats
             {
                 displayName = displayName,
+                visualId = visualId,
                 maxHealth = maxHealth,
                 currentHealth = currentHealth,
                 attack = attack,
