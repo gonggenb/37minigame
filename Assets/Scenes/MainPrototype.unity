@@ -2637,7 +2637,14 @@ MonoBehaviour:
   playerStats: {fileID: 285907368}
   battleManager: {fileID: 755778986}
   playerIdleFrames:
-  - {fileID: 584744719, guid: 75143ab42d73f414c935841835e63472, type: 3}
+  - {fileID: -5735282888508474159, guid: a09c95e1fa033455586d47c007676152, type: 3}
+  - {fileID: -2413811058832895255, guid: a09c95e1fa033455586d47c007676152, type: 3}
+  - {fileID: 3435155481196652384, guid: a09c95e1fa033455586d47c007676152, type: 3}
+  - {fileID: 5212855164538451362, guid: a09c95e1fa033455586d47c007676152, type: 3}
+  - {fileID: -5238641217415204334, guid: a09c95e1fa033455586d47c007676152, type: 3}
+  - {fileID: 4848491989445532371, guid: a09c95e1fa033455586d47c007676152, type: 3}
+  - {fileID: -4491406384580593779, guid: a09c95e1fa033455586d47c007676152, type: 3}
+  - {fileID: 7750378799359501384, guid: a09c95e1fa033455586d47c007676152, type: 3}
   playerRunFrames:
   - {fileID: 584744719, guid: 75143ab42d73f414c935841835e63472, type: 3}
   - {fileID: -417452213, guid: 75143ab42d73f414c935841835e63472, type: 3}
@@ -2677,7 +2684,14 @@ MonoBehaviour:
   battleManager: {fileID: 755778986}
   actorTexture: {fileID: 2800000, guid: a603bd7f505c24e2bb0fa99e20ee1f7a, type: 3}
   playerIdleFrames:
-  - {fileID: 584744719, guid: 75143ab42d73f414c935841835e63472, type: 3}
+  - {fileID: -5735282888508474159, guid: a09c95e1fa033455586d47c007676152, type: 3}
+  - {fileID: -2413811058832895255, guid: a09c95e1fa033455586d47c007676152, type: 3}
+  - {fileID: 3435155481196652384, guid: a09c95e1fa033455586d47c007676152, type: 3}
+  - {fileID: 5212855164538451362, guid: a09c95e1fa033455586d47c007676152, type: 3}
+  - {fileID: -5238641217415204334, guid: a09c95e1fa033455586d47c007676152, type: 3}
+  - {fileID: 4848491989445532371, guid: a09c95e1fa033455586d47c007676152, type: 3}
+  - {fileID: -4491406384580593779, guid: a09c95e1fa033455586d47c007676152, type: 3}
+  - {fileID: 7750378799359501384, guid: a09c95e1fa033455586d47c007676152, type: 3}
   playerAttackFrames:
   - {fileID: 1831638244, guid: 577bf361372234e6d88857d96a134679, type: 3}
   - {fileID: -966015562, guid: 577bf361372234e6d88857d96a134679, type: 3}
@@ -3680,7 +3694,7 @@ Transform:
   m_GameObject: {fileID: 979273216}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.8, z: 0}
+  m_LocalPosition: {x: 0, y: 1.12, z: 0}
   m_LocalScale: {x: 2.1, y: 2.1, z: 2.1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3699,7 +3713,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WuxiaRoguelite.Visual.SpriteFrameAnimator
   idleFrames:
-  - {fileID: 584744719, guid: 75143ab42d73f414c935841835e63472, type: 3}
+  - {fileID: -5735282888508474159, guid: a09c95e1fa033455586d47c007676152, type: 3}
+  - {fileID: -2413811058832895255, guid: a09c95e1fa033455586d47c007676152, type: 3}
+  - {fileID: 3435155481196652384, guid: a09c95e1fa033455586d47c007676152, type: 3}
+  - {fileID: 5212855164538451362, guid: a09c95e1fa033455586d47c007676152, type: 3}
+  - {fileID: -5238641217415204334, guid: a09c95e1fa033455586d47c007676152, type: 3}
+  - {fileID: 4848491989445532371, guid: a09c95e1fa033455586d47c007676152, type: 3}
+  - {fileID: -4491406384580593779, guid: a09c95e1fa033455586d47c007676152, type: 3}
+  - {fileID: 7750378799359501384, guid: a09c95e1fa033455586d47c007676152, type: 3}
   moveFrames:
   - {fileID: 584744719, guid: 75143ab42d73f414c935841835e63472, type: 3}
   - {fileID: -417452213, guid: 75143ab42d73f414c935841835e63472, type: 3}
