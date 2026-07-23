@@ -333,7 +333,10 @@ namespace WuxiaRoguelite.UI
 
         private static void DrawSprite(Rect rect, Sprite sprite, bool facesLeft)
         {
-            Rect textureRect = sprite.textureRect;
+            // Use the full sliced frame instead of Unity's tight-mesh textureRect.
+            // Tight bounds vary per animation frame and would be stretched to this
+            // fixed actor rect, making the character visibly resize while attacking.
+            Rect textureRect = sprite.rect;
             Rect uv = new Rect(
                 textureRect.x / sprite.texture.width,
                 textureRect.y / sprite.texture.height,

@@ -400,7 +400,9 @@ namespace WuxiaRoguelite.Cave
 
             Sprite sprite = frames[Mathf.FloorToInt(Time.unscaledTime * 9f) % frames.Length];
             Rect rect = new Rect(center.x - size * 0.5f, center.y - size * 0.5f, size, size);
-            Rect textureRect = sprite.textureRect;
+            // Keep the full sliced frame so transparent padding remains consistent
+            // across animation frames instead of stretching each tight mesh bounds.
+            Rect textureRect = sprite.rect;
             Rect uv = new Rect(textureRect.x / sprite.texture.width, textureRect.y / sprite.texture.height,
                 textureRect.width / sprite.texture.width, textureRect.height / sprite.texture.height);
             if (flip)

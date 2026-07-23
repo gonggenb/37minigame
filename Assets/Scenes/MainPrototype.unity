@@ -2637,19 +2637,16 @@ MonoBehaviour:
   playerStats: {fileID: 285907368}
   battleManager: {fileID: 755778986}
   playerIdleFrames:
-  - {fileID: 1283079673, guid: dd1c8b6edc7f84b9a857ab4a067fbc48, type: 3}
-  - {fileID: -1965154847, guid: dd1c8b6edc7f84b9a857ab4a067fbc48, type: 3}
-  - {fileID: 1358089103, guid: dd1c8b6edc7f84b9a857ab4a067fbc48, type: 3}
-  - {fileID: -558596793, guid: dd1c8b6edc7f84b9a857ab4a067fbc48, type: 3}
-  - {fileID: -216845699, guid: dd1c8b6edc7f84b9a857ab4a067fbc48, type: 3}
-  - {fileID: 1703768611, guid: dd1c8b6edc7f84b9a857ab4a067fbc48, type: 3}
+  - {fileID: 584744719, guid: 75143ab42d73f414c935841835e63472, type: 3}
   playerRunFrames:
-  - {fileID: -1244457618, guid: d8f1b5e6525cf42c68fb53a095dfc6b3, type: 3}
-  - {fileID: 1349045163, guid: d8f1b5e6525cf42c68fb53a095dfc6b3, type: 3}
-  - {fileID: 1421888429, guid: d8f1b5e6525cf42c68fb53a095dfc6b3, type: 3}
-  - {fileID: -1999628337, guid: d8f1b5e6525cf42c68fb53a095dfc6b3, type: 3}
-  - {fileID: 749831471, guid: d8f1b5e6525cf42c68fb53a095dfc6b3, type: 3}
-  - {fileID: 1579595322, guid: d8f1b5e6525cf42c68fb53a095dfc6b3, type: 3}
+  - {fileID: 584744719, guid: 75143ab42d73f414c935841835e63472, type: 3}
+  - {fileID: -417452213, guid: 75143ab42d73f414c935841835e63472, type: 3}
+  - {fileID: -2051538869, guid: 75143ab42d73f414c935841835e63472, type: 3}
+  - {fileID: 212797631, guid: 75143ab42d73f414c935841835e63472, type: 3}
+  - {fileID: -1093508133, guid: 75143ab42d73f414c935841835e63472, type: 3}
+  - {fileID: -366871148, guid: 75143ab42d73f414c935841835e63472, type: 3}
+  - {fileID: 1971833031, guid: 75143ab42d73f414c935841835e63472, type: 3}
+  - {fileID: -1672307250, guid: 75143ab42d73f414c935841835e63472, type: 3}
   enemyIdleFrames:
   - {fileID: -7915210059842803663, guid: 61ae72cf511fb49d38bd9c24fb41e1e0, type: 3}
   - {fileID: -985773156536696307, guid: 61ae72cf511fb49d38bd9c24fb41e1e0, type: 3}
@@ -2784,6 +2781,22 @@ MonoBehaviour:
     - {fileID: 1896986482, guid: f9bf1ebecfb0941efbedef1768209758, type: 3}
     scale: 1
     flipHorizontally: 0
+  - id: boss_crimson
+    idleFrames:
+    - {fileID: 1283079673, guid: dd1c8b6edc7f84b9a857ab4a067fbc48, type: 3}
+    - {fileID: -1965154847, guid: dd1c8b6edc7f84b9a857ab4a067fbc48, type: 3}
+    - {fileID: 1358089103, guid: dd1c8b6edc7f84b9a857ab4a067fbc48, type: 3}
+    - {fileID: -558596793, guid: dd1c8b6edc7f84b9a857ab4a067fbc48, type: 3}
+    - {fileID: -216845699, guid: dd1c8b6edc7f84b9a857ab4a067fbc48, type: 3}
+    - {fileID: 1703768611, guid: dd1c8b6edc7f84b9a857ab4a067fbc48, type: 3}
+    attackFrames:
+    - {fileID: -1729148696, guid: d236688669ad9419a9046f50e49afe1b, type: 3}
+    - {fileID: -1370509769, guid: d236688669ad9419a9046f50e49afe1b, type: 3}
+    - {fileID: -639121921, guid: d236688669ad9419a9046f50e49afe1b, type: 3}
+    - {fileID: -661446123, guid: d236688669ad9419a9046f50e49afe1b, type: 3}
+    - {fileID: -1526241724, guid: d236688669ad9419a9046f50e49afe1b, type: 3}
+    scale: 1.35
+    flipHorizontally: 1
   playerSpriteScale: 1
   bossSpriteScale: 1.35
 --- !u!114 &755778985
@@ -2854,7 +2867,7 @@ MonoBehaviour:
   bossBattleTime: 0
   bossStats:
     displayName: "\u9ED1\u98CE\u5BE8\u4E3B"
-    visualId: 
+    visualId: boss_crimson
     maxHealth: 550
     currentHealth: 550
     attack: 18
