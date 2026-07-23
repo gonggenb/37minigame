@@ -154,3 +154,31 @@ Check or improve UI for:
 Do not change gameplay rules unless required by a UI bug.
 ```
 
+## 8. 美术资源生产任务模板
+
+```text
+Read AGENTS.md first.
+Read docs/art_style_guide.md and docs/art_production_pipeline.md.
+
+This task only produces [角色动画 / 武学图标 / 道具图标 / 场景资源].
+
+Follow the approved wuxia art direction, dimensions, naming, folder structure,
+generation prompts, Unity import settings and quality gates.
+
+For character animation:
+- start from one approved in-game seed frame
+- generate the full horizontal strip in one request
+- use 256 × 256 px per frame
+- normalize all frames with one shared scale and bottom-center foot anchor
+- do not generate frames independently
+
+For icons:
+- generate a 256 × 256 transparent master
+- deliver a 128 × 128 Unity icon
+- verify readability at 64 × 64 and 48 × 48
+- do not bake text, rarity borders or cooldown overlays into the icon
+
+Report Generated, Normalized, Imported, InEngineQA and Approved as separate states.
+Do not claim the asset is final before Play Mode verification.
+Do not modify gameplay or the three core timing rules.
+```

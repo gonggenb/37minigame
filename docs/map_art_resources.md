@@ -4,8 +4,9 @@
 
 - 当前 `MainPrototype` 已经导入 KayKit Medieval Builder Pack 的一组低多边形模型。
 - 已有可复用内容包括房屋、集市、矿洞、城门、城墙、瞭望塔、桥、井、树和岩石。
-- `Walkable Ground` 已使用项目生成的手绘草地贴图和独立材质 `mat_mainmap_grass`，完成场景绑定及 Play Mode 验证。
-- 地图继续保持 3D 低多边形场景与 2D 像素角色的混合风格。
+- `Walkable Ground` 与全部主地图道路已经使用同一套世界坐标平铺哑光 Shader，缩放时不会拉伸纹理。
+- 草地使用 `mat_mainmap_grass`，道路使用 `mat_mainmap_dirt`，并统一为灰绿草地、暖灰褐道路与柔和暖光。
+- 地图正式采用 [2.5D 武侠绘本美术规范](art_style_guide.md)：3D 低多边形手绘场景与 2D 像素角色的有意混合风格。
 
 ## 推荐候选
 

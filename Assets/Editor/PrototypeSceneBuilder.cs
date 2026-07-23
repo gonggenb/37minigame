@@ -26,6 +26,9 @@ namespace WuxiaRoguelite.EditorTools
         private const string SpritePath = "Assets/Art/Generated/prototype_square.png";
         private const string GroundTexturePath = "Assets/Art/Generated/Environment/tex_mainmap_grass_albedo.png";
         private const string GroundMaterialPath = "Assets/Art/Generated/Environment/mat_mainmap_grass.mat";
+        private const string RoadTexturePath = "Assets/Art/Generated/Environment/tex_mainmap_dirt_albedo.png";
+        private const string RoadMaterialPath = "Assets/Art/Generated/Environment/mat_mainmap_dirt.mat";
+        private const string WorldSurfaceShaderName = "Wuxia Roguelite/Stylized World Surface";
         private const string TinyRoot = "Assets/Art/ThirdParty/TinySwords";
         private const string CrimsonRoot = "Assets/Art/ThirdParty/CrimsonWarrior/Player";
         private const string EnemyVarietyRoot = "Assets/Art/ThirdParty/CraftPixEnemyVariety/Enemies";
@@ -103,6 +106,7 @@ namespace WuxiaRoguelite.EditorTools
             sun.transform.rotation = Quaternion.Euler(50f, -35f, 0f);
 
             CreateMapGeometry();
+            ApplyUnifiedWorldLighting();
 
             GameObject root = new GameObject("GameRoot");
             GameFlowController gameFlow = root.AddComponent<GameFlowController>();
@@ -282,6 +286,63 @@ namespace WuxiaRoguelite.EditorTools
             Debug.Log("Formal tiled grass material applied to Walkable Ground.");
         }
 
+        [MenuItem("37 MiniGame/Apply Unified Map Art Style")]
+        public static void ApplyUnifiedMapArtStyle()
+        {
+            if (EditorApplication.isPlaying)
+            {
+                Debug.LogError("Exit Play Mode before applying the unified map art style.");
+                return;
+            }
+
+            EnsureFolders();
+            GameObject mapRoot = GameObject.Find("3D Prototype Map");
+            GameObject groundObject = GameObject.Find("Walkable Ground");
+            Renderer groundRenderer = groundObject != null ? groundObject.GetComponent<Renderer>() : null;
+            if (mapRoot == null || groundRenderer == null)
+            {
+                Debug.LogError("Cannot apply the unified map art style: map root or Walkable Ground was not found.");
+                return;
+            }
+
+            groundRenderer.sharedMaterial = GetOrCreateMainMapGroundMaterial();
+            EditorUtility.SetDirty(groundRenderer);
+
+            HashSet<string> roadNames = new HashSet<string>
+            {
+                "Main Dirt Road",
+                "Cross Dirt Road",
+                "North Ridge Road",
+                "South Cave Road",
+                "East Village Road",
+                "East Village Loop",
+                "North Ridge Trail",
+                "West Forest Road",
+                "West Forest Loop",
+                "South Mine Trail"
+            };
+
+            Material roadMaterial = GetOrCreateMainMapRoadMaterial();
+            int roadCount = 0;
+            foreach (Renderer renderer in mapRoot.GetComponentsInChildren<Renderer>(true))
+            {
+                if (!roadNames.Contains(renderer.gameObject.name))
+                {
+                    continue;
+                }
+
+                renderer.sharedMaterial = roadMaterial;
+                EditorUtility.SetDirty(renderer);
+                roadCount++;
+            }
+
+            ApplyUnifiedWorldLighting();
+            EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
+            EditorSceneManager.SaveOpenScenes();
+            AssetDatabase.SaveAssets();
+            Debug.Log($"Unified 2.5D wuxia picture-book style applied to grass, {roadCount} road meshes, and world lighting.");
+        }
+
         [MenuItem("37 MiniGame/Expand Main Map")]
         public static void ExpandMainMap()
         {
@@ -458,6 +519,7 @@ namespace WuxiaRoguelite.EditorTools
             CreateFolderIfMissing("Assets", "Art");
             CreateFolderIfMissing("Assets/Art", "Generated");
             CreateFolderIfMissing("Assets/Art/Generated", "Environment");
+            CreateFolderIfMissing("Assets/Art/Generated/Environment", "Shaders");
         }
 
         private static void CreateFolderIfMissing(string parent, string child)
@@ -676,7 +738,7 @@ namespace WuxiaRoguelite.EditorTools
         private static void CreateMapGeometry()
         {
             Material ground = GetOrCreateMainMapGroundMaterial();
-            Material path = Material("Prototype_Path", new Color(0.38f, 0.32f, 0.24f));
+            Material path = GetOrCreateMainMapRoadMaterial();
             Material wall = Material("Prototype_Wall", new Color(0.22f, 0.2f, 0.18f));
 
             GameObject mapRoot = new GameObject("3D Prototype Map");
@@ -702,14 +764,45 @@ namespace WuxiaRoguelite.EditorTools
 
         private static Material GetOrCreateMainMapGroundMaterial()
         {
-            if (!File.Exists(GroundTexturePath))
+            return GetOrCreateWorldSurfaceMaterial(
+                GroundTexturePath,
+                GroundMaterialPath,
+                "MainMap_Grass",
+                new Color(0.72f, 0.76f, 0.66f, 1f),
+                0.18f,
+                "Prototype_Ground",
+                new Color(0.18f, 0.36f, 0.22f));
+        }
+
+        private static Material GetOrCreateMainMapRoadMaterial()
+        {
+            return GetOrCreateWorldSurfaceMaterial(
+                RoadTexturePath,
+                RoadMaterialPath,
+                "MainMap_DirtRoad",
+                new Color(0.72f, 0.68f, 0.61f, 1f),
+                0.18f,
+                "Prototype_Path",
+                new Color(0.38f, 0.32f, 0.24f));
+        }
+
+        private static Material GetOrCreateWorldSurfaceMaterial(
+            string texturePath,
+            string materialPath,
+            string materialName,
+            Color tint,
+            float worldTiling,
+            string fallbackName,
+            Color fallbackColor)
+        {
+            if (!File.Exists(texturePath))
             {
-                Debug.LogWarning($"Missing formal ground texture: {GroundTexturePath}");
-                return Material("Prototype_Ground", new Color(0.18f, 0.36f, 0.22f));
+                Debug.LogWarning($"Missing formal world texture: {texturePath}");
+                return Material(fallbackName, fallbackColor);
             }
 
-            AssetDatabase.ImportAsset(GroundTexturePath, ImportAssetOptions.ForceSynchronousImport);
-            TextureImporter importer = AssetImporter.GetAtPath(GroundTexturePath) as TextureImporter;
+            AssetDatabase.ImportAsset(texturePath, ImportAssetOptions.ForceSynchronousImport);
+            TextureImporter importer = AssetImporter.GetAtPath(texturePath) as TextureImporter;
             if (importer != null)
             {
                 importer.textureType = TextureImporterType.Default;
@@ -723,54 +816,88 @@ namespace WuxiaRoguelite.EditorTools
                 importer.SaveAndReimport();
             }
 
-            Texture2D groundTexture = AssetDatabase.LoadAssetAtPath<Texture2D>(GroundTexturePath);
-            Material groundMaterial = AssetDatabase.LoadAssetAtPath<Material>(GroundMaterialPath);
-            Shader shader = Shader.Find("Universal Render Pipeline/Lit") ?? Shader.Find("Standard");
-            if (groundMaterial == null)
+            Texture2D texture = AssetDatabase.LoadAssetAtPath<Texture2D>(texturePath);
+            Material material = AssetDatabase.LoadAssetAtPath<Material>(materialPath);
+            Shader shader = Shader.Find(WorldSurfaceShaderName) ?? Shader.Find("Standard");
+            if (shader == null)
             {
-                groundMaterial = new Material(shader)
+                Debug.LogError($"Cannot find the unified world shader or Standard fallback for {materialName}.");
+                return Material(fallbackName, fallbackColor);
+            }
+
+            if (material == null)
+            {
+                material = new Material(shader)
                 {
-                    name = "MainMap_Grass"
+                    name = materialName
                 };
-                AssetDatabase.CreateAsset(groundMaterial, GroundMaterialPath);
+                AssetDatabase.CreateAsset(material, materialPath);
             }
-            else if (shader != null && groundMaterial.shader != shader)
+            else if (material.shader != shader)
             {
-                groundMaterial.shader = shader;
+                material.shader = shader;
             }
 
-            if (groundMaterial.HasProperty("_BaseMap"))
+            material.SetTexture("_MainTex", texture);
+            material.SetColor("_Color", tint);
+            if (material.HasProperty("_WorldTiling"))
             {
-                groundMaterial.SetTexture("_BaseMap", groundTexture);
-                groundMaterial.SetTextureScale("_BaseMap", new Vector2(8f, 7f));
-                groundMaterial.SetColor("_BaseColor", new Color(0.68f, 0.74f, 0.64f, 1f));
-                groundMaterial.SetFloat("_Smoothness", 0f);
-                groundMaterial.SetFloat("_Metallic", 0f);
+                material.SetFloat("_WorldTiling", worldTiling);
             }
-            else
+            if (material.HasProperty("_Glossiness"))
             {
-                groundMaterial.SetTexture("_MainTex", groundTexture);
-                groundMaterial.SetTextureScale("_MainTex", new Vector2(8f, 7f));
-                groundMaterial.SetColor("_Color", new Color(0.68f, 0.74f, 0.64f, 1f));
-                groundMaterial.SetFloat("_Glossiness", 0f);
-                groundMaterial.SetFloat("_Metallic", 0f);
+                material.SetFloat("_Glossiness", 0f);
             }
-
-            if (groundMaterial.HasProperty("_SpecularHighlights"))
+            if (material.HasProperty("_Metallic"))
             {
-                groundMaterial.SetFloat("_SpecularHighlights", 0f);
+                material.SetFloat("_Metallic", 0f);
             }
-            if (groundMaterial.HasProperty("_GlossyReflections"))
+            if (material.HasProperty("_SpecularHighlights"))
             {
-                groundMaterial.SetFloat("_GlossyReflections", 0f);
+                material.SetFloat("_SpecularHighlights", 0f);
             }
-            if (groundMaterial.HasProperty("_EnvironmentReflections"))
+            if (material.HasProperty("_GlossyReflections"))
             {
-                groundMaterial.SetFloat("_EnvironmentReflections", 0f);
+                material.SetFloat("_GlossyReflections", 0f);
             }
 
-            EditorUtility.SetDirty(groundMaterial);
-            return groundMaterial;
+            EditorUtility.SetDirty(material);
+            return material;
+        }
+
+        private static void ApplyUnifiedWorldLighting()
+        {
+            Camera camera = Camera.main ?? UnityEngine.Object.FindAnyObjectByType<Camera>();
+            if (camera != null)
+            {
+                camera.clearFlags = CameraClearFlags.SolidColor;
+                camera.backgroundColor = new Color(0.17f, 0.19f, 0.18f, 1f);
+                EditorUtility.SetDirty(camera);
+            }
+
+            Light sun = UnityEngine.Object.FindObjectsByType<Light>(FindObjectsSortMode.None)
+                .FirstOrDefault(candidate => candidate.type == LightType.Directional);
+            if (sun != null)
+            {
+                sun.color = new Color(1f, 0.91f, 0.76f, 1f);
+                sun.intensity = 1.05f;
+                sun.shadows = LightShadows.Soft;
+                sun.shadowStrength = 0.65f;
+                EditorUtility.SetDirty(sun);
+            }
+
+            RenderSettings.skybox = null;
+            RenderSettings.ambientMode = UnityEngine.Rendering.AmbientMode.Trilight;
+            RenderSettings.ambientSkyColor = new Color(0.30f, 0.34f, 0.32f, 1f);
+            RenderSettings.ambientEquatorColor = new Color(0.20f, 0.22f, 0.20f, 1f);
+            RenderSettings.ambientGroundColor = new Color(0.10f, 0.09f, 0.07f, 1f);
+            RenderSettings.ambientIntensity = 1f;
+            RenderSettings.reflectionIntensity = 0.35f;
+            RenderSettings.fog = true;
+            RenderSettings.fogMode = FogMode.Linear;
+            RenderSettings.fogColor = new Color(0.28f, 0.30f, 0.28f, 1f);
+            RenderSettings.fogStartDistance = 30f;
+            RenderSettings.fogEndDistance = 75f;
         }
 
         private static void PlaceKayKitScenery(Transform parent)
