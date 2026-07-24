@@ -62,6 +62,25 @@ namespace WuxiaRoguelite.EditorTools
         private const string StoneApeAttackPath = GeneratedEnemyRoot + "/StoneApe/spr_enemy_stone_ape_attack_right_8f_v01.png";
         private const string BambooPuppetIdlePath = GeneratedEnemyRoot + "/BambooPuppet/spr_enemy_bamboo_puppet_idle_right_8f_v01.png";
         private const string BambooPuppetAttackPath = GeneratedEnemyRoot + "/BambooPuppet/spr_enemy_bamboo_puppet_attack_right_8f_v01.png";
+        private const string CombatImpactVfxPath = "Assets/Art/Generated/Effects/spr_vfx_wuxia_impact_6f_v01.png";
+        private const string CombatAudioRoot = "Assets/Audio/Generated/Combat";
+        private const string CombatSwingSfxPath = CombatAudioRoot + "/sfx_combat_sword_swing_v01.wav";
+        private const string CombatImpactSfxPath = CombatAudioRoot + "/sfx_combat_impact_light_v01.wav";
+        private const string CombatCriticalSfxPath = CombatAudioRoot + "/sfx_combat_impact_critical_v01.wav";
+        private const string CombatDodgeSfxPath = CombatAudioRoot + "/sfx_combat_dodge_v01.wav";
+        private const string SkillIconRoot = "Assets/Art/Generated/Icons/Skills";
+        private const string EquipmentItemIconRoot = "Assets/Art/Generated/Icons/Equipment";
+        private const string JianQiIconPath = SkillIconRoot + "/ico_skill_jianqi_v01_128.png";
+        private const string JiJianIconPath = SkillIconRoot + "/ico_skill_jijian_v01_128.png";
+        private const string TieBuShanIconPath = SkillIconRoot + "/ico_skill_tiebushan_v01_128.png";
+        private const string XiXingIconPath = SkillIconRoot + "/ico_skill_xixing_v01_128.png";
+        private const string DuShaZhangIconPath = SkillIconRoot + "/ico_skill_dushazhang_v01_128.png";
+        private const string PoJiaZhangIconPath = SkillIconRoot + "/ico_skill_pojiazhang_v01_128.png";
+        private const string QingGangSwordIconPath = EquipmentItemIconRoot + "/ico_equipment_qinggang_sword_v01_128.png";
+        private const string LightScaleIconPath = EquipmentItemIconRoot + "/ico_equipment_light_scale_v01_128.png";
+        private const string PracticeBracerIconPath = EquipmentItemIconRoot + "/ico_equipment_practice_bracer_v01_128.png";
+        private const string BlackIronRingIconPath = EquipmentItemIconRoot + "/ico_equipment_black_iron_ring_v01_128.png";
+        private const string WandererCloakIconPath = EquipmentItemIconRoot + "/ico_equipment_wanderer_cloak_v01_128.png";
         private const string GoldPath = TinyRoot + "/World/Gold_Resource.png";
         private const string HerbPath = TinyRoot + "/World/Bush.png";
         private const string StatusIconPath = TinyRoot + "/UI/Avatars_01.png";
@@ -102,6 +121,7 @@ namespace WuxiaRoguelite.EditorTools
             Sprite[] stoneApeAttack = LoadFrames(StoneApeAttackPath, fallbackSprite);
             Sprite[] bambooPuppetIdle = LoadFrames(BambooPuppetIdlePath, fallbackSprite);
             Sprite[] bambooPuppetAttack = LoadFrames(BambooPuppetAttackPath, fallbackSprite);
+            Sprite[] combatImpactFrames = LoadFrames(CombatImpactVfxPath, fallbackSprite);
             Sprite goldSprite = LoadSingleSprite(GoldPath, fallbackSprite);
             Sprite herbSprite = LoadSingleSprite(HerbPath, fallbackSprite);
 
@@ -118,6 +138,7 @@ namespace WuxiaRoguelite.EditorTools
             camera.farClipPlane = 100f;
             camera.backgroundColor = new Color(0.08f, 0.1f, 0.12f);
             camera.tag = "MainCamera";
+            camera.gameObject.AddComponent<AudioListener>();
 
             Light sun = new GameObject("Directional Light").AddComponent<Light>();
             sun.type = LightType.Directional;
@@ -130,6 +151,7 @@ namespace WuxiaRoguelite.EditorTools
             GameObject root = new GameObject("GameRoot");
             GameFlowController gameFlow = root.AddComponent<GameFlowController>();
             BattleManager battleManager = root.AddComponent<BattleManager>();
+            BattleFeedbackAudio battleFeedbackAudio = root.AddComponent<BattleFeedbackAudio>();
             PrototypeHUDController hud = root.AddComponent<PrototypeHUDController>();
             BattleScreenController battleScreen = root.AddComponent<BattleScreenController>();
             CaveRoomController caveRoom = root.AddComponent<CaveRoomController>();
@@ -161,6 +183,8 @@ namespace WuxiaRoguelite.EditorTools
             gameFlow.battleManager = battleManager;
             gameFlow.caveRoom = caveRoom;
             battleManager.playerStats = playerStats;
+            battleFeedbackAudio.battleManager = battleManager;
+            BindCombatAudio(battleFeedbackAudio);
             hud.gameFlow = gameFlow;
             hud.playerStats = playerStats;
             hud.battleManager = battleManager;
@@ -168,6 +192,7 @@ namespace WuxiaRoguelite.EditorTools
             hud.equipmentIcon = AssetDatabase.LoadAssetAtPath<Texture2D>(EquipmentIconPath);
             hud.healthBarBase = AssetDatabase.LoadAssetAtPath<Texture2D>(HealthBarBasePath);
             hud.healthBarFill = AssetDatabase.LoadAssetAtPath<Texture2D>(HealthBarFillPath);
+            BindHudContentIcons(hud);
             battleScreen.gameFlow = gameFlow;
             battleScreen.playerStats = playerStats;
             battleScreen.battleManager = battleManager;
@@ -180,6 +205,7 @@ namespace WuxiaRoguelite.EditorTools
             battleScreen.eliteAttackFrames = eliteAttack;
             battleScreen.caveIdleFrames = stoneApeIdle;
             battleScreen.caveAttackFrames = stoneApeAttack;
+            battleScreen.impactEffectFrames = combatImpactFrames;
             battleScreen.enemyVisualProfiles = CreateEnemyVisualProfiles(
                 ratRun, ratAttack, riderRun, riderAttack, ballistaFly, ballistaAttack,
                 inkWolfIdle, inkWolfAttack, stoneApeIdle, stoneApeAttack,
@@ -287,6 +313,62 @@ namespace WuxiaRoguelite.EditorTools
             EditorSceneManager.SaveOpenScenes();
             AssetDatabase.SaveAssets();
             Debug.Log("Crimson Warrior player art refreshed in the active scene.");
+        }
+
+        [MenuItem("37 MiniGame/Refresh Battle Feedback Assets")]
+        public static void RefreshBattleFeedbackAssets()
+        {
+            if (EditorApplication.isPlaying)
+            {
+                Debug.LogError("Exit Play Mode before refreshing battle feedback assets.");
+                return;
+            }
+
+            EnsureFolders();
+            ConfigureBattleFeedbackAssets();
+            Sprite fallbackSprite = GetOrCreatePrototypeSprite();
+            BattleScreenController battleScreen = UnityEngine.Object.FindAnyObjectByType<BattleScreenController>();
+            BattleFeedbackAudio feedbackAudio = UnityEngine.Object.FindAnyObjectByType<BattleFeedbackAudio>();
+            if (battleScreen == null || feedbackAudio == null)
+            {
+                Debug.LogError("Cannot refresh battle feedback: required components were not found.");
+                return;
+            }
+
+            battleScreen.impactEffectFrames = LoadFrames(CombatImpactVfxPath, fallbackSprite);
+            BindCombatAudio(feedbackAudio);
+            EditorUtility.SetDirty(battleScreen);
+            EditorUtility.SetDirty(feedbackAudio);
+            EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
+            EditorSceneManager.SaveOpenScenes();
+            AssetDatabase.SaveAssets();
+            Debug.Log("Battle feedback VFX and WAV assets refreshed in the active scene.");
+        }
+
+        [MenuItem("37 MiniGame/Refresh HUD Content Icons")]
+        public static void RefreshHudContentIcons()
+        {
+            if (EditorApplication.isPlaying)
+            {
+                Debug.LogError("Exit Play Mode before refreshing HUD content icons.");
+                return;
+            }
+
+            EnsureFolders();
+            ConfigureHudContentIcons();
+            PrototypeHUDController hud = UnityEngine.Object.FindAnyObjectByType<PrototypeHUDController>();
+            if (hud == null)
+            {
+                Debug.LogError("Cannot refresh HUD icons: PrototypeHUDController was not found.");
+                return;
+            }
+
+            BindHudContentIcons(hud);
+            EditorUtility.SetDirty(hud);
+            EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
+            EditorSceneManager.SaveOpenScenes();
+            AssetDatabase.SaveAssets();
+            Debug.Log("Six martial-art icons and five equipment icons refreshed in the active scene.");
         }
 
         [MenuItem("37 MiniGame/Refresh Main Map Ground")]
@@ -643,8 +725,15 @@ namespace WuxiaRoguelite.EditorTools
             CreateFolderIfMissing("Assets", "Scenes");
             CreateFolderIfMissing("Assets", "Art");
             CreateFolderIfMissing("Assets/Art", "Generated");
+            CreateFolderIfMissing("Assets/Art/Generated", "Icons");
+            CreateFolderIfMissing("Assets/Art/Generated/Icons", "Skills");
+            CreateFolderIfMissing("Assets/Art/Generated/Icons", "Equipment");
+            CreateFolderIfMissing("Assets/Art/Generated", "Effects");
             CreateFolderIfMissing("Assets/Art/Generated", "Environment");
             CreateFolderIfMissing("Assets/Art/Generated/Environment", "Shaders");
+            CreateFolderIfMissing("Assets", "Audio");
+            CreateFolderIfMissing("Assets/Audio", "Generated");
+            CreateFolderIfMissing("Assets/Audio/Generated", "Combat");
         }
 
         private static void CreateFolderIfMissing(string parent, string child)
@@ -691,6 +780,8 @@ namespace WuxiaRoguelite.EditorTools
             ConfigurePlayerArtAssets();
             ConfigureEnemyVarietyAssets();
             ConfigureGeneratedMonsterAssets();
+            ConfigureBattleFeedbackAssets();
+            ConfigureHudContentIcons();
 
             string[] tinySwordsSheets =
             {
@@ -711,6 +802,78 @@ namespace WuxiaRoguelite.EditorTools
             ConfigureUiTexture(EquipmentIconPath);
             ConfigureUiTexture(HealthBarBasePath);
             ConfigureUiTexture(HealthBarFillPath);
+        }
+
+        private static void ConfigureBattleFeedbackAssets()
+        {
+            ConfigureSpriteSheet(CombatImpactVfxPath, 256, 256, 256f);
+            foreach (string path in new[]
+                     {
+                         CombatSwingSfxPath, CombatImpactSfxPath,
+                         CombatCriticalSfxPath, CombatDodgeSfxPath
+                     })
+            {
+                if (File.Exists(path))
+                {
+                    AssetDatabase.ImportAsset(path, ImportAssetOptions.ForceSynchronousImport);
+                }
+                else
+                {
+                    Debug.LogWarning($"Missing combat audio asset: {path}; procedural fallback will be used.");
+                }
+            }
+        }
+
+        private static void BindCombatAudio(BattleFeedbackAudio feedbackAudio)
+        {
+            feedbackAudio.swingSfx = AssetDatabase.LoadAssetAtPath<AudioClip>(CombatSwingSfxPath);
+            feedbackAudio.impactSfx = AssetDatabase.LoadAssetAtPath<AudioClip>(CombatImpactSfxPath);
+            feedbackAudio.criticalSfx = AssetDatabase.LoadAssetAtPath<AudioClip>(CombatCriticalSfxPath);
+            feedbackAudio.dodgeSfx = AssetDatabase.LoadAssetAtPath<AudioClip>(CombatDodgeSfxPath);
+        }
+
+        private static void ConfigureHudContentIcons()
+        {
+            foreach (string path in new[]
+                     {
+                         JianQiIconPath, JiJianIconPath, TieBuShanIconPath,
+                         XiXingIconPath, DuShaZhangIconPath, PoJiaZhangIconPath,
+                         QingGangSwordIconPath, LightScaleIconPath, PracticeBracerIconPath,
+                         BlackIronRingIconPath, WandererCloakIconPath
+                     })
+            {
+                ConfigureIconTexture(path);
+            }
+        }
+
+        private static void BindHudContentIcons(PrototypeHUDController hud)
+        {
+            hud.martialArtIcons = new[]
+            {
+                Icon("剑气诀", JianQiIconPath),
+                Icon("疾剑式", JiJianIconPath),
+                Icon("铁布衫", TieBuShanIconPath),
+                Icon("吸星诀", XiXingIconPath),
+                Icon("毒砂掌", DuShaZhangIconPath),
+                Icon("破甲掌", PoJiaZhangIconPath)
+            };
+            hud.equipmentItemIcons = new[]
+            {
+                Icon("qinggang_sword", QingGangSwordIconPath),
+                Icon("light_scale", LightScaleIconPath),
+                Icon("practice_bracer", PracticeBracerIconPath),
+                Icon("black_iron_ring", BlackIronRingIconPath),
+                Icon("wanderer_cloak", WandererCloakIconPath)
+            };
+        }
+
+        private static PrototypeHUDController.IconEntry Icon(string id, string path)
+        {
+            return new PrototypeHUDController.IconEntry
+            {
+                id = id,
+                icon = AssetDatabase.LoadAssetAtPath<Texture2D>(path)
+            };
         }
 
         private static void ConfigurePlayerArtAssets()
@@ -883,6 +1046,34 @@ namespace WuxiaRoguelite.EditorTools
             importer.textureCompression = TextureImporterCompression.Uncompressed;
             importer.mipmapEnabled = false;
             importer.alphaIsTransparency = true;
+            importer.SaveAndReimport();
+        }
+
+        private static void ConfigureIconTexture(string path)
+        {
+            if (!File.Exists(path))
+            {
+                Debug.LogWarning($"Missing generated icon: {path}");
+                return;
+            }
+
+            AssetDatabase.ImportAsset(path, ImportAssetOptions.ForceSynchronousImport);
+            TextureImporter importer = AssetImporter.GetAtPath(path) as TextureImporter;
+            if (importer == null)
+            {
+                return;
+            }
+
+            importer.textureType = TextureImporterType.Sprite;
+            importer.spriteImportMode = SpriteImportMode.Single;
+            importer.spritePixelsPerUnit = 128f;
+            importer.npotScale = TextureImporterNPOTScale.None;
+            importer.filterMode = FilterMode.Bilinear;
+            importer.wrapMode = TextureWrapMode.Clamp;
+            importer.textureCompression = TextureImporterCompression.Uncompressed;
+            importer.mipmapEnabled = false;
+            importer.alphaIsTransparency = true;
+            importer.maxTextureSize = 128;
             importer.SaveAndReimport();
         }
 

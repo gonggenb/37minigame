@@ -1,14 +1,23 @@
+using System;
 using System.Linq;
 using UnityEngine;
 using WuxiaRoguelite.Battle;
 using WuxiaRoguelite.Cave;
 using WuxiaRoguelite.GameFlow;
+using WuxiaRoguelite.MartialArts;
 using WuxiaRoguelite.Player;
 
 namespace WuxiaRoguelite.UI
 {
     public class PrototypeHUDController : MonoBehaviour
     {
+        [Serializable]
+        public class IconEntry
+        {
+            public string id;
+            public Texture2D icon;
+        }
+
         private enum CharacterView
         {
             Status,
@@ -22,6 +31,8 @@ namespace WuxiaRoguelite.UI
         public Texture2D equipmentIcon;
         public Texture2D healthBarBase;
         public Texture2D healthBarFill;
+        public IconEntry[] martialArtIcons;
+        public IconEntry[] equipmentItemIcons;
 
         private GUIStyle titleStyle;
         private GUIStyle headingStyle;
@@ -32,6 +43,7 @@ namespace WuxiaRoguelite.UI
         private GUIStyle tabStyle;
         private GUIStyle activeTabStyle;
         private GUIStyle actionButtonStyle;
+        private GUIStyle tooltipEffectStyle;
         private bool characterPanelOpen;
         private bool debugVisible;
         private CharacterView currentView;
@@ -92,6 +104,7 @@ namespace WuxiaRoguelite.UI
                 return;
             }
 
+            GUI.depth = -500;
             EnsureStyles();
             if (gameFlow.CurrentPhase != GamePhase.Result && gameFlow.CurrentPhase != GamePhase.CaveRunning && !characterPanelOpen)
             {
@@ -160,6 +173,8 @@ namespace WuxiaRoguelite.UI
                 alignment = TextAnchor.MiddleCenter,
                 normal = { textColor = Color.white }
             };
+            tooltipEffectStyle = LabelStyle(15, FontStyle.Bold, TextAnchor.UpperLeft,
+                new Color(1f, 0.80f, 0.35f));
         }
 
         private void DrawCompactHud()
@@ -270,7 +285,7 @@ namespace WuxiaRoguelite.UI
 
         private void DrawStatus(Rect rect)
         {
-            const float contentHeight = 270f;
+            const float contentHeight = 350f;
             bool needsScroll = rect.height < contentHeight;
             if (needsScroll)
             {
@@ -294,10 +309,24 @@ namespace WuxiaRoguelite.UI
             DrawStatRow(new Rect(rect.x, y + 93f, rect.width, 27f), "吸血", $"{playerStats.runtimeStats.lifeSteal * 100f:0.#}%", "移速", playerStats.runtimeStats.moveSpeed.ToString("0.0"));
 
             GUI.Label(new Rect(rect.x, y + 130f, rect.width, 22f), "已习武学", headingStyle);
-            string martialArts = playerStats.learnedMartialArts.Count == 0
-                ? "尚未习得"
-                : string.Join("、", playerStats.learnedMartialArts.Take(6));
-            GUI.Label(new Rect(rect.x, y + 154f, rect.width, 38f), martialArts, bodyStyle);
+            if (playerStats.learnedMartialArts.Count == 0)
+            {
+                GUI.Label(new Rect(rect.x, y + 154f, rect.width, 38f), "尚未习得", bodyStyle);
+            }
+            else
+            {
+                string[] learned = playerStats.learnedMartialArts.Take(6).ToArray();
+                const float gap = 8f;
+                float tileWidth = (rect.width - gap * 2f) / 3f;
+                for (int i = 0; i < learned.Length; i++)
+                {
+                    int column = i % 3;
+                    int row = i / 3;
+                    Rect tile = new Rect(rect.x + column * (tileWidth + gap),
+                        y + 154f + row * 54f, tileWidth, 48f);
+                    DrawMartialArtTile(tile, learned[i]);
+                }
+            }
             if (needsScroll)
             {
                 GUI.EndScrollView();
@@ -322,19 +351,21 @@ namespace WuxiaRoguelite.UI
             }
 
             GUI.Label(new Rect(rect.x, rect.y, rect.width, 24f), "当前穿戴", headingStyle);
-            DrawEquippedSlot(new Rect(rect.x, rect.y + 27f, rect.width, 28f), equipment, EquipmentSlot.Weapon);
-            DrawEquippedSlot(new Rect(rect.x, rect.y + 59f, rect.width, 28f), equipment, EquipmentSlot.Armor);
-            DrawEquippedSlot(new Rect(rect.x, rect.y + 91f, rect.width, 28f), equipment, EquipmentSlot.Accessory);
+            const float slotGap = 8f;
+            float slotWidth = (rect.width - slotGap * 2f) / 3f;
+            DrawEquippedSlot(new Rect(rect.x, rect.y + 27f, slotWidth, 58f), equipment, EquipmentSlot.Weapon);
+            DrawEquippedSlot(new Rect(rect.x + slotWidth + slotGap, rect.y + 27f, slotWidth, 58f), equipment, EquipmentSlot.Armor);
+            DrawEquippedSlot(new Rect(rect.x + (slotWidth + slotGap) * 2f, rect.y + 27f, slotWidth, 58f), equipment, EquipmentSlot.Accessory);
 
-            float inventoryY = rect.y + 128f;
+            float inventoryY = rect.y + 94f;
             GUI.Label(new Rect(rect.x, inventoryY, rect.width, 24f), $"背包  {equipment.inventory.Count}", headingStyle);
             Rect viewport = new Rect(rect.x, inventoryY + 28f, rect.width, Mathf.Max(68f, rect.yMax - inventoryY - 28f));
-            float contentHeight = equipment.inventory.Count * 58f;
+            float contentHeight = equipment.inventory.Count * 66f;
             inventoryScroll = GUI.BeginScrollView(viewport, inventoryScroll, new Rect(0f, 0f, viewport.width - 18f, contentHeight));
             for (int i = 0; i < equipment.inventory.Count; i++)
             {
                 EquipmentItem item = equipment.inventory[i];
-                DrawInventoryItem(new Rect(0f, i * 58f, viewport.width - 22f, 52f), equipment, item);
+                DrawInventoryItem(new Rect(0f, i * 66f, viewport.width - 22f, 60f), equipment, item);
             }
             GUI.EndScrollView();
         }
@@ -343,9 +374,15 @@ namespace WuxiaRoguelite.UI
         {
             FillRect(rect, PanelLight);
             EquipmentItem item = equipment.GetEquipped(slot);
-            GUI.Label(new Rect(rect.x + 10f, rect.y, 58f, rect.height), SlotName(slot), mutedStyle);
-            GUI.Label(new Rect(rect.x + 68f, rect.y, rect.width - 142f, rect.height), item == null ? "未装备" : item.displayName, bodyStyle);
-            if (item != null && GUI.Button(new Rect(rect.xMax - 68f, rect.y + 2f, 58f, 24f), "卸下", actionButtonStyle))
+            GUI.Label(new Rect(rect.x + 7f, rect.y + 1f, rect.width - 14f, 18f), SlotName(slot), mutedStyle);
+            if (item != null)
+            {
+                DrawIcon(new Rect(rect.x + 7f, rect.y + 20f, 32f, 32f), FindEquipmentIcon(item.id),
+                    RarityColor(item.rarity));
+            }
+            GUI.Label(new Rect(rect.x + 45f, rect.y + 19f, rect.width - 103f, 34f),
+                item == null ? "未装备" : item.displayName, bodyStyle);
+            if (item != null && GUI.Button(new Rect(rect.xMax - 54f, rect.y + 23f, 47f, 25f), "卸下", actionButtonStyle))
             {
                 equipment.Unequip(slot);
             }
@@ -354,15 +391,17 @@ namespace WuxiaRoguelite.UI
         private void DrawInventoryItem(Rect rect, PlayerEquipment equipment, EquipmentItem item)
         {
             FillRect(rect, new Color(0.12f, 0.14f, 0.13f, 1f));
+            DrawIcon(new Rect(rect.x + 7f, rect.y + 6f, 48f, 48f), FindEquipmentIcon(item.id),
+                RarityColor(item.rarity));
             Color previous = GUI.contentColor;
             GUI.contentColor = RarityColor(item.rarity);
-            GUI.Label(new Rect(rect.x + 9f, rect.y + 3f, rect.width - 86f, 23f), item.displayName, headingStyle);
+            GUI.Label(new Rect(rect.x + 63f, rect.y + 5f, rect.width - 146f, 23f), item.displayName, headingStyle);
             GUI.contentColor = previous;
-            GUI.Label(new Rect(rect.x + 9f, rect.y + 27f, rect.width - 86f, 20f), item.BonusSummary, mutedStyle);
+            GUI.Label(new Rect(rect.x + 63f, rect.y + 30f, rect.width - 146f, 22f), item.BonusSummary, mutedStyle);
 
             bool equipped = equipment.IsEquipped(item);
             GUI.enabled = !equipped;
-            if (GUI.Button(new Rect(rect.xMax - 72f, rect.y + 11f, 62f, 30f), equipped ? "已装备" : "装备", actionButtonStyle))
+            if (GUI.Button(new Rect(rect.xMax - 72f, rect.y + 15f, 62f, 30f), equipped ? "已装备" : "装备", actionButtonStyle))
             {
                 equipment.Equip(item);
             }
@@ -371,15 +410,137 @@ namespace WuxiaRoguelite.UI
 
         private void DrawLevelUpPanel()
         {
-            Rect panel = CenteredRect(370f, 224f);
-            DrawPanel(panel, Panel, Gold);
+            FillRect(new Rect(0f, 0f, Screen.width, Screen.height),
+                new Color(0.02f, 0.025f, 0.025f, 0.72f));
+            Rect panel = CenteredRect(640f, 300f);
+            DrawPanel(panel, new Color(0.09f, 0.105f, 0.105f, 1f), Gold);
             GUI.Label(new Rect(panel.x + 18f, panel.y + 12f, panel.width - 36f, 32f), "修为突破", titleStyle);
+
+            float detailsWidth = Mathf.Clamp(panel.width * 0.39f, 210f, 244f);
+            Rect choicesArea = new Rect(panel.x + 18f, panel.y + 54f,
+                panel.width - detailsWidth - 50f, panel.height - 72f);
+            Rect detailsArea = new Rect(choicesArea.xMax + 14f, choicesArea.y,
+                detailsWidth, choicesArea.height);
+            string hoveredArt = null;
+
             for (int i = 0; i < gameFlow.currentChoices.Count; i++)
             {
-                if (GUI.Button(new Rect(panel.x + 18f, panel.y + 54f + i * 48f, panel.width - 36f, 38f), gameFlow.currentChoices[i], actionButtonStyle))
+                string artId = gameFlow.currentChoices[i];
+                Rect card = new Rect(choicesArea.x, choicesArea.y + i * 72f,
+                    choicesArea.width, 62f);
+                if (card.Contains(Event.current.mousePosition))
+                {
+                    hoveredArt = artId;
+                }
+
+                bool selected = GUI.Button(card, GUIContent.none, actionButtonStyle);
+                DrawIcon(new Rect(card.x + 7f, card.y + 7f, 48f, 48f),
+                    FindMartialArtIcon(artId), CategoryColor(MartialArtCatalog.Get(artId)?.category));
+                GUI.Label(new Rect(card.x + 65f, card.y + 5f, card.width - 74f, 26f),
+                    artId, headingStyle);
+                MartialArtDefinition definition = MartialArtCatalog.Get(artId);
+                GUI.Label(new Rect(card.x + 65f, card.y + 31f, card.width - 74f, 22f),
+                    definition?.effectSummary ?? "查看效果", mutedStyle);
+
+                if (selected)
                 {
                     gameFlow.ChooseMartialArt(i);
+                    return;
                 }
+            }
+
+            if (hoveredArt == null && gameFlow.currentChoices.Count > 0)
+            {
+                hoveredArt = gameFlow.currentChoices[0];
+            }
+            DrawMartialArtTooltip(detailsArea, hoveredArt);
+        }
+
+        private void DrawMartialArtTooltip(Rect rect, string artId)
+        {
+            FillRect(rect, new Color(0.055f, 0.065f, 0.06f, 0.98f));
+            FillRect(new Rect(rect.x, rect.y, 3f, rect.height), Gold);
+            MartialArtDefinition definition = MartialArtCatalog.Get(artId);
+            if (definition == null)
+            {
+                GUI.Label(new Rect(rect.x + 14f, rect.y + 22f, rect.width - 28f, 28f),
+                    "悬停武学查看效果", headingStyle);
+                GUI.Label(new Rect(rect.x + 14f, rect.y + 58f, rect.width - 28f, 78f),
+                    "选择后会立即获得本局属性加成；突破期间所有时间暂停。", mutedStyle);
+                return;
+            }
+
+            GUI.Label(new Rect(rect.x + 14f, rect.y + 10f, rect.width - 28f, 28f),
+                definition.id, headingStyle);
+            GUI.Label(new Rect(rect.x + 14f, rect.y + 40f, rect.width - 28f, 20f),
+                definition.category, mutedStyle);
+            GUI.Label(new Rect(rect.x + 14f, rect.y + 68f, rect.width - 28f, 44f),
+                definition.effectSummary, tooltipEffectStyle);
+            GUI.Label(new Rect(rect.x + 14f, rect.y + 116f, rect.width - 28f, rect.height - 126f),
+                definition.description, bodyStyle);
+        }
+
+        private void DrawMartialArtTile(Rect rect, string artId)
+        {
+            FillRect(rect, PanelLight);
+            MartialArtDefinition definition = MartialArtCatalog.Get(artId);
+            DrawIcon(new Rect(rect.x + 5f, rect.y + 5f, 38f, 38f),
+                FindMartialArtIcon(artId), CategoryColor(definition?.category));
+            GUI.Label(new Rect(rect.x + 49f, rect.y + 2f, rect.width - 54f, 22f),
+                artId, bodyStyle);
+            GUI.Label(new Rect(rect.x + 49f, rect.y + 23f, rect.width - 54f, 20f),
+                definition?.effectSummary ?? string.Empty, mutedStyle);
+        }
+
+        private static void DrawIcon(Rect rect, Texture2D icon, Color accent)
+        {
+            FillRect(rect, new Color(0.035f, 0.04f, 0.04f, 0.95f));
+            FillRect(new Rect(rect.x, rect.y, 2f, rect.height), accent);
+            if (icon != null)
+            {
+                GUI.DrawTexture(new Rect(rect.x + 3f, rect.y + 3f, rect.width - 6f, rect.height - 6f),
+                    icon, ScaleMode.ScaleToFit, true);
+            }
+        }
+
+        private Texture2D FindMartialArtIcon(string id)
+        {
+            return FindIcon(martialArtIcons, id);
+        }
+
+        private Texture2D FindEquipmentIcon(string id)
+        {
+            return FindIcon(equipmentItemIcons, id);
+        }
+
+        private static Texture2D FindIcon(IconEntry[] entries, string id)
+        {
+            if (entries == null || string.IsNullOrEmpty(id))
+            {
+                return null;
+            }
+
+            foreach (IconEntry entry in entries)
+            {
+                if (entry != null && entry.id == id)
+                {
+                    return entry.icon;
+                }
+            }
+
+            return null;
+        }
+
+        private static Color CategoryColor(string category)
+        {
+            switch (category)
+            {
+                case "内功":
+                    return new Color(0.38f, 0.72f, 0.58f);
+                case "身法":
+                    return new Color(0.36f, 0.64f, 0.86f);
+                default:
+                    return new Color(0.82f, 0.34f, 0.24f);
             }
         }
 

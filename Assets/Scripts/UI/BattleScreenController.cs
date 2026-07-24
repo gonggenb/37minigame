@@ -33,6 +33,7 @@ namespace WuxiaRoguelite.UI
         public Sprite[] eliteAttackFrames;
         public Sprite[] caveIdleFrames;
         public Sprite[] caveAttackFrames;
+        public Sprite[] impactEffectFrames;
         public EnemyVisualProfile[] enemyVisualProfiles;
         [Min(0.5f)] public float playerSpriteScale = ActorVisualScale.Medium;
         [Min(0.5f)] public float bossSpriteScale = ActorVisualScale.Large;
@@ -58,9 +59,15 @@ namespace WuxiaRoguelite.UI
         private float enemyDamageStartedAt = -10f;
         private bool playerDamageWasCritical;
         private bool enemyDamageWasCritical;
+        private float hitFeedbackStartedAt = -10f;
+        private bool hitFeedbackWasCritical;
+        private bool hitFeedbackWasDodged;
+        private bool hitFeedbackTargetedPlayer;
 
         private const float DamageDisplayDuration = 0.72f;
         private const float HealthFlashDuration = 0.34f;
+        private const float ScreenShakeDuration = 0.18f;
+        private const float ImpactMarkerDuration = 0.28f;
 
         private static readonly Color Backdrop = new Color(0.055f, 0.075f, 0.09f, 1f);
         private static readonly Color DistantMountain = new Color(0.11f, 0.19f, 0.20f, 1f);
@@ -84,6 +91,10 @@ namespace WuxiaRoguelite.UI
 
             float width = Screen.width;
             float height = Screen.height;
+            Matrix4x4 originalGuiMatrix = GUI.matrix;
+            Vector2 screenShake = CalculateScreenShake();
+            GUI.matrix = Matrix4x4.TRS(new Vector3(screenShake.x, screenShake.y, 0f),
+                Quaternion.identity, Vector3.one) * originalGuiMatrix;
             DrawBackdrop(width, height);
             DrawHeader(width, height);
 
@@ -146,9 +157,13 @@ namespace WuxiaRoguelite.UI
                 enemyAttacking ? currentEnemyAttackFrames : currentEnemyIdleFrames, enemyAttacking, actionProgress);
             DrawHealthPanel(playerHealthRect, playerStats.runtimeStats, playerDamageAmount, playerDamageStartedAt);
             DrawHealthPanel(enemyHealthRect, battleManager.currentEnemy, enemyDamageAmount, enemyDamageStartedAt);
+            DrawImpactMarker(playerRect, playerDamageAmount, playerDamageStartedAt, playerDamageWasCritical, true);
+            DrawImpactMarker(enemyRect, enemyDamageAmount, enemyDamageStartedAt, enemyDamageWasCritical, false);
             DrawDamagePopup(playerRect, playerDamageAmount, playerDamageStartedAt, playerDamageWasCritical, true);
             DrawDamagePopup(enemyRect, enemyDamageAmount, enemyDamageStartedAt, enemyDamageWasCritical, false);
             DrawCombatMessage(stageRect, messageRect, actionProgress);
+            DrawPlayerHitOverlay(width, height);
+            GUI.matrix = originalGuiMatrix;
         }
 
         private void EnsureStyles()
@@ -185,6 +200,29 @@ namespace WuxiaRoguelite.UI
 
             observedAttackSequence = battleManager.AttackSequence;
             attackStartedAt = Time.unscaledTime;
+            hitFeedbackStartedAt = Time.unscaledTime;
+            hitFeedbackWasCritical = battleManager.LastAttackWasCritical;
+            hitFeedbackWasDodged = battleManager.LastAttackWasDodged;
+            hitFeedbackTargetedPlayer = !battleManager.LastAttackWasPlayer;
+        }
+
+        private Vector2 CalculateScreenShake()
+        {
+            float age = Time.unscaledTime - hitFeedbackStartedAt;
+            if (age < 0f || age >= ScreenShakeDuration)
+            {
+                return Vector2.zero;
+            }
+
+            float strength = hitFeedbackWasDodged ? 1.6f : hitFeedbackWasCritical ? 11f : 5.5f;
+            if (hitFeedbackTargetedPlayer)
+            {
+                strength *= 1.12f;
+            }
+
+            float envelope = 1f - age / ScreenShakeDuration;
+            float phase = age * 92f + observedAttackSequence * 1.71f;
+            return new Vector2(Mathf.Sin(phase), Mathf.Cos(phase * 1.19f)) * strength * envelope;
         }
 
         private void TrackHealthChanges()
@@ -224,10 +262,16 @@ namespace WuxiaRoguelite.UI
 
         private void DrawBackdrop(float width, float height)
         {
-            FillRect(new Rect(0f, 0f, width, height), Backdrop);
-            FillRect(new Rect(0f, height * 0.34f, width, height * 0.26f), DistantMountain);
-            FillRect(new Rect(0f, height * 0.58f, width, height * 0.42f), Ground);
-            FillRect(new Rect(0f, height * 0.575f, width, 5f), new Color(0.65f, 0.52f, 0.28f));
+            const float shakeOverscan = 24f;
+            float overscannedWidth = width + shakeOverscan * 2f;
+            FillRect(new Rect(-shakeOverscan, -shakeOverscan, overscannedWidth,
+                height + shakeOverscan * 2f), Backdrop);
+            FillRect(new Rect(-shakeOverscan, height * 0.34f, overscannedWidth,
+                height * 0.26f), DistantMountain);
+            FillRect(new Rect(-shakeOverscan, height * 0.58f, overscannedWidth,
+                height * 0.42f + shakeOverscan), Ground);
+            FillRect(new Rect(-shakeOverscan, height * 0.575f, overscannedWidth, 5f),
+                new Color(0.65f, 0.52f, 0.28f));
 
             float moonSize = Mathf.Clamp(height * 0.13f, 64f, 110f);
             FillRect(new Rect(width * 0.5f - moonSize * 0.5f, height * 0.37f - moonSize * 0.5f, moonSize, moonSize), new Color(0.82f, 0.78f, 0.63f, 0.23f));
@@ -398,7 +442,7 @@ namespace WuxiaRoguelite.UI
             float width = critical ? 240f : 190f;
             float height = critical ? 52f : 44f;
             Rect popup = new Rect(targetRect.center.x - width * 0.5f, targetRect.y - 16f - rise, width, height);
-            string text = critical ? $"暴击  -{damage:0}" : $"气血  -{damage:0}";
+            string text = critical ? $"暴击  -{damage:0}" : $"受击  -{damage:0}";
             GUIStyle foreground = critical ? criticalDamageStyle : damageStyle;
             GUIStyle shadow = critical ? criticalDamageShadowStyle : damageShadowStyle;
 
@@ -410,6 +454,82 @@ namespace WuxiaRoguelite.UI
                 : new Color(1f, 0.78f, 0.24f, alpha);
             GUI.Label(popup, text, foreground);
             GUI.color = previous;
+        }
+
+        private void DrawImpactMarker(Rect targetRect, float damage, float startedAt, bool critical, bool playerTarget)
+        {
+            float age = Time.unscaledTime - startedAt;
+            if (damage <= 0f || age < 0f || age >= ImpactMarkerDuration)
+            {
+                return;
+            }
+
+            float progress = age / ImpactMarkerDuration;
+            float alpha = 1f - progress;
+            if (impactEffectFrames != null && impactEffectFrames.Length > 0)
+            {
+                int frameIndex = Mathf.Min(Mathf.FloorToInt(progress * impactEffectFrames.Length),
+                    impactEffectFrames.Length - 1);
+                float effectSize = targetRect.width * (critical ? 0.92f : 0.72f);
+                Vector2 effectCenter = new Vector2(targetRect.center.x,
+                    targetRect.y + targetRect.height * 0.43f);
+                Rect effectRect = new Rect(effectCenter.x - effectSize * 0.5f,
+                    effectCenter.y - effectSize * 0.5f, effectSize, effectSize);
+                Color tint = playerTarget
+                    ? new Color(1f, 0.48f, 0.38f, alpha)
+                    : new Color(1f, 1f, 1f, alpha);
+                DrawEffectSprite(effectRect, impactEffectFrames[frameIndex], tint);
+                return;
+            }
+
+            float reach = Mathf.Lerp(12f, critical ? 42f : 30f, progress);
+            float thickness = critical ? 6f : 4f;
+            Vector2 center = new Vector2(targetRect.center.x, targetRect.y + targetRect.height * 0.42f);
+            Color color = playerTarget
+                ? new Color(1f, 0.18f, 0.12f, alpha)
+                : new Color(1f, 0.86f, 0.42f, alpha);
+            FillRect(new Rect(center.x - reach, center.y - thickness * 0.5f, reach * 2f, thickness), color);
+            FillRect(new Rect(center.x - thickness * 0.5f, center.y - reach, thickness, reach * 2f), color);
+
+            float coreSize = Mathf.Lerp(18f, 5f, progress);
+            FillRect(new Rect(center.x - coreSize * 0.5f, center.y - coreSize * 0.5f, coreSize, coreSize),
+                new Color(1f, 1f, 1f, alpha * 0.88f));
+        }
+
+        private static void DrawEffectSprite(Rect rect, Sprite sprite, Color tint)
+        {
+            if (sprite == null)
+            {
+                return;
+            }
+
+            Rect source = sprite.rect;
+            Rect uv = new Rect(
+                source.x / sprite.texture.width,
+                source.y / sprite.texture.height,
+                source.width / sprite.texture.width,
+                source.height / sprite.texture.height);
+            Color previous = GUI.color;
+            GUI.color = tint;
+            GUI.DrawTextureWithTexCoords(rect, sprite.texture, uv, true);
+            GUI.color = previous;
+        }
+
+        private void DrawPlayerHitOverlay(float width, float height)
+        {
+            float age = Time.unscaledTime - playerDamageStartedAt;
+            if (playerDamageAmount <= 0f || age < 0f || age >= ImpactMarkerDuration)
+            {
+                return;
+            }
+
+            float alpha = (1f - age / ImpactMarkerDuration) * (playerDamageWasCritical ? 0.58f : 0.34f);
+            float edge = Mathf.Clamp(Mathf.Min(width, height) * 0.035f, 8f, 18f);
+            Color red = new Color(0.9f, 0.05f, 0.025f, alpha);
+            FillRect(new Rect(0f, 0f, width, edge), red);
+            FillRect(new Rect(0f, height - edge, width, edge), red);
+            FillRect(new Rect(0f, edge, edge, height - edge * 2f), red);
+            FillRect(new Rect(width - edge, edge, edge, height - edge * 2f), red);
         }
 
         private void DrawCombatMessage(Rect stageRect, Rect messageRect, float actionProgress)

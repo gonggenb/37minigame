@@ -5421,6 +5421,8 @@ GameObject:
   - component: {fileID: 755778985}
   - component: {fileID: 755778984}
   - component: {fileID: 755778983}
+  - component: {fileID: 755778990}
+  - component: {fileID: 755778989}
   m_Layer: 0
   m_Name: GameRoot
   m_TagString: Untagged
@@ -5558,6 +5560,13 @@ MonoBehaviour:
   - {fileID: -366004905, guid: 452a05df1ecd14aefb380c9dde5b17f6, type: 3}
   - {fileID: 364593753, guid: 452a05df1ecd14aefb380c9dde5b17f6, type: 3}
   - {fileID: -91949607, guid: 452a05df1ecd14aefb380c9dde5b17f6, type: 3}
+  impactEffectFrames:
+  - {fileID: 1675257558, guid: 95fe3fa916f0c4dd5b170317d062fadd, type: 3}
+  - {fileID: 1846550145, guid: 95fe3fa916f0c4dd5b170317d062fadd, type: 3}
+  - {fileID: 1533641507, guid: 95fe3fa916f0c4dd5b170317d062fadd, type: 3}
+  - {fileID: 744098353, guid: 95fe3fa916f0c4dd5b170317d062fadd, type: 3}
+  - {fileID: 1573230778, guid: 95fe3fa916f0c4dd5b170317d062fadd, type: 3}
+  - {fileID: 826183488, guid: 95fe3fa916f0c4dd5b170317d062fadd, type: 3}
   enemyVisualProfiles:
   - id: blue
     idleFrames:
@@ -5736,6 +5745,30 @@ MonoBehaviour:
   equipmentIcon: {fileID: 2800000, guid: 11245450444e6418a8c293a34894b268, type: 3}
   healthBarBase: {fileID: 2800000, guid: d34e3fb6fd5d54833b80c388c74031bf, type: 3}
   healthBarFill: {fileID: 2800000, guid: 18b01b336d7ff45bfb131bf03f7b94a7, type: 3}
+  martialArtIcons:
+  - id: "\u5251\u6C14\u8BC0"
+    icon: {fileID: 2800000, guid: 61e155b5846224ac1ada433f55c0aa93, type: 3}
+  - id: "\u75BE\u5251\u5F0F"
+    icon: {fileID: 2800000, guid: 25820063028694f07b6db6a2de323357, type: 3}
+  - id: "\u94C1\u5E03\u886B"
+    icon: {fileID: 2800000, guid: 03008c6e06d37437091d5e6408c49e73, type: 3}
+  - id: "\u5438\u661F\u8BC0"
+    icon: {fileID: 2800000, guid: c8a8073c1e9e549a680fb5b7e9aa6b8e, type: 3}
+  - id: "\u6BD2\u7802\u638C"
+    icon: {fileID: 2800000, guid: b2401307f5e7f4d6a90e4d2093dd0c58, type: 3}
+  - id: "\u7834\u7532\u638C"
+    icon: {fileID: 2800000, guid: d8da4bf6f0b73400185cf035afd27356, type: 3}
+  equipmentItemIcons:
+  - id: qinggang_sword
+    icon: {fileID: 2800000, guid: 6ae459a4d9f2448d1bb9a69b4c08bd22, type: 3}
+  - id: light_scale
+    icon: {fileID: 2800000, guid: e74551dcbd8c54aeda09803aef80c9d2, type: 3}
+  - id: practice_bracer
+    icon: {fileID: 2800000, guid: 38193688e188e4adcb805ea30dbe0b54, type: 3}
+  - id: black_iron_ring
+    icon: {fileID: 2800000, guid: 29a2c2410ad254807bb8a2050382068c, type: 3}
+  - id: wanderer_cloak
+    icon: {fileID: 2800000, guid: c94d6125630414c9a9a661956ea6bf72, type: 3}
 --- !u!114 &755778986
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5817,6 +5850,121 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &755778989
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 755778982}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 240594b31f89943a2ae270a505eeed1a, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::WuxiaRoguelite.Battle.BattleFeedbackAudio
+  battleManager: {fileID: 755778986}
+  masterVolume: 0.72
+  swingSfx: {fileID: 8300000, guid: a3d2f5e4e84724fbdb74fef958ed6e8b, type: 3}
+  impactSfx: {fileID: 8300000, guid: e7e07cab7a33844fa8fffc0cc2862ae1, type: 3}
+  criticalSfx: {fileID: 8300000, guid: 12fc4948f3183447babb80cf31db6d2e, type: 3}
+  dodgeSfx: {fileID: 8300000, guid: bd6c94bda542e450f9b3599236483acf, type: 3}
+--- !u!82 &755778990
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 755778982}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &760036520
 GameObject:
   m_ObjectHideFlags: 0
@@ -7089,6 +7237,7 @@ GameObject:
   - component: {fileID: 943471319}
   - component: {fileID: 943471321}
   - component: {fileID: 943471320}
+  - component: {fileID: 943471322}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -7178,6 +7327,14 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
+--- !u!81 &943471322
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 943471318}
+  m_Enabled: 1
 --- !u!1 &949141747
 GameObject:
   m_ObjectHideFlags: 0

@@ -292,6 +292,18 @@ Briefed -> SeedApproved -> Generated -> Normalized -> Imported -> InEngineQA -> 
 
 只有 `Approved` 资源可以称为“正式资源”。“已生成”“已导入”和“已在 Play Mode 验证”必须分别记录。
 
+当前首批图标：
+
+| 批次 | 数量 | 目录 | 状态 |
+| --- | ---: | --- | --- |
+| 核心武学 | 6 | `Assets/Art/Generated/Icons/Skills/` | `InEngineQA` |
+| 局内装备 | 5 | `Assets/Art/Generated/Icons/Equipment/` | `InEngineQA` |
+
+- 生成母版保留在 `ArtSource/Raw/Icons/`。
+- 图标切分与安全区归一化使用 `Tools/ArtPipeline/normalize_icon_sheet.py`。
+- 武学三选一卡显示 `64 px` 级图标；悬停时显示类型、当前实际属性效果和说明。
+- 装备背包与穿戴栏按装备稳定 ID 查找图标，稀有度颜色仍由 UI 独立绘制。
+
 ## 9. Unity 验收门槛
 
 ### 9.1 角色动画
@@ -337,3 +349,31 @@ Briefed -> SeedApproved -> Generated -> Normalized -> Imported -> InEngineQA -> 
 - 当前已有部分角色条带仍使用旧 Pivot；迁移时必须逐项进行 Play Mode 脚底检查。
 - 当前 `SpriteFrameAnimator` 只覆盖 Idle / Move 循环；Attack、Hurt、Death 的非循环播放控制仍需后续实现。
 - 本次不改变玩法、战斗、计时和场景绑定。
+
+## 12. 战斗打击反馈资源
+
+### 12.1 命中特效
+
+- 单帧固定为 `256 × 256`，横向排列，透明背景。
+- 基础命中使用 `6` 帧，按 `20–24 FPS` 非循环播放。
+- 所有帧保持同一中心点，主体不得贴边，颜色以米白、淡金、朱红小面积点缀为主。
+- 命名采用 `spr_vfx_<用途>_<帧数>f_v<版本>.png`。
+- 当前基准资源：`Assets/Art/Generated/Effects/spr_vfx_wuxia_impact_6f_v01.png`。
+- 原始生成图保留在 `ArtSource/Raw/VFX/`，去背景、归一化和引擎导入分开记录。
+- 透明图归一化脚本：`Tools/ArtPipeline/normalize_vfx_strip.py`，同一条特效统一缩放并保持中心锚点。
+
+### 12.2 战斗音效
+
+- 短音效统一使用 `WAV / PCM 16-bit / mono / 44.1 kHz`。
+- 每次普通攻击由“挥砍 + 轻命中”两层组成；暴击将轻命中替换为重命中；闪避使用独立空气掠过音。
+- 峰值不超过 `-1 dBFS`，单条建议控制在 `0.1–0.35 秒`，避免长混响遮挡连续攻击。
+- 命名采用 `sfx_combat_<动作>_v<版本>.wav`。
+- 可重复生成脚本：`Tools/ArtPipeline/generate_combat_sfx.py`。
+- Unity 中优先播放已绑定 WAV；资源缺失时由 `BattleFeedbackAudio` 生成短促程序化音色作为回退。
+
+### 12.3 Unity 验收
+
+- 命中特效必须随伤害事件触发，不能只跟攻击动作计时。
+- 普通命中、暴击、玩家受击和闪避必须能听出差异。
+- 屏幕震动、红边、伤害字、特效和音效使用未缩放时间，暂停或慢速状态下不能卡住。
+- 连续攻击时不得创建新的 GameObject、材质或磁盘资源；运行期只复用已导入资源。
