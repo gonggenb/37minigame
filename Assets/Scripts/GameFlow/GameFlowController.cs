@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using WuxiaRoguelite.Battle;
 using WuxiaRoguelite.Cave;
 using WuxiaRoguelite.Map;
+using WuxiaRoguelite.MartialArts;
 using WuxiaRoguelite.Player;
 using WuxiaRoguelite.Runtime;
 
@@ -43,8 +45,9 @@ namespace WuxiaRoguelite.GameFlow
         public bool bossDefeated;
         public int pendingCultivationReward;
         public int pendingCopperReward;
-        public readonly string[] allMartialArts = { "剑气诀", "疾剑式", "铁布衫", "吸星诀", "毒砂掌", "破甲掌" };
+        public readonly string[] allMartialArts = MartialArtCatalog.AllIds;
         public readonly List<string> currentChoices = new List<string>();
+        public int martialArtRerollsRemaining = 1;
 
         private GamePhase phaseBeforeLevelUp = GamePhase.MainMapRunning;
         private float timeScaleBeforeCharacterMenu = 1f;
@@ -109,6 +112,7 @@ namespace WuxiaRoguelite.GameFlow
             pendingCultivationReward = 0;
             pendingCopperReward = 0;
             currentChoices.Clear();
+            martialArtRerollsRemaining = 1;
             phaseBeforeLevelUp = GamePhase.MainMapRunning;
             SetPhase(GamePhase.MainMapRunning);
             statusMessage = "主地图探索开始：碰怪会自动战斗，主时间继续流逝。";
@@ -185,9 +189,9 @@ namespace WuxiaRoguelite.GameFlow
             }
 
             string art = currentChoices[index];
-            playerStats.ApplyMartialArt(art);
+            int rank = playerStats.ApplyMartialArt(art);
             currentChoices.Clear();
-            statusMessage = $"习得 {art}，继续探索。";
+            statusMessage = $"{art} 修至第 {rank} 重，继续探索。";
 
             if (mainTimeRemaining <= 0f && phaseBeforeLevelUp == GamePhase.MainMapRunning)
             {
@@ -325,9 +329,27 @@ namespace WuxiaRoguelite.GameFlow
 
         public string GrantRandomMartialArt()
         {
-            string art = allMartialArts[UnityEngine.Random.Range(0, allMartialArts.Length)];
+            List<string> candidates = GetEligibleMartialArts();
+            if (candidates.Count == 0)
+            {
+                return "武学已臻化境";
+            }
+
+            string art = candidates[UnityEngine.Random.Range(0, candidates.Count)];
             playerStats.ApplyMartialArt(art);
             return art;
+        }
+
+        public void RerollMartialArtChoices()
+        {
+            if (CurrentPhase != GamePhase.LevelUpPaused || martialArtRerollsRemaining <= 0)
+            {
+                return;
+            }
+
+            martialArtRerollsRemaining -= 1;
+            GenerateMartialArtChoices();
+            statusMessage = "重观武学残页：选择已刷新。";
         }
 
         public void ExitHiddenCave(bool completed)
@@ -381,15 +403,108 @@ namespace WuxiaRoguelite.GameFlow
             phaseBeforeLevelUp = CurrentPhase == GamePhase.NormalBattleRunning
                 ? GamePhase.MainMapRunning
                 : CurrentPhase;
-            currentChoices.Clear();
-            int start = UnityEngine.Random.Range(0, allMartialArts.Length);
-            for (int i = 0; i < 3; i++)
-            {
-                currentChoices.Add(allMartialArts[(start + i) % allMartialArts.Length]);
-            }
+            GenerateMartialArtChoices();
 
             SetPhase(GamePhase.LevelUpPaused);
             statusMessage = "修为突破：选择一门武学。所有时间暂停。";
+        }
+
+        private void GenerateMartialArtChoices()
+        {
+            currentChoices.Clear();
+            List<string> available = GetEligibleMartialArts();
+            if (available.Count == 0)
+            {
+                return;
+            }
+
+            bool hasAnySchool = playerStats.martialArtRanks.Count > 0;
+            if (!hasAnySchool)
+            {
+                foreach (MartialArtSchool school in Enum.GetValues(typeof(MartialArtSchool)))
+                {
+                    AddRandomChoice(available.Where(id =>
+                        MartialArtCatalog.Get(id).school == school &&
+                        MartialArtCatalog.Get(id).isStarter).ToList());
+                }
+            }
+            else
+            {
+                MartialArtSchool dominantSchool = GetDominantSchool();
+                AddRandomChoice(available.Where(id =>
+                    MartialArtCatalog.Get(id).school == dominantSchool).ToList());
+
+                AddRandomChoice(available.Where(id =>
+                    MartialArtCatalog.Get(id).school != dominantSchool &&
+                    MartialArtCatalog.Get(id).isStarter).ToList());
+
+                AddRandomChoice(available);
+            }
+
+            while (currentChoices.Count < 3)
+            {
+                int before = currentChoices.Count;
+                AddRandomChoice(available);
+                if (currentChoices.Count == before)
+                {
+                    break;
+                }
+            }
+
+            for (int i = currentChoices.Count - 1; i > 0; i--)
+            {
+                int swapIndex = UnityEngine.Random.Range(0, i + 1);
+                (currentChoices[i], currentChoices[swapIndex]) =
+                    (currentChoices[swapIndex], currentChoices[i]);
+            }
+        }
+
+        private List<string> GetEligibleMartialArts()
+        {
+            List<string> available = new List<string>();
+            foreach (string artId in allMartialArts)
+            {
+                MartialArtDefinition definition = MartialArtCatalog.Get(artId);
+                if (definition == null || playerStats.GetMartialArtRank(artId) >= definition.maxRank)
+                {
+                    continue;
+                }
+
+                if (definition.isStarter || playerStats.HasMartialArtSchool(definition.school))
+                {
+                    available.Add(artId);
+                }
+            }
+
+            return available;
+        }
+
+        private MartialArtSchool GetDominantSchool()
+        {
+            MartialArtSchool dominant = MartialArtSchool.SwiftSword;
+            int highestRank = -1;
+            foreach (MartialArtSchool school in Enum.GetValues(typeof(MartialArtSchool)))
+            {
+                int rank = playerStats.GetMartialArtSchoolRank(school);
+                if (rank > highestRank)
+                {
+                    highestRank = rank;
+                    dominant = school;
+                }
+            }
+
+            return dominant;
+        }
+
+        private void AddRandomChoice(List<string> candidates)
+        {
+            candidates.RemoveAll(currentChoices.Contains);
+            if (candidates.Count == 0)
+            {
+                return;
+            }
+
+            currentChoices.Add(candidates[UnityEngine.Random.Range(0, candidates.Count)]);
         }
 
         private void EndRun(bool victory, string reason)

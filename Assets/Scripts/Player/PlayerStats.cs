@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using WuxiaRoguelite.MartialArts;
 using WuxiaRoguelite.Runtime;
 
 namespace WuxiaRoguelite.Player
@@ -29,6 +30,7 @@ namespace WuxiaRoguelite.Player
         public int killCount;
         public int caveEntries;
         public readonly List<string> learnedMartialArts = new List<string>();
+        public readonly Dictionary<string, int> martialArtRanks = new Dictionary<string, int>();
 
         private readonly int[] levelRequirements = { 20, 35, 55, 80, 120 };
 
@@ -52,6 +54,7 @@ namespace WuxiaRoguelite.Player
             killCount = 0;
             caveEntries = 0;
             learnedMartialArts.Clear();
+            martialArtRanks.Clear();
             equipment?.ResetRun(this);
         }
 
@@ -103,40 +106,80 @@ namespace WuxiaRoguelite.Player
             return equipment == null ? string.Empty : equipment.AddTreasureItem();
         }
 
-        public void ApplyMartialArt(string artId)
+        public int GetMartialArtRank(string artId)
         {
-            if (string.IsNullOrEmpty(artId))
+            return !string.IsNullOrEmpty(artId) && martialArtRanks.TryGetValue(artId, out int rank)
+                ? rank
+                : 0;
+        }
+
+        public bool HasMartialArtSchool(MartialArtSchool school)
+        {
+            foreach (KeyValuePair<string, int> entry in martialArtRanks)
             {
-                return;
+                MartialArtDefinition definition = MartialArtCatalog.Get(entry.Key);
+                if (entry.Value > 0 && definition != null && definition.school == school)
+                {
+                    return true;
+                }
             }
 
-            learnedMartialArts.Add(artId);
+            return false;
+        }
+
+        public int GetMartialArtSchoolRank(MartialArtSchool school)
+        {
+            int total = 0;
+            foreach (KeyValuePair<string, int> entry in martialArtRanks)
+            {
+                MartialArtDefinition definition = MartialArtCatalog.Get(entry.Key);
+                if (definition != null && definition.school == school)
+                {
+                    total += entry.Value;
+                }
+            }
+
+            return total;
+        }
+
+        public int ApplyMartialArt(string artId)
+        {
+            MartialArtDefinition definition = MartialArtCatalog.Get(artId);
+            if (definition == null)
+            {
+                return 0;
+            }
+
+            int currentRank = GetMartialArtRank(artId);
+            if (currentRank >= definition.maxRank)
+            {
+                return currentRank;
+            }
+
+            int newRank = currentRank + 1;
+            martialArtRanks[artId] = newRank;
+            if (currentRank == 0)
+            {
+                learnedMartialArts.Add(artId);
+            }
 
             switch (artId)
             {
-                case "剑气诀":
-                    runtimeStats.attack += 5f;
-                    break;
                 case "疾剑式":
-                    runtimeStats.attackSpeed += 0.18f;
+                    runtimeStats.attackSpeed += 0.12f;
                     break;
                 case "铁布衫":
-                    float healthGain = runtimeStats.maxHealth * 0.25f;
+                    float healthGain = runtimeStats.maxHealth * 0.15f;
                     runtimeStats.maxHealth += healthGain;
                     runtimeStats.Heal(healthGain);
-                    runtimeStats.defense += 2f;
+                    runtimeStats.defense += 1f;
                     break;
                 case "吸星诀":
-                    runtimeStats.lifeSteal += 0.08f;
-                    break;
-                case "毒砂掌":
-                    runtimeStats.attack += 3f;
-                    runtimeStats.critChance += 0.03f;
-                    break;
-                case "破甲掌":
-                    runtimeStats.attack += 7f;
+                    runtimeStats.lifeSteal = Mathf.Clamp01(runtimeStats.lifeSteal + 0.04f);
                     break;
             }
+
+            return newRank;
         }
     }
 }

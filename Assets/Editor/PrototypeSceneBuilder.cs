@@ -706,11 +706,23 @@ namespace WuxiaRoguelite.EditorTools
                 {
                     throw new InvalidOperationException("Equipment validation failed while equipping a weapon.");
                 }
+                if (equipment.GetSwordQiDamageRatio(3) <= 0f)
+                {
+                    throw new InvalidOperationException("Equipment validation failed for the Qinggang sword trigger.");
+                }
 
                 equipment.Unequip(EquipmentSlot.Weapon);
                 if (!Mathf.Approximately(stats.runtimeStats.attack, baseAttack))
                 {
                     throw new InvalidOperationException("Equipment validation failed while unequipping a weapon.");
+                }
+
+                stats.ApplyMartialArt("剑气诀");
+                stats.ApplyMartialArt("剑气诀");
+                if (stats.GetMartialArtRank("剑气诀") != 2 ||
+                    stats.learnedMartialArts.Count(art => art == "剑气诀") != 1)
+                {
+                    throw new InvalidOperationException("Martial art rank validation failed.");
                 }
             }
             finally
@@ -855,7 +867,10 @@ namespace WuxiaRoguelite.EditorTools
                 Icon("铁布衫", TieBuShanIconPath),
                 Icon("吸星诀", XiXingIconPath),
                 Icon("毒砂掌", DuShaZhangIconPath),
-                Icon("破甲掌", PoJiaZhangIconPath)
+                Icon("破甲掌", PoJiaZhangIconPath),
+                Icon("百毒心经", DuShaZhangIconPath),
+                Icon("金钟罩", TieBuShanIconPath),
+                Icon("反震诀", TieBuShanIconPath)
             };
             hud.equipmentItemIcons = new[]
             {
@@ -863,7 +878,8 @@ namespace WuxiaRoguelite.EditorTools
                 Icon("light_scale", LightScaleIconPath),
                 Icon("practice_bracer", PracticeBracerIconPath),
                 Icon("black_iron_ring", BlackIronRingIconPath),
-                Icon("wanderer_cloak", WandererCloakIconPath)
+                Icon("wanderer_cloak", WandererCloakIconPath),
+                Icon("poison_dart_pouch", BlackIronRingIconPath)
             };
         }
 

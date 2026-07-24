@@ -29,6 +29,14 @@ namespace WuxiaRoguelite.Player
         public float attackSpeedBonus;
         public float critChanceBonus;
         public float dodgeChanceBonus;
+        public int swordQiInterval;
+        public float swordQiDamageRatio;
+        public float openingShield;
+        public float armorBreakPerHit;
+        public int poisonStacksPerHit;
+        public float criticalCooldownMultiplier = 1f;
+        public float dodgeHealRatio;
+        public string effectSummary;
 
         public string BonusSummary
         {
@@ -41,6 +49,16 @@ namespace WuxiaRoguelite.Player
                 AppendBonus(ref summary, "攻速", attackSpeedBonus, true);
                 AppendBonus(ref summary, "暴击", critChanceBonus * 100f, true, "%");
                 AppendBonus(ref summary, "闪避", dodgeChanceBonus * 100f, true, "%");
+                if (!string.IsNullOrEmpty(effectSummary))
+                {
+                    if (!string.IsNullOrEmpty(summary))
+                    {
+                        summary += "  ·  ";
+                    }
+
+                    summary += effectSummary;
+                }
+
                 return string.IsNullOrEmpty(summary) ? "无属性加成" : summary;
             }
         }

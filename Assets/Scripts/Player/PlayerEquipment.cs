@@ -30,9 +30,17 @@ namespace WuxiaRoguelite.Player
             equippedAccessory = null;
             BuildTreasurePool();
 
-            AddItem(Item("qinggang_sword", "青钢剑", EquipmentSlot.Weapon, EquipmentRarity.Common, attack: 4f));
-            AddItem(Item("light_scale", "轻鳞衣", EquipmentSlot.Armor, EquipmentRarity.Fine, defense: 2f, health: 18f));
-            AddItem(Item("practice_bracer", "练功护腕", EquipmentSlot.Accessory, EquipmentRarity.Common, speed: 0.08f));
+            AddItem(Item("qinggang_sword", "青钢剑", EquipmentSlot.Weapon,
+                EquipmentRarity.Common, attack: 4f,
+                swordQiInterval: 3, swordQiDamageRatio: 0.35f,
+                effectSummary: "每 3 次命中追加 35% 攻击剑气"));
+            AddItem(Item("light_scale", "轻鳞衣", EquipmentSlot.Armor,
+                EquipmentRarity.Fine, defense: 2f, health: 18f,
+                openingShield: 10f, effectSummary: "每场战斗获得 10 点护盾"));
+            AddItem(Item("practice_bracer", "练功护腕", EquipmentSlot.Accessory,
+                EquipmentRarity.Common, speed: 0.08f,
+                criticalCooldownMultiplier: 0.70f,
+                effectSummary: "暴击后下次攻击间隔缩短 30%"));
         }
 
         public void Equip(EquipmentItem item)
@@ -80,17 +88,69 @@ namespace WuxiaRoguelite.Player
 
         public string AddTreasureItem()
         {
+            List<EquipmentItem> available = new List<EquipmentItem>();
             foreach (EquipmentItem template in treasurePool)
             {
                 if (!inventory.Exists(item => item.id == template.id))
                 {
-                    EquipmentItem reward = template.Clone();
-                    AddItem(reward);
-                    return reward.displayName;
+                    available.Add(template);
                 }
             }
 
-            return string.Empty;
+            if (available.Count == 0)
+            {
+                return string.Empty;
+            }
+
+            EquipmentItem reward = available[Random.Range(0, available.Count)].Clone();
+            AddItem(reward);
+            return reward.displayName;
+        }
+
+        public float GetOpeningShield()
+        {
+            return SumEquipped(item => item.openingShield);
+        }
+
+        public float GetArmorBreakPerHit()
+        {
+            return SumEquipped(item => item.armorBreakPerHit);
+        }
+
+        public int GetPoisonStacksPerHit()
+        {
+            return Mathf.RoundToInt(SumEquipped(item => item.poisonStacksPerHit));
+        }
+
+        public float GetSwordQiDamageRatio(int successfulHitCount)
+        {
+            float ratio = 0f;
+            VisitEquipped(item =>
+            {
+                if (item.swordQiInterval > 0 && successfulHitCount % item.swordQiInterval == 0)
+                {
+                    ratio += item.swordQiDamageRatio;
+                }
+            });
+            return ratio;
+        }
+
+        public float GetCriticalCooldownMultiplier()
+        {
+            float multiplier = 1f;
+            VisitEquipped(item =>
+            {
+                if (item.criticalCooldownMultiplier > 0f)
+                {
+                    multiplier = Mathf.Min(multiplier, item.criticalCooldownMultiplier);
+                }
+            });
+            return multiplier;
+        }
+
+        public float GetDodgeHealRatio()
+        {
+            return SumEquipped(item => item.dodgeHealRatio);
         }
 
         private void AddItem(EquipmentItem item)
@@ -146,8 +206,15 @@ namespace WuxiaRoguelite.Player
                 return;
             }
 
-            treasurePool.Add(Item("black_iron_ring", "玄铁戒", EquipmentSlot.Accessory, EquipmentRarity.Rare, attack: 2f, crit: 0.04f));
-            treasurePool.Add(Item("wanderer_cloak", "游侠披风", EquipmentSlot.Armor, EquipmentRarity.Rare, health: 12f, dodge: 0.04f));
+            treasurePool.Add(Item("black_iron_ring", "玄铁戒", EquipmentSlot.Accessory,
+                EquipmentRarity.Rare, attack: 2f, crit: 0.04f,
+                armorBreakPerHit: 0.35f, effectSummary: "命中破甲 0.35"));
+            treasurePool.Add(Item("wanderer_cloak", "游侠披风", EquipmentSlot.Armor,
+                EquipmentRarity.Rare, health: 12f, dodge: 0.04f,
+                dodgeHealRatio: 0.03f, effectSummary: "闪避时恢复 3% 气血"));
+            treasurePool.Add(Item("poison_dart_pouch", "毒镖囊", EquipmentSlot.Accessory,
+                EquipmentRarity.Rare, attack: 1f, poisonStacksPerHit: 1,
+                effectSummary: "命中额外施加 1 层毒"));
         }
 
         private static EquipmentItem Item(
@@ -160,7 +227,15 @@ namespace WuxiaRoguelite.Player
             float health = 0f,
             float speed = 0f,
             float crit = 0f,
-            float dodge = 0f)
+            float dodge = 0f,
+            int swordQiInterval = 0,
+            float swordQiDamageRatio = 0f,
+            float openingShield = 0f,
+            float armorBreakPerHit = 0f,
+            int poisonStacksPerHit = 0,
+            float criticalCooldownMultiplier = 1f,
+            float dodgeHealRatio = 0f,
+            string effectSummary = "")
         {
             return new EquipmentItem
             {
@@ -173,8 +248,41 @@ namespace WuxiaRoguelite.Player
                 maxHealthBonus = health,
                 attackSpeedBonus = speed,
                 critChanceBonus = crit,
-                dodgeChanceBonus = dodge
+                dodgeChanceBonus = dodge,
+                swordQiInterval = swordQiInterval,
+                swordQiDamageRatio = swordQiDamageRatio,
+                openingShield = openingShield,
+                armorBreakPerHit = armorBreakPerHit,
+                poisonStacksPerHit = poisonStacksPerHit,
+                criticalCooldownMultiplier = criticalCooldownMultiplier,
+                dodgeHealRatio = dodgeHealRatio,
+                effectSummary = effectSummary
             };
+        }
+
+        private float SumEquipped(System.Func<EquipmentItem, float> selector)
+        {
+            float total = 0f;
+            VisitEquipped(item => total += selector(item));
+            return total;
+        }
+
+        private void VisitEquipped(System.Action<EquipmentItem> visitor)
+        {
+            if (equippedWeapon != null)
+            {
+                visitor(equippedWeapon);
+            }
+
+            if (equippedArmor != null)
+            {
+                visitor(equippedArmor);
+            }
+
+            if (equippedAccessory != null)
+            {
+                visitor(equippedAccessory);
+            }
         }
     }
 }

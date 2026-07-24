@@ -285,7 +285,7 @@ namespace WuxiaRoguelite.UI
 
         private void DrawStatus(Rect rect)
         {
-            const float contentHeight = 350f;
+            const float contentHeight = 405f;
             bool needsScroll = rect.height < contentHeight;
             if (needsScroll)
             {
@@ -315,7 +315,7 @@ namespace WuxiaRoguelite.UI
             }
             else
             {
-                string[] learned = playerStats.learnedMartialArts.Take(6).ToArray();
+                string[] learned = playerStats.learnedMartialArts.Take(9).ToArray();
                 const float gap = 8f;
                 float tileWidth = (rect.width - gap * 2f) / 3f;
                 for (int i = 0; i < learned.Length; i++)
@@ -412,13 +412,13 @@ namespace WuxiaRoguelite.UI
         {
             FillRect(new Rect(0f, 0f, Screen.width, Screen.height),
                 new Color(0.02f, 0.025f, 0.025f, 0.72f));
-            Rect panel = CenteredRect(640f, 300f);
+            Rect panel = CenteredRect(660f, 340f);
             DrawPanel(panel, new Color(0.09f, 0.105f, 0.105f, 1f), Gold);
             GUI.Label(new Rect(panel.x + 18f, panel.y + 12f, panel.width - 36f, 32f), "修为突破", titleStyle);
 
             float detailsWidth = Mathf.Clamp(panel.width * 0.39f, 210f, 244f);
             Rect choicesArea = new Rect(panel.x + 18f, panel.y + 54f,
-                panel.width - detailsWidth - 50f, panel.height - 72f);
+                panel.width - detailsWidth - 50f, panel.height - 112f);
             Rect detailsArea = new Rect(choicesArea.xMax + 14f, choicesArea.y,
                 detailsWidth, choicesArea.height);
             string hoveredArt = null;
@@ -437,10 +437,11 @@ namespace WuxiaRoguelite.UI
                 DrawIcon(new Rect(card.x + 7f, card.y + 7f, 48f, 48f),
                     FindMartialArtIcon(artId), CategoryColor(MartialArtCatalog.Get(artId)?.category));
                 GUI.Label(new Rect(card.x + 65f, card.y + 5f, card.width - 74f, 26f),
-                    artId, headingStyle);
+                    GetOfferName(artId), headingStyle);
                 MartialArtDefinition definition = MartialArtCatalog.Get(artId);
                 GUI.Label(new Rect(card.x + 65f, card.y + 31f, card.width - 74f, 22f),
-                    definition?.effectSummary ?? "查看效果", mutedStyle);
+                    definition?.GetEffectSummary(playerStats.GetMartialArtRank(artId) + 1) ?? "查看效果",
+                    mutedStyle);
 
                 if (selected)
                 {
@@ -454,6 +455,14 @@ namespace WuxiaRoguelite.UI
                 hoveredArt = gameFlow.currentChoices[0];
             }
             DrawMartialArtTooltip(detailsArea, hoveredArt);
+
+            GUI.enabled = gameFlow.martialArtRerollsRemaining > 0;
+            if (GUI.Button(new Rect(choicesArea.x, panel.yMax - 44f, choicesArea.width, 30f),
+                    $"重观残页（剩余 {gameFlow.martialArtRerollsRemaining}）", actionButtonStyle))
+            {
+                gameFlow.RerollMartialArtChoices();
+            }
+            GUI.enabled = true;
         }
 
         private void DrawMartialArtTooltip(Rect rect, string artId)
@@ -471,11 +480,11 @@ namespace WuxiaRoguelite.UI
             }
 
             GUI.Label(new Rect(rect.x + 14f, rect.y + 10f, rect.width - 28f, 28f),
-                definition.id, headingStyle);
+                GetOfferName(definition.id), headingStyle);
             GUI.Label(new Rect(rect.x + 14f, rect.y + 40f, rect.width - 28f, 20f),
-                definition.category, mutedStyle);
+                $"{MartialArtCatalog.SchoolName(definition.school)} · {definition.category}", mutedStyle);
             GUI.Label(new Rect(rect.x + 14f, rect.y + 68f, rect.width - 28f, 44f),
-                definition.effectSummary, tooltipEffectStyle);
+                definition.GetEffectSummary(playerStats.GetMartialArtRank(artId) + 1), tooltipEffectStyle);
             GUI.Label(new Rect(rect.x + 14f, rect.y + 116f, rect.width - 28f, rect.height - 126f),
                 definition.description, bodyStyle);
         }
@@ -487,9 +496,30 @@ namespace WuxiaRoguelite.UI
             DrawIcon(new Rect(rect.x + 5f, rect.y + 5f, 38f, 38f),
                 FindMartialArtIcon(artId), CategoryColor(definition?.category));
             GUI.Label(new Rect(rect.x + 49f, rect.y + 2f, rect.width - 54f, 22f),
-                artId, bodyStyle);
+                $"{artId} · {RankName(playerStats.GetMartialArtRank(artId))}", bodyStyle);
             GUI.Label(new Rect(rect.x + 49f, rect.y + 23f, rect.width - 54f, 20f),
-                definition?.effectSummary ?? string.Empty, mutedStyle);
+                definition?.GetEffectSummary(playerStats.GetMartialArtRank(artId)) ?? string.Empty,
+                mutedStyle);
+        }
+
+        private string GetOfferName(string artId)
+        {
+            return $"{artId} → {RankName(playerStats.GetMartialArtRank(artId) + 1)}";
+        }
+
+        private static string RankName(int rank)
+        {
+            switch (rank)
+            {
+                case 1:
+                    return "一重";
+                case 2:
+                    return "二重";
+                case 3:
+                    return "三重";
+                default:
+                    return $"{rank} 重";
+            }
         }
 
         private static void DrawIcon(Rect rect, Texture2D icon, Color accent)
@@ -505,12 +535,31 @@ namespace WuxiaRoguelite.UI
 
         private Texture2D FindMartialArtIcon(string id)
         {
-            return FindIcon(martialArtIcons, id);
+            Texture2D icon = FindIcon(martialArtIcons, id);
+            if (icon != null)
+            {
+                return icon;
+            }
+
+            if (id == "百毒心经")
+            {
+                return FindIcon(martialArtIcons, "毒砂掌");
+            }
+
+            if (id == "金钟罩" || id == "反震诀")
+            {
+                return FindIcon(martialArtIcons, "铁布衫");
+            }
+
+            return null;
         }
 
         private Texture2D FindEquipmentIcon(string id)
         {
-            return FindIcon(equipmentItemIcons, id);
+            Texture2D icon = FindIcon(equipmentItemIcons, id);
+            return icon != null || id != "poison_dart_pouch"
+                ? icon
+                : FindIcon(equipmentItemIcons, "black_iron_ring");
         }
 
         private static Texture2D FindIcon(IconEntry[] entries, string id)

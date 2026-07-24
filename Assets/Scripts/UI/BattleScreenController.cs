@@ -99,7 +99,7 @@ namespace WuxiaRoguelite.UI
             DrawHeader(width, height);
 
             float sidePadding = Mathf.Clamp(width * 0.035f, 12f, 28f);
-            float healthTop = Mathf.Clamp(height * 0.21f, 72f, 100f);
+            float healthTop = Mathf.Clamp(height * 0.21f, 94f, 112f);
             float healthHeight = Mathf.Clamp(height * 0.15f, 52f, 68f);
             float healthWidth = Mathf.Min(340f, width * 0.42f);
             Rect playerHealthRect = new Rect(sidePadding, healthTop, healthWidth, healthHeight);
@@ -301,7 +301,11 @@ namespace WuxiaRoguelite.UI
             }
 
             GUI.Label(new Rect(0f, 42f, width, 25f), timerText, timerStyle);
-            FillRect(new Rect(width * 0.18f, Mathf.Min(70f, height * 0.19f), width * 0.64f, 1f), new Color(1f, 1f, 1f, 0.12f));
+            string buildStatus =
+                $"护盾 {battleManager.PlayerShield:0}  ·  敌方毒层 {battleManager.EnemyPoisonStacks}  ·  破甲 {battleManager.EnemyArmorBreak:0.0}";
+            GUI.Label(new Rect(0f, 65f, width, 22f), buildStatus, centerStyle);
+            FillRect(new Rect(width * 0.18f, Mathf.Min(90f, height * 0.19f), width * 0.64f, 1f),
+                new Color(1f, 1f, 1f, 0.12f));
         }
 
         private void DrawFighter(Rect rect, Color color, string mark, bool facesLeft, Sprite[] frames, bool attacking, float actionProgress)
