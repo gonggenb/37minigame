@@ -123,7 +123,7 @@ namespace WuxiaRoguelite.EditorTools
             Sprite[] bambooPuppetAttack = LoadFrames(BambooPuppetAttackPath, fallbackSprite);
             Sprite[] combatImpactFrames = LoadFrames(CombatImpactVfxPath, fallbackSprite);
             Sprite goldSprite = LoadSingleSprite(GoldPath, fallbackSprite);
-            Sprite herbSprite = LoadSingleSprite(HerbPath, fallbackSprite);
+            Sprite[] herbFrames = LoadFrames(HerbPath, fallbackSprite);
 
             Scene scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
 
@@ -242,13 +242,13 @@ namespace WuxiaRoguelite.EditorTools
 
             CreateEncounter("东市宝箱", new[] { goldSprite }, null, new Vector3(10.5f, 0f, 7.5f), EncounterType.Treasure, Stats("宝箱", 1, 0, 0, 1f), 15, 8, 0.9f);
             CreateEncounter("西路宝箱", new[] { goldSprite }, null, new Vector3(-12f, 0f, 1.5f), EncounterType.Treasure, Stats("宝箱", 1, 0, 0, 1f), 12, 6, 0.9f);
-            CreateEncounter("南桥药草", new[] { herbSprite }, null, new Vector3(0f, 0f, -10f), EncounterType.Herb, Stats("药草", 1, 0, 0, 1f), 0, 0, 0.85f);
-            CreateEncounter("北门药草", new[] { herbSprite }, null, new Vector3(1.5f, 0f, 10f), EncounterType.Herb, Stats("药草", 1, 0, 0, 1f), 0, 0, 0.85f);
+            CreateEncounter("南桥药草", herbFrames, null, new Vector3(0f, 0f, -10f), EncounterType.Herb, Stats("药草", 1, 0, 0, 1f), 0, 0, 0.85f);
+            CreateEncounter("北门药草", herbFrames, null, new Vector3(1.5f, 0f, 10f), EncounterType.Herb, Stats("药草", 1, 0, 0, 1f), 0, 0, 0.85f);
 
             ApplyMainMapExpansion(
                 enemyIdle, enemyRun, eliteIdle, eliteRun, blueIdle, blueRun, caveIdle, caveRun,
                 ratRun, riderRun, ballistaFly,
-                inkWolfIdle, stoneApeIdle, bambooPuppetIdle, goldSprite, herbSprite);
+                inkWolfIdle, stoneApeIdle, bambooPuppetIdle, goldSprite, herbFrames);
             ValidateEquipmentModel();
             EditorSceneManager.SaveScene(scene, ScenePath);
             EditorBuildSettings.scenes = new[] { new EditorBuildSettingsScene(ScenePath, true) };
@@ -494,12 +494,12 @@ namespace WuxiaRoguelite.EditorTools
             Sprite[] bambooPuppetIdle = LoadFrames(BambooPuppetIdlePath, fallbackSprite);
             Sprite[] bambooPuppetAttack = LoadFrames(BambooPuppetAttackPath, fallbackSprite);
             Sprite goldSprite = LoadSingleSprite(GoldPath, fallbackSprite);
-            Sprite herbSprite = LoadSingleSprite(HerbPath, fallbackSprite);
+            Sprite[] herbFrames = LoadFrames(HerbPath, fallbackSprite);
 
             ApplyMainMapExpansion(
                 enemyIdle, enemyRun, eliteIdle, eliteRun, blueIdle, blueRun, caveIdle, caveRun,
                 ratRun, riderRun, ballistaFly,
-                inkWolfIdle, stoneApeIdle, bambooPuppetIdle, goldSprite, herbSprite);
+                inkWolfIdle, stoneApeIdle, bambooPuppetIdle, goldSprite, herbFrames);
 
             BattleScreenController battleScreen = UnityEngine.Object.FindAnyObjectByType<BattleScreenController>();
             if (battleScreen != null)
@@ -809,7 +809,7 @@ namespace WuxiaRoguelite.EditorTools
             }
 
             ConfigureSingleSprite(GoldPath, 64f);
-            ConfigureSingleSprite(HerbPath, 64f);
+            ConfigureSpriteSheet(HerbPath, 128, 128, 64f);
             ConfigureUiTexture(StatusIconPath);
             ConfigureUiTexture(EquipmentIconPath);
             ConfigureUiTexture(HealthBarBasePath);
@@ -1310,7 +1310,7 @@ namespace WuxiaRoguelite.EditorTools
             Sprite[] blueIdle, Sprite[] blueRun, Sprite[] purpleIdle, Sprite[] purpleRun,
             Sprite[] ratRun, Sprite[] riderRun, Sprite[] ballistaFly,
             Sprite[] inkWolfIdle, Sprite[] stoneApeIdle, Sprite[] bambooPuppetIdle,
-            Sprite goldSprite, Sprite herbSprite)
+            Sprite goldSprite, Sprite[] herbFrames)
         {
             GameObject mapRoot = GameObject.Find("3D Prototype Map");
             if (mapRoot == null)
@@ -1450,7 +1450,7 @@ namespace WuxiaRoguelite.EditorTools
                 Stats("岩窟守卫", 175, 16, 5, 0.82f, "stone_ape"), 42, 14, CaveContentType.Enemy);
             GameObject northTreasure = CreateEncounter("北岭宝箱", new[] { goldSprite }, null, new Vector3(-7f, 0f, 16.2f),
                 EncounterType.Treasure, Stats("宝箱", 1, 0, 0, 1f), 18, 10, 0.9f);
-            GameObject eastHerb = CreateEncounter("东郊药草", new[] { herbSprite }, null, new Vector3(19.5f, 0f, 1.8f),
+            GameObject eastHerb = CreateEncounter("东郊药草", herbFrames, null, new Vector3(19.5f, 0f, 1.8f),
                 EncounterType.Herb, Stats("药草", 1, 0, 0, 1f), 0, 0, 0.85f);
 
             GameObject[] regionalEncounters =

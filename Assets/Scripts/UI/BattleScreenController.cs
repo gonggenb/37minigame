@@ -289,7 +289,9 @@ namespace WuxiaRoguelite.UI
             string timerText;
             if (gameFlow.CurrentPhase == GamePhase.NormalBattleRunning)
             {
-                timerText = $"主地图倒数持续流逝  {gameFlow.mainTimeRemaining:0.0}s";
+                timerText = gameFlow.IsBossTransitionPending
+                    ? "主地图时间已尽 · 本场结束后挑战 Boss"
+                    : $"主地图倒数持续流逝  {gameFlow.mainTimeRemaining:0.0}s";
             }
             else if (gameFlow.CurrentPhase == GamePhase.CaveRunning)
             {

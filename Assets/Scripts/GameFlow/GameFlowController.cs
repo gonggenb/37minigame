@@ -41,6 +41,7 @@ namespace WuxiaRoguelite.GameFlow
 
         public GamePhase CurrentPhase { get; private set; } = GamePhase.Ready;
         public bool IsCharacterMenuPaused { get; private set; }
+        public bool IsBossTransitionPending { get; private set; }
         public string statusMessage = "按开始进入江湖";
         public bool bossDefeated;
         public int pendingCultivationReward;
@@ -75,7 +76,14 @@ namespace WuxiaRoguelite.GameFlow
                 if (mainTimeRemaining <= 0f)
                 {
                     mainTimeRemaining = 0f;
-                    BeginBossBattle();
+                    if (CurrentPhase == GamePhase.NormalBattleRunning)
+                    {
+                        MarkBossTransitionPending();
+                    }
+                    else
+                    {
+                        BeginBossBattle();
+                    }
                 }
             }
 
@@ -109,6 +117,7 @@ namespace WuxiaRoguelite.GameFlow
             mainTimeRemaining = mainTimeLimit;
             bossBattleTime = 0f;
             bossDefeated = false;
+            IsBossTransitionPending = false;
             pendingCultivationReward = 0;
             pendingCopperReward = 0;
             currentChoices.Clear();
@@ -266,11 +275,19 @@ namespace WuxiaRoguelite.GameFlow
             pendingCultivationReward = 0;
             pendingCopperReward = 0;
 
-            if (CurrentPhase != GamePhase.LevelUpPaused)
+            if (CurrentPhase == GamePhase.LevelUpPaused)
             {
-                SetPhase(GamePhase.MainMapRunning);
-                statusMessage = "战斗胜利，返回主地图。";
+                return;
             }
+
+            if (mainTimeRemaining <= 0f)
+            {
+                BeginBossBattle();
+                return;
+            }
+
+            SetPhase(GamePhase.MainMapRunning);
+            statusMessage = "战斗胜利，返回主地图。";
         }
 
         private void BeginHiddenCave(EncounterTrigger encounter)
@@ -372,13 +389,19 @@ namespace WuxiaRoguelite.GameFlow
                 return;
             }
 
+            IsBossTransitionPending = false;
             caveRoom?.ResetRoom();
             battleManager.CancelBattle();
+            if (playerStats != null && playerStats.runtimeStats != null)
+            {
+                playerStats.runtimeStats.ResetHealth();
+            }
+
             bossBattleTime = 0f;
             CombatantStats boss = bossStats.Clone();
             boss.ResetHealth();
             SetPhase(GamePhase.BossBattle);
-            statusMessage = "最终 Boss 战开始：不再消耗主地图 60 秒时间。";
+            statusMessage = "气血已恢复，最终 Boss 战开始：不再消耗主地图 60 秒时间。";
             battleManager.BeginBattle(boss, OnBossBattleFinished);
         }
 
@@ -509,6 +532,7 @@ namespace WuxiaRoguelite.GameFlow
 
         private void EndRun(bool victory, string reason)
         {
+            IsBossTransitionPending = false;
             if (battleManager != null)
             {
                 battleManager.CancelBattle();
@@ -518,6 +542,17 @@ namespace WuxiaRoguelite.GameFlow
             bossDefeated = victory;
             SetPhase(GamePhase.Result);
             statusMessage = reason;
+        }
+
+        private void MarkBossTransitionPending()
+        {
+            if (IsBossTransitionPending)
+            {
+                return;
+            }
+
+            IsBossTransitionPending = true;
+            statusMessage = "主地图时间已尽：完成当前战斗后进入最终 Boss 战。";
         }
 
         private void SetPhase(GamePhase phase)
