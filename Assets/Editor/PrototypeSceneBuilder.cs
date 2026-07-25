@@ -62,6 +62,13 @@ namespace WuxiaRoguelite.EditorTools
         private const string StoneApeAttackPath = GeneratedEnemyRoot + "/StoneApe/spr_enemy_stone_ape_attack_right_8f_v01.png";
         private const string BambooPuppetIdlePath = GeneratedEnemyRoot + "/BambooPuppet/spr_enemy_bamboo_puppet_idle_right_8f_v01.png";
         private const string BambooPuppetAttackPath = GeneratedEnemyRoot + "/BambooPuppet/spr_enemy_bamboo_puppet_attack_right_8f_v01.png";
+        private const string GeneratedBossRoot = "Assets/Art/Generated/Characters/Bosses";
+        private const string OrcWarlordIdlePath = GeneratedBossRoot + "/OrcWarlord/spr_boss_orc_warlord_idle_right_8f_v01.png";
+        private const string OrcWarlordAttackPath = GeneratedBossRoot + "/OrcWarlord/spr_boss_orc_warlord_attack_right_8f_v01.png";
+        private const string OrcCaveGuardianIdlePath = GeneratedEnemyRoot + "/OrcCaveGuardian/spr_enemy_orc_cave_guardian_idle_right_8f_v01.png";
+        private const string OrcCaveGuardianAttackPath = GeneratedEnemyRoot + "/OrcCaveGuardian/spr_enemy_orc_cave_guardian_attack_right_8f_v01.png";
+        private const float BossBattleVisualScale = 1.62f;
+        private const float CaveBattleVisualScale = 1.48f;
         private const string CombatImpactVfxPath = "Assets/Art/Generated/Effects/spr_vfx_wuxia_impact_6f_v01.png";
         private const string CombatAudioRoot = "Assets/Audio/Generated/Combat";
         private const string CombatSwingSfxPath = CombatAudioRoot + "/sfx_combat_sword_swing_v01.wav";
@@ -206,6 +213,7 @@ namespace WuxiaRoguelite.EditorTools
             battleScreen.caveIdleFrames = stoneApeIdle;
             battleScreen.caveAttackFrames = stoneApeAttack;
             battleScreen.impactEffectFrames = combatImpactFrames;
+            battleScreen.bossSpriteScale = BossBattleVisualScale;
             battleScreen.enemyVisualProfiles = CreateEnemyVisualProfiles(
                 ratRun, ratAttack, riderRun, riderAttack, ballistaFly, ballistaAttack,
                 inkWolfIdle, inkWolfAttack, stoneApeIdle, stoneApeAttack,
@@ -234,7 +242,7 @@ namespace WuxiaRoguelite.EditorTools
                 EncounterType.EliteEnemy, Stats("玄衣刀客", 135, 13, 4, 0.9f, "stone_ape"), 34, 12, 1.25f);
 
             CreateCaveEncounter("断崖石窟", new Vector3(-11f, 0f, -6f),
-                Stats("守洞武人", 160, 14, 4, 0.85f, "stone_ape"), 35, 12, CaveContentType.Enemy);
+                Stats("守洞武人", 160, 14, 4, 0.85f, "orc_cave_guardian"), 35, 12, CaveContentType.Enemy);
             CreateCaveEncounter("隐市岩洞", new Vector3(11f, 0f, -7f),
                 Stats("云游商人", 1, 0, 0, 1f), 0, 0, CaveContentType.Merchant);
             CreateCaveEncounter("古藏秘窟", new Vector3(-10.5f, 0f, 8f),
@@ -296,7 +304,7 @@ namespace WuxiaRoguelite.EditorTools
                 battleScreen.playerIdleFrames = playerIdle;
                 battleScreen.playerAttackFrames = playerAttack;
                 battleScreen.playerSpriteScale = ActorVisualScale.Medium;
-                battleScreen.bossSpriteScale = ActorVisualScale.Large;
+                battleScreen.bossSpriteScale = BossBattleVisualScale;
                 EditorUtility.SetDirty(battleScreen);
             }
 
@@ -600,6 +608,82 @@ namespace WuxiaRoguelite.EditorTools
             Debug.Log("Enemy variety art refreshed in the active scene.");
         }
 
+        [MenuItem("37 MiniGame/Refresh Orc Battle Presentation")]
+        public static void RefreshOrcBattlePresentation()
+        {
+            string[] requiredSheets =
+            {
+                OrcWarlordIdlePath, OrcWarlordAttackPath,
+                OrcCaveGuardianIdlePath, OrcCaveGuardianAttackPath
+            };
+            if (requiredSheets.Any(path => !File.Exists(path)))
+            {
+                Debug.LogError("Orc battle presentation refresh stopped: one or more generated sprite sheets are missing.");
+                return;
+            }
+
+            ConfigureGeneratedMonsterAssets();
+            Sprite fallbackSprite = GetOrCreatePrototypeSprite();
+            Sprite[] orcWarlordIdle = LoadFrames(OrcWarlordIdlePath, fallbackSprite);
+            Sprite[] orcWarlordAttack = LoadFrames(OrcWarlordAttackPath, fallbackSprite);
+            Sprite[] orcCaveGuardianIdle = LoadFrames(OrcCaveGuardianIdlePath, fallbackSprite);
+            Sprite[] orcCaveGuardianAttack = LoadFrames(OrcCaveGuardianAttackPath, fallbackSprite);
+
+            BattleScreenController battleScreen = UnityEngine.Object.FindAnyObjectByType<BattleScreenController>();
+            if (battleScreen != null)
+            {
+                battleScreen.caveIdleFrames = orcCaveGuardianIdle;
+                battleScreen.caveAttackFrames = orcCaveGuardianAttack;
+                battleScreen.bossSpriteScale = BossBattleVisualScale;
+                battleScreen.enemyVisualProfiles = UpsertEnemyVisualProfile(
+                    battleScreen.enemyVisualProfiles,
+                    CreateEnemyVisualProfile("orc_warlord", orcWarlordIdle, orcWarlordAttack,
+                        BossBattleVisualScale, true));
+                battleScreen.enemyVisualProfiles = UpsertEnemyVisualProfile(
+                    battleScreen.enemyVisualProfiles,
+                    CreateEnemyVisualProfile("orc_cave_guardian", orcCaveGuardianIdle, orcCaveGuardianAttack,
+                        CaveBattleVisualScale, true));
+                EditorUtility.SetDirty(battleScreen);
+            }
+
+            GameFlowController gameFlow = UnityEngine.Object.FindAnyObjectByType<GameFlowController>();
+            if (gameFlow != null && gameFlow.bossStats != null)
+            {
+                gameFlow.bossStats.visualId = "orc_warlord";
+                EditorUtility.SetDirty(gameFlow);
+            }
+
+            foreach (EncounterTrigger caveEncounter in
+                UnityEngine.Object.FindObjectsByType<EncounterTrigger>(FindObjectsInactive.Include, FindObjectsSortMode.None))
+            {
+                if (caveEncounter.encounterType != EncounterType.HiddenCave ||
+                    caveEncounter.caveContent != CaveContentType.Enemy)
+                {
+                    continue;
+                }
+
+                caveEncounter.enemyStats.visualId = "orc_cave_guardian";
+                EditorUtility.SetDirty(caveEncounter);
+            }
+
+            EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
+            EditorSceneManager.SaveOpenScenes();
+            AssetDatabase.SaveAssets();
+            Debug.Log("Orc boss and cave enemy battle presentation refreshed without changing world-map visuals.");
+        }
+
+        private static BattleScreenController.EnemyVisualProfile[] UpsertEnemyVisualProfile(
+            BattleScreenController.EnemyVisualProfile[] profiles,
+            BattleScreenController.EnemyVisualProfile replacement)
+        {
+            List<BattleScreenController.EnemyVisualProfile> result =
+                profiles != null
+                    ? profiles.Where(profile => profile != null && profile.id != replacement.id).ToList()
+                    : new List<BattleScreenController.EnemyVisualProfile>();
+            result.Add(replacement);
+            return result.ToArray();
+        }
+
         private static void ApplyEncounterVisual(string currentName, string displayName, string visualId,
             Sprite[] frames, float visualScale)
         {
@@ -661,7 +745,7 @@ namespace WuxiaRoguelite.EditorTools
             Sprite[] stoneApeIdle, Sprite[] stoneApeAttack,
             Sprite[] bambooPuppetIdle, Sprite[] bambooPuppetAttack)
         {
-            return new[]
+            List<BattleScreenController.EnemyVisualProfile> profiles = new List<BattleScreenController.EnemyVisualProfile>
             {
                 CreateEnemyVisualProfile("blue", inkWolfIdle, inkWolfAttack, ActorVisualScale.Medium, true),
                 CreateEnemyVisualProfile("purple", bambooPuppetIdle, bambooPuppetAttack, ActorVisualScale.Medium, true),
@@ -672,6 +756,26 @@ namespace WuxiaRoguelite.EditorTools
                 CreateEnemyVisualProfile("stone_ape", stoneApeIdle, stoneApeAttack, 1.12f, true),
                 CreateEnemyVisualProfile("bamboo_puppet", bambooPuppetIdle, bambooPuppetAttack, ActorVisualScale.Medium, true)
             };
+
+            string[] requiredOrcSheets =
+            {
+                OrcWarlordIdlePath, OrcWarlordAttackPath,
+                OrcCaveGuardianIdlePath, OrcCaveGuardianAttackPath
+            };
+            if (requiredOrcSheets.All(File.Exists))
+            {
+                Sprite fallbackSprite = GetOrCreatePrototypeSprite();
+                Sprite[] orcWarlordIdle = LoadFrames(OrcWarlordIdlePath, fallbackSprite);
+                Sprite[] orcWarlordAttack = LoadFrames(OrcWarlordAttackPath, fallbackSprite);
+                Sprite[] orcCaveGuardianIdle = LoadFrames(OrcCaveGuardianIdlePath, fallbackSprite);
+                Sprite[] orcCaveGuardianAttack = LoadFrames(OrcCaveGuardianAttackPath, fallbackSprite);
+                profiles.Add(CreateEnemyVisualProfile("orc_warlord", orcWarlordIdle, orcWarlordAttack,
+                    BossBattleVisualScale, true));
+                profiles.Add(CreateEnemyVisualProfile("orc_cave_guardian", orcCaveGuardianIdle,
+                    orcCaveGuardianAttack, CaveBattleVisualScale, true));
+            }
+
+            return profiles.ToArray();
         }
 
         private static BattleScreenController.EnemyVisualProfile CreateEnemyVisualProfile(
@@ -920,7 +1024,9 @@ namespace WuxiaRoguelite.EditorTools
             {
                 InkWolfIdlePath, InkWolfAttackPath,
                 StoneApeIdlePath, StoneApeAttackPath,
-                BambooPuppetIdlePath, BambooPuppetAttackPath
+                BambooPuppetIdlePath, BambooPuppetAttackPath,
+                OrcWarlordIdlePath, OrcWarlordAttackPath,
+                OrcCaveGuardianIdlePath, OrcCaveGuardianAttackPath
             };
 
             foreach (string path in sheets)

@@ -1831,6 +1831,14 @@ MonoBehaviour:
     attackSpeedBonus: 0
     critChanceBonus: 0
     dodgeChanceBonus: 0
+    swordQiInterval: 0
+    swordQiDamageRatio: 0
+    openingShield: 0
+    armorBreakPerHit: 0
+    poisonStacksPerHit: 0
+    criticalCooldownMultiplier: 1
+    dodgeHealRatio: 0
+    effectSummary:
   equippedArmor:
     id: 
     displayName: 
@@ -1842,6 +1850,14 @@ MonoBehaviour:
     attackSpeedBonus: 0
     critChanceBonus: 0
     dodgeChanceBonus: 0
+    swordQiInterval: 0
+    swordQiDamageRatio: 0
+    openingShield: 0
+    armorBreakPerHit: 0
+    poisonStacksPerHit: 0
+    criticalCooldownMultiplier: 1
+    dodgeHealRatio: 0
+    effectSummary:
   equippedAccessory:
     id: 
     displayName: 
@@ -1853,6 +1869,14 @@ MonoBehaviour:
     attackSpeedBonus: 0
     critChanceBonus: 0
     dodgeChanceBonus: 0
+    swordQiInterval: 0
+    swordQiDamageRatio: 0
+    openingShield: 0
+    armorBreakPerHit: 0
+    poisonStacksPerHit: 0
+    criticalCooldownMultiplier: 1
+    dodgeHealRatio: 0
+    effectSummary:
 --- !u!136 &285907370
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -1963,7 +1987,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 27ba1ecb974834e2eb6a455b145ab1b2, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::WuxiaRoguelite.Map.EncounterTrigger
   encounterType: 4
   enemyStats:
@@ -5543,23 +5567,23 @@ MonoBehaviour:
   - {fileID: 744138802, guid: 81530648f75a7443f96ef32b443b599e, type: 3}
   - {fileID: 51258316, guid: 81530648f75a7443f96ef32b443b599e, type: 3}
   caveIdleFrames:
-  - {fileID: -1494867254, guid: 112703df7209e4a638457a015bb656e7, type: 3}
-  - {fileID: -2117690129, guid: 112703df7209e4a638457a015bb656e7, type: 3}
-  - {fileID: 1659547658, guid: 112703df7209e4a638457a015bb656e7, type: 3}
-  - {fileID: -1548012395, guid: 112703df7209e4a638457a015bb656e7, type: 3}
-  - {fileID: -963588432, guid: 112703df7209e4a638457a015bb656e7, type: 3}
-  - {fileID: 1087135067, guid: 112703df7209e4a638457a015bb656e7, type: 3}
-  - {fileID: 1148043344, guid: 112703df7209e4a638457a015bb656e7, type: 3}
-  - {fileID: 2110092666, guid: 112703df7209e4a638457a015bb656e7, type: 3}
+  - {fileID: -1403094538, guid: db2529814160a4b8fb35890d60d7a470, type: 3}
+  - {fileID: 881380034, guid: db2529814160a4b8fb35890d60d7a470, type: 3}
+  - {fileID: -1439095882, guid: db2529814160a4b8fb35890d60d7a470, type: 3}
+  - {fileID: 82448475, guid: db2529814160a4b8fb35890d60d7a470, type: 3}
+  - {fileID: -814517021, guid: db2529814160a4b8fb35890d60d7a470, type: 3}
+  - {fileID: 1786560445, guid: db2529814160a4b8fb35890d60d7a470, type: 3}
+  - {fileID: 1824175569, guid: db2529814160a4b8fb35890d60d7a470, type: 3}
+  - {fileID: 1187319444, guid: db2529814160a4b8fb35890d60d7a470, type: 3}
   caveAttackFrames:
-  - {fileID: 1675244261, guid: 452a05df1ecd14aefb380c9dde5b17f6, type: 3}
-  - {fileID: 610379642, guid: 452a05df1ecd14aefb380c9dde5b17f6, type: 3}
-  - {fileID: 134748992, guid: 452a05df1ecd14aefb380c9dde5b17f6, type: 3}
-  - {fileID: 480329330, guid: 452a05df1ecd14aefb380c9dde5b17f6, type: 3}
-  - {fileID: 1297101961, guid: 452a05df1ecd14aefb380c9dde5b17f6, type: 3}
-  - {fileID: -366004905, guid: 452a05df1ecd14aefb380c9dde5b17f6, type: 3}
-  - {fileID: 364593753, guid: 452a05df1ecd14aefb380c9dde5b17f6, type: 3}
-  - {fileID: -91949607, guid: 452a05df1ecd14aefb380c9dde5b17f6, type: 3}
+  - {fileID: -1365537198, guid: 4669558828cf64da69d3885a63dbadad, type: 3}
+  - {fileID: 1605930037, guid: 4669558828cf64da69d3885a63dbadad, type: 3}
+  - {fileID: 854810471, guid: 4669558828cf64da69d3885a63dbadad, type: 3}
+  - {fileID: 1952185983, guid: 4669558828cf64da69d3885a63dbadad, type: 3}
+  - {fileID: 824547739, guid: 4669558828cf64da69d3885a63dbadad, type: 3}
+  - {fileID: -914762043, guid: 4669558828cf64da69d3885a63dbadad, type: 3}
+  - {fileID: -2092620794, guid: 4669558828cf64da69d3885a63dbadad, type: 3}
+  - {fileID: 1402934936, guid: 4669558828cf64da69d3885a63dbadad, type: 3}
   impactEffectFrames:
   - {fileID: 1675257558, guid: 95fe3fa916f0c4dd5b170317d062fadd, type: 3}
   - {fileID: 1846550145, guid: 95fe3fa916f0c4dd5b170317d062fadd, type: 3}
@@ -5724,8 +5748,50 @@ MonoBehaviour:
     - {fileID: 1567944874, guid: 3b8eb64a4e081425bba939e50956598f, type: 3}
     scale: 1
     flipHorizontally: 1
+  - id: orc_warlord
+    idleFrames:
+    - {fileID: -791183634, guid: 8cef1393ae5ae49eea0f8b1121a8ab3c, type: 3}
+    - {fileID: 770538299, guid: 8cef1393ae5ae49eea0f8b1121a8ab3c, type: 3}
+    - {fileID: -1116674946, guid: 8cef1393ae5ae49eea0f8b1121a8ab3c, type: 3}
+    - {fileID: -1269276211, guid: 8cef1393ae5ae49eea0f8b1121a8ab3c, type: 3}
+    - {fileID: 373545665, guid: 8cef1393ae5ae49eea0f8b1121a8ab3c, type: 3}
+    - {fileID: -1108731170, guid: 8cef1393ae5ae49eea0f8b1121a8ab3c, type: 3}
+    - {fileID: 539306485, guid: 8cef1393ae5ae49eea0f8b1121a8ab3c, type: 3}
+    - {fileID: 1399389564, guid: 8cef1393ae5ae49eea0f8b1121a8ab3c, type: 3}
+    attackFrames:
+    - {fileID: -1300181221, guid: d332a282c180746d894f1e845d6794c9, type: 3}
+    - {fileID: 103380516, guid: d332a282c180746d894f1e845d6794c9, type: 3}
+    - {fileID: -1040958367, guid: d332a282c180746d894f1e845d6794c9, type: 3}
+    - {fileID: -1717742048, guid: d332a282c180746d894f1e845d6794c9, type: 3}
+    - {fileID: -489320422, guid: d332a282c180746d894f1e845d6794c9, type: 3}
+    - {fileID: -604108004, guid: d332a282c180746d894f1e845d6794c9, type: 3}
+    - {fileID: 2087004232, guid: d332a282c180746d894f1e845d6794c9, type: 3}
+    - {fileID: -38341742, guid: d332a282c180746d894f1e845d6794c9, type: 3}
+    scale: 1.62
+    flipHorizontally: 1
+  - id: orc_cave_guardian
+    idleFrames:
+    - {fileID: -1403094538, guid: db2529814160a4b8fb35890d60d7a470, type: 3}
+    - {fileID: 881380034, guid: db2529814160a4b8fb35890d60d7a470, type: 3}
+    - {fileID: -1439095882, guid: db2529814160a4b8fb35890d60d7a470, type: 3}
+    - {fileID: 82448475, guid: db2529814160a4b8fb35890d60d7a470, type: 3}
+    - {fileID: -814517021, guid: db2529814160a4b8fb35890d60d7a470, type: 3}
+    - {fileID: 1786560445, guid: db2529814160a4b8fb35890d60d7a470, type: 3}
+    - {fileID: 1824175569, guid: db2529814160a4b8fb35890d60d7a470, type: 3}
+    - {fileID: 1187319444, guid: db2529814160a4b8fb35890d60d7a470, type: 3}
+    attackFrames:
+    - {fileID: -1365537198, guid: 4669558828cf64da69d3885a63dbadad, type: 3}
+    - {fileID: 1605930037, guid: 4669558828cf64da69d3885a63dbadad, type: 3}
+    - {fileID: 854810471, guid: 4669558828cf64da69d3885a63dbadad, type: 3}
+    - {fileID: 1952185983, guid: 4669558828cf64da69d3885a63dbadad, type: 3}
+    - {fileID: 824547739, guid: 4669558828cf64da69d3885a63dbadad, type: 3}
+    - {fileID: -914762043, guid: 4669558828cf64da69d3885a63dbadad, type: 3}
+    - {fileID: -2092620794, guid: 4669558828cf64da69d3885a63dbadad, type: 3}
+    - {fileID: 1402934936, guid: 4669558828cf64da69d3885a63dbadad, type: 3}
+    scale: 1.48
+    flipHorizontally: 1
   playerSpriteScale: 1
-  bossSpriteScale: 1.35
+  bossSpriteScale: 1.62
 --- !u!114 &755778985
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5819,7 +5885,7 @@ MonoBehaviour:
   bossBattleTime: 0
   bossStats:
     displayName: "\u9ED1\u98CE\u5BE8\u4E3B"
-    visualId: boss_crimson
+    visualId: orc_warlord
     level: 0
     maxHealth: 550
     currentHealth: 550
@@ -5835,6 +5901,7 @@ MonoBehaviour:
   bossDefeated: 0
   pendingCultivationReward: 0
   pendingCopperReward: 0
+  martialArtRerollsRemaining: 1
 --- !u!4 &755778988
 Transform:
   m_ObjectHideFlags: 0
@@ -7173,7 +7240,7 @@ MonoBehaviour:
   encounterType: 2
   enemyStats:
     displayName: "\u5B88\u6D1E\u6B66\u4EBA"
-    visualId: stone_ape
+    visualId: orc_cave_guardian
     level: 0
     maxHealth: 160
     currentHealth: 160
@@ -8624,7 +8691,7 @@ MonoBehaviour:
   encounterType: 2
   enemyStats:
     displayName: "\u5CA9\u7A9F\u5B88\u536B"
-    visualId: stone_ape
+    visualId: orc_cave_guardian
     level: 0
     maxHealth: 175
     currentHealth: 175

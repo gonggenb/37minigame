@@ -30,6 +30,7 @@ namespace WuxiaRoguelite.GameFlow
         public CombatantStats bossStats = new CombatantStats
         {
             displayName = "黑风寨主",
+            visualId = "orc_warlord",
             maxHealth = 550f,
             currentHealth = 550f,
             attack = 18f,
