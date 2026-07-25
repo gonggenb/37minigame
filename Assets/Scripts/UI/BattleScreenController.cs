@@ -280,7 +280,7 @@ namespace WuxiaRoguelite.UI
         private void DrawHeader(float width, float height)
         {
             string title = gameFlow.CurrentPhase == GamePhase.BossBattle
-                ? "决战 · 黑风寨"
+                ? $"决战 · {gameFlow.bossStats.displayName}"
                 : gameFlow.CurrentPhase == GamePhase.CaveRunning
                     ? "秘境 · 自动战斗"
                     : "遭遇 · 自动战斗";

@@ -298,6 +298,7 @@ Briefed -> SeedApproved -> Generated -> Normalized -> Imported -> InEngineQA -> 
 | --- | ---: | --- | --- |
 | 核心武学 | 6 | `Assets/Art/Generated/Icons/Skills/` | `InEngineQA` |
 | 局内装备 | 5 | `Assets/Art/Generated/Icons/Equipment/` | `InEngineQA` |
+| 九尾妖姬 Boss（Idle / Attack） | 2 | `Assets/Art/Generated/Characters/Bosses/FoxDemon/` | `InEngineQA` |
 
 - 生成母版保留在 `ArtSource/Raw/Icons/`。
 - 图标切分与安全区归一化使用 `Tools/ArtPipeline/normalize_icon_sheet.py`。

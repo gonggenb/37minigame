@@ -8,6 +8,7 @@ using UnityEditor.SceneManagement;
 using UnityEditor.U2D.Sprites;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using WuxiaRoguelite.Audio;
 using WuxiaRoguelite.Battle;
 using WuxiaRoguelite.CameraTools;
 using WuxiaRoguelite.Cave;
@@ -63,6 +64,8 @@ namespace WuxiaRoguelite.EditorTools
         private const string BambooPuppetIdlePath = GeneratedEnemyRoot + "/BambooPuppet/spr_enemy_bamboo_puppet_idle_right_8f_v01.png";
         private const string BambooPuppetAttackPath = GeneratedEnemyRoot + "/BambooPuppet/spr_enemy_bamboo_puppet_attack_right_8f_v01.png";
         private const string GeneratedBossRoot = "Assets/Art/Generated/Characters/Bosses";
+        private const string FoxDemonBossIdlePath = GeneratedBossRoot + "/FoxDemon/spr_boss_fox_demon_idle_right_8f_v01.png";
+        private const string FoxDemonBossAttackPath = GeneratedBossRoot + "/FoxDemon/spr_boss_fox_demon_attack_right_8f_v01.png";
         private const string OrcWarlordIdlePath = GeneratedBossRoot + "/OrcWarlord/spr_boss_orc_warlord_idle_right_8f_v01.png";
         private const string OrcWarlordAttackPath = GeneratedBossRoot + "/OrcWarlord/spr_boss_orc_warlord_attack_right_8f_v01.png";
         private const string OrcCaveGuardianIdlePath = GeneratedEnemyRoot + "/OrcCaveGuardian/spr_enemy_orc_cave_guardian_idle_right_8f_v01.png";
@@ -75,6 +78,8 @@ namespace WuxiaRoguelite.EditorTools
         private const string CombatImpactSfxPath = CombatAudioRoot + "/sfx_combat_impact_light_v01.wav";
         private const string CombatCriticalSfxPath = CombatAudioRoot + "/sfx_combat_impact_critical_v01.wav";
         private const string CombatDodgeSfxPath = CombatAudioRoot + "/sfx_combat_dodge_v01.wav";
+        private const string MainMapMusicPath =
+            "Assets/Audio/Generated/Music/bgm_mainmap_wuxia_urgent_60s_v01.wav";
         private const string SkillIconRoot = "Assets/Art/Generated/Icons/Skills";
         private const string EquipmentItemIconRoot = "Assets/Art/Generated/Icons/Equipment";
         private const string JianQiIconPath = SkillIconRoot + "/ico_skill_jianqi_v01_128.png";
@@ -162,6 +167,19 @@ namespace WuxiaRoguelite.EditorTools
             PrototypeHUDController hud = root.AddComponent<PrototypeHUDController>();
             BattleScreenController battleScreen = root.AddComponent<BattleScreenController>();
             CaveRoomController caveRoom = root.AddComponent<CaveRoomController>();
+
+            GameObject musicObject = new GameObject("MainMapMusic");
+            AudioSource musicSource = musicObject.AddComponent<AudioSource>();
+            musicSource.clip = AssetDatabase.LoadAssetAtPath<AudioClip>(MainMapMusicPath);
+            musicSource.playOnAwake = false;
+            musicSource.loop = false;
+            musicSource.spatialBlend = 0f;
+            musicSource.priority = 192;
+            musicSource.volume = 0.35f;
+            MainMapMusicController musicController = musicObject.AddComponent<MainMapMusicController>();
+            musicController.gameFlow = gameFlow;
+            musicController.musicSource = musicSource;
+            musicController.volume = 0.35f;
 
             GameObject player = CreateSpriteActor("Player", playerIdle, playerRun, Vector3.zero, PlayerWorldVisualScale);
             Rigidbody playerBody = player.AddComponent<Rigidbody>();
@@ -672,6 +690,50 @@ namespace WuxiaRoguelite.EditorTools
             Debug.Log("Orc boss and cave enemy battle presentation refreshed without changing world-map visuals.");
         }
 
+        [MenuItem("37 MiniGame/Refresh Fox Demon Boss Presentation")]
+        public static void RefreshFoxDemonBossPresentation()
+        {
+            string[] requiredSheets =
+            {
+                FoxDemonBossIdlePath,
+                FoxDemonBossAttackPath
+            };
+            if (requiredSheets.Any(path => !File.Exists(path)))
+            {
+                Debug.LogError("Fox demon boss refresh stopped: one or more generated sprite sheets are missing.");
+                return;
+            }
+
+            ConfigureGeneratedMonsterAssets();
+            Sprite fallbackSprite = GetOrCreatePrototypeSprite();
+            Sprite[] foxDemonIdle = LoadFrames(FoxDemonBossIdlePath, fallbackSprite);
+            Sprite[] foxDemonAttack = LoadFrames(FoxDemonBossAttackPath, fallbackSprite);
+
+            BattleScreenController battleScreen = UnityEngine.Object.FindAnyObjectByType<BattleScreenController>();
+            if (battleScreen != null)
+            {
+                battleScreen.bossSpriteScale = BossBattleVisualScale;
+                battleScreen.enemyVisualProfiles = UpsertEnemyVisualProfile(
+                    battleScreen.enemyVisualProfiles,
+                    CreateEnemyVisualProfile("fox_demon_boss", foxDemonIdle, foxDemonAttack,
+                        BossBattleVisualScale, true));
+                EditorUtility.SetDirty(battleScreen);
+            }
+
+            GameFlowController gameFlow = UnityEngine.Object.FindAnyObjectByType<GameFlowController>();
+            if (gameFlow != null && gameFlow.bossStats != null)
+            {
+                gameFlow.bossStats.displayName = "九尾妖姬";
+                gameFlow.bossStats.visualId = "fox_demon_boss";
+                EditorUtility.SetDirty(gameFlow);
+            }
+
+            EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
+            EditorSceneManager.SaveOpenScenes();
+            AssetDatabase.SaveAssets();
+            Debug.Log("Fox demon boss battle presentation refreshed; cave enemy presentation was left unchanged.");
+        }
+
         private static BattleScreenController.EnemyVisualProfile[] UpsertEnemyVisualProfile(
             BattleScreenController.EnemyVisualProfile[] profiles,
             BattleScreenController.EnemyVisualProfile replacement)
@@ -775,6 +837,15 @@ namespace WuxiaRoguelite.EditorTools
                     orcCaveGuardianAttack, CaveBattleVisualScale, true));
             }
 
+            if (File.Exists(FoxDemonBossIdlePath) && File.Exists(FoxDemonBossAttackPath))
+            {
+                Sprite fallbackSprite = GetOrCreatePrototypeSprite();
+                Sprite[] foxDemonIdle = LoadFrames(FoxDemonBossIdlePath, fallbackSprite);
+                Sprite[] foxDemonAttack = LoadFrames(FoxDemonBossAttackPath, fallbackSprite);
+                profiles.Add(CreateEnemyVisualProfile("fox_demon_boss", foxDemonIdle, foxDemonAttack,
+                    BossBattleVisualScale, true));
+            }
+
             return profiles.ToArray();
         }
 
@@ -850,6 +921,7 @@ namespace WuxiaRoguelite.EditorTools
             CreateFolderIfMissing("Assets", "Audio");
             CreateFolderIfMissing("Assets/Audio", "Generated");
             CreateFolderIfMissing("Assets/Audio/Generated", "Combat");
+            CreateFolderIfMissing("Assets/Audio/Generated", "Music");
         }
 
         private static void CreateFolderIfMissing(string parent, string child)
@@ -1025,6 +1097,7 @@ namespace WuxiaRoguelite.EditorTools
                 InkWolfIdlePath, InkWolfAttackPath,
                 StoneApeIdlePath, StoneApeAttackPath,
                 BambooPuppetIdlePath, BambooPuppetAttackPath,
+                FoxDemonBossIdlePath, FoxDemonBossAttackPath,
                 OrcWarlordIdlePath, OrcWarlordAttackPath,
                 OrcCaveGuardianIdlePath, OrcCaveGuardianAttackPath
             };

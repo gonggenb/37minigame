@@ -29,8 +29,8 @@ namespace WuxiaRoguelite.GameFlow
         [Header("Boss")]
         public CombatantStats bossStats = new CombatantStats
         {
-            displayName = "黑风寨主",
-            visualId = "orc_warlord",
+            displayName = "九尾妖姬",
+            visualId = "fox_demon_boss",
             maxHealth = 550f,
             currentHealth = 550f,
             attack = 18f,
@@ -409,7 +409,7 @@ namespace WuxiaRoguelite.GameFlow
         private void OnBossBattleFinished(bool playerWon)
         {
             bossDefeated = playerWon;
-            EndRun(playerWon, playerWon ? "击败黑风寨主" : "Boss 战失败");
+            EndRun(playerWon, playerWon ? $"击败{bossStats.displayName}" : "Boss 战失败");
         }
 
         private void GiveRewards(int cultivationReward, int copperReward)

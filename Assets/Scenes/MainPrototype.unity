@@ -1838,7 +1838,7 @@ MonoBehaviour:
     poisonStacksPerHit: 0
     criticalCooldownMultiplier: 1
     dodgeHealRatio: 0
-    effectSummary:
+    effectSummary: 
   equippedArmor:
     id: 
     displayName: 
@@ -1857,7 +1857,7 @@ MonoBehaviour:
     poisonStacksPerHit: 0
     criticalCooldownMultiplier: 1
     dodgeHealRatio: 0
-    effectSummary:
+    effectSummary: 
   equippedAccessory:
     id: 
     displayName: 
@@ -1876,7 +1876,7 @@ MonoBehaviour:
     poisonStacksPerHit: 0
     criticalCooldownMultiplier: 1
     dodgeHealRatio: 0
-    effectSummary:
+    effectSummary: 
 --- !u!136 &285907370
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -1987,7 +1987,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 27ba1ecb974834e2eb6a455b145ab1b2, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WuxiaRoguelite.Map.EncounterTrigger
   encounterType: 4
   enemyStats:
@@ -5790,6 +5790,27 @@ MonoBehaviour:
     - {fileID: 1402934936, guid: 4669558828cf64da69d3885a63dbadad, type: 3}
     scale: 1.48
     flipHorizontally: 1
+  - id: fox_demon_boss
+    idleFrames:
+    - {fileID: -1033772395, guid: 656a4e6e5333d4ad49c3b2bc49330e79, type: 3}
+    - {fileID: 1937287387, guid: 656a4e6e5333d4ad49c3b2bc49330e79, type: 3}
+    - {fileID: 1522013040, guid: 656a4e6e5333d4ad49c3b2bc49330e79, type: 3}
+    - {fileID: 2130108846, guid: 656a4e6e5333d4ad49c3b2bc49330e79, type: 3}
+    - {fileID: -776724371, guid: 656a4e6e5333d4ad49c3b2bc49330e79, type: 3}
+    - {fileID: 569475370, guid: 656a4e6e5333d4ad49c3b2bc49330e79, type: 3}
+    - {fileID: -885738325, guid: 656a4e6e5333d4ad49c3b2bc49330e79, type: 3}
+    - {fileID: -1274818924, guid: 656a4e6e5333d4ad49c3b2bc49330e79, type: 3}
+    attackFrames:
+    - {fileID: 1054340710, guid: 4a3f8b9c06d3b4430bfb0617982468de, type: 3}
+    - {fileID: 1344364611, guid: 4a3f8b9c06d3b4430bfb0617982468de, type: 3}
+    - {fileID: -158203121, guid: 4a3f8b9c06d3b4430bfb0617982468de, type: 3}
+    - {fileID: 1593726198, guid: 4a3f8b9c06d3b4430bfb0617982468de, type: 3}
+    - {fileID: -600593742, guid: 4a3f8b9c06d3b4430bfb0617982468de, type: 3}
+    - {fileID: 1887436841, guid: 4a3f8b9c06d3b4430bfb0617982468de, type: 3}
+    - {fileID: 755285262, guid: 4a3f8b9c06d3b4430bfb0617982468de, type: 3}
+    - {fileID: -22605999, guid: 4a3f8b9c06d3b4430bfb0617982468de, type: 3}
+    scale: 1.62
+    flipHorizontally: 1
   playerSpriteScale: 1
   bossSpriteScale: 1.62
 --- !u!114 &755778985
@@ -5884,8 +5905,8 @@ MonoBehaviour:
   mainTimeRemaining: 0
   bossBattleTime: 0
   bossStats:
-    displayName: "\u9ED1\u98CE\u5BE8\u4E3B"
-    visualId: orc_warlord
+    displayName: "\u4E5D\u5C3E\u5996\u59EC"
+    visualId: fox_demon_boss
     level: 0
     maxHealth: 550
     currentHealth: 550
@@ -5927,7 +5948,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 240594b31f89943a2ae270a505eeed1a, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WuxiaRoguelite.Battle.BattleFeedbackAudio
   battleManager: {fileID: 755778986}
   masterVolume: 0.72
@@ -8729,6 +8750,151 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 1.1
   m_Center: {x: 0, y: 0.75, z: 0}
+--- !u!1 &1108178753
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1108178756}
+  - component: {fileID: 1108178755}
+  - component: {fileID: 1108178754}
+  m_Layer: 0
+  m_Name: MainMapMusic
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1108178754
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1108178753}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1b6eba41e36914be08c96f5805811aa9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WuxiaRoguelite.Audio.MainMapMusicController
+  gameFlow: {fileID: 755778987}
+  musicSource: {fileID: 1108178755}
+  volume: 0.35
+--- !u!82 &1108178755
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1108178753}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 8300000, guid: d40b9d0fada2d4231b1606bcd75dd233, type: 3}
+  m_PlayOnAwake: 0
+  m_Volume: 0.35
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 192
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!4 &1108178756
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1108178753}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1109369684
 GameObject:
   m_ObjectHideFlags: 0
@@ -14939,3 +15105,4 @@ SceneRoots:
   - {fileID: 438850803}
   - {fileID: 876312887}
   - {fileID: 1233320862}
+  - {fileID: 1108178756}
