@@ -78,8 +78,19 @@ namespace WuxiaRoguelite.EditorTools
         private const string CombatImpactSfxPath = CombatAudioRoot + "/sfx_combat_impact_light_v01.wav";
         private const string CombatCriticalSfxPath = CombatAudioRoot + "/sfx_combat_impact_critical_v01.wav";
         private const string CombatDodgeSfxPath = CombatAudioRoot + "/sfx_combat_dodge_v01.wav";
-        private const string MainMapMusicPath =
-            "Assets/Audio/Generated/Music/bgm_mainmap_wuxia_urgent_60s_v01.wav";
+        private const string MusicAudioRoot = "Assets/Audio/Generated/Music";
+        private const string MainMapMusicPath = MusicAudioRoot + "/bgm_mainmap_wuxia_urgent_60s_v01.wav";
+        private const string NormalBattleStemPath =
+            MusicAudioRoot + "/stem_normalbattle_wuxia_percussion_15s_v01.wav";
+        private const string CaveMusicPath = MusicAudioRoot + "/bgm_cave_mystery_loop_32s_v01.wav";
+        private const string CaveBattleStemPath =
+            MusicAudioRoot + "/stem_cave_combat_tension_16s_v01.wav";
+        private const string BossIntroPath = MusicAudioRoot + "/stg_boss_fox_demon_intro_4s_v01.wav";
+        private const string BossMusicPath = MusicAudioRoot + "/bgm_boss_fox_demon_loop_48s_v01.wav";
+        private const string BossEnrageStemPath =
+            MusicAudioRoot + "/stem_boss_fox_demon_enrage_16s_v01.wav";
+        private const string VictoryStingerPath = MusicAudioRoot + "/stg_result_victory_v01.wav";
+        private const string DefeatStingerPath = MusicAudioRoot + "/stg_result_defeat_v01.wav";
         private const string SkillIconRoot = "Assets/Art/Generated/Icons/Skills";
         private const string EquipmentItemIconRoot = "Assets/Art/Generated/Icons/Equipment";
         private const string JianQiIconPath = SkillIconRoot + "/ico_skill_jianqi_v01_128.png";
@@ -176,10 +187,43 @@ namespace WuxiaRoguelite.EditorTools
             musicSource.spatialBlend = 0f;
             musicSource.priority = 192;
             musicSource.volume = 0.35f;
+            AudioSource overlaySource = musicObject.AddComponent<AudioSource>();
+            overlaySource.playOnAwake = false;
+            overlaySource.loop = true;
+            overlaySource.spatialBlend = 0f;
+            overlaySource.priority = 184;
+            overlaySource.volume = 0f;
+            AudioSource specialMusicSource = musicObject.AddComponent<AudioSource>();
+            specialMusicSource.playOnAwake = false;
+            specialMusicSource.loop = false;
+            specialMusicSource.spatialBlend = 0f;
+            specialMusicSource.priority = 188;
+            specialMusicSource.volume = 0.38f;
+            AudioSource stingerSource = musicObject.AddComponent<AudioSource>();
+            stingerSource.playOnAwake = false;
+            stingerSource.loop = false;
+            stingerSource.spatialBlend = 0f;
+            stingerSource.priority = 160;
+            stingerSource.volume = 0.55f;
             MainMapMusicController musicController = musicObject.AddComponent<MainMapMusicController>();
             musicController.gameFlow = gameFlow;
+            musicController.battleManager = battleManager;
             musicController.musicSource = musicSource;
+            musicController.overlaySource = overlaySource;
+            musicController.specialMusicSource = specialMusicSource;
+            musicController.stingerSource = stingerSource;
+            musicController.normalBattleStem = AssetDatabase.LoadAssetAtPath<AudioClip>(NormalBattleStemPath);
+            musicController.caveMusic = AssetDatabase.LoadAssetAtPath<AudioClip>(CaveMusicPath);
+            musicController.caveBattleStem = AssetDatabase.LoadAssetAtPath<AudioClip>(CaveBattleStemPath);
+            musicController.bossIntro = AssetDatabase.LoadAssetAtPath<AudioClip>(BossIntroPath);
+            musicController.bossMusic = AssetDatabase.LoadAssetAtPath<AudioClip>(BossMusicPath);
+            musicController.bossEnrageStem = AssetDatabase.LoadAssetAtPath<AudioClip>(BossEnrageStemPath);
+            musicController.victoryStinger = AssetDatabase.LoadAssetAtPath<AudioClip>(VictoryStingerPath);
+            musicController.defeatStinger = AssetDatabase.LoadAssetAtPath<AudioClip>(DefeatStingerPath);
             musicController.volume = 0.35f;
+            musicController.overlayVolume = 0.2f;
+            musicController.specialMusicVolume = 0.38f;
+            musicController.stingerVolume = 0.55f;
 
             GameObject player = CreateSpriteActor("Player", playerIdle, playerRun, Vector3.zero, PlayerWorldVisualScale);
             Rigidbody playerBody = player.AddComponent<Rigidbody>();
@@ -1805,6 +1849,7 @@ namespace WuxiaRoguelite.EditorTools
             trigger.cultivationReward = cultivation;
             trigger.copperReward = copper;
             trigger.caveContent = caveContent;
+            entrance.AddComponent<CaveEntranceIndicator>();
             return entrance;
         }
 
