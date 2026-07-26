@@ -1124,7 +1124,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WuxiaRoguelite.Visual.SpriteFrameAnimator
   idleFrames:
-  - {fileID: 21300000, guid: b7633679a8d9248b1afcc1e2090ffc0e, type: 3}
+  - {fileID: 21300000, guid: c0f081f63ab6e4e05bdf0bf7d885591a, type: 3}
   moveFrames: []
   movementSource: {fileID: 0}
   framesPerSecond: 10
@@ -1191,7 +1191,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 10
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 21300000, guid: b7633679a8d9248b1afcc1e2090ffc0e, type: 3}
+  m_Sprite: {fileID: 21300000, guid: c0f081f63ab6e4e05bdf0bf7d885591a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -1649,6 +1649,7 @@ GameObject:
   - component: {fileID: 251038588}
   - component: {fileID: 251038587}
   - component: {fileID: 251038586}
+  - component: {fileID: 251038589}
   m_Layer: 0
   m_Name: "\u4E1C\u5E02\u5B9D\u7BB1"
   m_TagString: Untagged
@@ -1725,6 +1726,25 @@ Transform:
   - {fileID: 190145956}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &251038589
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 251038585}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c1e5c5935e584b63a858e903e2b2cbd, type: 3}
+  m_Name: Treasure Map Indicator
+  m_EditorClassIdentifier: Assembly-CSharp::WuxiaRoguelite.UI.TreasureMapIndicator
+  visualScaleMultiplier: 1.3
+  bobHeight: 0.14
+  pulseSpeed: 3.4
+  glowScale: 1.55
+  worldHeight: 2.15
+  nearDistance: 3
+  maxVisibleDistance: 5.5
 --- !u!1 &285907366
 GameObject:
   m_ObjectHideFlags: 0
@@ -3020,6 +3040,7 @@ GameObject:
   - component: {fileID: 438850803}
   - component: {fileID: 438850802}
   - component: {fileID: 438850801}
+  - component: {fileID: 438850804}
   m_Layer: 0
   m_Name: "\u897F\u8DEF\u5B9D\u7BB1"
   m_TagString: Untagged
@@ -3096,6 +3117,25 @@ Transform:
   - {fileID: 1634450618}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &438850804
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 438850800}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c1e5c5935e584b63a858e903e2b2cbd, type: 3}
+  m_Name: Treasure Map Indicator
+  m_EditorClassIdentifier: Assembly-CSharp::WuxiaRoguelite.UI.TreasureMapIndicator
+  visualScaleMultiplier: 1.3
+  bobHeight: 0.14
+  pulseSpeed: 3.4
+  glowScale: 1.55
+  worldHeight: 2.15
+  nearDistance: 3
+  maxVisibleDistance: 5.5
 --- !u!1 &451198767
 GameObject:
   m_ObjectHideFlags: 0
@@ -5820,6 +5860,9 @@ MonoBehaviour:
     flipHorizontally: 1
   playerSpriteScale: 1
   bossSpriteScale: 1.62
+  battleActorScale: 1.18
+  referenceWidth: 1280
+  referenceHeight: 720
 --- !u!114 &755778985
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6671,6 +6714,7 @@ GameObject:
   - component: {fileID: 865319968}
   - component: {fileID: 865319970}
   - component: {fileID: 865319969}
+  - component: {fileID: 865319971}
   m_Layer: 0
   m_Name: "\u5317\u5CAD\u5B9D\u7BB1"
   m_TagString: Untagged
@@ -6747,6 +6791,25 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.55
   m_Center: {x: 0, y: 0.55, z: 0}
+--- !u!114 &865319971
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 865319967}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c1e5c5935e584b63a858e903e2b2cbd, type: 3}
+  m_Name: Treasure Map Indicator
+  m_EditorClassIdentifier: Assembly-CSharp::WuxiaRoguelite.UI.TreasureMapIndicator
+  visualScaleMultiplier: 1.3
+  bobHeight: 0.14
+  pulseSpeed: 3.4
+  glowScale: 1.55
+  worldHeight: 2.15
+  nearDistance: 3
+  maxVisibleDistance: 5.5
 --- !u!1 &876312884
 GameObject:
   m_ObjectHideFlags: 0
@@ -8147,7 +8210,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WuxiaRoguelite.Visual.SpriteFrameAnimator
   idleFrames:
-  - {fileID: 21300000, guid: b7633679a8d9248b1afcc1e2090ffc0e, type: 3}
+  - {fileID: 21300000, guid: c0f081f63ab6e4e05bdf0bf7d885591a, type: 3}
   moveFrames: []
   movementSource: {fileID: 0}
   framesPerSecond: 10
@@ -8214,7 +8277,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 10
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 21300000, guid: b7633679a8d9248b1afcc1e2090ffc0e, type: 3}
+  m_Sprite: {fileID: 21300000, guid: c0f081f63ab6e4e05bdf0bf7d885591a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -12496,7 +12559,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WuxiaRoguelite.Visual.SpriteFrameAnimator
   idleFrames:
-  - {fileID: 21300000, guid: b7633679a8d9248b1afcc1e2090ffc0e, type: 3}
+  - {fileID: 21300000, guid: c0f081f63ab6e4e05bdf0bf7d885591a, type: 3}
   moveFrames: []
   movementSource: {fileID: 0}
   framesPerSecond: 10
@@ -12563,7 +12626,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 10
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 21300000, guid: b7633679a8d9248b1afcc1e2090ffc0e, type: 3}
+  m_Sprite: {fileID: 21300000, guid: c0f081f63ab6e4e05bdf0bf7d885591a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

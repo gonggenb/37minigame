@@ -105,6 +105,7 @@ namespace WuxiaRoguelite.EditorTools
         private const string BlackIronRingIconPath = EquipmentItemIconRoot + "/ico_equipment_black_iron_ring_v01_128.png";
         private const string WandererCloakIconPath = EquipmentItemIconRoot + "/ico_equipment_wanderer_cloak_v01_128.png";
         private const string GoldPath = TinyRoot + "/World/Gold_Resource.png";
+        private const string TreasureChestPath = "Assets/Art/Generated/World/spr_treasure_chest_closed_v01.png";
         private const string HerbPath = TinyRoot + "/World/Bush.png";
         private const string StatusIconPath = TinyRoot + "/UI/Avatars_01.png";
         private const string EquipmentIconPath = TinyRoot + "/UI/Icon_05.png";
@@ -158,7 +159,7 @@ namespace WuxiaRoguelite.EditorTools
             Sprite[] bambooPuppetIdle = LoadFrames(BambooPuppetIdlePath, fallbackSprite);
             Sprite[] bambooPuppetAttack = LoadFrames(BambooPuppetAttackPath, fallbackSprite);
             Sprite[] combatImpactFrames = LoadFrames(CombatImpactVfxPath, fallbackSprite);
-            Sprite goldSprite = LoadSingleSprite(GoldPath, fallbackSprite);
+            Sprite treasureChestSprite = LoadSingleSprite(TreasureChestPath, fallbackSprite);
             Sprite[] herbFrames = LoadFrames(HerbPath, fallbackSprite);
 
             Scene scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
@@ -324,15 +325,15 @@ namespace WuxiaRoguelite.EditorTools
             CreateCaveEncounter("古藏秘窟", new Vector3(-10.5f, 0f, 8f),
                 Stats("秘藏古匣", 1, 0, 0, 1f), 18, 10, CaveContentType.Treasure);
 
-            CreateEncounter("东市宝箱", new[] { goldSprite }, null, new Vector3(10.5f, 0f, 7.5f), EncounterType.Treasure, Stats("宝箱", 1, 0, 0, 1f), 15, 8, 0.9f);
-            CreateEncounter("西路宝箱", new[] { goldSprite }, null, new Vector3(-12f, 0f, 1.5f), EncounterType.Treasure, Stats("宝箱", 1, 0, 0, 1f), 12, 6, 0.9f);
+            CreateEncounter("东市宝箱", new[] { treasureChestSprite }, null, new Vector3(10.5f, 0f, 7.5f), EncounterType.Treasure, Stats("宝箱", 1, 0, 0, 1f), 15, 8, 0.9f);
+            CreateEncounter("西路宝箱", new[] { treasureChestSprite }, null, new Vector3(-12f, 0f, 1.5f), EncounterType.Treasure, Stats("宝箱", 1, 0, 0, 1f), 12, 6, 0.9f);
             CreateEncounter("南桥药草", herbFrames, null, new Vector3(0f, 0f, -10f), EncounterType.Herb, Stats("药草", 1, 0, 0, 1f), 0, 0, 0.85f);
             CreateEncounter("北门药草", herbFrames, null, new Vector3(1.5f, 0f, 10f), EncounterType.Herb, Stats("药草", 1, 0, 0, 1f), 0, 0, 0.85f);
 
             ApplyMainMapExpansion(
                 enemyIdle, enemyRun, eliteIdle, eliteRun, blueIdle, blueRun, caveIdle, caveRun,
                 ratRun, riderRun, ballistaFly,
-                inkWolfIdle, stoneApeIdle, bambooPuppetIdle, goldSprite, herbFrames);
+                inkWolfIdle, stoneApeIdle, bambooPuppetIdle, treasureChestSprite, herbFrames);
             ValidateEquipmentModel();
             EditorSceneManager.SaveScene(scene, ScenePath);
             EditorBuildSettings.scenes = new[] { new EditorBuildSettingsScene(ScenePath, true) };
@@ -603,13 +604,13 @@ namespace WuxiaRoguelite.EditorTools
             Sprite[] stoneApeAttack = LoadFrames(StoneApeAttackPath, fallbackSprite);
             Sprite[] bambooPuppetIdle = LoadFrames(BambooPuppetIdlePath, fallbackSprite);
             Sprite[] bambooPuppetAttack = LoadFrames(BambooPuppetAttackPath, fallbackSprite);
-            Sprite goldSprite = LoadSingleSprite(GoldPath, fallbackSprite);
+            Sprite treasureChestSprite = LoadSingleSprite(TreasureChestPath, fallbackSprite);
             Sprite[] herbFrames = LoadFrames(HerbPath, fallbackSprite);
 
             ApplyMainMapExpansion(
                 enemyIdle, enemyRun, eliteIdle, eliteRun, blueIdle, blueRun, caveIdle, caveRun,
                 ratRun, riderRun, ballistaFly,
-                inkWolfIdle, stoneApeIdle, bambooPuppetIdle, goldSprite, herbFrames);
+                inkWolfIdle, stoneApeIdle, bambooPuppetIdle, treasureChestSprite, herbFrames);
 
             BattleScreenController battleScreen = UnityEngine.Object.FindAnyObjectByType<BattleScreenController>();
             if (battleScreen != null)
@@ -1071,6 +1072,7 @@ namespace WuxiaRoguelite.EditorTools
             }
 
             ConfigureSingleSprite(GoldPath, 64f);
+            ConfigureSingleSprite(TreasureChestPath, 512f);
             ConfigureSpriteSheet(HerbPath, 128, 128, 64f);
             ConfigureUiTexture(StatusIconPath);
             ConfigureUiTexture(EquipmentIconPath);
@@ -1622,7 +1624,7 @@ namespace WuxiaRoguelite.EditorTools
             Sprite[] blueIdle, Sprite[] blueRun, Sprite[] purpleIdle, Sprite[] purpleRun,
             Sprite[] ratRun, Sprite[] riderRun, Sprite[] ballistaFly,
             Sprite[] inkWolfIdle, Sprite[] stoneApeIdle, Sprite[] bambooPuppetIdle,
-            Sprite goldSprite, Sprite[] herbFrames)
+            Sprite treasureChestSprite, Sprite[] herbFrames)
         {
             GameObject mapRoot = GameObject.Find("3D Prototype Map");
             if (mapRoot == null)
@@ -1760,7 +1762,7 @@ namespace WuxiaRoguelite.EditorTools
                 24, 8, 1.15f);
             GameObject southCave = CreateCaveEncounter("岩壁密窟", new Vector3(19.2f, 0f, -14.8f),
                 Stats("岩窟守卫", 175, 16, 5, 0.82f, "stone_ape"), 42, 14, CaveContentType.Enemy);
-            GameObject northTreasure = CreateEncounter("北岭宝箱", new[] { goldSprite }, null, new Vector3(-7f, 0f, 16.2f),
+            GameObject northTreasure = CreateEncounter("北岭宝箱", new[] { treasureChestSprite }, null, new Vector3(-7f, 0f, 16.2f),
                 EncounterType.Treasure, Stats("宝箱", 1, 0, 0, 1f), 18, 10, 0.9f);
             GameObject eastHerb = CreateEncounter("东郊药草", herbFrames, null, new Vector3(19.5f, 0f, 1.8f),
                 EncounterType.Herb, Stats("药草", 1, 0, 0, 1f), 0, 0, 0.85f);
@@ -1917,6 +1919,10 @@ namespace WuxiaRoguelite.EditorTools
             if (type == EncounterType.NormalEnemy || type == EncounterType.EliteEnemy)
             {
                 token.AddComponent<EnemyLevelLabel>();
+            }
+            else if (type == EncounterType.Treasure)
+            {
+                token.AddComponent<TreasureMapIndicator>();
             }
             return token;
         }
