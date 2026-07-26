@@ -84,6 +84,11 @@ namespace WuxiaRoguelite.Cave
 
         private void Update()
         {
+            if (PrototypeHUDController.BlocksGameplayEscape)
+            {
+                return;
+            }
+
             if (!IsRoomActive || gameFlow == null || gameFlow.CurrentPhase != GamePhase.CaveRunning ||
                 battleManager == null || battleManager.IsBattleActive)
             {

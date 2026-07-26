@@ -36,11 +36,13 @@ namespace WuxiaRoguelite.Audio
         [Range(0.05f, 0.95f)] public float bossEnrageHealthRatio = 0.4f;
 
         public string ActiveMusicState { get; private set; } = "Ready";
+        public bool MusicEnabled { get; private set; } = true;
         public string ActiveOverlayName =>
             overlaySource != null && overlaySource.clip != null && overlayTargetVolume > 0f
                 ? overlaySource.clip.name
                 : string.Empty;
 
+        private const string MusicEnabledPreference = "Settings.MusicEnabled";
         private GamePhase previousPhase = (GamePhase)(-1);
         private bool restartMainMusicOnNextRun = true;
         private bool mainMusicPaused;
@@ -57,6 +59,8 @@ namespace WuxiaRoguelite.Audio
         {
             ResolveReferences(true);
             ConfigureSources();
+            MusicEnabled = PlayerPrefs.GetInt(MusicEnabledPreference, 1) != 0;
+            ApplyMusicEnabledState();
         }
 
         private void Start()
@@ -74,6 +78,32 @@ namespace WuxiaRoguelite.Audio
         {
             ResolveReferences(false);
             ConfigureSources();
+            ApplyMusicEnabledState();
+        }
+
+        public void SetMusicEnabled(bool enabled)
+        {
+            MusicEnabled = enabled;
+            ApplyMusicEnabledState();
+            PlayerPrefs.SetInt(MusicEnabledPreference, enabled ? 1 : 0);
+            PlayerPrefs.Save();
+        }
+
+        private void ApplyMusicEnabledState()
+        {
+            bool muted = !MusicEnabled;
+            SetMuted(musicSource, muted);
+            SetMuted(overlaySource, muted);
+            SetMuted(specialMusicSource, muted);
+            SetMuted(stingerSource, muted);
+        }
+
+        private static void SetMuted(AudioSource source, bool muted)
+        {
+            if (source != null)
+            {
+                source.mute = muted;
+            }
         }
 
         private void ResolveReferences(bool createMissingSources)

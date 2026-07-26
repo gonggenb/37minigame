@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using UnityEngine;
+using WuxiaRoguelite.Audio;
 using WuxiaRoguelite.Battle;
 using WuxiaRoguelite.Cave;
 using WuxiaRoguelite.GameFlow;
@@ -101,6 +102,7 @@ namespace WuxiaRoguelite.UI
         }
     }
 
+    [DefaultExecutionOrder(-1000)]
     public class PrototypeHUDController : MonoBehaviour
     {
         [Serializable]
@@ -119,6 +121,7 @@ namespace WuxiaRoguelite.UI
         public GameFlowController gameFlow;
         public PlayerStats playerStats;
         public BattleManager battleManager;
+        public MainMapMusicController musicController;
         public Texture2D statusIcon;
         public Texture2D equipmentIcon;
         public Texture2D healthBarBase;
@@ -140,11 +143,19 @@ namespace WuxiaRoguelite.UI
         private GUIStyle mainMenuTitleStyle;
         private GUIStyle mainMenuSubtitleStyle;
         private GUIStyle mainMenuButtonStyle;
+        private GUIStyle settingsToggleStyle;
         private bool characterPanelOpen;
+        private bool settingsOpen;
         private bool debugVisible;
         private CharacterView currentView;
         private Vector2 statusScroll;
         private Vector2 inventoryScroll;
+        private float timeScaleBeforeSettings = 1f;
+        private static int settingsEscapeFrame = -1;
+
+        public static bool IsSettingsOpen { get; private set; }
+        public static bool BlocksGameplayEscape =>
+            IsSettingsOpen || Time.frameCount == settingsEscapeFrame;
 
         private static readonly Color Ink = new Color(0.055f, 0.065f, 0.07f, 0.94f);
         private static readonly Color Panel = new Color(0.09f, 0.105f, 0.105f, 0.97f);
@@ -154,8 +165,28 @@ namespace WuxiaRoguelite.UI
         private static readonly Color Paper = new Color(0.92f, 0.88f, 0.74f, 1f);
         private static readonly Color Muted = new Color(0.66f, 0.70f, 0.67f, 1f);
 
+        private void Awake()
+        {
+            if (musicController == null)
+            {
+                musicController = FindAnyObjectByType<MainMapMusicController>();
+            }
+        }
+
         private void Update()
         {
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                settingsEscapeFrame = Time.frameCount;
+                SetSettingsOpen(!settingsOpen);
+                return;
+            }
+
+            if (settingsOpen)
+            {
+                return;
+            }
+
             if (Input.GetKeyDown(KeyCode.F1))
             {
                 debugVisible = !debugVisible;
@@ -163,11 +194,7 @@ namespace WuxiaRoguelite.UI
 
             if (gameFlow != null && gameFlow.CurrentPhase == GamePhase.MainMapRunning)
             {
-                if (characterPanelOpen && Input.GetKeyDown(KeyCode.Escape))
-                {
-                    SetCharacterScreenOpen(false);
-                }
-                else if (Input.GetKeyDown(KeyCode.C))
+                if (Input.GetKeyDown(KeyCode.P))
                 {
                     ToggleCharacterPanel(CharacterView.Status);
                 }
@@ -185,7 +212,10 @@ namespace WuxiaRoguelite.UI
 
         private void OnDisable()
         {
+            SetSettingsOpen(false);
             SetCharacterScreenOpen(false);
+            IsSettingsOpen = false;
+            settingsEscapeFrame = -1;
         }
 
         private void OnGUI()
@@ -197,17 +227,23 @@ namespace WuxiaRoguelite.UI
                 return;
             }
 
-            if (battleManager != null && battleManager.IsBattleActive)
+            if (battleManager != null && battleManager.IsBattleActive && !settingsOpen)
             {
                 return;
             }
 
-            GUI.depth = -500;
+            GUI.depth = settingsOpen ? -2000 : -500;
             EnsureStyles();
             float guiScale = ResponsiveGui.Scale;
             Matrix4x4 originalGuiMatrix = ResponsiveGui.ApplyScale(guiScale);
             try
             {
+                if (settingsOpen)
+                {
+                    DrawSettingsPanel();
+                    return;
+                }
+
                 if (gameFlow.CurrentPhase == GamePhase.Ready)
                 {
                     DrawMainMenu();
@@ -301,6 +337,95 @@ namespace WuxiaRoguelite.UI
                 hover = { textColor = Color.white },
                 active = { textColor = Color.white }
             });
+            settingsToggleStyle = RuntimeChineseFont.Apply(new GUIStyle(GUI.skin.button)
+            {
+                fontSize = 15,
+                fontStyle = FontStyle.Bold,
+                alignment = TextAnchor.MiddleCenter,
+                normal = { textColor = Color.white },
+                hover = { textColor = Paper },
+                active = { textColor = Color.white }
+            });
+        }
+
+        private void SetSettingsOpen(bool open)
+        {
+            if (settingsOpen == open)
+            {
+                return;
+            }
+
+            if (open && characterPanelOpen)
+            {
+                SetCharacterScreenOpen(false);
+            }
+
+            settingsOpen = open;
+            IsSettingsOpen = open;
+            if (open)
+            {
+                timeScaleBeforeSettings = Time.timeScale;
+                Time.timeScale = 0f;
+            }
+            else
+            {
+                Time.timeScale = timeScaleBeforeSettings;
+            }
+        }
+
+        private void DrawSettingsPanel()
+        {
+            Rect screen = new Rect(0f, 0f, ResponsiveGui.Width, ResponsiveGui.Height);
+            FillRect(screen, new Color(0.015f, 0.02f, 0.02f, 0.82f));
+
+            Rect panel = CenteredRect(430f, 316f);
+            DrawPanel(panel, Panel, Gold);
+            ResponsiveGui.DrawSingleLineLabel(
+                new Rect(panel.x + 22f, panel.y + 14f, panel.width - 44f, 38f),
+                "设置", titleStyle, 18);
+            ResponsiveGui.DrawSingleLineLabel(
+                new Rect(panel.x + 22f, panel.y + 52f, panel.width - 44f, 22f),
+                "游戏已暂停", mutedStyle, 10);
+
+            Rect musicRow = new Rect(panel.x + 22f, panel.y + 88f, panel.width - 44f, 62f);
+            DrawPanel(musicRow, PanelLight, Jade);
+            ResponsiveGui.DrawSingleLineLabel(
+                new Rect(musicRow.x + 14f, musicRow.y + 5f, musicRow.width - 150f, 28f),
+                "背景音乐", headingStyle, 11);
+            ResponsiveGui.DrawSingleLineLabel(
+                new Rect(musicRow.x + 14f, musicRow.y + 31f, musicRow.width - 150f, 22f),
+                "包含主地图、战斗、山洞与 Boss 音乐", mutedStyle, 9);
+
+            bool musicEnabled = musicController == null || musicController.MusicEnabled;
+            string musicButtonText = musicEnabled ? "已开启" : "已关闭";
+            if (GUI.Button(
+                    new Rect(musicRow.xMax - 118f, musicRow.y + 14f, 102f, 34f),
+                    musicButtonText, settingsToggleStyle))
+            {
+                if (musicController == null)
+                {
+                    musicController = FindAnyObjectByType<MainMapMusicController>();
+                }
+
+                musicController?.SetMusicEnabled(!musicEnabled);
+            }
+
+            ResponsiveGui.DrawSingleLineLabel(
+                new Rect(panel.x + 22f, panel.y + 166f, panel.width - 44f, 24f),
+                "快捷键", headingStyle, 11);
+            ResponsiveGui.DrawSingleLineLabel(
+                new Rect(panel.x + 22f, panel.y + 194f, panel.width - 44f, 22f),
+                "P  角色状态     B  装备背包", bodyStyle, 10);
+            ResponsiveGui.DrawSingleLineLabel(
+                new Rect(panel.x + 22f, panel.y + 218f, panel.width - 44f, 22f),
+                "Esc  打开或关闭设置", mutedStyle, 10);
+
+            if (GUI.Button(
+                    new Rect(panel.x + 22f, panel.yMax - 52f, panel.width - 44f, 34f),
+                    "返回游戏", actionButtonStyle))
+            {
+                SetSettingsOpen(false);
+            }
         }
 
         private void DrawMainMenu()

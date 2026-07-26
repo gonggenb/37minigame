@@ -86,6 +86,59 @@ namespace WuxiaRoguelite.Player
             return item != null && GetEquipped(item.slot) == item;
         }
 
+        public bool IsUpgrade(EquipmentItem candidate)
+        {
+            if (candidate == null)
+            {
+                return false;
+            }
+
+            EquipmentItem current = GetEquipped(candidate.slot);
+            if (current == null)
+            {
+                return true;
+            }
+
+            if (candidate.rarity != current.rarity)
+            {
+                return candidate.rarity > current.rarity;
+            }
+
+            return GetPowerScore(candidate) > GetPowerScore(current) + 0.001f;
+        }
+
+        public static float GetPowerScore(EquipmentItem item)
+        {
+            if (item == null)
+            {
+                return 0f;
+            }
+
+            float score = 0f;
+            score += item.attackBonus * 10f;
+            score += item.defenseBonus * 8f;
+            score += item.maxHealthBonus * 0.5f;
+            score += item.attackSpeedBonus * 100f;
+            score += item.critChanceBonus * 120f;
+            score += item.dodgeChanceBonus * 120f;
+            score += item.openingShield * 0.5f;
+            score += item.armorBreakPerHit * 15f;
+            score += item.poisonStacksPerHit * 25f;
+            score += item.dodgeHealRatio * 100f;
+
+            if (item.swordQiInterval > 0)
+            {
+                score += item.swordQiDamageRatio / item.swordQiInterval * 100f;
+            }
+
+            if (item.criticalCooldownMultiplier > 0f && item.criticalCooldownMultiplier < 1f)
+            {
+                score += (1f - item.criticalCooldownMultiplier) * 40f;
+            }
+
+            return score;
+        }
+
         public string AddTreasureItem()
         {
             List<EquipmentItem> available = new List<EquipmentItem>();
@@ -103,8 +156,8 @@ namespace WuxiaRoguelite.Player
             }
 
             EquipmentItem reward = available[Random.Range(0, available.Count)].Clone();
-            AddItem(reward);
-            return reward.displayName;
+            bool autoEquipped = AddItem(reward);
+            return autoEquipped ? $"{reward.displayName}（已自动装备）" : reward.displayName;
         }
 
         public float GetOpeningShield()
@@ -153,9 +206,21 @@ namespace WuxiaRoguelite.Player
             return SumEquipped(item => item.dodgeHealRatio);
         }
 
-        private void AddItem(EquipmentItem item)
+        private bool AddItem(EquipmentItem item)
         {
+            if (item == null)
+            {
+                return false;
+            }
+
             inventory.Add(item);
+            if (!IsUpgrade(item))
+            {
+                return false;
+            }
+
+            Equip(item);
+            return IsEquipped(item);
         }
 
         private void ApplyBonuses(EquipmentItem item, float direction)
