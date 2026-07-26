@@ -66,7 +66,11 @@ namespace WuxiaRoguelite.GameFlow
                 battleManager.playerStats = playerStats;
             }
 
-            StartRun();
+            mainTimeRemaining = mainTimeLimit;
+            bossBattleTime = 0f;
+            bossDefeated = false;
+            SetPhase(GamePhase.Ready);
+            statusMessage = "按开始进入江湖";
         }
 
         private void Update()

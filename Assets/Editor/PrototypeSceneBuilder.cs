@@ -27,6 +27,7 @@ namespace WuxiaRoguelite.EditorTools
         private const string SpritePath = "Assets/Art/Generated/prototype_square.png";
         private const string GroundTexturePath = "Assets/Art/Generated/Environment/tex_mainmap_grass_albedo.png";
         private const string GroundMaterialPath = "Assets/Art/Generated/Environment/mat_mainmap_grass.mat";
+        private const string SkyMaterialPath = "Assets/Art/Generated/Environment/mat_mainmap_sky.mat";
         private const string RoadTexturePath = "Assets/Art/Generated/Environment/tex_mainmap_dirt_albedo.png";
         private const string RoadMaterialPath = "Assets/Art/Generated/Environment/mat_mainmap_dirt.mat";
         private const string WorldSurfaceShaderName = "Wuxia Roguelite/Stylized World Surface";
@@ -1124,6 +1125,7 @@ namespace WuxiaRoguelite.EditorTools
 
         private static void BindHudContentIcons(PrototypeHUDController hud)
         {
+            hud.mainMenuBackground = AssetDatabase.LoadAssetAtPath<Texture2D>(MainMenuBackgroundPath);
             hud.martialArtIcons = new[]
             {
                 Icon("剑气诀", JianQiIconPath),
@@ -1472,6 +1474,40 @@ namespace WuxiaRoguelite.EditorTools
                 new Color(0.38f, 0.32f, 0.24f));
         }
 
+        private static Material GetOrCreateMainMapSkyMaterial()
+        {
+            Shader shader = Shader.Find("Skybox/Procedural");
+            if (shader == null)
+            {
+                Debug.LogWarning("Cannot find the built-in Skybox/Procedural shader.");
+                return null;
+            }
+
+            Material material = AssetDatabase.LoadAssetAtPath<Material>(SkyMaterialPath);
+            if (material == null)
+            {
+                material = new Material(shader)
+                {
+                    name = "MainMap_SoftSky"
+                };
+                AssetDatabase.CreateAsset(material, SkyMaterialPath);
+            }
+            else if (material.shader != shader)
+            {
+                material.shader = shader;
+            }
+
+            material.SetFloat("_SunDisk", 2f);
+            material.SetFloat("_SunSize", 0.035f);
+            material.SetFloat("_SunSizeConvergence", 5f);
+            material.SetFloat("_AtmosphereThickness", 0.82f);
+            material.SetColor("_SkyTint", new Color(0.38f, 0.55f, 0.74f, 1f));
+            material.SetColor("_GroundColor", new Color(0.55f, 0.65f, 0.68f, 1f));
+            material.SetFloat("_Exposure", 1.02f);
+            EditorUtility.SetDirty(material);
+            return material;
+        }
+
         private static Material GetOrCreateWorldSurfaceMaterial(
             string texturePath,
             string materialPath,
@@ -1553,11 +1589,12 @@ namespace WuxiaRoguelite.EditorTools
 
         private static void ApplyUnifiedWorldLighting()
         {
+            Material sky = GetOrCreateMainMapSkyMaterial();
             Camera camera = Camera.main ?? UnityEngine.Object.FindAnyObjectByType<Camera>();
             if (camera != null)
             {
-                camera.clearFlags = CameraClearFlags.SolidColor;
-                camera.backgroundColor = new Color(0.17f, 0.19f, 0.18f, 1f);
+                camera.clearFlags = sky != null ? CameraClearFlags.Skybox : CameraClearFlags.SolidColor;
+                camera.backgroundColor = new Color(0.47f, 0.58f, 0.65f, 1f);
                 EditorUtility.SetDirty(camera);
             }
 
@@ -1572,18 +1609,18 @@ namespace WuxiaRoguelite.EditorTools
                 EditorUtility.SetDirty(sun);
             }
 
-            RenderSettings.skybox = null;
+            RenderSettings.skybox = sky;
             RenderSettings.ambientMode = UnityEngine.Rendering.AmbientMode.Trilight;
-            RenderSettings.ambientSkyColor = new Color(0.30f, 0.34f, 0.32f, 1f);
-            RenderSettings.ambientEquatorColor = new Color(0.20f, 0.22f, 0.20f, 1f);
+            RenderSettings.ambientSkyColor = new Color(0.38f, 0.47f, 0.52f, 1f);
+            RenderSettings.ambientEquatorColor = new Color(0.26f, 0.31f, 0.30f, 1f);
             RenderSettings.ambientGroundColor = new Color(0.10f, 0.09f, 0.07f, 1f);
             RenderSettings.ambientIntensity = 1f;
             RenderSettings.reflectionIntensity = 0.35f;
             RenderSettings.fog = true;
             RenderSettings.fogMode = FogMode.Linear;
-            RenderSettings.fogColor = new Color(0.28f, 0.30f, 0.28f, 1f);
-            RenderSettings.fogStartDistance = 30f;
-            RenderSettings.fogEndDistance = 75f;
+            RenderSettings.fogColor = new Color(0.42f, 0.49f, 0.50f, 1f);
+            RenderSettings.fogStartDistance = 28f;
+            RenderSettings.fogEndDistance = 70f;
         }
 
         private static void PlaceKayKitScenery(Transform parent)

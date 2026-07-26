@@ -31,6 +31,7 @@ namespace WuxiaRoguelite.UI
         public Texture2D equipmentIcon;
         public Texture2D healthBarBase;
         public Texture2D healthBarFill;
+        public Texture2D mainMenuBackground;
         public IconEntry[] martialArtIcons;
         public IconEntry[] equipmentItemIcons;
 
@@ -44,6 +45,9 @@ namespace WuxiaRoguelite.UI
         private GUIStyle activeTabStyle;
         private GUIStyle actionButtonStyle;
         private GUIStyle tooltipEffectStyle;
+        private GUIStyle mainMenuTitleStyle;
+        private GUIStyle mainMenuSubtitleStyle;
+        private GUIStyle mainMenuButtonStyle;
         private bool characterPanelOpen;
         private bool debugVisible;
         private CharacterView currentView;
@@ -106,6 +110,12 @@ namespace WuxiaRoguelite.UI
 
             GUI.depth = -500;
             EnsureStyles();
+            if (gameFlow.CurrentPhase == GamePhase.Ready)
+            {
+                DrawMainMenu();
+                return;
+            }
+
             if (gameFlow.CurrentPhase != GamePhase.Result && gameFlow.CurrentPhase != GamePhase.CaveRunning && !characterPanelOpen)
             {
                 DrawCompactHud();
@@ -175,6 +185,61 @@ namespace WuxiaRoguelite.UI
             };
             tooltipEffectStyle = LabelStyle(15, FontStyle.Bold, TextAnchor.UpperLeft,
                 new Color(1f, 0.80f, 0.35f));
+            mainMenuTitleStyle = LabelStyle(38, FontStyle.Bold, TextAnchor.MiddleCenter,
+                new Color(0.97f, 0.91f, 0.72f));
+            mainMenuSubtitleStyle = LabelStyle(15, FontStyle.Normal, TextAnchor.MiddleCenter,
+                new Color(0.84f, 0.84f, 0.78f));
+            mainMenuButtonStyle = new GUIStyle(GUI.skin.button)
+            {
+                fontSize = 18,
+                fontStyle = FontStyle.Bold,
+                alignment = TextAnchor.MiddleCenter,
+                normal = { textColor = new Color(0.98f, 0.91f, 0.70f) },
+                hover = { textColor = Color.white },
+                active = { textColor = Color.white }
+            };
+        }
+
+        private void DrawMainMenu()
+        {
+            Rect screen = new Rect(0f, 0f, Screen.width, Screen.height);
+            if (mainMenuBackground != null)
+            {
+                GUI.DrawTexture(screen, mainMenuBackground, ScaleMode.ScaleAndCrop, true);
+            }
+            else
+            {
+                FillRect(screen, new Color(0.08f, 0.10f, 0.10f));
+            }
+
+            FillRect(screen, new Color(0.025f, 0.035f, 0.035f, 0.28f));
+
+            float panelWidth = Mathf.Min(460f, Screen.width - 32f);
+            float panelHeight = Mathf.Min(268f, Screen.height - 32f);
+            Rect panel = new Rect(
+                (Screen.width - panelWidth) * 0.5f,
+                (Screen.height - panelHeight) * 0.5f,
+                panelWidth,
+                panelHeight);
+            DrawPanel(panel, new Color(0.045f, 0.055f, 0.052f, 0.82f), Gold);
+
+            GUI.Label(new Rect(panel.x + 20f, panel.y + 22f, panel.width - 40f, 54f),
+                "一炷江湖", mainMenuTitleStyle);
+            GUI.Label(new Rect(panel.x + 28f, panel.y + 78f, panel.width - 56f, 28f),
+                "六十息择路 · 历战成长 · 终迎强敌", mainMenuSubtitleStyle);
+
+            float lineWidth = Mathf.Min(250f, panel.width - 80f);
+            FillRect(new Rect(panel.center.x - lineWidth * 0.5f, panel.y + 116f, lineWidth, 1f),
+                new Color(Gold.r, Gold.g, Gold.b, 0.65f));
+
+            Rect startButton = new Rect(panel.center.x - 94f, panel.yMax - 86f, 188f, 46f);
+            if (GUI.Button(startButton, "踏入江湖", mainMenuButtonStyle))
+            {
+                gameFlow.StartRun();
+            }
+
+            GUI.Label(new Rect(panel.x + 24f, panel.yMax - 34f, panel.width - 48f, 20f),
+                "移动探索 · 碰怪自动战斗 · 寻找洞穴与宝箱", mainMenuSubtitleStyle);
         }
 
         private void DrawCompactHud()
