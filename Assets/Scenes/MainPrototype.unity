@@ -5516,6 +5516,13 @@ MonoBehaviour:
   playerStats: {fileID: 285907368}
   battleManager: {fileID: 755778986}
   actorTexture: {fileID: 2800000, guid: a603bd7f505c24e2bb0fa99e20ee1f7a, type: 3}
+  normalBattleBackgrounds:
+  - {fileID: 2800000, guid: 1ee962bf427c246efa71a02c8924a3e0, type: 3}
+  - {fileID: 2800000, guid: 8f3aa8fa375e748b5a548a35fb7a7cb9, type: 3}
+  - {fileID: 2800000, guid: 16190073df8c441ac8b19330cb0d5242, type: 3}
+  - {fileID: 2800000, guid: c2b28b474b3b54f39aa81954c0b62778, type: 3}
+  - {fileID: 2800000, guid: f40d2bc49562a4c0094c03d79f7bfcae, type: 3}
+  bossBattleBackground: {fileID: 2800000, guid: 1406f07b5aade4d008c324e0b3c54988, type: 3}
   playerIdleFrames:
   - {fileID: -5735282888508474159, guid: a09c95e1fa033455586d47c007676152, type: 3}
   - {fileID: -2413811058832895255, guid: a09c95e1fa033455586d47c007676152, type: 3}

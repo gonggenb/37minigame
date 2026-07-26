@@ -25,6 +25,8 @@ namespace WuxiaRoguelite.UI
         public PlayerStats playerStats;
         public BattleManager battleManager;
         public Texture2D actorTexture;
+        public Texture2D[] normalBattleBackgrounds;
+        public Texture2D bossBattleBackground;
         public Sprite[] playerIdleFrames;
         public Sprite[] playerAttackFrames;
         public Sprite[] enemyIdleFrames;
@@ -63,6 +65,9 @@ namespace WuxiaRoguelite.UI
         private bool hitFeedbackWasCritical;
         private bool hitFeedbackWasDodged;
         private bool hitFeedbackTargetedPlayer;
+        private CombatantStats backgroundTrackedEnemy;
+        private Texture2D activeBattleBackground;
+        private int lastNormalBackgroundIndex = -1;
 
         private const float DamageDisplayDuration = 0.72f;
         private const float HealthFlashDuration = 0.34f;
@@ -88,6 +93,7 @@ namespace WuxiaRoguelite.UI
             EnsureStyles();
             TrackLatestAttack();
             TrackHealthChanges();
+            UpdateBattleBackground();
 
             float width = Screen.width;
             float height = Screen.height;
@@ -264,8 +270,19 @@ namespace WuxiaRoguelite.UI
         {
             const float shakeOverscan = 24f;
             float overscannedWidth = width + shakeOverscan * 2f;
-            FillRect(new Rect(-shakeOverscan, -shakeOverscan, overscannedWidth,
-                height + shakeOverscan * 2f), Backdrop);
+            Rect backgroundRect = new Rect(-shakeOverscan, -shakeOverscan, overscannedWidth,
+                height + shakeOverscan * 2f);
+            if (activeBattleBackground != null)
+            {
+                GUI.DrawTexture(backgroundRect, activeBattleBackground, ScaleMode.ScaleAndCrop, true);
+                FillRect(new Rect(-shakeOverscan, -shakeOverscan, overscannedWidth,
+                    height * 0.22f + shakeOverscan), new Color(0f, 0f, 0f, 0.28f));
+                FillRect(new Rect(-shakeOverscan, height * 0.84f, overscannedWidth,
+                    height * 0.16f + shakeOverscan), new Color(0f, 0f, 0f, 0.12f));
+                return;
+            }
+
+            FillRect(backgroundRect, Backdrop);
             FillRect(new Rect(-shakeOverscan, height * 0.34f, overscannedWidth,
                 height * 0.26f), DistantMountain);
             FillRect(new Rect(-shakeOverscan, height * 0.58f, overscannedWidth,
@@ -275,6 +292,69 @@ namespace WuxiaRoguelite.UI
 
             float moonSize = Mathf.Clamp(height * 0.13f, 64f, 110f);
             FillRect(new Rect(width * 0.5f - moonSize * 0.5f, height * 0.37f - moonSize * 0.5f, moonSize, moonSize), new Color(0.82f, 0.78f, 0.63f, 0.23f));
+        }
+
+        private void UpdateBattleBackground()
+        {
+            CombatantStats currentEnemy = battleManager.currentEnemy;
+            if (ReferenceEquals(backgroundTrackedEnemy, currentEnemy))
+            {
+                return;
+            }
+
+            backgroundTrackedEnemy = currentEnemy;
+            activeBattleBackground = gameFlow.CurrentPhase == GamePhase.BossBattle &&
+                                     bossBattleBackground != null
+                ? bossBattleBackground
+                : SelectRandomNormalBackground();
+        }
+
+        private Texture2D SelectRandomNormalBackground()
+        {
+            if (normalBattleBackgrounds == null || normalBattleBackgrounds.Length == 0)
+            {
+                return null;
+            }
+
+            int validCount = 0;
+            int onlyValidIndex = -1;
+            for (int i = 0; i < normalBattleBackgrounds.Length; i++)
+            {
+                if (normalBattleBackgrounds[i] == null)
+                {
+                    continue;
+                }
+
+                validCount++;
+                onlyValidIndex = i;
+            }
+
+            if (validCount == 0)
+            {
+                return null;
+            }
+
+            if (validCount == 1)
+            {
+                lastNormalBackgroundIndex = onlyValidIndex;
+                return normalBattleBackgrounds[onlyValidIndex];
+            }
+
+            int startIndex = UnityEngine.Random.Range(0, normalBattleBackgrounds.Length);
+            for (int offset = 0; offset < normalBattleBackgrounds.Length; offset++)
+            {
+                int index = (startIndex + offset) % normalBattleBackgrounds.Length;
+                if (index == lastNormalBackgroundIndex || normalBattleBackgrounds[index] == null)
+                {
+                    continue;
+                }
+
+                lastNormalBackgroundIndex = index;
+                return normalBattleBackgrounds[index];
+            }
+
+            lastNormalBackgroundIndex = onlyValidIndex;
+            return normalBattleBackgrounds[onlyValidIndex];
         }
 
         private void DrawHeader(float width, float height)

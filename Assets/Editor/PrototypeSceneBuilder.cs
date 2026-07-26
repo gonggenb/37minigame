@@ -110,6 +110,19 @@ namespace WuxiaRoguelite.EditorTools
         private const string EquipmentIconPath = TinyRoot + "/UI/Icon_05.png";
         private const string HealthBarBasePath = TinyRoot + "/UI/BigBar_Base.png";
         private const string HealthBarFillPath = TinyRoot + "/UI/BigBar_Fill.png";
+        private const string GeneratedBackgroundRoot = "Assets/Art/Generated/Backgrounds";
+        private const string MainMenuBackgroundPath =
+            GeneratedBackgroundRoot + "/bg_mainmenu_misty_mountains_v01.png";
+        private static readonly string[] NormalBattleBackgroundPaths =
+        {
+            GeneratedBackgroundRoot + "/bg_battle_central_inn_v01.png",
+            GeneratedBackgroundRoot + "/bg_battle_east_bamboo_v01.png",
+            GeneratedBackgroundRoot + "/bg_battle_north_pass_v01.png",
+            GeneratedBackgroundRoot + "/bg_battle_west_forest_v01.png",
+            GeneratedBackgroundRoot + "/bg_battle_south_quarry_v01.png"
+        };
+        private const string BossBattleBackgroundPath =
+            GeneratedBackgroundRoot + "/bg_boss_bloodmoon_temple_v01.png";
 
         [MenuItem("37 MiniGame/Build Main Prototype Scene")]
         public static void BuildMainPrototypeScene()
@@ -266,6 +279,7 @@ namespace WuxiaRoguelite.EditorTools
             battleScreen.playerStats = playerStats;
             battleScreen.battleManager = battleManager;
             battleScreen.actorTexture = AssetDatabase.LoadAssetAtPath<Texture2D>(SpritePath);
+            BindBattleBackgrounds(battleScreen);
             battleScreen.playerIdleFrames = playerIdle;
             battleScreen.playerAttackFrames = playerAttack;
             battleScreen.enemyIdleFrames = bambooPuppetIdle;
@@ -413,6 +427,32 @@ namespace WuxiaRoguelite.EditorTools
             EditorSceneManager.SaveOpenScenes();
             AssetDatabase.SaveAssets();
             Debug.Log("Battle feedback VFX and WAV assets refreshed in the active scene.");
+        }
+
+        [MenuItem("37 MiniGame/Refresh Battle Backgrounds")]
+        public static void RefreshBattleBackgrounds()
+        {
+            if (EditorApplication.isPlaying)
+            {
+                Debug.LogError("Exit Play Mode before refreshing battle backgrounds.");
+                return;
+            }
+
+            ConfigureBattleBackgroundAssets();
+            BattleScreenController battleScreen =
+                UnityEngine.Object.FindAnyObjectByType<BattleScreenController>();
+            if (battleScreen == null)
+            {
+                Debug.LogError("Cannot refresh battle backgrounds: BattleScreenController was not found.");
+                return;
+            }
+
+            BindBattleBackgrounds(battleScreen);
+            EditorUtility.SetDirty(battleScreen);
+            EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
+            EditorSceneManager.SaveOpenScenes();
+            AssetDatabase.SaveAssets();
+            Debug.Log("Five random normal battle backgrounds and the dedicated Boss background were refreshed.");
         }
 
         [MenuItem("37 MiniGame/Refresh HUD Content Icons")]
@@ -961,6 +1001,7 @@ namespace WuxiaRoguelite.EditorTools
             CreateFolderIfMissing("Assets/Art/Generated/Icons", "Equipment");
             CreateFolderIfMissing("Assets/Art/Generated", "Effects");
             CreateFolderIfMissing("Assets/Art/Generated", "Environment");
+            CreateFolderIfMissing("Assets/Art/Generated", "Backgrounds");
             CreateFolderIfMissing("Assets/Art/Generated/Environment", "Shaders");
             CreateFolderIfMissing("Assets", "Audio");
             CreateFolderIfMissing("Assets/Audio", "Generated");
@@ -1013,6 +1054,7 @@ namespace WuxiaRoguelite.EditorTools
             ConfigureEnemyVarietyAssets();
             ConfigureGeneratedMonsterAssets();
             ConfigureBattleFeedbackAssets();
+            ConfigureBattleBackgroundAssets();
             ConfigureHudContentIcons();
 
             string[] tinySwordsSheets =
@@ -1286,6 +1328,53 @@ namespace WuxiaRoguelite.EditorTools
             importer.mipmapEnabled = false;
             importer.alphaIsTransparency = true;
             importer.SaveAndReimport();
+        }
+
+        private static void ConfigureBattleBackgroundAssets()
+        {
+            ConfigureBackgroundTexture(MainMenuBackgroundPath);
+            foreach (string path in NormalBattleBackgroundPaths)
+            {
+                ConfigureBackgroundTexture(path);
+            }
+
+            ConfigureBackgroundTexture(BossBattleBackgroundPath);
+        }
+
+        private static void ConfigureBackgroundTexture(string path)
+        {
+            if (!File.Exists(path))
+            {
+                Debug.LogWarning($"Missing generated background: {path}");
+                return;
+            }
+
+            AssetDatabase.ImportAsset(path, ImportAssetOptions.ForceSynchronousImport);
+            TextureImporter importer = AssetImporter.GetAtPath(path) as TextureImporter;
+            if (importer == null)
+            {
+                return;
+            }
+
+            importer.textureType = TextureImporterType.Default;
+            importer.npotScale = TextureImporterNPOTScale.None;
+            importer.filterMode = FilterMode.Bilinear;
+            importer.wrapMode = TextureWrapMode.Clamp;
+            importer.textureCompression = TextureImporterCompression.CompressedHQ;
+            importer.mipmapEnabled = false;
+            importer.alphaIsTransparency = false;
+            importer.maxTextureSize = 2048;
+            importer.SaveAndReimport();
+        }
+
+        private static void BindBattleBackgrounds(BattleScreenController battleScreen)
+        {
+            battleScreen.normalBattleBackgrounds = NormalBattleBackgroundPaths
+                .Select(AssetDatabase.LoadAssetAtPath<Texture2D>)
+                .Where(texture => texture != null)
+                .ToArray();
+            battleScreen.bossBattleBackground =
+                AssetDatabase.LoadAssetAtPath<Texture2D>(BossBattleBackgroundPath);
         }
 
         private static void ConfigureIconTexture(string path)
