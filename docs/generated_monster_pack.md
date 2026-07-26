@@ -55,3 +55,13 @@
 - 最终 Boss 继续使用 TinySwords 黑色武者，Boss 时间独立推进。
 
 状态：`v01 候选，已接入并通过技术验收，等待玩法手感确认`。
+
+## 墨鬃妖狼帧修复
+
+- 狼的原始扑击条带中，部分姿势跨过了等宽分格边界。现在先使用
+  `Tools/ArtPipeline/repack_generated_sprite_strip.py` 按完整角色连通区域重排，
+  再交给 `ArtSource/tools/assemble_monster_strips.py` 统一缩放和切片。
+- 重排时只保留当前角色的连通像素，避免相邻帧的狼头、爪子或杂点落入本帧。
+- Idle 使用 `1,2,3,2,1,8,5,8` 的往返顺序，去掉动作跨度过大的抬爪和甩尾跳变。
+- Idle 与 Attack 仍保持 8 帧、单帧 256 × 256、脚底线 `y=224` 和 Pivot
+  `(0.5, 0.125)`。

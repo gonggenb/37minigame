@@ -30,6 +30,14 @@ def parse_args() -> argparse.Namespace:
         choices=("horizontal", "grid4x2"),
         default="horizontal",
     )
+    parser.add_argument(
+        "--idle-order",
+        default="1,2,3,4,5,6,7,8",
+        help=(
+            "Comma-separated, one-based source-frame order for the idle loop. "
+            "Frames may be repeated to make a smooth eight-frame loop."
+        ),
+    )
     return parser.parse_args()
 
 
@@ -135,9 +143,21 @@ def save_preview(
 
 def main() -> None:
     args = parse_args()
-    idle_content = [
+    idle_source = [
         crop_content(frame) for frame in split_sheet(args.idle, args.layout)
     ]
+    try:
+        idle_order = [int(value.strip()) for value in args.idle_order.split(",")]
+    except ValueError as exc:
+        raise SystemExit("--idle-order must contain comma-separated frame numbers.") from exc
+    if len(idle_order) != FRAME_COUNT or any(
+        index < 1 or index > FRAME_COUNT for index in idle_order
+    ):
+        raise SystemExit(
+            f"--idle-order must contain exactly {FRAME_COUNT} values from 1 to "
+            f"{FRAME_COUNT}."
+        )
+    idle_content = [idle_source[index - 1] for index in idle_order]
     attack_content = [
         crop_content(frame) for frame in split_sheet(args.attack, args.layout)
     ]

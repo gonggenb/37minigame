@@ -25,12 +25,14 @@ def find_components(
     image: Image.Image,
     alpha_threshold: int,
     min_component_pixels: int,
-) -> list[tuple[int, tuple[int, int, int, int]]]:
+) -> list[tuple[int, tuple[int, int, int, int], list[tuple[int, int]]]]:
     alpha = image.getchannel("A")
     width, height = image.size
     pixels = alpha.load()
     visited = bytearray(width * height)
-    components: list[tuple[int, tuple[int, int, int, int]]] = []
+    components: list[
+        tuple[int, tuple[int, int, int, int], list[tuple[int, int]]]
+    ] = []
 
     for y in range(height):
         for x in range(width):
@@ -41,12 +43,14 @@ def find_components(
             visited[flat_index] = 1
             queue = deque([(x, y)])
             count = 0
+            component_pixels: list[tuple[int, int]] = []
             min_x = max_x = x
             min_y = max_y = y
 
             while queue:
                 current_x, current_y = queue.popleft()
                 count += 1
+                component_pixels.append((current_x, current_y))
                 min_x = min(min_x, current_x)
                 max_x = max(max_x, current_x)
                 min_y = min(min_y, current_y)
@@ -67,9 +71,30 @@ def find_components(
                     queue.append((next_x, next_y))
 
             if count >= min_component_pixels:
-                components.append((count, (min_x, min_y, max_x + 1, max_y + 1)))
+                components.append(
+                    (
+                        count,
+                        (min_x, min_y, max_x + 1, max_y + 1),
+                        component_pixels,
+                    )
+                )
 
     return components
+
+
+def crop_component(
+    source: Image.Image,
+    bounds: tuple[int, int, int, int],
+    component_pixels: list[tuple[int, int]],
+) -> Image.Image:
+    """Crop only one connected character, excluding neighboring frame debris."""
+    left, top, right, bottom = bounds
+    crop = Image.new("RGBA", (right - left, bottom - top), (0, 0, 0, 0))
+    source_pixels = source.load()
+    crop_pixels = crop.load()
+    for x, y in component_pixels:
+        crop_pixels[x - left, y - top] = source_pixels[x, y]
+    return crop
 
 
 def main() -> None:
@@ -87,7 +112,10 @@ def main() -> None:
         )
 
     components.sort(key=lambda item: item[1][0])
-    crops = [source.crop(bounds) for _, bounds in components]
+    crops = [
+        crop_component(source, bounds, component_pixels)
+        for _, bounds, component_pixels in components
+    ]
     slot_width = max(crop.width for crop in crops) + args.padding * 2
     output = Image.new(
         "RGBA",
