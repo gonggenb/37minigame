@@ -79,6 +79,8 @@ namespace WuxiaRoguelite.UI
 
         private void OnGUI()
         {
+            RuntimeChineseFont.PrepareSkin();
+
             GameFlowController gameFlow = GameFlowController.Instance;
             if (encounter == null || encounter.consumed ||
                 encounter.encounterType != EncounterType.Treasure ||
@@ -106,14 +108,16 @@ namespace WuxiaRoguelite.UI
             }
 
             Vector3 screenPoint = worldCamera.WorldToScreenPoint(transform.position + Vector3.up * worldHeight);
-            float guiX = screenPoint.x;
-            float guiY = Screen.height - screenPoint.y;
+            float guiScale = ResponsiveGui.Scale;
+            Vector2 guiPoint = ResponsiveGui.ScreenPointToGui(screenPoint, guiScale);
+            float guiX = guiPoint.x;
+            float guiY = guiPoint.y;
 
             bool playerIsNear = playerDistance <= nearDistance;
             float pulse = 0.76f + Mathf.Sin(Time.unscaledTime * pulseSpeed) * 0.18f;
             float width = playerIsNear ? 164f : 148f;
             float panelY = guiY - 45f;
-            float leftHudWidth = Mathf.Min(330f, Screen.width * 0.48f);
+            float leftHudWidth = Mathf.Min(330f, ResponsiveGui.Width * 0.48f);
             if (guiX < leftHudWidth && panelY < 126f)
             {
                 panelY = 126f;
@@ -122,17 +126,21 @@ namespace WuxiaRoguelite.UI
 
             EnsureStyles();
             GUI.depth = -118;
+            Matrix4x4 originalGuiMatrix = ResponsiveGui.ApplyScale(guiScale);
             DrawPanel(panel, playerIsNear ? NearGold : Gold, pulse);
 
-            GUI.Label(new Rect(panel.x + 6f, panel.y + 2f, panel.width - 12f, 20f),
-                "◆ 珍藏宝箱 ◆", titleStyle);
-            GUI.Label(new Rect(panel.x + 6f, panel.y + 21f, panel.width - 12f, 18f),
-                playerIsNear ? "靠近即可开启" : "装备 · 修为 · 铜钱", hintStyle);
+            ResponsiveGui.DrawSingleLineLabel(
+                new Rect(panel.x + 6f, panel.y + 2f, panel.width - 12f, 20f),
+                "◆ 珍藏宝箱 ◆", titleStyle, 10);
+            ResponsiveGui.DrawSingleLineLabel(
+                new Rect(panel.x + 6f, panel.y + 21f, panel.width - 12f, 18f),
+                playerIsNear ? "靠近即可开启" : "装备 · 修为 · 铜钱", hintStyle, 9);
 
             Color previousColor = GUI.color;
             GUI.color = new Color(1f, 0.78f, 0.16f, pulse);
             GUI.Label(new Rect(guiX - 18f, panel.yMax - 3f, 36f, 26f), "▼", arrowStyle);
             GUI.color = previousColor;
+            GUI.matrix = originalGuiMatrix;
         }
 
         private bool IsChestInsideCamera(Camera worldCamera)
@@ -204,27 +212,27 @@ namespace WuxiaRoguelite.UI
                 return;
             }
 
-            titleStyle = new GUIStyle(GUI.skin.label)
+            titleStyle = RuntimeChineseFont.Apply(new GUIStyle(GUI.skin.label)
             {
                 fontSize = 14,
                 fontStyle = FontStyle.Bold,
                 alignment = TextAnchor.MiddleCenter,
                 normal = { textColor = new Color(1f, 0.83f, 0.28f) }
-            };
-            hintStyle = new GUIStyle(GUI.skin.label)
+            });
+            hintStyle = RuntimeChineseFont.Apply(new GUIStyle(GUI.skin.label)
             {
                 fontSize = 12,
                 fontStyle = FontStyle.Bold,
                 alignment = TextAnchor.MiddleCenter,
                 normal = { textColor = Color.white }
-            };
-            arrowStyle = new GUIStyle(GUI.skin.label)
+            });
+            arrowStyle = RuntimeChineseFont.Apply(new GUIStyle(GUI.skin.label)
             {
                 fontSize = 20,
                 fontStyle = FontStyle.Bold,
                 alignment = TextAnchor.MiddleCenter,
                 normal = { textColor = Color.white }
-            };
+            });
         }
 
         private static float Shimmer01(float wave)

@@ -5540,6 +5540,7 @@ MonoBehaviour:
   treasureTexture: {fileID: 2800000, guid: b7633679a8d9248b1afcc1e2090ffc0e, type: 3}
   caveMoveSpeed: 0.52
   playerSpriteScale: 1
+  caveActorScale: 1.55
 --- !u!114 &755778984
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5861,8 +5862,8 @@ MonoBehaviour:
   playerSpriteScale: 1
   bossSpriteScale: 1.62
   battleActorScale: 1.18
-  referenceWidth: 1280
-  referenceHeight: 720
+  referenceWidth: 960
+  referenceHeight: 540
 --- !u!114 &755778985
 MonoBehaviour:
   m_ObjectHideFlags: 0

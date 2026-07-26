@@ -20,6 +20,8 @@ namespace WuxiaRoguelite.UI
 
         private void OnGUI()
         {
+            RuntimeChineseFont.PrepareSkin();
+
             if (encounter == null || encounter.consumed ||
                 (encounter.encounterType != EncounterType.NormalEnemy &&
                  encounter.encounterType != EncounterType.EliteEnemy))
@@ -45,17 +47,22 @@ namespace WuxiaRoguelite.UI
 
             EnsureStyle();
             GUI.depth = -100;
-            Rect labelRect = new Rect(screenPoint.x - 24f, Screen.height - screenPoint.y - 9f, 48f, 18f);
+            float guiScale = ResponsiveGui.Scale;
+            Vector2 guiPoint = ResponsiveGui.ScreenPointToGui(screenPoint, guiScale);
+            Rect labelRect = new Rect(guiPoint.x - 24f, guiPoint.y - 9f, 48f, 18f);
             string levelText = $"Lv.{encounter.enemyStats.DisplayLevel}";
-            GUI.Label(new Rect(labelRect.x + 1f, labelRect.y + 1f, labelRect.width, labelRect.height),
-                levelText, shadowStyle);
+            Matrix4x4 originalGuiMatrix = ResponsiveGui.ApplyScale(guiScale);
+            ResponsiveGui.DrawSingleLineLabel(
+                new Rect(labelRect.x + 1f, labelRect.y + 1f, labelRect.width, labelRect.height),
+                levelText, shadowStyle, 9);
 
             Color previous = GUI.color;
             GUI.color = encounter.encounterType == EncounterType.EliteEnemy
                 ? new Color(1f, 0.62f, 0.55f)
                 : new Color(1f, 0.90f, 0.64f);
-            GUI.Label(labelRect, levelText, labelStyle);
+            ResponsiveGui.DrawSingleLineLabel(labelRect, levelText, labelStyle, 9);
             GUI.color = previous;
+            GUI.matrix = originalGuiMatrix;
         }
 
         private void EnsureStyle()
@@ -65,13 +72,13 @@ namespace WuxiaRoguelite.UI
                 return;
             }
 
-            labelStyle = new GUIStyle(GUI.skin.label)
+            labelStyle = RuntimeChineseFont.Apply(new GUIStyle(GUI.skin.label)
             {
                 fontSize = 12,
                 fontStyle = FontStyle.Bold,
                 alignment = TextAnchor.MiddleCenter,
                 normal = { textColor = Color.white }
-            };
+            });
             shadowStyle = new GUIStyle(labelStyle)
             {
                 normal = { textColor = new Color(0f, 0f, 0f, 0.82f) }

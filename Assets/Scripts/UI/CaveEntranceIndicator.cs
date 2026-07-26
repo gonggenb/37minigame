@@ -28,6 +28,8 @@ namespace WuxiaRoguelite.UI
 
         private void OnGUI()
         {
+            RuntimeChineseFont.PrepareSkin();
+
             GameFlowController gameFlow = GameFlowController.Instance;
             if (encounter == null || encounter.consumed ||
                 encounter.encounterType != EncounterType.HiddenCave ||
@@ -56,9 +58,12 @@ namespace WuxiaRoguelite.UI
                 return;
             }
 
-            float guiX = screenPoint.x;
-            float guiY = Screen.height - screenPoint.y;
-            if (guiX < -90f || guiX > Screen.width + 90f || guiY < -60f || guiY > Screen.height + 60f)
+            float guiScale = ResponsiveGui.Scale;
+            Vector2 guiPoint = ResponsiveGui.ScreenPointToGui(screenPoint, guiScale);
+            float guiX = guiPoint.x;
+            float guiY = guiPoint.y;
+            if (guiX < -90f || guiX > ResponsiveGui.Width + 90f ||
+                guiY < -60f || guiY > ResponsiveGui.Height + 60f)
             {
                 return;
             }
@@ -74,25 +79,28 @@ namespace WuxiaRoguelite.UI
 
             EnsureStyles();
             GUI.depth = -120;
+            Matrix4x4 originalGuiMatrix = ResponsiveGui.ApplyScale(guiScale);
             DrawPanel(panel, playerIsNear ? NearGold : Gold, pulse);
 
-            GUI.Label(new Rect(panel.x + 6f, panel.y + 2f, panel.width - 12f, 19f),
-                "◆ 山洞入口 ◆", titleStyle);
-            GUI.Label(new Rect(panel.x + 6f, panel.y + 20f, panel.width - 12f, 17f),
-                playerIsNear ? "靠近即可进入" : "可探索区域", hintStyle);
+            ResponsiveGui.DrawSingleLineLabel(
+                new Rect(panel.x + 6f, panel.y + 2f, panel.width - 12f, 19f),
+                "◆ 山洞入口 ◆", titleStyle, 10);
+            ResponsiveGui.DrawSingleLineLabel(
+                new Rect(panel.x + 6f, panel.y + 20f, panel.width - 12f, 17f),
+                playerIsNear ? "靠近即可进入" : "可探索区域", hintStyle, 9);
 
             Color previousColor = GUI.color;
             GUI.color = new Color(1f, 0.82f, 0.3f, pulse);
             GUI.Label(new Rect(guiX - 16f, guiY - 4f, 32f, 24f), "▼", arrowStyle);
             GUI.color = previousColor;
+            GUI.matrix = originalGuiMatrix;
         }
 
         private bool IsClosestVisibleEntrance(Vector3 playerPosition, Camera worldCamera)
         {
             float distanceSqr = (transform.position - playerPosition).sqrMagnitude;
             CaveEntranceIndicator[] indicators =
-                FindObjectsByType<CaveEntranceIndicator>(
-                    FindObjectsInactive.Exclude, FindObjectsSortMode.None);
+                FindObjectsByType<CaveEntranceIndicator>(FindObjectsInactive.Exclude);
             foreach (CaveEntranceIndicator indicator in indicators)
             {
                 if (indicator == this || !indicator.isActiveAndEnabled ||
@@ -132,27 +140,27 @@ namespace WuxiaRoguelite.UI
                 return;
             }
 
-            titleStyle = new GUIStyle(GUI.skin.label)
+            titleStyle = RuntimeChineseFont.Apply(new GUIStyle(GUI.skin.label)
             {
                 fontSize = 14,
                 fontStyle = FontStyle.Bold,
                 alignment = TextAnchor.MiddleCenter,
                 normal = { textColor = new Color(1f, 0.84f, 0.38f) }
-            };
-            hintStyle = new GUIStyle(GUI.skin.label)
+            });
+            hintStyle = RuntimeChineseFont.Apply(new GUIStyle(GUI.skin.label)
             {
                 fontSize = 12,
                 fontStyle = FontStyle.Bold,
                 alignment = TextAnchor.MiddleCenter,
                 normal = { textColor = Color.white }
-            };
-            arrowStyle = new GUIStyle(GUI.skin.label)
+            });
+            arrowStyle = RuntimeChineseFont.Apply(new GUIStyle(GUI.skin.label)
             {
                 fontSize = 18,
                 fontStyle = FontStyle.Bold,
                 alignment = TextAnchor.MiddleCenter,
                 normal = { textColor = Color.white }
-            };
+            });
         }
 
         private static void DrawPanel(Rect rect, Color borderColor, float pulse)
