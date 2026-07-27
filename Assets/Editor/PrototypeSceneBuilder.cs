@@ -87,9 +87,10 @@ namespace WuxiaRoguelite.EditorTools
         private const string CaveBattleStemPath =
             MusicAudioRoot + "/stem_cave_combat_tension_16s_v01.wav";
         private const string BossIntroPath = MusicAudioRoot + "/stg_boss_fox_demon_intro_4s_v01.wav";
-        private const string BossMusicPath = MusicAudioRoot + "/bgm_boss_fox_demon_loop_48s_v01.wav";
+        private const string BossMusicPath =
+            MusicAudioRoot + "/bgm_boss_fox_demon_bloodfire_loop_48s_v02.wav";
         private const string BossEnrageStemPath =
-            MusicAudioRoot + "/stem_boss_fox_demon_enrage_16s_v01.wav";
+            MusicAudioRoot + "/stem_boss_fox_demon_bloodfire_enrage_12s_v02.wav";
         private const string VictoryStingerPath = MusicAudioRoot + "/stg_result_victory_v01.wav";
         private const string DefeatStingerPath = MusicAudioRoot + "/stg_result_defeat_v01.wav";
         private const string SkillIconRoot = "Assets/Art/Generated/Icons/Skills";
@@ -193,6 +194,7 @@ namespace WuxiaRoguelite.EditorTools
             PrototypeHUDController hud = root.AddComponent<PrototypeHUDController>();
             BattleScreenController battleScreen = root.AddComponent<BattleScreenController>();
             CaveRoomController caveRoom = root.AddComponent<CaveRoomController>();
+            MobileInputController mobileInput = root.AddComponent<MobileInputController>();
 
             GameObject musicObject = new GameObject("MainMapMusic");
             AudioSource musicSource = musicObject.AddComponent<AudioSource>();
@@ -267,6 +269,8 @@ namespace WuxiaRoguelite.EditorTools
             gameFlow.battleManager = battleManager;
             gameFlow.caveRoom = caveRoom;
             battleManager.playerStats = playerStats;
+            mobileInput.gameFlow = gameFlow;
+            mobileInput.battleManager = battleManager;
             battleFeedbackAudio.battleManager = battleManager;
             BindCombatAudio(battleFeedbackAudio);
             hud.gameFlow = gameFlow;

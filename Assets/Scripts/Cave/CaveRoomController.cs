@@ -36,6 +36,7 @@ namespace WuxiaRoguelite.Cave
         private bool eventCompleted;
         private bool merchantOpen;
         private bool facingLeft;
+        private Vector2 currentMoveInput;
         private string roomMessage = string.Empty;
         private readonly bool[] purchasedOffers = new bool[3];
 
@@ -104,11 +105,16 @@ namespace WuxiaRoguelite.Cave
                 return;
             }
 
-            Vector2 input = new Vector2(Input.GetAxisRaw("Horizontal"), -Input.GetAxisRaw("Vertical"));
+            Vector2 keyboardInput = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+            Vector2 movementInput = MobileInputController.MoveInput.sqrMagnitude > 0.01f
+                ? MobileInputController.MoveInput
+                : keyboardInput;
+            Vector2 input = new Vector2(movementInput.x, -movementInput.y);
             if (input.sqrMagnitude > 1f)
             {
                 input.Normalize();
             }
+            currentMoveInput = input;
 
             if (Mathf.Abs(input.x) > 0.01f)
             {
@@ -232,7 +238,7 @@ namespace WuxiaRoguelite.Cave
             Vector2 playerCenter = RoomPoint(floor, playerPosition);
             Vector2 targetCenter = RoomPoint(floor, eventPosition);
             Vector2 exitCenter = RoomPoint(floor, exitPosition);
-            bool moving = Mathf.Abs(Input.GetAxisRaw("Horizontal")) + Mathf.Abs(Input.GetAxisRaw("Vertical")) > 0.01f;
+            bool moving = currentMoveInput.sqrMagnitude > 0.01f;
             DrawExit(exitCenter, actorSize * 0.75f);
             float playerActorSize = actorSize * playerSpriteScale;
             DrawSpriteCentered(playerCenter, playerActorSize, moving ? playerRunFrames : playerIdleFrames, facingLeft);
@@ -248,7 +254,8 @@ namespace WuxiaRoguelite.Cave
             float preferredMessageWidth =
                 ResponsiveGui.PreferredSingleLineWidth(roomMessage, bodyStyle, 30f);
             float messageWidth = Mathf.Clamp(preferredMessageWidth, width * 0.58f, width - 28f);
-            Rect message = new Rect((width - messageWidth) * 0.5f, height - 48f, messageWidth, 34f);
+            float messageY = ResponsiveGui.IsPortrait ? height - 202f : height - 48f;
+            Rect message = new Rect((width - messageWidth) * 0.5f, messageY, messageWidth, 34f);
             FillRect(message, new Color(0f, 0f, 0f, 0.82f));
             FillRect(new Rect(message.x, message.y, message.width, 2f), Gold);
             ResponsiveGui.DrawSingleLineLabel(

@@ -5487,6 +5487,7 @@ GameObject:
   - component: {fileID: 755778983}
   - component: {fileID: 755778990}
   - component: {fileID: 755778989}
+  - component: {fileID: 755778991}
   m_Layer: 0
   m_Name: GameRoot
   m_TagString: Untagged
@@ -5879,6 +5880,7 @@ MonoBehaviour:
   gameFlow: {fileID: 755778987}
   playerStats: {fileID: 285907368}
   battleManager: {fileID: 755778986}
+  musicController: {fileID: 0}
   statusIcon: {fileID: 2800000, guid: f57731138f3a04e158b19d28e19570c4, type: 3}
   equipmentIcon: {fileID: 2800000, guid: 11245450444e6418a8c293a34894b268, type: 3}
   healthBarBase: {fileID: 2800000, guid: d34e3fb6fd5d54833b80c388c74031bf, type: 3}
@@ -5970,6 +5972,7 @@ MonoBehaviour:
     lifeSteal: 0
     dodgeChance: 0
     moveSpeed: 5
+  bossIntroDuration: 4
   statusMessage: "\u6309\u5F00\u59CB\u8FDB\u5165\u6C5F\u6E56"
   bossDefeated: 0
   pendingCultivationReward: 0
@@ -6105,6 +6108,23 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &755778991
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 755778982}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c5f844cc63db748c695ed75972c94b81, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WuxiaRoguelite.UI.MobileInputController
+  gameFlow: {fileID: 755778987}
+  battleManager: {fileID: 755778986}
+  showInEditor: 1
+  showOnDesktop: 1
+  joystickRadius: 68
 --- !u!1 &760036520
 GameObject:
   m_ObjectHideFlags: 0
@@ -8897,8 +8917,8 @@ MonoBehaviour:
   caveMusic: {fileID: 8300000, guid: 3557888e4da2f42a98a8c071fe0e8b62, type: 3}
   caveBattleStem: {fileID: 8300000, guid: 17b7e89f8edb943c6b4aa7502dcd586c, type: 3}
   bossIntro: {fileID: 8300000, guid: 218146693dfa9438f81eecc0f7dcb52b, type: 3}
-  bossMusic: {fileID: 8300000, guid: a255ef8123aea40a8b7410ecc376dba9, type: 3}
-  bossEnrageStem: {fileID: 8300000, guid: 1b1d40220399d4089b3cf85b1db9e9c9, type: 3}
+  bossMusic: {fileID: 8300000, guid: 0227f23cb1d5c423fbe468717f4f5357, type: 3}
+  bossEnrageStem: {fileID: 8300000, guid: 9ae37edb43dea4fae8427b23d187330a, type: 3}
   victoryStinger: {fileID: 8300000, guid: da0f1044e4f234a51be661aeb61557b5, type: 3}
   defeatStinger: {fileID: 8300000, guid: 9c862c6702be54bff9e3ed77faa383dd, type: 3}
   volume: 0.35

@@ -176,6 +176,113 @@ def compose_boss_loop() -> np.ndarray:
     return finalize(mix, peak_db=-3.0, loopable=True, echo_delay=0.1875, echo_feedback=0.10)
 
 
+def brass(note: float, duration: float, expression: float = 1.0) -> np.ndarray:
+    """A compact suona/brass-like lead for heroic accents."""
+    length = int(duration * SAMPLE_RATE)
+    t = np.arange(length, dtype=np.float64) / SAMPLE_RATE
+    frequency = 440.0 * (2.0 ** ((note - 69.0) / 12.0))
+    vibrato = 1.0 + 0.0038 * np.sin(math.tau * 5.0 * t) * np.minimum(1.0, t / 0.15)
+    phase = math.tau * np.cumsum(frequency * vibrato) / SAMPLE_RATE
+    tone = (
+        np.sin(phase)
+        + 0.58 * np.sin(2.0 * phase + 0.18)
+        + 0.34 * np.sin(3.0 * phase + 0.41)
+        + 0.18 * np.sin(4.0 * phase + 0.67)
+        + 0.08 * np.sin(5.0 * phase)
+    )
+    attack = np.minimum(1.0, t / 0.045)
+    release = np.minimum(1.0, np.maximum(0.0, (duration - t) / 0.12))
+    return np.tanh(tone * 0.20 * expression) * attack * release
+
+
+def compose_boss_bloodfire_loop() -> np.ndarray:
+    """Hot-blooded 140 BPM boss loop: danger first, heroic momentum second."""
+    duration = 48.0  # Twenty-eight bars at 140 BPM, so the rhythmic seam is exact.
+    beat = 60.0 / 140.0
+    bar = beat * 4.0
+    mix = empty_mix(duration)
+
+    roots = (38, 38, 36, 33, 38, 41, 36)
+    patterns = (
+        (50, 57, 53, 57, 55, 57, 60, 57),
+        (50, 57, 55, 60, 57, 62, 60, 57),
+        (48, 55, 53, 57, 55, 60, 57, 53),
+        (45, 52, 50, 57, 53, 57, 55, 52),
+    )
+
+    for bar_index in range(28):
+        section = min(3, bar_index // 7)
+        start = bar_index * bar
+        add_mono(mix, low_drone(roots[bar_index % len(roots)], bar + 0.22), start, 0.25, -0.08)
+
+        # Fast pipa/guqin ostinato gives the player a readable forward pulse.
+        pattern = patterns[bar_index % len(patterns)]
+        for step, note in enumerate(pattern):
+            gain = 0.32 + section * 0.035 + (0.035 if step in (0, 4) else 0.0)
+            pan = -0.34 + 0.68 * ((step % 4) / 3.0)
+            add_mono(mix, pluck(note, 0.30, 1.05), start + step * bar / 8.0, gain, pan)
+
+        # Full four-beat war-drum pattern, with double hits as the battle escalates.
+        for beat_index in range(4):
+            time = start + beat_index * beat
+            heavy = beat_index in (0, 2)
+            add_mono(mix, war_drum(1.0 if heavy else 0.72), time, 0.39 if heavy else 0.25, 0.04)
+            add_mono(mix, rim_hit(), time + beat * 0.5, 0.10 + section * 0.012, 0.34)
+        if section >= 1:
+            add_mono(mix, war_drum(0.58), start + beat * 3.5, 0.17, -0.12)
+        if section >= 2:
+            add_mono(mix, rim_hit(), start + beat * 3.75, 0.09, -0.32)
+
+        if bar_index in (0, 7, 14, 21):
+            add_mono(mix, gong(), start, 0.13 + section * 0.018, 0.0)
+
+    # A rising pentatonic hook answers the threatening rhythm with heroic resolve.
+    heroic_motif = (
+        (0.0, 69, 1.0, 0.0),
+        (1.0, 72, 1.0, 0.0),
+        (2.0, 74, 2.0, 2.0),
+        (4.0, 77, 1.0, 0.0),
+        (5.0, 74, 1.0, 0.0),
+        (6.0, 72, 2.0, -2.0),
+    )
+    for phrase_bar in (2, 6, 10, 14, 18, 22):
+        phrase_start = phrase_bar * bar
+        lift = 0.01 * (phrase_bar // 7)
+        for offset, note, beats, bend in heroic_motif:
+            add_mono(
+                mix,
+                erhu(note, beats * beat * 0.88, bend),
+                phrase_start + offset * beat,
+                0.27 + lift,
+                -0.20,
+            )
+
+    # Short suona-like calls mark the two late peaks without masking combat SFX.
+    for phrase_bar in (16, 24):
+        phrase_start = phrase_bar * bar
+        for offset, note, beats in ((0.0, 74, 1.0), (1.0, 77, 1.0), (2.0, 81, 2.0)):
+            add_mono(
+                mix,
+                brass(note, beats * beat * 0.82, 0.92),
+                phrase_start + offset * beat,
+                0.15,
+                0.24,
+            )
+
+    # The final bar is a compact drum fill resolving directly into bar one's downbeat.
+    final_bar = 27 * bar
+    for step in range(8):
+        add_mono(
+            mix,
+            war_drum(0.58 + step * 0.045),
+            final_bar + step * bar / 8.0,
+            0.13 + step * 0.015,
+            -0.20 + step * 0.05,
+        )
+
+    return finalize(mix, peak_db=-2.4, loopable=True, echo_delay=beat * 0.5, echo_feedback=0.075)
+
+
 def compose_boss_enrage_stem() -> np.ndarray:
     duration = 16.0
     beat = 0.5
@@ -193,6 +300,28 @@ def compose_boss_enrage_stem() -> np.ndarray:
     add_mono(mix, rising_wind(3.6), 4.0, 0.14, 0.0)
     add_mono(mix, rising_wind(3.6), 12.0, 0.14, 0.0)
     return finalize(mix, peak_db=-5.5, loopable=True, echo_delay=0.125, echo_feedback=0.06)
+
+
+def compose_boss_bloodfire_enrage_stem() -> np.ndarray:
+    """Seven 140 BPM bars of extra percussion for the boss's final 40% HP."""
+    duration = 12.0
+    beat = 60.0 / 140.0
+    bar = beat * 4.0
+    mix = empty_mix(duration)
+
+    for step in range(56):
+        time = step * bar / 8.0
+        if step % 2 == 0:
+            accent = 1.0 if step % 8 in (0, 4) else 0.68
+            add_mono(mix, war_drum(accent), time, 0.27 if accent == 1.0 else 0.16, -0.05)
+        add_mono(mix, rim_hit(), time, 0.075, 0.36 if step % 2 == 0 else -0.30)
+        if step % 4 == 3:
+            note = 74 if step % 8 == 3 else 77
+            add_mono(mix, pluck(note, 0.20, 1.05), time, 0.13, -0.24)
+
+    add_mono(mix, rising_wind(2.2), 4.65, 0.12, 0.0)
+    add_mono(mix, rising_wind(2.2), 9.75, 0.12, 0.0)
+    return finalize(mix, peak_db=-5.0, loopable=True, echo_delay=beat * 0.25, echo_feedback=0.055)
 
 
 def compose_result_stinger(victory: bool) -> np.ndarray:
@@ -226,6 +355,8 @@ def main() -> None:
         "stg_boss_fox_demon_intro_4s_v01.wav": compose_boss_intro(),
         "bgm_boss_fox_demon_loop_48s_v01.wav": compose_boss_loop(),
         "stem_boss_fox_demon_enrage_16s_v01.wav": compose_boss_enrage_stem(),
+        "bgm_boss_fox_demon_bloodfire_loop_48s_v02.wav": compose_boss_bloodfire_loop(),
+        "stem_boss_fox_demon_bloodfire_enrage_12s_v02.wav": compose_boss_bloodfire_enrage_stem(),
         "stg_result_victory_v01.wav": compose_result_stinger(True),
         "stg_result_defeat_v01.wav": compose_result_stinger(False),
     }

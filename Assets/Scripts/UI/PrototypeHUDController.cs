@@ -20,15 +20,34 @@ namespace WuxiaRoguelite.UI
     {
         public const float ReferenceWidth = 960f;
         public const float ReferenceHeight = 540f;
+        public const float PortraitReferenceWidth = 540f;
+        public const float PortraitReferenceHeight = 960f;
 
         public static float Scale => CalculateScale(Screen.width, Screen.height);
         public static float Width => Screen.width / Scale;
         public static float Height => Screen.height / Scale;
+        public static bool IsPortrait => Screen.height > Screen.width;
+        public static Rect SafeArea
+        {
+            get
+            {
+                float scale = Scale;
+                Rect safe = Screen.safeArea;
+                return new Rect(
+                    safe.x / scale,
+                    (Screen.height - safe.yMax) / scale,
+                    safe.width / scale,
+                    safe.height / scale);
+            }
+        }
 
         public static float CalculateScale(float screenWidth, float screenHeight)
         {
-            float widthScale = screenWidth / ReferenceWidth;
-            float heightScale = screenHeight / ReferenceHeight;
+            bool portrait = screenHeight > screenWidth;
+            float referenceWidth = portrait ? PortraitReferenceWidth : ReferenceWidth;
+            float referenceHeight = portrait ? PortraitReferenceHeight : ReferenceHeight;
+            float widthScale = screenWidth / referenceWidth;
+            float heightScale = screenHeight / referenceHeight;
             return Mathf.Max(1f, Mathf.Min(widthScale, heightScale));
         }
 
@@ -144,6 +163,14 @@ namespace WuxiaRoguelite.UI
         private GUIStyle mainMenuSubtitleStyle;
         private GUIStyle mainMenuButtonStyle;
         private GUIStyle settingsToggleStyle;
+        private GUIStyle warningHeadingStyle;
+        private GUIStyle dangerHeadingStyle;
+        private GUIStyle bossWarningStyle;
+        private GUIStyle bossCountdownStyle;
+        private GUIStyle bossIntroTitleStyle;
+        private GUIStyle bossIntroNameStyle;
+        private Texture2D runtimeSettingsIcon;
+        private BattleScreenController battleScreen;
         private bool characterPanelOpen;
         private bool settingsOpen;
         private bool debugVisible;
@@ -171,10 +198,17 @@ namespace WuxiaRoguelite.UI
             {
                 musicController = FindAnyObjectByType<MainMapMusicController>();
             }
+
+            battleScreen = FindAnyObjectByType<BattleScreenController>();
         }
 
         private void Update()
         {
+            if (gameFlow != null && gameFlow.IsBossIntroActive)
+            {
+                return;
+            }
+
             if (Input.GetKeyDown(KeyCode.Escape))
             {
                 settingsEscapeFrame = Time.frameCount;
@@ -218,6 +252,14 @@ namespace WuxiaRoguelite.UI
             settingsEscapeFrame = -1;
         }
 
+        private void OnDestroy()
+        {
+            if (runtimeSettingsIcon != null)
+            {
+                Destroy(runtimeSettingsIcon);
+            }
+        }
+
         private void OnGUI()
         {
             RuntimeChineseFont.PrepareSkin();
@@ -227,12 +269,7 @@ namespace WuxiaRoguelite.UI
                 return;
             }
 
-            if (battleManager != null && battleManager.IsBattleActive && !settingsOpen)
-            {
-                return;
-            }
-
-            GUI.depth = settingsOpen ? -2000 : -500;
+            GUI.depth = settingsOpen ? -2000 : -1500;
             EnsureStyles();
             float guiScale = ResponsiveGui.Scale;
             Matrix4x4 originalGuiMatrix = ResponsiveGui.ApplyScale(guiScale);
@@ -244,9 +281,22 @@ namespace WuxiaRoguelite.UI
                     return;
                 }
 
+                if (battleManager != null && battleManager.IsBattleActive)
+                {
+                    DrawSettingsButton();
+                    return;
+                }
+
                 if (gameFlow.CurrentPhase == GamePhase.Ready)
                 {
                     DrawMainMenu();
+                    DrawSettingsButton();
+                    return;
+                }
+
+                if (gameFlow.IsBossIntroActive)
+                {
+                    DrawBossIntroOverlay();
                     return;
                 }
 
@@ -257,6 +307,7 @@ namespace WuxiaRoguelite.UI
 
                 if (gameFlow.CurrentPhase == GamePhase.MainMapRunning)
                 {
+                    DrawBossApproachWarning();
                     if (characterPanelOpen)
                     {
                         DrawCharacterScreen();
@@ -280,6 +331,8 @@ namespace WuxiaRoguelite.UI
                 {
                     DrawDebugControls();
                 }
+
+                DrawSettingsButton();
             }
             finally
             {
@@ -346,6 +399,19 @@ namespace WuxiaRoguelite.UI
                 hover = { textColor = Paper },
                 active = { textColor = Color.white }
             });
+            warningHeadingStyle = LabelStyle(16, FontStyle.Bold, TextAnchor.MiddleLeft,
+                new Color(1f, 0.76f, 0.32f));
+            dangerHeadingStyle = LabelStyle(16, FontStyle.Bold, TextAnchor.MiddleLeft,
+                new Color(1f, 0.30f, 0.20f));
+            bossWarningStyle = LabelStyle(18, FontStyle.Bold, TextAnchor.MiddleCenter,
+                new Color(1f, 0.82f, 0.46f));
+            bossCountdownStyle = LabelStyle(64, FontStyle.Bold, TextAnchor.MiddleCenter,
+                new Color(1f, 0.22f, 0.14f));
+            bossIntroTitleStyle = LabelStyle(21, FontStyle.Bold, TextAnchor.MiddleCenter,
+                new Color(1f, 0.78f, 0.38f));
+            bossIntroNameStyle = LabelStyle(42, FontStyle.Bold, TextAnchor.MiddleCenter,
+                new Color(1f, 0.94f, 0.78f));
+            runtimeSettingsIcon = CreateSettingsIcon(64);
         }
 
         private void SetSettingsOpen(bool open)
@@ -378,7 +444,7 @@ namespace WuxiaRoguelite.UI
             Rect screen = new Rect(0f, 0f, ResponsiveGui.Width, ResponsiveGui.Height);
             FillRect(screen, new Color(0.015f, 0.02f, 0.02f, 0.82f));
 
-            Rect panel = CenteredRect(430f, 316f);
+            Rect panel = CenteredRect(440f, 404f);
             DrawPanel(panel, Panel, Gold);
             ResponsiveGui.DrawSingleLineLabel(
                 new Rect(panel.x + 22f, panel.y + 14f, panel.width - 44f, 38f),
@@ -387,7 +453,7 @@ namespace WuxiaRoguelite.UI
                 new Rect(panel.x + 22f, panel.y + 52f, panel.width - 44f, 22f),
                 "游戏已暂停", mutedStyle, 10);
 
-            Rect musicRow = new Rect(panel.x + 22f, panel.y + 88f, panel.width - 44f, 62f);
+            Rect musicRow = new Rect(panel.x + 22f, panel.y + 78f, panel.width - 44f, 62f);
             DrawPanel(musicRow, PanelLight, Jade);
             ResponsiveGui.DrawSingleLineLabel(
                 new Rect(musicRow.x + 14f, musicRow.y + 5f, musicRow.width - 150f, 28f),
@@ -410,21 +476,56 @@ namespace WuxiaRoguelite.UI
                 musicController?.SetMusicEnabled(!musicEnabled);
             }
 
+            Rect orientationRow = new Rect(panel.x + 22f, panel.y + 154f, panel.width - 44f, 92f);
+            DrawPanel(orientationRow, PanelLight, Gold);
             ResponsiveGui.DrawSingleLineLabel(
-                new Rect(panel.x + 22f, panel.y + 166f, panel.width - 44f, 24f),
-                "快捷键", headingStyle, 11);
+                new Rect(orientationRow.x + 14f, orientationRow.y + 5f, orientationRow.width - 28f, 26f),
+                "画面方向", headingStyle, 11);
             ResponsiveGui.DrawSingleLineLabel(
-                new Rect(panel.x + 22f, panel.y + 194f, panel.width - 44f, 22f),
-                "P  角色状态     B  装备背包", bodyStyle, 10);
+                new Rect(orientationRow.x + 14f, orientationRow.y + 29f, orientationRow.width - 214f, 44f),
+                "手机端会记住选择，并立即切换横屏或竖屏。", mutedStyle, 9);
+
+            bool portraitSelected = MobileDisplaySettings.PrefersPortrait;
+            float orientationButtonWidth = 82f;
+            if (GUI.Button(
+                    new Rect(orientationRow.xMax - 184f, orientationRow.y + 32f, orientationButtonWidth, 38f),
+                    "竖屏", portraitSelected ? activeTabStyle : tabStyle))
+            {
+                MobileDisplaySettings.SetPortrait(true);
+            }
+
+            if (GUI.Button(
+                    new Rect(orientationRow.xMax - 94f, orientationRow.y + 32f, orientationButtonWidth, 38f),
+                    "横屏", !portraitSelected ? activeTabStyle : tabStyle))
+            {
+                MobileDisplaySettings.SetPortrait(false);
+            }
+
             ResponsiveGui.DrawSingleLineLabel(
-                new Rect(panel.x + 22f, panel.y + 218f, panel.width - 44f, 22f),
-                "Esc  打开或关闭设置", mutedStyle, 10);
+                new Rect(panel.x + 22f, panel.y + 260f, panel.width - 44f, 24f),
+                "操作", headingStyle, 11);
+            ResponsiveGui.DrawSingleLineLabel(
+                new Rect(panel.x + 22f, panel.y + 288f, panel.width - 44f, 22f),
+                "移动：左下角虚拟摇杆 / WASD", bodyStyle, 10);
+            ResponsiveGui.DrawSingleLineLabel(
+                new Rect(panel.x + 22f, panel.y + 312f, panel.width - 44f, 22f),
+                "P 角色状态 · B 装备背包 · Esc 设置", mutedStyle, 9);
 
             if (GUI.Button(
                     new Rect(panel.x + 22f, panel.yMax - 52f, panel.width - 44f, 34f),
                     "返回游戏", actionButtonStyle))
             {
                 SetSettingsOpen(false);
+            }
+        }
+
+        private void DrawSettingsButton()
+        {
+            Rect safe = ResponsiveGui.SafeArea;
+            Rect settingsRect = new Rect(safe.xMax - 58f, safe.y + 10f, 48f, 48f);
+            if (GUI.Button(settingsRect, new GUIContent(runtimeSettingsIcon, "设置"), iconButtonStyle))
+            {
+                SetSettingsOpen(true);
             }
         }
 
@@ -442,11 +543,12 @@ namespace WuxiaRoguelite.UI
 
             FillRect(screen, new Color(0.025f, 0.035f, 0.035f, 0.28f));
 
-            float panelWidth = Mathf.Min(460f, ResponsiveGui.Width - 32f);
-            float panelHeight = Mathf.Min(268f, ResponsiveGui.Height - 32f);
+            Rect safe = ResponsiveGui.SafeArea;
+            float panelWidth = Mathf.Min(460f, safe.width - 32f);
+            float panelHeight = Mathf.Min(268f, safe.height - 32f);
             Rect panel = new Rect(
-                (ResponsiveGui.Width - panelWidth) * 0.5f,
-                (ResponsiveGui.Height - panelHeight) * 0.5f,
+                safe.x + (safe.width - panelWidth) * 0.5f,
+                safe.y + (safe.height - panelHeight) * 0.5f,
                 panelWidth,
                 panelHeight);
             DrawPanel(panel, new Color(0.045f, 0.055f, 0.052f, 0.82f), Gold);
@@ -475,10 +577,27 @@ namespace WuxiaRoguelite.UI
 
         private void DrawCompactHud()
         {
-            Rect hud = new Rect(14f, 14f, 210f, 66f);
-            DrawPanel(hud, Ink, Jade);
-            ResponsiveGui.DrawSingleLineLabel(new Rect(hud.x + 12f, hud.y + 4f, 132f, 25f),
-                $"江湖余时  {gameFlow.mainTimeRemaining:0.0}", headingStyle, 12);
+            Rect safe = ResponsiveGui.SafeArea;
+            float hudWidth = ResponsiveGui.IsPortrait ? Mathf.Min(310f, safe.width - 86f) : 210f;
+            Rect hud = new Rect(safe.x + 14f, safe.y + 14f, hudWidth, 66f);
+            BossApproachStage approachStage = gameFlow.CurrentBossApproachStage;
+            Color accent = approachStage == BossApproachStage.FinalCountdown ||
+                           approachStage == BossApproachStage.Arrived
+                ? new Color(0.90f, 0.20f, 0.14f)
+                : approachStage == BossApproachStage.Imminent ||
+                  approachStage == BossApproachStage.Omen
+                    ? Gold
+                    : Jade;
+            GUIStyle timerLabelStyle = approachStage == BossApproachStage.FinalCountdown ||
+                                       approachStage == BossApproachStage.Arrived
+                ? dangerHeadingStyle
+                : approachStage == BossApproachStage.Imminent ||
+                  approachStage == BossApproachStage.Omen
+                    ? warningHeadingStyle
+                    : headingStyle;
+            DrawPanel(hud, Ink, accent);
+            ResponsiveGui.DrawSingleLineLabel(new Rect(hud.x + 12f, hud.y + 4f, hud.width - 74f, 25f),
+                $"江湖余时  {gameFlow.mainTimeRemaining:0.0}", timerLabelStyle, 12);
             ResponsiveGui.DrawSingleLineLabel(new Rect(hud.xMax - 60f, hud.y + 5f, 48f, 23f),
                 $"Lv.{playerStats.level}", centeredStyle, 10);
 
@@ -488,7 +607,7 @@ namespace WuxiaRoguelite.UI
             Rect healthRect = new Rect(hud.x + 12f, hud.y + 47f, hud.width - 24f, 10f);
             DrawHealthBar(healthRect, playerStats.runtimeStats.HealthRatio);
 
-            Rect resources = new Rect(14f, 86f, 210f, 25f);
+            Rect resources = new Rect(safe.x + 14f, safe.y + 86f, hudWidth, 25f);
             DrawPanel(resources, new Color(0.04f, 0.05f, 0.05f, 0.9f), Gold);
             ResponsiveGui.DrawSingleLineLabel(
                 new Rect(resources.x + 10f, resources.y + 1f, resources.width - 20f, resources.height - 2f),
@@ -497,19 +616,183 @@ namespace WuxiaRoguelite.UI
 
             float preferredStatusWidth =
                 ResponsiveGui.PreferredSingleLineWidth(gameFlow.statusMessage, bodyStyle, 28f);
-            float statusWidth = Mathf.Clamp(preferredStatusWidth, 360f, ResponsiveGui.Width - 28f);
-            Rect message = new Rect((ResponsiveGui.Width - statusWidth) * 0.5f,
-                ResponsiveGui.Height - 44f, statusWidth, 30f);
+            float statusWidth = Mathf.Clamp(preferredStatusWidth,
+                ResponsiveGui.IsPortrait ? 260f : 360f, safe.width - 28f);
+            float messageY = ResponsiveGui.IsPortrait ? safe.yMax - 204f : safe.yMax - 44f;
+            Rect message = new Rect(safe.x + (safe.width - statusWidth) * 0.5f,
+                messageY, statusWidth, 30f);
             DrawPanel(message, new Color(0.03f, 0.04f, 0.04f, 0.84f), Gold);
             ResponsiveGui.DrawSingleLineLabel(
                 new Rect(message.x + 12f, message.y + 3f, message.width - 24f, message.height - 6f),
                 gameFlow.statusMessage, bodyStyle, 10);
         }
 
+        private void DrawBossApproachWarning()
+        {
+            BossApproachStage stage = gameFlow.CurrentBossApproachStage;
+            if (stage == BossApproachStage.None)
+            {
+                return;
+            }
+
+            Rect safe = ResponsiveGui.SafeArea;
+            float pulse = 0.5f + 0.5f * Mathf.Abs(Mathf.Sin(Time.time * (stage == BossApproachStage.FinalCountdown ? 7f : 3.5f)));
+            DrawDangerEdges(0.18f + pulse * (stage == BossApproachStage.FinalCountdown ? 0.24f : 0.10f));
+
+            if (stage == BossApproachStage.FinalCountdown)
+            {
+                int seconds = Mathf.Max(1, Mathf.CeilToInt(gameFlow.mainTimeRemaining));
+                float panelSize = ResponsiveGui.IsPortrait ? 132f : 118f;
+                float panelY = ResponsiveGui.IsPortrait ? safe.y + 142f : safe.y + 104f;
+                Rect countdownPanel = new Rect(
+                    safe.x + (safe.width - panelSize) * 0.5f,
+                    panelY,
+                    panelSize,
+                    panelSize);
+                FillRect(countdownPanel, new Color(0.08f, 0.015f, 0.012f, 0.78f));
+                FillRect(new Rect(countdownPanel.x, countdownPanel.y, countdownPanel.width, 3f),
+                    new Color(0.95f, 0.18f, 0.10f, 0.75f + pulse * 0.25f));
+                GUI.Label(countdownPanel, seconds.ToString(), bossCountdownStyle);
+
+                Rect warning = new Rect(
+                    safe.x + (safe.width - Mathf.Min(360f, safe.width - 32f)) * 0.5f,
+                    countdownPanel.yMax + 8f,
+                    Mathf.Min(360f, safe.width - 32f),
+                    34f);
+                FillRect(warning, new Color(0.05f, 0.02f, 0.018f, 0.84f));
+                ResponsiveGui.DrawSingleLineLabel(
+                    warning,
+                    "终局强敌即将降临",
+                    bossWarningStyle,
+                    12);
+                return;
+            }
+
+            string warningText = stage == BossApproachStage.Imminent
+                ? $"强敌将在 {Mathf.CeilToInt(gameFlow.mainTimeRemaining)} 息后降临"
+                : "妖气逼近 · 尽快完成最后准备";
+            float width = Mathf.Min(stage == BossApproachStage.Imminent ? 380f : 330f, safe.width - 32f);
+            float y = ResponsiveGui.IsPortrait ? safe.y + 124f : safe.y + 18f;
+            Rect banner = new Rect(safe.x + (safe.width - width) * 0.5f, y, width, 40f);
+            FillRect(banner, new Color(0.04f, 0.025f, 0.02f, 0.86f));
+            FillRect(new Rect(banner.x, banner.y, banner.width, 2f),
+                new Color(0.95f, 0.34f, 0.13f, 0.60f + pulse * 0.30f));
+            ResponsiveGui.DrawSingleLineLabel(banner, warningText, bossWarningStyle, 11);
+        }
+
+        private void DrawBossIntroOverlay()
+        {
+            if (battleScreen == null)
+            {
+                battleScreen = FindAnyObjectByType<BattleScreenController>();
+            }
+
+            Rect screen = new Rect(0f, 0f, ResponsiveGui.Width, ResponsiveGui.Height);
+            Texture2D background = battleScreen != null ? battleScreen.bossBattleBackground : null;
+            if (background != null)
+            {
+                GUI.DrawTexture(screen, background, ScaleMode.ScaleAndCrop, true);
+            }
+            else
+            {
+                FillRect(screen, new Color(0.055f, 0.015f, 0.018f));
+            }
+
+            float duration = Mathf.Max(0.01f, gameFlow.bossIntroDuration);
+            float elapsed = Mathf.Clamp(duration - gameFlow.BossIntroTimeRemaining, 0f, duration);
+            float progress = Mathf.Clamp01(elapsed / duration);
+            float reveal = Mathf.SmoothStep(0f, 1f, Mathf.Clamp01(progress / 0.34f));
+            float pulse = 0.5f + 0.5f * Mathf.Abs(Mathf.Sin(elapsed * 4.5f));
+            FillRect(screen, new Color(0.01f, 0.008f, 0.01f, Mathf.Lerp(0.92f, 0.40f, reveal)));
+            DrawDangerEdges(0.30f + pulse * 0.16f);
+
+            Sprite bossSprite = battleScreen != null
+                ? battleScreen.GetPreviewSprite(gameFlow.bossStats.visualId)
+                : null;
+            Rect safe = ResponsiveGui.SafeArea;
+            float figureSize = ResponsiveGui.IsPortrait
+                ? Mathf.Min(300f, safe.width * 0.66f)
+                : Mathf.Min(340f, safe.height * 0.62f);
+            float figureY = ResponsiveGui.IsPortrait
+                ? safe.y + 96f
+                : safe.y + (safe.height - figureSize) * 0.36f;
+            Rect figureRect = new Rect(
+                safe.x + (safe.width - figureSize) * 0.5f,
+                figureY,
+                figureSize,
+                figureSize);
+            if (bossSprite != null)
+            {
+                Color previous = GUI.color;
+                GUI.color = new Color(1f, 1f, 1f, reveal);
+                DrawSpriteFrame(figureRect, bossSprite);
+                GUI.color = previous;
+            }
+
+            float cardWidth = Mathf.Min(520f, safe.width - 34f);
+            float cardHeight = ResponsiveGui.IsPortrait ? 180f : 158f;
+            Rect titleCard = new Rect(
+                safe.x + (safe.width - cardWidth) * 0.5f,
+                safe.yMax - cardHeight - (ResponsiveGui.IsPortrait ? 82f : 30f),
+                cardWidth,
+                cardHeight);
+            DrawPanel(titleCard, new Color(0.025f, 0.012f, 0.014f, 0.90f),
+                new Color(0.82f, 0.20f, 0.13f, 0.90f));
+            ResponsiveGui.DrawSingleLineLabel(
+                new Rect(titleCard.x + 18f, titleCard.y + 10f, titleCard.width - 36f, 34f),
+                "终局强敌",
+                bossIntroTitleStyle,
+                13);
+            ResponsiveGui.DrawSingleLineLabel(
+                new Rect(titleCard.x + 18f, titleCard.y + 42f, titleCard.width - 36f, 58f),
+                gameFlow.bossStats.displayName,
+                bossIntroNameStyle,
+                24);
+            ResponsiveGui.DrawSingleLineLabel(
+                new Rect(titleCard.x + 18f, titleCard.y + 106f, titleCard.width - 36f, 28f),
+                progress < 0.60f ? "妖气压境 · 杀意已至" : "气血已复 · 决战将启",
+                bossWarningStyle,
+                11);
+            ResponsiveGui.DrawSingleLineLabel(
+                new Rect(titleCard.x + 18f, titleCard.yMax - 27f, titleCard.width - 36f, 20f),
+                $"距离交锋  {gameFlow.BossIntroTimeRemaining:0.0}s",
+                mutedStyle,
+                9);
+        }
+
+        private static void DrawDangerEdges(float alpha)
+        {
+            float width = ResponsiveGui.Width;
+            float height = ResponsiveGui.Height;
+            float edge = ResponsiveGui.IsPortrait ? 18f : 14f;
+            Color red = new Color(0.78f, 0.04f, 0.025f, Mathf.Clamp01(alpha));
+            FillRect(new Rect(0f, 0f, width, edge), red);
+            FillRect(new Rect(0f, height - edge, width, edge), red);
+            FillRect(new Rect(0f, edge, edge, height - edge * 2f), red);
+            FillRect(new Rect(width - edge, edge, edge, height - edge * 2f), red);
+        }
+
+        private static void DrawSpriteFrame(Rect rect, Sprite sprite)
+        {
+            if (sprite == null || sprite.texture == null)
+            {
+                return;
+            }
+
+            Rect spriteRect = sprite.rect;
+            Rect uv = new Rect(
+                spriteRect.x / sprite.texture.width,
+                spriteRect.y / sprite.texture.height,
+                spriteRect.width / sprite.texture.width,
+                spriteRect.height / sprite.texture.height);
+            GUI.DrawTextureWithTexCoords(rect, sprite.texture, uv, true);
+        }
+
         private void DrawCharacterButtons()
         {
-            Rect statusRect = new Rect(ResponsiveGui.Width - 58f, 14f, 48f, 48f);
-            Rect equipmentRect = new Rect(ResponsiveGui.Width - 58f, 68f, 48f, 48f);
+            Rect safe = ResponsiveGui.SafeArea;
+            Rect statusRect = new Rect(safe.xMax - 58f, safe.y + 68f, 48f, 48f);
+            Rect equipmentRect = new Rect(safe.xMax - 58f, safe.y + 122f, 48f, 48f);
             if (GUI.Button(statusRect, new GUIContent(statusIcon, "角色状态"), iconButtonStyle))
             {
                 ToggleCharacterPanel(CharacterView.Status);
@@ -954,7 +1237,8 @@ namespace WuxiaRoguelite.UI
 
         private void DrawDebugControls()
         {
-            Rect panel = new Rect(14f, 106f, 180f, 238f);
+            Rect safe = ResponsiveGui.SafeArea;
+            Rect panel = new Rect(safe.x + 14f, safe.y + 116f, 180f, 238f);
             DrawPanel(panel, Ink, new Color(0.55f, 0.55f, 0.55f));
             if (GUI.Button(new Rect(panel.x + 8f, panel.y + 8f, panel.width - 16f, 26f), "重新开始")) gameFlow.StartRun();
             if (GUI.Button(new Rect(panel.x + 8f, panel.y + 40f, panel.width - 16f, 26f), "增加修为")) gameFlow.AddDebugCultivation();
@@ -1009,9 +1293,14 @@ namespace WuxiaRoguelite.UI
 
         private static Rect CenteredRect(float width, float height)
         {
-            width = Mathf.Min(width, ResponsiveGui.Width - 28f);
-            height = Mathf.Min(height, ResponsiveGui.Height - 28f);
-            return new Rect((ResponsiveGui.Width - width) * 0.5f, (ResponsiveGui.Height - height) * 0.5f, width, height);
+            Rect safe = ResponsiveGui.SafeArea;
+            width = Mathf.Min(width, safe.width - 28f);
+            height = Mathf.Min(height, safe.height - 28f);
+            return new Rect(
+                safe.x + (safe.width - width) * 0.5f,
+                safe.y + (safe.height - height) * 0.5f,
+                width,
+                height);
         }
 
         private static string SlotName(EquipmentSlot slot)
@@ -1046,6 +1335,38 @@ namespace WuxiaRoguelite.UI
             GUI.color = color;
             GUI.DrawTexture(rect, Texture2D.whiteTexture);
             GUI.color = previous;
+        }
+
+        private static Texture2D CreateSettingsIcon(int size)
+        {
+            Texture2D texture = new Texture2D(size, size, TextureFormat.RGBA32, false)
+            {
+                name = "RuntimeSettingsIcon",
+                filterMode = FilterMode.Bilinear,
+                wrapMode = TextureWrapMode.Clamp,
+                hideFlags = HideFlags.HideAndDontSave
+            };
+            Color[] pixels = new Color[size * size];
+            Vector2 center = Vector2.one * (size - 1) * 0.5f;
+            Color gearColor = new Color(0.92f, 0.79f, 0.48f, 1f);
+            float radius = size * 0.5f;
+            for (int y = 0; y < size; y++)
+            {
+                for (int x = 0; x < size; x++)
+                {
+                    Vector2 offset = new Vector2(x, y) - center;
+                    float normalizedRadius = offset.magnitude / radius;
+                    float angle = Mathf.Atan2(offset.y, offset.x);
+                    float teeth = Mathf.Cos(angle * 8f) > 0.25f ? 0.92f : 0.78f;
+                    bool gearBody = normalizedRadius <= teeth && normalizedRadius >= 0.28f;
+                    bool centerRing = normalizedRadius <= 0.46f && normalizedRadius >= 0.28f;
+                    pixels[y * size + x] = gearBody || centerRing ? gearColor : Color.clear;
+                }
+            }
+
+            texture.SetPixels(pixels);
+            texture.Apply(false, true);
+            return texture;
         }
     }
 }

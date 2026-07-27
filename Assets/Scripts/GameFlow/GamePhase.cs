@@ -1,5 +1,14 @@
 namespace WuxiaRoguelite.GameFlow
 {
+    public enum BossApproachStage
+    {
+        None,
+        Omen,
+        Imminent,
+        FinalCountdown,
+        Arrived
+    }
+
     public enum GamePhase
     {
         Ready,

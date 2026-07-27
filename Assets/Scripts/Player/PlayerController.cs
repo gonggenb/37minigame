@@ -1,4 +1,5 @@
 using UnityEngine;
+using WuxiaRoguelite.UI;
 
 namespace WuxiaRoguelite.Player
 {
@@ -53,7 +54,10 @@ namespace WuxiaRoguelite.Player
                 return;
             }
 
-            moveInput = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+            Vector2 keyboardInput = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+            moveInput = MobileInputController.MoveInput.sqrMagnitude > 0.01f
+                ? MobileInputController.MoveInput
+                : keyboardInput;
             if (moveInput.sqrMagnitude > 1f)
             {
                 moveInput.Normalize();

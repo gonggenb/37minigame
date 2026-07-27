@@ -39,10 +39,47 @@ namespace WuxiaRoguelite.GameFlow
             critChance = 0.08f,
             critMultiplier = 1.6f
         };
+        [Min(0f)] public float bossIntroDuration = 4f;
 
         public GamePhase CurrentPhase { get; private set; } = GamePhase.Ready;
         public bool IsCharacterMenuPaused { get; private set; }
         public bool IsBossTransitionPending { get; private set; }
+        public bool IsBossIntroActive { get; private set; }
+        public float BossIntroTimeRemaining { get; private set; }
+        public BossApproachStage CurrentBossApproachStage
+        {
+            get
+            {
+                if (CurrentPhase == GamePhase.Ready ||
+                    CurrentPhase == GamePhase.BossBattle ||
+                    CurrentPhase == GamePhase.Result)
+                {
+                    return BossApproachStage.None;
+                }
+
+                if (IsBossTransitionPending)
+                {
+                    return BossApproachStage.Arrived;
+                }
+
+                if (mainTimeRemaining <= 5f)
+                {
+                    return BossApproachStage.FinalCountdown;
+                }
+
+                if (mainTimeRemaining <= 10f)
+                {
+                    return BossApproachStage.Imminent;
+                }
+
+                if (mainTimeRemaining <= 15f)
+                {
+                    return BossApproachStage.Omen;
+                }
+
+                return BossApproachStage.None;
+            }
+        }
         public string statusMessage = "按开始进入江湖";
         public bool bossDefeated;
         public int pendingCultivationReward;
@@ -53,6 +90,7 @@ namespace WuxiaRoguelite.GameFlow
 
         private GamePhase phaseBeforeLevelUp = GamePhase.MainMapRunning;
         private float timeScaleBeforeCharacterMenu = 1f;
+        private CombatantStats pendingBoss;
 
         private void Awake()
         {
@@ -69,6 +107,9 @@ namespace WuxiaRoguelite.GameFlow
             mainTimeRemaining = mainTimeLimit;
             bossBattleTime = 0f;
             bossDefeated = false;
+            IsBossIntroActive = false;
+            BossIntroTimeRemaining = 0f;
+            pendingBoss = null;
             SetPhase(GamePhase.Ready);
             statusMessage = "按开始进入江湖";
         }
@@ -94,7 +135,18 @@ namespace WuxiaRoguelite.GameFlow
 
             if (CurrentPhase == GamePhase.BossBattle)
             {
-                bossBattleTime += Time.deltaTime;
+                if (IsBossIntroActive)
+                {
+                    BossIntroTimeRemaining = Mathf.Max(0f, BossIntroTimeRemaining - Time.deltaTime);
+                    if (BossIntroTimeRemaining <= 0f)
+                    {
+                        BeginBossCombat();
+                    }
+                }
+                else if (battleManager != null && battleManager.IsBattleActive)
+                {
+                    bossBattleTime += Time.deltaTime;
+                }
             }
         }
 
@@ -123,6 +175,9 @@ namespace WuxiaRoguelite.GameFlow
             bossBattleTime = 0f;
             bossDefeated = false;
             IsBossTransitionPending = false;
+            IsBossIntroActive = false;
+            BossIntroTimeRemaining = 0f;
+            pendingBoss = null;
             pendingCultivationReward = 0;
             pendingCopperReward = 0;
             currentChoices.Clear();
@@ -403,9 +458,31 @@ namespace WuxiaRoguelite.GameFlow
             }
 
             bossBattleTime = 0f;
-            CombatantStats boss = bossStats.Clone();
-            boss.ResetHealth();
+            pendingBoss = bossStats.Clone();
+            pendingBoss.ResetHealth();
             SetPhase(GamePhase.BossBattle);
+            BossIntroTimeRemaining = Mathf.Max(0f, bossIntroDuration);
+            IsBossIntroActive = BossIntroTimeRemaining > 0f;
+            statusMessage = $"妖气压境：{bossStats.displayName}即将现身。";
+
+            if (!IsBossIntroActive)
+            {
+                BeginBossCombat();
+            }
+        }
+
+        private void BeginBossCombat()
+        {
+            if (CurrentPhase != GamePhase.BossBattle)
+            {
+                return;
+            }
+
+            IsBossIntroActive = false;
+            BossIntroTimeRemaining = 0f;
+            CombatantStats boss = pendingBoss ?? bossStats.Clone();
+            pendingBoss = null;
+            boss.ResetHealth();
             statusMessage = "气血已恢复，最终 Boss 战开始：不再消耗主地图 60 秒时间。";
             battleManager.BeginBattle(boss, OnBossBattleFinished);
         }
@@ -538,6 +615,9 @@ namespace WuxiaRoguelite.GameFlow
         private void EndRun(bool victory, string reason)
         {
             IsBossTransitionPending = false;
+            IsBossIntroActive = false;
+            BossIntroTimeRemaining = 0f;
+            pendingBoss = null;
             if (battleManager != null)
             {
                 battleManager.CancelBattle();
