@@ -5542,6 +5542,9 @@ MonoBehaviour:
   caveMoveSpeed: 0.52
   playerSpriteScale: 1
   caveActorScale: 1.55
+  enemyWeight: 45
+  merchantWeight: 25
+  treasureWeight: 30
 --- !u!114 &755778984
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7369,7 +7372,7 @@ MonoBehaviour:
   cultivationReward: 35
   copperReward: 12
   healRatio: 0.35
-  caveContent: 1
+  caveContent: 0
   consumed: 0
 --- !u!135 &935331813
 SphereCollider:
@@ -8836,7 +8839,7 @@ MonoBehaviour:
   cultivationReward: 42
   copperReward: 14
   healRatio: 0.35
-  caveContent: 1
+  caveContent: 0
   consumed: 0
 --- !u!135 &1103586502
 SphereCollider:
@@ -8916,9 +8919,10 @@ MonoBehaviour:
   normalBattleStem: {fileID: 8300000, guid: c637ec11dad0844d99534162855d756d, type: 3}
   caveMusic: {fileID: 8300000, guid: 3557888e4da2f42a98a8c071fe0e8b62, type: 3}
   caveBattleStem: {fileID: 8300000, guid: 17b7e89f8edb943c6b4aa7502dcd586c, type: 3}
-  bossIntro: {fileID: 8300000, guid: 218146693dfa9438f81eecc0f7dcb52b, type: 3}
-  bossMusic: {fileID: 8300000, guid: 0227f23cb1d5c423fbe468717f4f5357, type: 3}
-  bossEnrageStem: {fileID: 8300000, guid: 9ae37edb43dea4fae8427b23d187330a, type: 3}
+  bossIntro: {fileID: 8300000, guid: 370ec99b9e8ee42baa2845da09d0b862, type: 3}
+  bossMusic: {fileID: 8300000, guid: 6ce62790cb8a846308684efa40cbfffb, type: 3}
+  bossMomentumStem: {fileID: 8300000, guid: ce8b011a343cc4e4e9d4a9f7bf6d3c1d, type: 3}
+  bossEnrageStem: {fileID: 8300000, guid: 2616ce832ec1b4869a58a0bb1eede2ff, type: 3}
   victoryStinger: {fileID: 8300000, guid: da0f1044e4f234a51be661aeb61557b5, type: 3}
   defeatStinger: {fileID: 8300000, guid: 9c862c6702be54bff9e3ed77faa383dd, type: 3}
   volume: 0.35
@@ -8927,7 +8931,8 @@ MonoBehaviour:
   stingerVolume: 0.55
   overlayFadeInSeconds: 0.15
   overlayFadeOutSeconds: 0.25
-  bossEnrageHealthRatio: 0.4
+  bossMomentumHealthRatio: 0.72
+  bossEnrageHealthRatio: 0.35
 --- !u!82 &1108178755
 AudioSource:
   m_ObjectHideFlags: 0
@@ -11478,7 +11483,7 @@ MonoBehaviour:
   cultivationReward: 18
   copperReward: 10
   healRatio: 0.35
-  caveContent: 3
+  caveContent: 0
   consumed: 0
 --- !u!135 &1401044975
 SphereCollider:
@@ -11680,7 +11685,7 @@ MonoBehaviour:
   cultivationReward: 0
   copperReward: 0
   healRatio: 0.35
-  caveContent: 2
+  caveContent: 0
   consumed: 0
 --- !u!135 &1428634782
 SphereCollider:

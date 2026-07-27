@@ -168,7 +168,7 @@ namespace WuxiaRoguelite.GameFlow
 
             foreach (EncounterTrigger encounter in FindObjectsByType<EncounterTrigger>(FindObjectsInactive.Include))
             {
-                encounter.ResetEncounter();
+                encounter.ResetEncounter(rerollCaveContent: true);
             }
 
             mainTimeRemaining = mainTimeLimit;

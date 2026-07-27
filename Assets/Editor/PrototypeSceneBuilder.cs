@@ -86,11 +86,12 @@ namespace WuxiaRoguelite.EditorTools
         private const string CaveMusicPath = MusicAudioRoot + "/bgm_cave_mystery_loop_32s_v01.wav";
         private const string CaveBattleStemPath =
             MusicAudioRoot + "/stem_cave_combat_tension_16s_v01.wav";
-        private const string BossIntroPath = MusicAudioRoot + "/stg_boss_fox_demon_intro_4s_v01.wav";
-        private const string BossMusicPath =
-            MusicAudioRoot + "/bgm_boss_fox_demon_bloodfire_loop_48s_v02.wav";
+        private const string BossIntroPath = MusicAudioRoot + "/stg_boss_heavenbreak_intro_4s_v03.wav";
+        private const string BossMusicPath = MusicAudioRoot + "/bgm_boss_heavenbreak_loop_32s_v03.wav";
+        private const string BossMomentumStemPath =
+            MusicAudioRoot + "/stem_boss_heavenbreak_momentum_16s_v03.wav";
         private const string BossEnrageStemPath =
-            MusicAudioRoot + "/stem_boss_fox_demon_bloodfire_enrage_12s_v02.wav";
+            MusicAudioRoot + "/stem_boss_heavenbreak_climax_16s_v03.wav";
         private const string VictoryStingerPath = MusicAudioRoot + "/stg_result_victory_v01.wav";
         private const string DefeatStingerPath = MusicAudioRoot + "/stg_result_defeat_v01.wav";
         private const string SkillIconRoot = "Assets/Art/Generated/Icons/Skills";
@@ -234,6 +235,8 @@ namespace WuxiaRoguelite.EditorTools
             musicController.caveBattleStem = AssetDatabase.LoadAssetAtPath<AudioClip>(CaveBattleStemPath);
             musicController.bossIntro = AssetDatabase.LoadAssetAtPath<AudioClip>(BossIntroPath);
             musicController.bossMusic = AssetDatabase.LoadAssetAtPath<AudioClip>(BossMusicPath);
+            musicController.bossMomentumStem =
+                AssetDatabase.LoadAssetAtPath<AudioClip>(BossMomentumStemPath);
             musicController.bossEnrageStem = AssetDatabase.LoadAssetAtPath<AudioClip>(BossEnrageStemPath);
             musicController.victoryStinger = AssetDatabase.LoadAssetAtPath<AudioClip>(VictoryStingerPath);
             musicController.defeatStinger = AssetDatabase.LoadAssetAtPath<AudioClip>(DefeatStingerPath);
@@ -324,11 +327,11 @@ namespace WuxiaRoguelite.EditorTools
                 EncounterType.EliteEnemy, Stats("玄衣刀客", 135, 13, 4, 0.9f, "stone_ape"), 34, 12, 1.25f);
 
             CreateCaveEncounter("断崖石窟", new Vector3(-11f, 0f, -6f),
-                Stats("守洞武人", 160, 14, 4, 0.85f, "orc_cave_guardian"), 35, 12, CaveContentType.Enemy);
+                Stats("守洞武人", 160, 14, 4, 0.85f, "orc_cave_guardian"), 35, 12, CaveContentType.Random);
             CreateCaveEncounter("隐市岩洞", new Vector3(11f, 0f, -7f),
-                Stats("云游商人", 1, 0, 0, 1f), 0, 0, CaveContentType.Merchant);
+                Stats("守洞武人", 160, 14, 4, 0.85f, "orc_cave_guardian"), 35, 12, CaveContentType.Random);
             CreateCaveEncounter("古藏秘窟", new Vector3(-10.5f, 0f, 8f),
-                Stats("秘藏古匣", 1, 0, 0, 1f), 18, 10, CaveContentType.Treasure);
+                Stats("守洞武人", 160, 14, 4, 0.85f, "orc_cave_guardian"), 35, 12, CaveContentType.Random);
 
             CreateEncounter("东市宝箱", new[] { treasureChestSprite }, null, new Vector3(10.5f, 0f, 7.5f), EncounterType.Treasure, Stats("宝箱", 1, 0, 0, 1f), 15, 8, 0.9f);
             CreateEncounter("西路宝箱", new[] { treasureChestSprite }, null, new Vector3(-12f, 0f, 1.5f), EncounterType.Treasure, Stats("宝箱", 1, 0, 0, 1f), 12, 6, 0.9f);
@@ -1802,7 +1805,7 @@ namespace WuxiaRoguelite.EditorTools
                 Stats("青竹机关傀", 82, 12, 4, 0.92f, "bamboo_puppet", dodgeChance: 0.04f),
                 24, 8, 1.15f);
             GameObject southCave = CreateCaveEncounter("岩壁密窟", new Vector3(19.2f, 0f, -14.8f),
-                Stats("岩窟守卫", 175, 16, 5, 0.82f, "stone_ape"), 42, 14, CaveContentType.Enemy);
+                Stats("岩窟守卫", 175, 16, 5, 0.82f, "stone_ape"), 42, 14, CaveContentType.Random);
             GameObject northTreasure = CreateEncounter("北岭宝箱", new[] { treasureChestSprite }, null, new Vector3(-7f, 0f, 16.2f),
                 EncounterType.Treasure, Stats("宝箱", 1, 0, 0, 1f), 18, 10, 0.9f);
             GameObject eastHerb = CreateEncounter("东郊药草", herbFrames, null, new Vector3(19.5f, 0f, 1.8f),

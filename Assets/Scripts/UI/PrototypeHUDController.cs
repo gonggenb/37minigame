@@ -578,16 +578,11 @@ namespace WuxiaRoguelite.UI
         private void DrawCompactHud()
         {
             Rect safe = ResponsiveGui.SafeArea;
-            float hudWidth = ResponsiveGui.IsPortrait ? Mathf.Min(310f, safe.width - 86f) : 210f;
-            Rect hud = new Rect(safe.x + 14f, safe.y + 14f, hudWidth, 66f);
+            float hudWidth = ResponsiveGui.IsPortrait ? Mathf.Min(330f, safe.width - 86f) : 258f;
+            Rect hud = new Rect(safe.x + 14f, safe.y + 14f, hudWidth, 104f);
             BossApproachStage approachStage = gameFlow.CurrentBossApproachStage;
-            Color accent = approachStage == BossApproachStage.FinalCountdown ||
-                           approachStage == BossApproachStage.Arrived
-                ? new Color(0.90f, 0.20f, 0.14f)
-                : approachStage == BossApproachStage.Imminent ||
-                  approachStage == BossApproachStage.Omen
-                    ? Gold
-                    : Jade;
+            float timeRatio = GetMainTimeRatio();
+            Color accent = GetMainTimeColor(timeRatio);
             GUIStyle timerLabelStyle = approachStage == BossApproachStage.FinalCountdown ||
                                        approachStage == BossApproachStage.Arrived
                 ? dangerHeadingStyle
@@ -597,17 +592,26 @@ namespace WuxiaRoguelite.UI
                     : headingStyle;
             DrawPanel(hud, Ink, accent);
             ResponsiveGui.DrawSingleLineLabel(new Rect(hud.x + 12f, hud.y + 4f, hud.width - 74f, 25f),
-                $"江湖余时  {gameFlow.mainTimeRemaining:0.0}", timerLabelStyle, 12);
+                "一炷江湖", timerLabelStyle, 12);
             ResponsiveGui.DrawSingleLineLabel(new Rect(hud.xMax - 60f, hud.y + 5f, 48f, 23f),
                 $"Lv.{playerStats.level}", centeredStyle, 10);
 
-            ResponsiveGui.DrawSingleLineLabel(new Rect(hud.x + 12f, hud.y + 29f, hud.width - 24f, 16f),
+            Rect timeTrack = new Rect(hud.x + 12f, hud.y + 32f, hud.width - 24f, 14f);
+            DrawMainTimeTrack(timeTrack, timeRatio, accent, false);
+            ResponsiveGui.DrawSingleLineLabel(
+                new Rect(hud.x + 12f, hud.y + 49f, hud.width - 82f, 18f),
+                GetMainTimeStateText(timeRatio), mutedStyle, 9);
+            ResponsiveGui.DrawSingleLineLabel(
+                new Rect(hud.xMax - 74f, hud.y + 49f, 62f, 18f),
+                $"余 {Mathf.CeilToInt(gameFlow.mainTimeRemaining)} 息", centeredStyle, 9);
+
+            ResponsiveGui.DrawSingleLineLabel(new Rect(hud.x + 12f, hud.y + 70f, hud.width - 24f, 16f),
                 $"气血  {playerStats.runtimeStats.currentHealth:0}/{playerStats.runtimeStats.maxHealth:0}",
                 mutedStyle, 9);
-            Rect healthRect = new Rect(hud.x + 12f, hud.y + 47f, hud.width - 24f, 10f);
+            Rect healthRect = new Rect(hud.x + 12f, hud.y + 88f, hud.width - 24f, 9f);
             DrawHealthBar(healthRect, playerStats.runtimeStats.HealthRatio);
 
-            Rect resources = new Rect(safe.x + 14f, safe.y + 86f, hudWidth, 25f);
+            Rect resources = new Rect(safe.x + 14f, safe.y + 124f, hudWidth, 25f);
             DrawPanel(resources, new Color(0.04f, 0.05f, 0.05f, 0.9f), Gold);
             ResponsiveGui.DrawSingleLineLabel(
                 new Rect(resources.x + 10f, resources.y + 1f, resources.width - 20f, resources.height - 2f),
@@ -643,7 +647,7 @@ namespace WuxiaRoguelite.UI
             {
                 int seconds = Mathf.Max(1, Mathf.CeilToInt(gameFlow.mainTimeRemaining));
                 float panelSize = ResponsiveGui.IsPortrait ? 132f : 118f;
-                float panelY = ResponsiveGui.IsPortrait ? safe.y + 142f : safe.y + 104f;
+                float panelY = ResponsiveGui.IsPortrait ? safe.y + 166f : safe.y + 104f;
                 Rect countdownPanel = new Rect(
                     safe.x + (safe.width - panelSize) * 0.5f,
                     panelY,
@@ -672,7 +676,7 @@ namespace WuxiaRoguelite.UI
                 ? $"强敌将在 {Mathf.CeilToInt(gameFlow.mainTimeRemaining)} 息后降临"
                 : "妖气逼近 · 尽快完成最后准备";
             float width = Mathf.Min(stage == BossApproachStage.Imminent ? 380f : 330f, safe.width - 32f);
-            float y = ResponsiveGui.IsPortrait ? safe.y + 124f : safe.y + 18f;
+            float y = ResponsiveGui.IsPortrait ? safe.y + 166f : safe.y + 18f;
             Rect banner = new Rect(safe.x + (safe.width - width) * 0.5f, y, width, 40f);
             FillRect(banner, new Color(0.04f, 0.025f, 0.02f, 0.86f));
             FillRect(new Rect(banner.x, banner.y, banner.width, 2f),
@@ -1238,7 +1242,7 @@ namespace WuxiaRoguelite.UI
         private void DrawDebugControls()
         {
             Rect safe = ResponsiveGui.SafeArea;
-            Rect panel = new Rect(safe.x + 14f, safe.y + 116f, 180f, 238f);
+            Rect panel = new Rect(safe.x + 14f, safe.y + 158f, 180f, 238f);
             DrawPanel(panel, Ink, new Color(0.55f, 0.55f, 0.55f));
             if (GUI.Button(new Rect(panel.x + 8f, panel.y + 8f, panel.width - 16f, 26f), "重新开始")) gameFlow.StartRun();
             if (GUI.Button(new Rect(panel.x + 8f, panel.y + 40f, panel.width - 16f, 26f), "增加修为")) gameFlow.AddDebugCultivation();
@@ -1247,6 +1251,94 @@ namespace WuxiaRoguelite.UI
             if (GUI.Button(new Rect(panel.x + 8f, panel.y + 136f, panel.width - 16f, 26f), "敌人洞穴")) gameFlow.DebugEnterCave(CaveContentType.Enemy);
             if (GUI.Button(new Rect(panel.x + 8f, panel.y + 168f, panel.width - 16f, 26f), "商人洞穴")) gameFlow.DebugEnterCave(CaveContentType.Merchant);
             if (GUI.Button(new Rect(panel.x + 8f, panel.y + 200f, panel.width - 16f, 26f), "宝箱洞穴")) gameFlow.DebugEnterCave(CaveContentType.Treasure);
+        }
+
+        private float GetMainTimeRatio()
+        {
+            return Mathf.Clamp01(gameFlow.mainTimeRemaining / Mathf.Max(0.01f, gameFlow.mainTimeLimit));
+        }
+
+        private static string GetMainTimeStateText(float ratio)
+        {
+            if (ratio <= 0f)
+            {
+                return "香尽 · 强敌已至";
+            }
+
+            if (ratio <= 1f / 12f)
+            {
+                return "一线余火";
+            }
+
+            if (ratio <= 0.25f)
+            {
+                return "收束路线";
+            }
+
+            if (ratio <= 0.5f)
+            {
+                return "加紧成长";
+            }
+
+            return "从容择路";
+        }
+
+        private static Color GetMainTimeColor(float ratio)
+        {
+            if (ratio <= 1f / 12f)
+            {
+                return new Color(0.94f, 0.18f, 0.11f);
+            }
+
+            if (ratio <= 0.25f)
+            {
+                return new Color(0.96f, 0.48f, 0.16f);
+            }
+
+            if (ratio <= 0.5f)
+            {
+                return Gold;
+            }
+
+            return Jade;
+        }
+
+        private static void DrawMainTimeTrack(Rect rect, float ratio, Color color, bool paused)
+        {
+            ratio = Mathf.Clamp01(ratio);
+            FillRect(rect, new Color(0.02f, 0.025f, 0.025f, 0.95f));
+
+            const float border = 2f;
+            Rect inner = new Rect(
+                rect.x + border,
+                rect.y + border,
+                Mathf.Max(0f, rect.width - border * 2f),
+                Mathf.Max(0f, rect.height - border * 2f));
+            FillRect(inner, new Color(0.20f, 0.20f, 0.18f, 0.48f));
+
+            float remainingWidth = inner.width * ratio;
+            if (remainingWidth > 0f)
+            {
+                Color fillColor = paused
+                    ? new Color(0.38f, 0.72f, 0.86f, 0.95f)
+                    : new Color(color.r, color.g, color.b, 0.95f);
+                FillRect(new Rect(inner.x, inner.y, remainingWidth, inner.height), fillColor);
+
+                float emberPulse = paused ? 0f : 0.5f + 0.5f * Mathf.Abs(Mathf.Sin(Time.time * 5f));
+                float emberWidth = paused ? 2f : 3f + emberPulse * 2f;
+                float emberX = Mathf.Clamp(inner.x + remainingWidth - emberWidth * 0.5f, inner.x, inner.xMax - emberWidth);
+                Color ember = paused
+                    ? new Color(0.75f, 0.92f, 1f, 0.85f)
+                    : new Color(1f, 0.82f, 0.32f, 0.75f + emberPulse * 0.25f);
+                FillRect(new Rect(emberX, inner.y - 1f, emberWidth, inner.height + 2f), ember);
+            }
+
+            for (int i = 1; i < 4; i++)
+            {
+                float markerX = inner.x + inner.width * i / 4f;
+                FillRect(new Rect(markerX, inner.y, 1f, inner.height),
+                    new Color(0f, 0f, 0f, 0.30f));
+            }
         }
 
         private void DrawHealthBar(Rect rect, float ratio)

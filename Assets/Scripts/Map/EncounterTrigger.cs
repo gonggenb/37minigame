@@ -26,6 +26,8 @@ namespace WuxiaRoguelite.Map
         public bool consumed;
 
         private bool waitForPlayerExit;
+        private bool hasResolvedCaveContent;
+        private CaveContentType resolvedCaveContent = CaveContentType.Random;
 
         private void Reset()
         {
@@ -62,14 +64,38 @@ namespace WuxiaRoguelite.Map
             return clone;
         }
 
+        public CaveContentType ResolveCaveContent(System.Func<CaveContentType> randomResolver)
+        {
+            if (caveContent != CaveContentType.Random)
+            {
+                return caveContent;
+            }
+
+            if (!hasResolvedCaveContent)
+            {
+                resolvedCaveContent = randomResolver != null
+                    ? randomResolver()
+                    : CaveContentType.Enemy;
+                hasResolvedCaveContent = true;
+            }
+
+            return resolvedCaveContent;
+        }
+
         public void Consume()
         {
             consumed = true;
             gameObject.SetActive(false);
         }
 
-        public void ResetEncounter(bool requirePlayerExit = false)
+        public void ResetEncounter(bool requirePlayerExit = false, bool rerollCaveContent = false)
         {
+            if (rerollCaveContent)
+            {
+                hasResolvedCaveContent = false;
+                resolvedCaveContent = CaveContentType.Random;
+            }
+
             consumed = false;
             waitForPlayerExit = requirePlayerExit;
             gameObject.SetActive(true);

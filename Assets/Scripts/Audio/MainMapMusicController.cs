@@ -22,6 +22,7 @@ namespace WuxiaRoguelite.Audio
         public AudioClip caveBattleStem;
         public AudioClip bossIntro;
         public AudioClip bossMusic;
+        public AudioClip bossMomentumStem;
         public AudioClip bossEnrageStem;
         public AudioClip victoryStinger;
         public AudioClip defeatStinger;
@@ -33,7 +34,8 @@ namespace WuxiaRoguelite.Audio
         [Range(0f, 1f)] public float stingerVolume = 0.55f;
         [Min(0.01f)] public float overlayFadeInSeconds = 0.15f;
         [Min(0.01f)] public float overlayFadeOutSeconds = 0.25f;
-        [Range(0.05f, 0.95f)] public float bossEnrageHealthRatio = 0.4f;
+        [Range(0.05f, 0.95f)] public float bossMomentumHealthRatio = 0.72f;
+        [Range(0.05f, 0.95f)] public float bossEnrageHealthRatio = 0.35f;
 
         public string ActiveMusicState { get; private set; } = "Ready";
         public bool MusicEnabled { get; private set; } = true;
@@ -225,12 +227,7 @@ namespace WuxiaRoguelite.Audio
                 case GamePhase.BossBattle:
                     StopSource(musicSource, ref mainMusicPaused, true);
                     PlayBossMusic();
-                    bool bossEnraged = battleManager != null &&
-                                       battleManager.IsBattleActive &&
-                                       battleManager.currentEnemy != null &&
-                                       battleManager.currentEnemy.HealthRatio <= bossEnrageHealthRatio;
-                    SetOverlay(bossEnraged ? bossEnrageStem : null);
-                    ActiveMusicState = bossEnraged ? "BossEnraged" : "Boss";
+                    UpdateBossIntensity();
                     break;
 
                 case GamePhase.Result:
@@ -335,7 +332,38 @@ namespace WuxiaRoguelite.Audio
             bossIntroActive = false;
         }
 
-        private void SetOverlay(AudioClip clip)
+        private void UpdateBossIntensity()
+        {
+            bool bossActive = battleManager != null &&
+                              battleManager.IsBattleActive &&
+                              battleManager.currentEnemy != null;
+            if (!bossActive)
+            {
+                SetOverlay(null);
+                ActiveMusicState = bossIntroActive ? "BossIntro" : "Boss";
+                return;
+            }
+
+            float healthRatio = battleManager.currentEnemy.HealthRatio;
+            if (healthRatio <= bossEnrageHealthRatio && bossEnrageStem != null)
+            {
+                SetOverlay(bossEnrageStem, true);
+                ActiveMusicState = "BossClimax";
+                return;
+            }
+
+            if (healthRatio <= bossMomentumHealthRatio && bossMomentumStem != null)
+            {
+                SetOverlay(bossMomentumStem, true);
+                ActiveMusicState = "BossMomentum";
+                return;
+            }
+
+            SetOverlay(null);
+            ActiveMusicState = "Boss";
+        }
+
+        private void SetOverlay(AudioClip clip, bool syncToSpecialMusic = false)
         {
             if (overlaySource == null)
             {
@@ -356,10 +384,20 @@ namespace WuxiaRoguelite.Audio
 
             if (overlaySource.clip != clip)
             {
+                float synchronizedTime = 0f;
+                if (syncToSpecialMusic &&
+                    specialMusicSource != null &&
+                    specialMusicSource.isPlaying &&
+                    clip.length > 0.01f)
+                {
+                    synchronizedTime = specialMusicSource.time % clip.length;
+                }
+
                 overlaySource.Stop();
                 overlaySource.clip = clip;
                 overlaySource.loop = true;
                 overlaySource.volume = 0f;
+                overlaySource.time = Mathf.Clamp(synchronizedTime, 0f, Mathf.Max(0f, clip.length - 0.01f));
                 overlaySource.Play();
                 overlayPaused = false;
             }

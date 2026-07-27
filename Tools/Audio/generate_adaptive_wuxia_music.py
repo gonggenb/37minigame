@@ -324,6 +324,254 @@ def compose_boss_bloodfire_enrage_stem() -> np.ndarray:
     return finalize(mix, peak_db=-5.0, loopable=True, echo_delay=beat * 0.25, echo_feedback=0.055)
 
 
+def electronic_kick(accent: float = 1.0) -> np.ndarray:
+    duration = 0.42
+    length = int(duration * SAMPLE_RATE)
+    t = np.arange(length, dtype=np.float64) / SAMPLE_RATE
+    frequency = 128.0 * np.exp(-t * 18.0) + 43.0
+    phase = math.tau * np.cumsum(frequency) / SAMPLE_RATE
+    click = np.random.default_rng(int(accent * 1907)).normal(0.0, 1.0, length)
+    click *= np.exp(-t * 110.0) * 0.10
+    body = np.sin(phase) * np.exp(-t * 9.0)
+    return np.tanh((body * 0.95 + click) * accent * 1.6)
+
+
+def electronic_snare(accent: float = 1.0) -> np.ndarray:
+    duration = 0.34
+    length = int(duration * SAMPLE_RATE)
+    t = np.arange(length, dtype=np.float64) / SAMPLE_RATE
+    rng = np.random.default_rng(int(accent * 2221))
+    noise = rng.normal(0.0, 1.0, length)
+    bright = np.concatenate(([0.0], np.diff(noise)))
+    body = np.sin(math.tau * 176.0 * t) + 0.45 * np.sin(math.tau * 247.0 * t)
+    envelope = np.exp(-t * 18.0)
+    return np.tanh((bright * 0.12 + body * 0.34) * envelope * accent * 1.6)
+
+
+def hi_hat(open_hat: bool = False) -> np.ndarray:
+    duration = 0.34 if open_hat else 0.10
+    length = int(duration * SAMPLE_RATE)
+    t = np.arange(length, dtype=np.float64) / SAMPLE_RATE
+    rng = np.random.default_rng(3319 if open_hat else 3323)
+    noise = rng.normal(0.0, 1.0, length)
+    bright = np.concatenate(([0.0], np.diff(noise)))
+    metallic = (
+        np.sin(math.tau * 6180.0 * t)
+        + 0.55 * np.sin(math.tau * 8230.0 * t)
+        + 0.31 * np.sin(math.tau * 10470.0 * t)
+    )
+    decay = 10.0 if open_hat else 48.0
+    return np.tanh((bright * 0.10 + metallic * 0.16) * np.exp(-t * decay))
+
+
+def power_chord(note: float, duration: float, drive: float = 1.0) -> np.ndarray:
+    """Distorted electric-zither chord used as the modern half of the hybrid score."""
+    length = int(duration * SAMPLE_RATE)
+    t = np.arange(length, dtype=np.float64) / SAMPLE_RATE
+    root = 440.0 * (2.0 ** ((note - 69.0) / 12.0))
+    signal = np.zeros(length, dtype=np.float64)
+    for interval, gain in ((0.0, 1.0), (7.0, 0.72), (12.0, 0.48)):
+        frequency = root * (2.0 ** (interval / 12.0))
+        phase = math.tau * frequency * t
+        signal += gain * (
+            np.sin(phase)
+            + 0.34 * np.sin(2.0 * phase + 0.21)
+            + 0.16 * np.sin(3.0 * phase + 0.47)
+        )
+    pick = np.random.default_rng(int(note * 401 + duration * 100)).normal(0.0, 1.0, length)
+    pick *= np.exp(-t * 75.0) * 0.045
+    envelope = np.minimum(1.0, t / 0.008) * np.minimum(
+        1.0,
+        np.maximum(0.0, (duration - t) / 0.08),
+    )
+    return np.tanh((signal * 0.30 + pick) * 2.8 * drive) * envelope
+
+
+def pulse_bass(note: float, duration: float, drive: float = 1.0) -> np.ndarray:
+    length = int(duration * SAMPLE_RATE)
+    t = np.arange(length, dtype=np.float64) / SAMPLE_RATE
+    frequency = 440.0 * (2.0 ** ((note - 69.0) / 12.0))
+    phase = math.tau * frequency * t
+    tone = np.sin(phase) + 0.38 * np.sin(2.0 * phase) + 0.16 * np.sin(3.0 * phase + 0.2)
+    envelope = np.minimum(1.0, t / 0.012) * np.exp(-t * 3.1)
+    return np.tanh(tone * 0.72 * drive) * envelope
+
+
+def compose_boss_heavenbreak_intro() -> np.ndarray:
+    """Four-second launch cue: impact, heartbeat build, then a clean handoff."""
+    duration = 4.0
+    beat = 60.0 / 150.0
+    mix = empty_mix(duration)
+
+    add_mono(mix, gong(), 0.0, 0.18, 0.0)
+    add_mono(mix, power_chord(38, 1.35, 1.1), 0.0, 0.31, -0.10)
+    add_mono(mix, rising_wind(3.7), 0.0, 0.30, 0.0)
+    for step in range(10):
+        time = step * beat
+        gain = 0.16 + step * 0.022
+        add_mono(mix, electronic_kick(0.72 + step * 0.025), time, gain, 0.0)
+        if step >= 4:
+            add_mono(mix, hi_hat(step == 9), time + beat * 0.5, 0.055 + step * 0.004, 0.28)
+    add_mono(mix, brass(74, 1.25, 1.05), 2.72, 0.22, 0.18)
+    add_mono(mix, power_chord(45, 0.52, 1.2), 3.48, 0.35, 0.06)
+    return finalize(mix, peak_db=-2.0, loopable=False, echo_delay=beat * 0.5, echo_feedback=0.06)
+
+
+def compose_boss_heavenbreak_loop() -> np.ndarray:
+    """Original 150 BPM wuxia-rock/electronic base, intentionally unlike v01/v02."""
+    duration = 32.0  # Twenty 4/4 bars at 150 BPM.
+    beat = 60.0 / 150.0
+    bar = beat * 4.0
+    mix = empty_mix(duration)
+    # Ten bars repeat twice so both 16-second intensity stems remain
+    # harmonically aligned with the 32-second base after every loop.
+    roots = (38, 38, 36, 36, 41, 41, 33, 33, 38, 38)
+    pipa_patterns = (
+        (62, 57, 60, 57, 65, 60, 62, 57),
+        (60, 55, 57, 55, 62, 57, 60, 55),
+        (65, 60, 62, 60, 67, 62, 65, 60),
+        (57, 52, 55, 52, 60, 55, 57, 52),
+    )
+
+    for bar_index in range(20):
+        start = bar_index * bar
+        root = roots[bar_index % len(roots)]
+        pattern = pipa_patterns[(bar_index // 2) % len(pipa_patterns)]
+
+        # Syncopated rock riff: space on the offbeats keeps combat impacts readable.
+        for offset in (0.0, 1.5, 2.0, 3.25):
+            add_mono(
+                mix,
+                power_chord(root, beat * (0.48 if offset in (0.0, 2.0) else 0.30), 0.92),
+                start + offset * beat,
+                0.20,
+                -0.12 if offset < 2.0 else 0.12,
+            )
+        for step, note in enumerate(pattern):
+            if step not in (1, 5):
+                add_mono(
+                    mix,
+                    pluck(note, 0.24, 1.18),
+                    start + step * bar / 8.0,
+                    0.18,
+                    -0.38 + (step % 4) * 0.25,
+                )
+
+        # Punchy half-time backbeat gives the base room to grow vertically.
+        add_mono(mix, electronic_kick(1.0), start, 0.34, 0.0)
+        add_mono(mix, electronic_kick(0.82), start + beat * 2.5, 0.24, -0.05)
+        add_mono(mix, electronic_snare(1.0), start + beat * 2.0, 0.23, 0.08)
+        for step in range(8):
+            add_mono(
+                mix,
+                hi_hat(step == 7 and bar_index % 4 == 3),
+                start + step * bar / 8.0,
+                0.060 if step % 2 == 0 else 0.043,
+                0.30,
+            )
+
+        if bar_index in (0, 8, 16):
+            add_mono(mix, gong(), start, 0.085, 0.0)
+
+    # A concise, repeatable "break the formation" hook arrives early and returns higher.
+    hook = (
+        (0.0, 74, 0.5),
+        (0.5, 77, 0.5),
+        (1.0, 81, 1.0),
+        (2.0, 79, 0.5),
+        (2.5, 77, 0.5),
+        (3.0, 74, 1.0),
+        (4.0, 77, 0.5),
+        (4.5, 81, 0.5),
+        (5.0, 84, 1.5),
+        (6.5, 81, 0.5),
+        (7.0, 79, 1.0),
+    )
+    for phrase_bar, octave_gain in ((4, 0.0), (12, 0.025)):
+        start = phrase_bar * bar
+        for offset, note, beats in hook:
+            add_mono(
+                mix,
+                brass(note, beats * beat * 0.88, 0.88),
+                start + offset * beat,
+                0.15 + octave_gain,
+                0.18,
+            )
+
+    return finalize(mix, peak_db=-2.6, loopable=True, echo_delay=beat * 0.75, echo_feedback=0.055)
+
+
+def compose_boss_heavenbreak_momentum_stem() -> np.ndarray:
+    """The chase layer: driving bass and extra kicks from 72% boss health."""
+    duration = 16.0  # Ten bars at 150 BPM.
+    beat = 60.0 / 150.0
+    bar = beat * 4.0
+    mix = empty_mix(duration)
+    roots = (38, 38, 36, 36, 41, 41, 33, 33, 38, 38)
+
+    for bar_index, root in enumerate(roots):
+        start = bar_index * bar
+        for step in range(8):
+            note = root if step not in (3, 7) else root + 7
+            add_mono(mix, pulse_bass(note, beat * 0.42, 0.95), start + step * bar / 8.0, 0.23, -0.08)
+        for beat_index in range(4):
+            add_mono(mix, electronic_kick(0.86), start + beat_index * beat, 0.18, 0.0)
+        add_mono(mix, electronic_snare(0.78), start + beat, 0.11, 0.14)
+        add_mono(mix, electronic_snare(0.92), start + beat * 3.0, 0.14, 0.14)
+        if bar_index in (0, 5):
+            add_mono(mix, power_chord(root + 12, beat * 0.62, 0.82), start, 0.12, 0.20)
+
+    return finalize(mix, peak_db=-6.0, loopable=True, echo_delay=beat * 0.5, echo_feedback=0.035)
+
+
+def compose_boss_heavenbreak_climax_stem() -> np.ndarray:
+    """The final layer contains the chase energy plus a double-time victory hook."""
+    duration = 16.0  # Ten bars at 150 BPM.
+    beat = 60.0 / 150.0
+    bar = beat * 4.0
+    mix = empty_mix(duration)
+    roots = (38, 38, 36, 36, 41, 41, 33, 33, 38, 38)
+
+    for bar_index, root in enumerate(roots):
+        start = bar_index * bar
+        for step in range(8):
+            note = root if step not in (3, 7) else root + 7
+            add_mono(mix, pulse_bass(note, beat * 0.43, 1.05), start + step * bar / 8.0, 0.25, -0.10)
+            add_mono(mix, hi_hat(step == 7), start + step * bar / 8.0, 0.055, 0.34)
+        for beat_index in range(4):
+            add_mono(mix, electronic_kick(0.94), start + beat_index * beat, 0.19, 0.0)
+            add_mono(mix, war_drum(0.70 if beat_index % 2 else 0.92), start + beat_index * beat, 0.13, -0.18)
+        add_mono(mix, electronic_snare(0.92), start + beat, 0.13, 0.14)
+        add_mono(mix, electronic_snare(1.05), start + beat * 3.0, 0.16, 0.14)
+        if bar_index in (0, 5):
+            add_mono(mix, gong(), start, 0.065, 0.0)
+
+    climax_hook = (
+        (0.0, 74, 0.5),
+        (0.5, 77, 0.5),
+        (1.0, 81, 1.0),
+        (2.0, 84, 1.0),
+        (3.0, 81, 1.0),
+        (4.0, 79, 0.5),
+        (4.5, 81, 0.5),
+        (5.0, 86, 1.5),
+        (6.5, 84, 0.5),
+        (7.0, 81, 1.0),
+    )
+    for phrase_bar in (1, 6):
+        start = phrase_bar * bar
+        for offset, note, beats in climax_hook:
+            add_mono(
+                mix,
+                brass(note, beats * beat * 0.86, 1.02),
+                start + offset * beat,
+                0.16,
+                0.22,
+            )
+
+    return finalize(mix, peak_db=-4.6, loopable=True, echo_delay=beat * 0.5, echo_feedback=0.045)
+
+
 def compose_result_stinger(victory: bool) -> np.ndarray:
     mix = empty_mix(2.6)
     if victory:
@@ -357,6 +605,10 @@ def main() -> None:
         "stem_boss_fox_demon_enrage_16s_v01.wav": compose_boss_enrage_stem(),
         "bgm_boss_fox_demon_bloodfire_loop_48s_v02.wav": compose_boss_bloodfire_loop(),
         "stem_boss_fox_demon_bloodfire_enrage_12s_v02.wav": compose_boss_bloodfire_enrage_stem(),
+        "stg_boss_heavenbreak_intro_4s_v03.wav": compose_boss_heavenbreak_intro(),
+        "bgm_boss_heavenbreak_loop_32s_v03.wav": compose_boss_heavenbreak_loop(),
+        "stem_boss_heavenbreak_momentum_16s_v03.wav": compose_boss_heavenbreak_momentum_stem(),
+        "stem_boss_heavenbreak_climax_16s_v03.wav": compose_boss_heavenbreak_climax_stem(),
         "stg_result_victory_v01.wav": compose_result_stinger(True),
         "stg_result_defeat_v01.wav": compose_result_stinger(False),
     }

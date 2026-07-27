@@ -24,14 +24,26 @@ namespace WuxiaRoguelite.Cave
         [Header("山洞角色展示")]
         [Tooltip("统一放大山洞探索中的玩家、守洞人、商人和宝箱，不影响碰撞或移动。")]
         [Range(1f, 2f)] public float caveActorScale = 1.55f;
+        [Header("随机洞穴内容权重")]
+        [Min(0f)] public float enemyWeight = 45f;
+        [Min(0f)] public float merchantWeight = 25f;
+        [Min(0f)] public float treasureWeight = 30f;
 
         public bool IsRoomActive { get; private set; }
         public CaveContentType CurrentContent { get; private set; }
+        public bool CanUseExitAction =>
+            IsRoomActive &&
+            !merchantOpen &&
+            gameFlow != null &&
+            gameFlow.CurrentPhase == GamePhase.CaveRunning &&
+            (battleManager == null || !battleManager.IsBattleActive) &&
+            Vector2.Distance(playerPosition, exitPosition) < ExitInteractionDistance;
 
         private EncounterTrigger entrance;
         private Vector2 playerPosition;
         private readonly Vector2 eventPosition = new Vector2(0.73f, 0.56f);
         private readonly Vector2 exitPosition = new Vector2(0.13f, 0.22f);
+        private const float ExitInteractionDistance = 0.12f;
         private bool eventStarted;
         private bool eventCompleted;
         private bool merchantOpen;
@@ -57,9 +69,11 @@ namespace WuxiaRoguelite.Cave
         public void EnterCave(EncounterTrigger source, CaveContentType content)
         {
             entrance = source;
-            CurrentContent = content == CaveContentType.Random
-                ? (CaveContentType)Random.Range((int)CaveContentType.Enemy, (int)CaveContentType.Treasure + 1)
-                : content;
+            CurrentContent = source != null
+                ? source.ResolveCaveContent(SelectRandomContent)
+                : content == CaveContentType.Random
+                    ? SelectRandomContent()
+                    : content;
             playerPosition = new Vector2(0.16f, 0.72f);
             eventStarted = false;
             eventCompleted = false;
@@ -130,11 +144,21 @@ namespace WuxiaRoguelite.Cave
                 BeginEvent();
             }
 
-            bool isNearExit = Vector2.Distance(playerPosition, exitPosition) < 0.12f;
-            if ((isNearExit && Input.GetKeyDown(KeyCode.E)) || Input.GetKeyDown(KeyCode.Escape))
+            if ((CanUseExitAction && Input.GetKeyDown(KeyCode.E)) || Input.GetKeyDown(KeyCode.Escape))
             {
                 LeaveCave();
             }
+        }
+
+        public bool TryUseExitAction()
+        {
+            if (!CanUseExitAction)
+            {
+                return false;
+            }
+
+            LeaveCave();
+            return true;
         }
 
         private void LeaveCave()
@@ -156,9 +180,11 @@ namespace WuxiaRoguelite.Cave
             {
                 case CaveContentType.Enemy:
                     roomMessage = "守洞人逼近，进入自动战斗。";
-                    CombatantStats enemy = entrance != null
-                        ? entrance.CreateEnemyStats()
-                        : CreateDefaultCaveEnemy();
+                    CombatantStats enemy = entrance != null ? entrance.CreateEnemyStats() : null;
+                    if (!IsUsableCaveEnemy(enemy))
+                    {
+                        enemy = CreateDefaultCaveEnemy();
+                    }
                     gameFlow.BeginCaveBattle(enemy, entrance != null ? entrance.cultivationReward : 35,
                         entrance != null ? entrance.copperReward : 12, OnCaveBattleFinished);
                     break;
@@ -180,14 +206,14 @@ namespace WuxiaRoguelite.Cave
             }
 
             eventCompleted = true;
-            roomMessage = "守洞人已败。前往左下方石门，按 E 返回江湖。";
+            roomMessage = "守洞人已败。前往左下方石门返回江湖。";
         }
 
         private void ResolveTreasure()
         {
             string reward = gameFlow.GrantCaveTreasure();
             eventCompleted = true;
-            roomMessage = $"古匣开启：{reward}。前往左下方石门，按 E 返回江湖。";
+            roomMessage = $"古匣开启：{reward}。前往左下方石门返回江湖。";
         }
 
         private void OnGUI()
@@ -251,10 +277,12 @@ namespace WuxiaRoguelite.Cave
                 DrawEventTarget(targetCenter, actorSize);
             }
 
+            DrawExitActionButton();
+
             float preferredMessageWidth =
                 ResponsiveGui.PreferredSingleLineWidth(roomMessage, bodyStyle, 30f);
             float messageWidth = Mathf.Clamp(preferredMessageWidth, width * 0.58f, width - 28f);
-            float messageY = ResponsiveGui.IsPortrait ? height - 202f : height - 48f;
+            float messageY = ResponsiveGui.IsPortrait ? height - 202f : height - 112f;
             Rect message = new Rect((width - messageWidth) * 0.5f, messageY, messageWidth, 34f);
             FillRect(message, new Color(0f, 0f, 0f, 0.82f));
             FillRect(new Rect(message.x, message.y, message.width, 2f), Gold);
@@ -262,13 +290,44 @@ namespace WuxiaRoguelite.Cave
                 new Rect(message.x + 12f, message.y + 2f, message.width - 24f, message.height - 4f),
                 roomMessage, bodyStyle, 9);
 
-            if (Vector2.Distance(playerPosition, exitPosition) < 0.12f)
+            if (CanUseExitAction)
             {
-                string exitHint = eventCompleted ? "按 E 返回江湖" : "按 E 撤离洞穴";
+                string exitHint = eventCompleted ? "可返回江湖" : "可撤离洞穴";
                 ResponsiveGui.DrawSingleLineLabel(
                     new Rect(exitCenter.x - 80f, exitCenter.y - actorSize * 0.78f, 160f, 24f),
                     exitHint, hintStyle, 10);
             }
+        }
+
+        private void DrawExitActionButton()
+        {
+            Rect safe = ResponsiveGui.SafeArea;
+            float buttonWidth = ResponsiveGui.IsPortrait ? 156f : 148f;
+            const float buttonHeight = 52f;
+            const float edgePadding = 18f;
+            Rect buttonRect = new Rect(
+                safe.xMax - buttonWidth - edgePadding,
+                safe.yMax - buttonHeight - edgePadding,
+                buttonWidth,
+                buttonHeight);
+
+            bool wasEnabled = GUI.enabled;
+            GUI.enabled = CanUseExitAction;
+            string label;
+            if (!CanUseExitAction)
+            {
+                label = "走近左下石门";
+            }
+            else
+            {
+                label = eventCompleted ? "返回江湖" : "撤离洞穴";
+            }
+
+            if (GUI.Button(buttonRect, label, buttonStyle))
+            {
+                TryUseExitAction();
+            }
+            GUI.enabled = wasEnabled;
         }
 
         private void DrawFloorPattern(Rect floor)
@@ -346,7 +405,7 @@ namespace WuxiaRoguelite.Cave
         {
             merchantOpen = false;
             eventCompleted = true;
-            roomMessage = "交易结束。前往左下方石门，按 E 返回江湖。";
+            roomMessage = "交易结束。前往左下方石门返回江湖。";
         }
 
         private void DrawOffer(Rect panel, int index, string name, string description, int price, float y)
@@ -419,11 +478,40 @@ namespace WuxiaRoguelite.Cave
             }
         }
 
+        private CaveContentType SelectRandomContent()
+        {
+            float safeEnemyWeight = Mathf.Max(0f, enemyWeight);
+            float safeMerchantWeight = Mathf.Max(0f, merchantWeight);
+            float safeTreasureWeight = Mathf.Max(0f, treasureWeight);
+            float totalWeight = safeEnemyWeight + safeMerchantWeight + safeTreasureWeight;
+            if (totalWeight <= 0f)
+            {
+                return CaveContentType.Enemy;
+            }
+
+            float roll = Random.value * totalWeight;
+            if (roll < safeEnemyWeight)
+            {
+                return CaveContentType.Enemy;
+            }
+
+            roll -= safeEnemyWeight;
+            return roll < safeMerchantWeight
+                ? CaveContentType.Merchant
+                : CaveContentType.Treasure;
+        }
+
+        private static bool IsUsableCaveEnemy(CombatantStats enemy)
+        {
+            return enemy != null && enemy.maxHealth > 1f && enemy.attack > 0f;
+        }
+
         private static CombatantStats CreateDefaultCaveEnemy()
         {
             return new CombatantStats
             {
                 displayName = "守洞武人",
+                visualId = "orc_cave_guardian",
                 maxHealth = 160f,
                 currentHealth = 160f,
                 attack = 14f,

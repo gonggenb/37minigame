@@ -420,7 +420,7 @@ namespace WuxiaRoguelite.UI
             float headerX = ResponsiveGui.IsPortrait
                 ? safe.x + 14f
                 : (width - headerWidth) * 0.5f;
-            Rect headerRect = new Rect(headerX, safe.y + 7f, headerWidth, 82f);
+            Rect headerRect = new Rect(headerX, safe.y + 7f, headerWidth, 90f);
             Color headerAccent = approachStage == BossApproachStage.FinalCountdown ||
                                  approachStage == BossApproachStage.Arrived
                 ? new Color(0.94f, 0.18f, 0.11f)
@@ -443,43 +443,45 @@ namespace WuxiaRoguelite.UI
                 new Rect(headerRect.x, headerRect.y + 5f, headerRect.width, 34f),
                 title, titleStyle, 14);
 
-            string timerText;
-            if (gameFlow.CurrentPhase == GamePhase.NormalBattleRunning)
+            if (gameFlow.CurrentPhase == GamePhase.BossBattle)
             {
-                switch (approachStage)
-                {
-                    case BossApproachStage.Arrived:
-                        timerText = "妖姬已至 · 胜此战后即入决战";
-                        break;
-                    case BossApproachStage.FinalCountdown:
-                        timerText = $"终局强敌将在 {Mathf.Max(1, Mathf.CeilToInt(gameFlow.mainTimeRemaining))} 息后降临";
-                        break;
-                    case BossApproachStage.Imminent:
-                        timerText = $"妖气逼近 · 主地图余时 {gameFlow.mainTimeRemaining:0.0}s";
-                        break;
-                    case BossApproachStage.Omen:
-                        timerText = $"强敌将至 · 主地图余时 {gameFlow.mainTimeRemaining:0.0}s";
-                        break;
-                    default:
-                        timerText = $"主地图倒数持续流逝  {gameFlow.mainTimeRemaining:0.0}s";
-                        break;
-                }
-            }
-            else if (gameFlow.CurrentPhase == GamePhase.CaveRunning)
-            {
-                timerText = $"主地图倒数已暂停  {gameFlow.mainTimeRemaining:0.0}s";
-            }
-            else
-            {
-                timerText = $"Boss 独立战斗时间  {gameFlow.bossBattleTime:0.0}s";
+                ResponsiveGui.DrawSingleLineLabel(
+                    new Rect(headerRect.x, headerRect.y + 39f, headerRect.width, 25f),
+                    $"Boss 独立战斗时间  {gameFlow.bossBattleTime:0.0}s", timerStyle, 10);
+                ResponsiveGui.DrawSingleLineLabel(
+                    new Rect(headerRect.x, headerRect.y + 64f, headerRect.width, 17f),
+                    "不再消耗主地图香火 · 双方自动出招", captionStyle, 9);
+                return;
             }
 
+            bool timerPaused = gameFlow.CurrentPhase == GamePhase.CaveRunning;
+            float timeRatio = Mathf.Clamp01(
+                gameFlow.mainTimeRemaining / Mathf.Max(0.01f, gameFlow.mainTimeLimit));
+            string timerText = timerPaused
+                ? "洞中凝时 · 主香暂停"
+                : approachStage == BossApproachStage.Arrived
+                    ? "香已燃尽 · 胜此战后即入决战"
+                    : "交锋耗时 · 主香仍在燃烧";
             ResponsiveGui.DrawSingleLineLabel(
-                new Rect(headerRect.x, headerRect.y + 39f, headerRect.width, 25f),
+                new Rect(headerRect.x + 14f, headerRect.y + 36f, headerRect.width - 28f, 18f),
                 timerText, timerStyle, 10);
+
+            Color timeColor = timerPaused
+                ? new Color(0.38f, 0.72f, 0.86f)
+                : GetMainTimeColor(timeRatio);
+            Rect timeTrack = new Rect(
+                headerRect.x + 24f,
+                headerRect.y + 56f,
+                headerRect.width - 48f,
+                11f);
+            DrawMainTimeTrack(timeTrack, timeRatio, timeColor, timerPaused);
+
+            string stateText = timerPaused
+                ? "香火停驻 · 返图后续燃"
+                : GetMainTimeStateText(timeRatio);
             ResponsiveGui.DrawSingleLineLabel(
-                new Rect(headerRect.x, headerRect.y + 62f, headerRect.width, 17f),
-                "双方自动出招 · 战斗期间无需操作", captionStyle, 9);
+                new Rect(headerRect.x, headerRect.y + 68f, headerRect.width, 17f),
+                stateText, captionStyle, 9);
         }
 
         private void DrawBossApproachOverlay(float width, float height)
@@ -939,6 +941,90 @@ namespace WuxiaRoguelite.UI
             }
 
             return summary;
+        }
+
+        private static string GetMainTimeStateText(float ratio)
+        {
+            if (ratio <= 0f)
+            {
+                return "香尽 · 强敌已至";
+            }
+
+            if (ratio <= 1f / 12f)
+            {
+                return "一线余火";
+            }
+
+            if (ratio <= 0.25f)
+            {
+                return "收束路线";
+            }
+
+            if (ratio <= 0.5f)
+            {
+                return "加紧成长";
+            }
+
+            return "从容择路";
+        }
+
+        private static Color GetMainTimeColor(float ratio)
+        {
+            if (ratio <= 1f / 12f)
+            {
+                return new Color(0.94f, 0.18f, 0.11f);
+            }
+
+            if (ratio <= 0.25f)
+            {
+                return new Color(0.96f, 0.48f, 0.16f);
+            }
+
+            if (ratio <= 0.5f)
+            {
+                return Gold;
+            }
+
+            return new Color(0.27f, 0.68f, 0.53f);
+        }
+
+        private static void DrawMainTimeTrack(Rect rect, float ratio, Color color, bool paused)
+        {
+            ratio = Mathf.Clamp01(ratio);
+            FillRect(rect, new Color(0.015f, 0.02f, 0.02f, 0.96f));
+
+            const float border = 2f;
+            Rect inner = new Rect(
+                rect.x + border,
+                rect.y + border,
+                Mathf.Max(0f, rect.width - border * 2f),
+                Mathf.Max(0f, rect.height - border * 2f));
+            FillRect(inner, new Color(0.20f, 0.20f, 0.18f, 0.48f));
+
+            float remainingWidth = inner.width * ratio;
+            if (remainingWidth > 0f)
+            {
+                FillRect(new Rect(inner.x, inner.y, remainingWidth, inner.height),
+                    new Color(color.r, color.g, color.b, 0.95f));
+
+                float emberPulse = paused ? 0f : 0.5f + 0.5f * Mathf.Abs(Mathf.Sin(Time.time * 5f));
+                float emberWidth = paused ? 2f : 3f + emberPulse * 2f;
+                float emberX = Mathf.Clamp(
+                    inner.x + remainingWidth - emberWidth * 0.5f,
+                    inner.x,
+                    inner.xMax - emberWidth);
+                Color ember = paused
+                    ? new Color(0.75f, 0.92f, 1f, 0.85f)
+                    : new Color(1f, 0.82f, 0.32f, 0.75f + emberPulse * 0.25f);
+                FillRect(new Rect(emberX, inner.y - 1f, emberWidth, inner.height + 2f), ember);
+            }
+
+            for (int i = 1; i < 4; i++)
+            {
+                float markerX = inner.x + inner.width * i / 4f;
+                FillRect(new Rect(markerX, inner.y, 1f, inner.height),
+                    new Color(0f, 0f, 0f, 0.30f));
+            }
         }
 
         private static GUIStyle CreateStyle(int fontSize, FontStyle fontStyle, TextAnchor alignment, Color color)
