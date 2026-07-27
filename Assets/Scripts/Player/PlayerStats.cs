@@ -101,6 +101,34 @@ namespace WuxiaRoguelite.Player
             runtimeStats.Heal(runtimeStats.maxHealth * Mathf.Clamp01(ratio));
         }
 
+        public void ApplyAttackBuff(float ratio)
+        {
+            runtimeStats.attack *= 1f + Mathf.Max(0f, ratio);
+        }
+
+        public void ApplyDefenseBuff(float amount)
+        {
+            runtimeStats.defense += Mathf.Max(0f, amount);
+        }
+
+        public void ApplyMoveSpeedBuff(float ratio)
+        {
+            runtimeStats.moveSpeed *= 1f + Mathf.Max(0f, ratio);
+        }
+
+        public void ApplyMysteryPoison(float healthLossRatio)
+        {
+            float damage = runtimeStats.maxHealth * Mathf.Clamp01(healthLossRatio);
+            runtimeStats.currentHealth = Mathf.Max(1f, runtimeStats.currentHealth - damage);
+        }
+
+        public void ApplyMysteryWeakness(float ratio)
+        {
+            float multiplier = 1f - Mathf.Clamp(ratio, 0f, 0.8f);
+            runtimeStats.attack = Mathf.Max(1f, runtimeStats.attack * multiplier);
+            runtimeStats.attackSpeed = Mathf.Max(0.25f, runtimeStats.attackSpeed * multiplier);
+        }
+
         public string GrantTreasureEquipment()
         {
             return equipment == null ? string.Empty : equipment.AddTreasureItem();

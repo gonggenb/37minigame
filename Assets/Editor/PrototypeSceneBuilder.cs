@@ -549,7 +549,11 @@ namespace WuxiaRoguelite.EditorTools
                 "North Ridge Trail",
                 "West Forest Road",
                 "West Forest Loop",
-                "South Mine Trail"
+                "South Mine Trail",
+                "East Frontier Trail",
+                "West Frontier Trail",
+                "North Frontier Road",
+                "South Frontier Road"
             };
 
             Material roadMaterial = GetOrCreateMainMapRoadMaterial();
@@ -633,7 +637,9 @@ namespace WuxiaRoguelite.EditorTools
             EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
             EditorSceneManager.SaveOpenScenes();
             AssetDatabase.SaveAssets();
-            Debug.Log("Main map refined to 44 x 38 with denser regional landmarks and six additional enemy encounters.");
+            Debug.Log(
+                "Main map refined to 52 x 46 with layered 60-second routes, " +
+                "26 enemies, seven caves, six treasure chests, and distributed recovery/buff pickups.");
         }
 
         [MenuItem("37 MiniGame/Refresh Enemy Variety")]
@@ -1682,16 +1688,16 @@ namespace WuxiaRoguelite.EditorTools
                 UnityEngine.Object.DestroyImmediate(previousExpansion.gameObject);
             }
 
-            ResizeMapObject(mapRoot.transform, "Walkable Ground", Vector3.zero, new Vector3(4.4f, 1f, 3.8f));
-            ResizeMapObject(mapRoot.transform, "Main Dirt Road", new Vector3(0f, 0.025f, 0f), new Vector3(3.2f, 0.05f, 34f));
-            ResizeMapObject(mapRoot.transform, "Cross Dirt Road", new Vector3(0f, 0.03f, 0.8f), new Vector3(40f, 0.05f, 2.5f));
+            ResizeMapObject(mapRoot.transform, "Walkable Ground", Vector3.zero, new Vector3(5.2f, 1f, 4.6f));
+            ResizeMapObject(mapRoot.transform, "Main Dirt Road", new Vector3(0f, 0.025f, 0f), new Vector3(3.2f, 0.05f, 43f));
+            ResizeMapObject(mapRoot.transform, "Cross Dirt Road", new Vector3(0f, 0.03f, 0.8f), new Vector3(49f, 0.05f, 2.5f));
             ResizeMapObject(mapRoot.transform, "North Ridge Road", new Vector3(-8.2f, 0.028f, 7.2f), new Vector3(16f, 0.05f, 2.1f));
             ResizeMapObject(mapRoot.transform, "South Cave Road", new Vector3(8.5f, 0.028f, -7.2f), new Vector3(17f, 0.05f, 2.1f));
 
-            ResizeMapObject(mapRoot.transform, "North Boundary", new Vector3(0f, 0.55f, 19.2f), new Vector3(44f, 1.1f, 0.45f));
-            ResizeMapObject(mapRoot.transform, "South Boundary", new Vector3(0f, 0.55f, -19.2f), new Vector3(44f, 1.1f, 0.45f));
-            ResizeMapObject(mapRoot.transform, "West Boundary", new Vector3(-22.2f, 0.55f, 0f), new Vector3(0.45f, 1.1f, 38f));
-            ResizeMapObject(mapRoot.transform, "East Boundary", new Vector3(22.2f, 0.55f, 0f), new Vector3(0.45f, 1.1f, 38f));
+            ResizeMapObject(mapRoot.transform, "North Boundary", new Vector3(0f, 0.55f, 23.2f), new Vector3(52f, 1.1f, 0.45f));
+            ResizeMapObject(mapRoot.transform, "South Boundary", new Vector3(0f, 0.55f, -23.2f), new Vector3(52f, 1.1f, 0.45f));
+            ResizeMapObject(mapRoot.transform, "West Boundary", new Vector3(-26.2f, 0.55f, 0f), new Vector3(0.45f, 1.1f, 46f));
+            ResizeMapObject(mapRoot.transform, "East Boundary", new Vector3(26.2f, 0.55f, 0f), new Vector3(0.45f, 1.1f, 46f));
 
             Material path = GetMapMaterial(mapRoot.transform, "Main Dirt Road", "Prototype_Path", new Color(0.38f, 0.32f, 0.24f));
             GameObject expansion = new GameObject("Expanded Main Map Content");
@@ -1705,6 +1711,10 @@ namespace WuxiaRoguelite.EditorTools
             CreateCube("West Forest Road", roads.transform, new Vector3(-16f, 0.028f, -6.5f), new Vector3(2.1f, 0.05f, 15f), path);
             CreateCube("West Forest Loop", roads.transform, new Vector3(-15.5f, 0.029f, -13.5f), new Vector3(12f, 0.05f, 2f), path);
             CreateCube("South Mine Trail", roads.transform, new Vector3(6f, 0.028f, -14.5f), new Vector3(29f, 0.05f, 2.1f), path);
+            CreateCube("East Frontier Trail", roads.transform, new Vector3(23f, 0.028f, 0f), new Vector3(2.05f, 0.05f, 42f), path);
+            CreateCube("West Frontier Trail", roads.transform, new Vector3(-23f, 0.028f, 0f), new Vector3(2.05f, 0.05f, 42f), path);
+            CreateCube("North Frontier Road", roads.transform, new Vector3(0f, 0.029f, 21f), new Vector3(48f, 0.05f, 2.05f), path);
+            CreateCube("South Frontier Road", roads.transform, new Vector3(0f, 0.029f, -21f), new Vector3(48f, 0.05f, 2.05f), path);
 
             GameObject scenery = new GameObject("Expanded KayKit Scenery");
             scenery.transform.SetParent(expansion.transform);
@@ -1737,6 +1747,16 @@ namespace WuxiaRoguelite.EditorTools
             PlaceModel("detail_rocks", "South Mine Rock Cluster", scenery.transform, new Vector3(17.4f, 0f, -11.8f), 1.9f, 80f);
             PlaceModel("detail_rocks_small", "West Trail Stones", scenery.transform, new Vector3(-12f, 0f, -14.8f), 1.25f, 30f);
             PlaceModel("detail_rocks_small", "East Hamlet Stones", scenery.transform, new Vector3(18f, 0f, 15f), 1.3f, 110f);
+            PlaceModel("watchtower", "East Frontier Watchtower", scenery.transform, new Vector3(24.5f, 0f, -4f), 2.2f, 190f);
+            PlaceModel("mine", "East Cloud Cave", scenery.transform, new Vector3(25f, 0f, 17f), 4.2f, -90f);
+            PlaceModel("mine", "Northwest Ruin Cave", scenery.transform, new Vector3(-25f, 0f, 17f), 4.2f, 90f);
+            PlaceModel("mine", "Southwest Hidden Cave", scenery.transform, new Vector3(-23f, 0f, -20f), 4.2f, 35f);
+            PlaceModel("watchtower", "North Frontier Watchtower", scenery.transform, new Vector3(9.5f, 0f, 21.5f), 2.15f, 170f);
+            PlaceModel("market", "South Frontier Caravan", scenery.transform, new Vector3(-8.5f, 0f, -21f), 2.65f, 15f);
+            PlaceModel("detail_treeA", "East Frontier Tree", scenery.transform, new Vector3(24.2f, 0f, 9.5f), 2.2f, 80f);
+            PlaceModel("detail_treeB", "West Frontier Tree", scenery.transform, new Vector3(-24.5f, 0f, 5f), 2.25f, 130f);
+            PlaceModel("detail_rocks", "North Frontier Rocks", scenery.transform, new Vector3(-3f, 0f, 21.5f), 1.8f, 20f);
+            PlaceModel("detail_rocks_small", "South Frontier Stones", scenery.transform, new Vector3(12f, 0f, -21.3f), 1.3f, 90f);
 
             GameObject detailClusters = new GameObject("Regional Detail Clusters");
             detailClusters.transform.SetParent(scenery.transform);
@@ -1804,18 +1824,80 @@ namespace WuxiaRoguelite.EditorTools
                 EncounterType.NormalEnemy,
                 Stats("青竹机关傀", 82, 12, 4, 0.92f, "bamboo_puppet", dodgeChance: 0.04f),
                 24, 8, 1.15f);
+            GameObject innerSwordsman = CreateEncounter("烟雨剑客", inkWolfIdle, inkWolfIdle, new Vector3(-3.5f, 0f, 7.8f),
+                EncounterType.NormalEnemy,
+                Stats("烟雨剑客", 40, 7, 1, 1.18f, "ink_wolf", critChance: 0.06f, dodgeChance: 0.06f),
+                13, 4, 1.3f);
+            GameObject eastAmbush = CreateEncounter("东岭伏兵", bambooPuppetIdle, bambooPuppetIdle, new Vector3(23f, 0f, 4.5f),
+                EncounterType.NormalEnemy,
+                Stats("东岭伏兵", 58, 9, 2, 1.02f, "bamboo_puppet", dodgeChance: 0.04f),
+                18, 6, 1.15f);
+            GameObject westRatPack = CreateEncounter("西门鼠群", ratRun, ratRun, new Vector3(-23f, 0f, 5.5f),
+                EncounterType.NormalEnemy,
+                Stats("西门鼠群", 48, 7, 1, 1.32f, "rat", dodgeChance: 0.06f),
+                15, 4, 1.05f);
+            GameObject northWanderer = CreateEncounter("北关游侠", riderRun, riderRun, new Vector3(2.5f, 0f, 20.5f),
+                EncounterType.NormalEnemy,
+                Stats("北关游侠", 70, 10, 3, 1f, "rider", critChance: 0.06f),
+                22, 7, 1.15f);
+            GameObject southBlade = CreateEncounter("南荒刀客", bambooPuppetIdle, bambooPuppetIdle, new Vector3(-2.5f, 0f, -20.5f),
+                EncounterType.NormalEnemy,
+                Stats("南荒刀客", 75, 11, 3, 0.95f, "bamboo_puppet", lifeSteal: 0.08f),
+                23, 8, 1.15f);
+            GameObject eastFrontierElite = CreateEncounter("东关铁卫", stoneApeIdle, stoneApeIdle, new Vector3(22f, 0f, -5f),
+                EncounterType.EliteEnemy,
+                Stats("东关铁卫", 165, 16, 6, 0.78f, "stone_ape"),
+                42, 15, 1.25f);
+            GameObject northFrontierElite = CreateEncounter("北漠刀魁", stoneApeIdle, stoneApeIdle, new Vector3(9f, 0f, 20f),
+                EncounterType.EliteEnemy,
+                Stats("北漠刀魁", 175, 17, 6, 0.8f, "stone_ape", critChance: 0.06f),
+                45, 16, 1.25f);
             GameObject southCave = CreateCaveEncounter("岩壁密窟", new Vector3(19.2f, 0f, -14.8f),
                 Stats("岩窟守卫", 175, 16, 5, 0.82f, "stone_ape"), 42, 14, CaveContentType.Random);
+            GameObject eastCloudCave = CreateCaveEncounter("东岭云窟", new Vector3(24f, 0f, 16.5f),
+                Stats("云窟守卫", 180, 17, 5, 0.84f, "orc_cave_guardian"), 44, 15, CaveContentType.Random);
+            GameObject northwestRuinCave = CreateCaveEncounter("西北残窟", new Vector3(-24f, 0f, 16.5f),
+                Stats("残窟守卫", 180, 16, 6, 0.8f, "orc_cave_guardian"), 44, 15, CaveContentType.Random);
+            GameObject southwestHiddenCave = CreateCaveEncounter("西南藏窟", new Vector3(-22f, 0f, -19f),
+                Stats("藏窟守卫", 185, 17, 6, 0.8f, "orc_cave_guardian"), 46, 16, CaveContentType.Random);
             GameObject northTreasure = CreateEncounter("北岭宝箱", new[] { treasureChestSprite }, null, new Vector3(-7f, 0f, 16.2f),
                 EncounterType.Treasure, Stats("宝箱", 1, 0, 0, 1f), 18, 10, 0.9f);
-            GameObject eastHerb = CreateEncounter("东郊药草", herbFrames, null, new Vector3(19.5f, 0f, 1.8f),
-                EncounterType.Herb, Stats("药草", 1, 0, 0, 1f), 0, 0, 0.85f);
+            GameObject innerTreasure = CreateEncounter("古道补给箱", new[] { treasureChestSprite }, null, new Vector3(4.8f, 0f, 6.8f),
+                EncounterType.Treasure, Stats("宝箱", 1, 0, 0, 1f), 14, 7, 0.9f);
+            GameObject westTreasure = CreateEncounter("西境宝箱", new[] { treasureChestSprite }, null, new Vector3(-24f, 0f, -2f),
+                EncounterType.Treasure, Stats("宝箱", 1, 0, 0, 1f), 20, 11, 0.9f);
+            GameObject southTreasure = CreateEncounter("南陲宝箱", new[] { treasureChestSprite }, null, new Vector3(6f, 0f, -20f),
+                EncounterType.Treasure, Stats("宝箱", 1, 0, 0, 1f), 20, 11, 0.9f);
+            GameObject eastMysteryHerb = CreateEncounter("东郊无名奇草", herbFrames, null, new Vector3(19.5f, 0f, 1.8f),
+                EncounterType.MysteryHerb, Stats("无名奇草", 1, 0, 0, 1f), 0, 0, 0.85f);
+            EncounterTrigger eastMysteryTrigger = eastMysteryHerb.GetComponent<EncounterTrigger>();
+            eastMysteryTrigger.mysteryCultivationReward = 45;
+            eastMysteryTrigger.mysteryPoisonChance = 0.25f;
+            eastMysteryTrigger.mysteryDebuffChance = 0.25f;
+            eastMysteryTrigger.mysteryHealthLossRatio = 0.25f;
+            GameObject northSpeedHerb = CreateEncounter("北坡轻身草", herbFrames, null, new Vector3(-7f, 0f, 11.8f),
+                EncounterType.Herb, Stats("轻身草", 1, 0, 0, 1f), 0, 0, 0.85f);
+            EncounterTrigger northSpeedTrigger = northSpeedHerb.GetComponent<EncounterTrigger>();
+            northSpeedTrigger.herbEffect = HerbEffectType.MoveSpeed;
+            northSpeedTrigger.herbBuffValue = 0.12f;
+            GameObject southHealingHerb = CreateEncounter("南岭止血草", herbFrames, null, new Vector3(14f, 0f, -12f),
+                EncounterType.Herb, Stats("止血草", 1, 0, 0, 1f), 0, 0, 0.85f);
+            southHealingHerb.GetComponent<EncounterTrigger>().healRatio = 0.4f;
+            GameObject eastDefenseHerb = CreateEncounter("东村铁骨草", herbFrames, null, new Vector3(21f, 0f, 10.5f),
+                EncounterType.Herb, Stats("铁骨草", 1, 0, 0, 1f), 0, 0, 0.85f);
+            EncounterTrigger eastDefenseTrigger = eastDefenseHerb.GetComponent<EncounterTrigger>();
+            eastDefenseTrigger.herbEffect = HerbEffectType.Defense;
+            eastDefenseTrigger.herbBuffValue = 1.5f;
 
             GameObject[] regionalEncounters =
             {
                 eastBandit, northBallista, westWolf, southRider, northElite,
                 eastQuickblade, westPoisoner, northGuard, southAssassin, westSiegeBow, eastScout,
-                southCave, northTreasure, eastHerb
+                innerSwordsman, eastAmbush, westRatPack, northWanderer, southBlade,
+                eastFrontierElite, northFrontierElite,
+                southCave, eastCloudCave, northwestRuinCave, southwestHiddenCave,
+                northTreasure, innerTreasure, westTreasure, southTreasure,
+                eastMysteryHerb, northSpeedHerb, southHealingHerb, eastDefenseHerb
             };
             foreach (GameObject regionalEncounter in regionalEncounters)
             {
@@ -1967,6 +2049,12 @@ namespace WuxiaRoguelite.EditorTools
             else if (type == EncounterType.Treasure)
             {
                 token.AddComponent<TreasureMapIndicator>();
+            }
+            else if (type == EncounterType.Herb ||
+                     type == EncounterType.VisionRelic ||
+                     type == EncounterType.MysteryHerb)
+            {
+                token.AddComponent<MapPickupIndicator>();
             }
             return token;
         }

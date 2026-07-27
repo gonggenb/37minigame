@@ -6,6 +6,16 @@ namespace WuxiaRoguelite.Map
         EliteEnemy,
         HiddenCave,
         Treasure,
-        Herb
+        Herb,
+        VisionRelic,
+        MysteryHerb
+    }
+
+    public enum HerbEffectType
+    {
+        Heal,
+        Attack,
+        Defense,
+        MoveSpeed
     }
 }

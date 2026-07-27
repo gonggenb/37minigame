@@ -21,7 +21,18 @@ namespace WuxiaRoguelite.Map
         };
         public int cultivationReward = 10;
         public int copperReward = 2;
+
+        [Header("Map Pickup")]
         public float healRatio = 0.35f;
+        public HerbEffectType herbEffect = HerbEffectType.Heal;
+        [Min(0f)] public float herbBuffValue = 0.12f;
+        [Min(0f)] public float visionIncrease = 0.14f;
+        [Min(0)] public int mysteryCultivationReward = 45;
+        [Range(0f, 1f)] public float mysteryPoisonChance = 0.25f;
+        [Range(0f, 1f)] public float mysteryDebuffChance = 0.25f;
+        [Range(0f, 0.95f)] public float mysteryHealthLossRatio = 0.25f;
+
+        [Header("Cave")]
         public CaveContentType caveContent = CaveContentType.Random;
         public bool consumed;
 

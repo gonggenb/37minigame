@@ -893,9 +893,12 @@ namespace WuxiaRoguelite.UI
             Rect levelRect = isPlayer
                 ? new Rect(nameRect.xMax - levelWidth, nameRect.y, levelWidth, nameRect.height)
                 : new Rect(nameRect.x, nameRect.y, levelWidth, nameRect.height);
+            int displayedLevel = isPlayer && playerStats != null
+                ? playerStats.level
+                : stats.DisplayLevel;
             ResponsiveGui.DrawSingleLineLabel(displayNameRect, stats.displayName,
                 isPlayer ? leftNameStyle : rightNameStyle, 10);
-            ResponsiveGui.DrawSingleLineLabel(levelRect, $"境界 {stats.DisplayLevel}",
+            ResponsiveGui.DrawSingleLineLabel(levelRect, $"等级 {displayedLevel}",
                 isPlayer ? rightNameStyle : leftNameStyle, 9);
 
             Rect bar = new Rect(rect.x + 15f, rect.y + 36f, rect.width - 30f, 20f);
@@ -1129,10 +1132,10 @@ namespace WuxiaRoguelite.UI
         {
             if (playerStats.learnedMartialArts.Count == 0)
             {
-                return $"境界 {playerStats.level}  ·  尚未习得武学";
+                return "尚未习得武学";
             }
 
-            string summary = $"境界 {playerStats.level}  ·  ";
+            string summary = string.Empty;
             int shown = Mathf.Min(2, playerStats.learnedMartialArts.Count);
             for (int i = 0; i < shown; i++)
             {

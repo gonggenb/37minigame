@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using WuxiaRoguelite.Battle;
+using WuxiaRoguelite.CameraTools;
 using WuxiaRoguelite.Cave;
 using WuxiaRoguelite.Map;
 using WuxiaRoguelite.MartialArts;
@@ -20,6 +21,7 @@ namespace WuxiaRoguelite.GameFlow
         public PlayerController playerController;
         public BattleManager battleManager;
         public CaveRoomController caveRoom;
+        public CameraFollow cameraFollow;
 
         [Header("Timers")]
         public float mainTimeLimit = 60f;
@@ -126,6 +128,9 @@ namespace WuxiaRoguelite.GameFlow
         private GamePhase phaseBeforeLevelUp = GamePhase.MainMapRunning;
         private float timeScaleBeforeCharacterMenu = 1f;
         private CombatantStats pendingBoss;
+        private string pendingEnemyName;
+        private int pendingEnemyLevel;
+        private EncounterType pendingEnemyType;
 
         private void Awake()
         {
@@ -134,6 +139,7 @@ namespace WuxiaRoguelite.GameFlow
 
         private void Start()
         {
+            cameraFollow = cameraFollow == null ? FindFirstObjectByType<CameraFollow>() : cameraFollow;
             if (battleManager != null)
             {
                 battleManager.playerStats = playerStats;
@@ -201,6 +207,7 @@ namespace WuxiaRoguelite.GameFlow
             }
 
             playerController?.ResetToSpawn();
+            cameraFollow?.ResetVision();
 
             foreach (EncounterTrigger encounter in FindObjectsByType<EncounterTrigger>(FindObjectsInactive.Include))
             {
@@ -217,6 +224,9 @@ namespace WuxiaRoguelite.GameFlow
             ClearOpeningIntro();
             pendingCultivationReward = 0;
             pendingCopperReward = 0;
+            pendingEnemyName = string.Empty;
+            pendingEnemyLevel = 0;
+            pendingEnemyType = EncounterType.NormalEnemy;
             currentChoices.Clear();
             martialArtRerollsRemaining = 1;
             phaseBeforeLevelUp = GamePhase.MainMapRunning;
@@ -264,7 +274,11 @@ namespace WuxiaRoguelite.GameFlow
                 case EncounterType.NormalEnemy:
                 case EncounterType.EliteEnemy:
                     encounter.Consume();
-                    BeginNormalBattle(encounter.CreateEnemyStats(), encounter.cultivationReward, encounter.copperReward);
+                    BeginNormalBattle(
+                        encounter.CreateEnemyStats(),
+                        encounter.cultivationReward,
+                        encounter.copperReward,
+                        encounter.encounterType);
                     break;
                 case EncounterType.HiddenCave:
                     encounter.Consume();
@@ -280,8 +294,19 @@ namespace WuxiaRoguelite.GameFlow
                     break;
                 case EncounterType.Herb:
                     encounter.Consume();
-                    playerStats.HealPercent(encounter.healRatio);
-                    statusMessage = "采到药草：恢复部分气血。";
+                    ApplyHerb(encounter);
+                    break;
+                case EncounterType.VisionRelic:
+                    encounter.Consume();
+                    cameraFollow = cameraFollow == null ? FindFirstObjectByType<CameraFollow>() : cameraFollow;
+                    int visionPercent = cameraFollow != null
+                        ? cameraFollow.ExpandVision(encounter.visionIncrease)
+                        : 100;
+                    statusMessage = $"发现望气灵物：视野扩大至 {visionPercent}%。";
+                    break;
+                case EncounterType.MysteryHerb:
+                    encounter.Consume();
+                    ApplyMysteryHerb(encounter);
                     break;
             }
         }
@@ -344,12 +369,20 @@ namespace WuxiaRoguelite.GameFlow
             caveRoom.EnterCave(null, content);
         }
 
-        private void BeginNormalBattle(CombatantStats enemy, int cultivationReward, int copperReward)
+        private void BeginNormalBattle(
+            CombatantStats enemy,
+            int cultivationReward,
+            int copperReward,
+            EncounterType enemyType)
         {
             pendingCultivationReward = cultivationReward;
             pendingCopperReward = copperReward;
+            pendingEnemyName = enemy.displayName;
+            pendingEnemyLevel = enemy.DisplayLevel;
+            pendingEnemyType = enemyType;
             SetPhase(GamePhase.NormalBattleRunning);
-            statusMessage = $"普通战斗：{enemy.displayName}。主地图时间继续流逝。";
+            string riskLabel = enemyType == EncounterType.EliteEnemy ? "精英战斗" : "普通战斗";
+            statusMessage = $"{riskLabel}：{enemy.displayName}。主地图时间继续流逝。";
             battleManager.BeginBattle(enemy, OnNormalBattleFinished);
         }
 
@@ -392,12 +425,33 @@ namespace WuxiaRoguelite.GameFlow
             }
 
             playerStats.killCount += 1;
-            GiveRewards(pendingCultivationReward, pendingCopperReward);
+            int cultivationReward = pendingCultivationReward;
+            int copperReward = pendingCopperReward;
+            string dropText = ResolveEnemyDrop(
+                pendingEnemyType,
+                pendingEnemyLevel,
+                ref cultivationReward,
+                ref copperReward);
+            bool leveledUp = GiveRewards(cultivationReward, copperReward);
+            string enemyName = string.IsNullOrEmpty(pendingEnemyName) ? "敌人" : pendingEnemyName;
+            string rewardSummary =
+                $"战胜{enemyName}：修为 +{cultivationReward}，铜钱 +{copperReward}";
+            if (!string.IsNullOrEmpty(dropText))
+            {
+                rewardSummary += $"，掉落 {dropText}";
+            }
+
             pendingCultivationReward = 0;
             pendingCopperReward = 0;
+            pendingEnemyName = string.Empty;
+            pendingEnemyLevel = 0;
+            pendingEnemyType = EncounterType.NormalEnemy;
 
             if (CurrentPhase == GamePhase.LevelUpPaused)
             {
+                statusMessage = leveledUp
+                    ? $"{rewardSummary}；修为突破，请选择武学。"
+                    : rewardSummary;
                 return;
             }
 
@@ -408,7 +462,7 @@ namespace WuxiaRoguelite.GameFlow
             }
 
             SetPhase(GamePhase.MainMapRunning);
-            statusMessage = "战斗胜利，返回主地图。";
+            statusMessage = $"{rewardSummary}。";
         }
 
         private void BeginHiddenCave(EncounterTrigger encounter)
@@ -555,13 +609,102 @@ namespace WuxiaRoguelite.GameFlow
             EndRun(playerWon, playerWon ? $"击败{bossStats.displayName}" : "Boss 战失败");
         }
 
-        private void GiveRewards(int cultivationReward, int copperReward)
+        private bool GiveRewards(int cultivationReward, int copperReward)
         {
             playerStats.GainCopper(copperReward);
             bool leveledUp = playerStats.GainCultivation(cultivationReward);
             if (leveledUp)
             {
                 EnterLevelUp();
+            }
+
+            return leveledUp;
+        }
+
+        private void ApplyHerb(EncounterTrigger encounter)
+        {
+            switch (encounter.herbEffect)
+            {
+                case HerbEffectType.Attack:
+                    playerStats.ApplyAttackBuff(encounter.herbBuffValue);
+                    statusMessage =
+                        $"服下赤阳草：本局攻击提升 {Mathf.RoundToInt(encounter.herbBuffValue * 100f)}%。";
+                    break;
+                case HerbEffectType.Defense:
+                    playerStats.ApplyDefenseBuff(encounter.herbBuffValue);
+                    statusMessage = $"服下铁骨草：本局防御 +{encounter.herbBuffValue:0.#}。";
+                    break;
+                case HerbEffectType.MoveSpeed:
+                    playerStats.ApplyMoveSpeedBuff(encounter.herbBuffValue);
+                    statusMessage =
+                        $"服下轻身草：本局移速提升 {Mathf.RoundToInt(encounter.herbBuffValue * 100f)}%。";
+                    break;
+                default:
+                    float beforeHealth = playerStats.runtimeStats.currentHealth;
+                    playerStats.HealPercent(encounter.healRatio);
+                    float healed = playerStats.runtimeStats.currentHealth - beforeHealth;
+                    statusMessage = $"采到止血草：气血恢复 {healed:0}。";
+                    break;
+            }
+        }
+
+        private void ApplyMysteryHerb(EncounterTrigger encounter)
+        {
+            float riskRoll = UnityEngine.Random.value;
+            string consequence;
+            if (riskRoll < encounter.mysteryPoisonChance)
+            {
+                playerStats.ApplyMysteryPoison(encounter.mysteryHealthLossRatio);
+                consequence =
+                    $"但奇毒入体，损失 {Mathf.RoundToInt(encounter.mysteryHealthLossRatio * 100f)}% 最大气血";
+            }
+            else if (riskRoll < encounter.mysteryPoisonChance + encounter.mysteryDebuffChance)
+            {
+                playerStats.ApplyMysteryWeakness(0.12f);
+                consequence = "但经脉受损，本局攻击与攻速降低 12%";
+            }
+            else
+            {
+                consequence = "药力纯净，没有副作用";
+            }
+
+            bool leveledUp = GiveRewards(encounter.mysteryCultivationReward, 0);
+            statusMessage =
+                $"服下无名奇草：修为 +{encounter.mysteryCultivationReward}，{consequence}" +
+                (leveledUp ? "；修为突破，请选择武学。" : "。");
+        }
+
+        private string ResolveEnemyDrop(
+            EncounterType enemyType,
+            int enemyLevel,
+            ref int cultivationReward,
+            ref int copperReward)
+        {
+            if (enemyType == EncounterType.EliteEnemy)
+            {
+                string equipmentName = playerStats.GrantTreasureEquipment();
+                return string.IsNullOrEmpty(equipmentName) ? "精制装备" : equipmentName;
+            }
+
+            float dropChance = Mathf.Clamp(0.14f + enemyLevel * 0.055f, 0.2f, 0.52f);
+            if (UnityEngine.Random.value > dropChance)
+            {
+                return string.Empty;
+            }
+
+            switch (UnityEngine.Random.Range(0, 3))
+            {
+                case 0:
+                    playerStats.HealPercent(0.12f);
+                    return "止血散（恢复 12% 气血）";
+                case 1:
+                    int cultivationBonus = 3 + enemyLevel;
+                    cultivationReward += cultivationBonus;
+                    return $"武学残页（额外修为 +{cultivationBonus}）";
+                default:
+                    int copperBonus = 1 + Mathf.CeilToInt(enemyLevel * 0.5f);
+                    copperReward += copperBonus;
+                    return $"钱袋（额外铜钱 +{copperBonus}）";
             }
         }
 
