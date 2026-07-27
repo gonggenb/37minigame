@@ -1,0 +1,9 @@
+id,display_name,kind,visual_id,max_health,attack,defense,attack_speed,crit_chance,crit_multiplier,life_steal,dodge_chance,move_speed
+player_wuxia,无名少侠,Player,crimson_warrior,100,12,3,1,0.05,1.5,0,0.03,5
+enemy_bandit,山贼喽啰,Enemy,bandit,35,5,1,0.9,0.03,1.5,0,0,3.5
+enemy_bamboo_puppet,竹林傀儡,Enemy,bamboo_puppet,55,7,2,0.95,0.03,1.5,0,0.01,3.2
+enemy_ink_wolf,墨影狼,Enemy,ink_wolf,72,9,2,1.15,0.05,1.5,0,0.04,4.5
+enemy_stone_ape,石臂猿,EliteEnemy,stone_ape,120,13,5,0.75,0.05,1.6,0,0,3
+enemy_orc_cave_guardian,守洞武人,CaveEnemy,orc_cave_guardian,160,14,4,0.85,0.05,1.5,0,0,3.5
+boss_fox_demon,九尾妖姬,Boss,fox_demon_boss,550,18,5,0.8,0.08,1.6,0,0.02,3.5
+boss_orc_warlord,裂山寨主,Boss,orc_warlord,680,21,7,0.72,0.06,1.7,0,0,3

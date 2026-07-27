@@ -1,6 +1,73 @@
 # 后续任务提示词模板
 
-## 1. 通用任务模板
+## 1. 任务分类前置规则
+
+生成或使用任何任务提示词前，必须先选择且只选择一种任务类型：
+
+- 脚本开发任务：只处理脚本、测试脚本、配置文本和开发文档，不调用 Unity MCP。
+- Editor 工作任务：只处理 Scene、Prefab、GameObject、Component、Inspector 和资源配置；调用 MCP 前必须审批。
+- 测试任务：只通过 Unity MCP 运行和验证当前游戏；调用 MCP 前必须审批，不在测试中修复问题。
+
+如果完整需求跨越多个类型，拆成多个独立提示词，固定按“脚本开发 -> Editor 工作 -> 测试”顺序逐个执行。前一任务结束并汇报后，等待用户发起下一任务，不得在一个提示词中要求全部完成。
+
+## 2. 脚本开发任务模板
+
+```text
+Read AGENTS.md first.
+
+Task type: Script Development.
+This task only creates, modifies or deletes scripts, test scripts, configuration text and development documents for [本次目标].
+
+Use terminal and file tools only.
+Do not call any Unity MCP tool.
+Do not modify Scenes, Prefabs, GameObjects, Components or Inspector bindings.
+Do not enter Play Mode or run the game.
+
+When finished, list the separate Editor work and test work still required, then stop.
+```
+
+## 3. Editor 工作任务模板
+
+```text
+Read AGENTS.md first.
+
+Task type: Unity Editor Work.
+This task only configures [Scene / Prefab / GameObject / Component / Inspector / resource import target].
+
+Do not modify source scripts.
+Do not enter Play Mode or run gameplay tests.
+
+Before any Unity MCP call, request user approval and state:
+- why MCP is required
+- the MCP tools or capabilities you plan to call
+- the target Scene, Prefab, GameObject, Component or asset
+- the planned operations, expected result and possible impact
+
+Wait for explicit approval. Before every approved call, tell the user which tool is being called and why. Report the result after the call.
+When Editor configuration is complete, stop and wait for a separate test task.
+```
+
+## 4. 测试任务模板
+
+```text
+Read AGENTS.md first.
+
+Task type: Unity Test.
+This task only runs and verifies the current game in [测试场景或测试范围].
+
+Do not modify scripts, Scenes, Prefabs, GameObjects, Components, Inspector bindings or assets.
+
+Before any Unity MCP call, request user approval and state:
+- the MCP tools or capabilities you plan to call
+- the test scene and test steps
+- the states, logs and gameplay rules to observe
+- the expected result and possible impact
+
+Wait for explicit approval. Before every approved call, tell the user which tool is being called and why. Report evidence, Console output and failed checks after the call.
+If a defect is found, document it and stop. Do not fix it in the same task.
+```
+
+## 5. 通用任务模板
 
 ```text
 Read AGENTS.md first.
@@ -19,7 +86,7 @@ Keep the Unity project runnable after changes.
 If Unity Editor setup is required, clearly list the GameObjects, scripts, Prefab references, UI references, and Inspector bindings I need to configure manually.
 ```
 
-## 2. 最小核心闭环任务模板
+## 6. 最小核心闭环任务模板
 
 ```text
 Read AGENTS.md first.
@@ -45,7 +112,7 @@ The required loop is:
 Do not add extra systems beyond this loop.
 ```
 
-## 3. 自动战斗任务模板
+## 7. 自动战斗任务模板
 
 ```text
 Read AGENTS.md first.
@@ -69,7 +136,7 @@ Boss battle rules:
 3. Boss battle can calculate its own battle time.
 ```
 
-## 4. 隐藏洞穴任务模板
+## 8. 隐藏洞穴任务模板
 
 ```text
 Read AGENTS.md first.
@@ -87,7 +154,7 @@ Hidden Cave rules:
 Do not turn the cave into a complex dungeon system.
 ```
 
-## 5. Boss 战任务模板
+## 9. Boss 战任务模板
 
 ```text
 Read AGENTS.md first.
@@ -106,7 +173,7 @@ Boss rules:
 Do not change the normal battle or hidden cave time rules.
 ```
 
-## 6. Debug 工具任务模板
+## 10. Debug 工具任务模板
 
 ```text
 Read AGENTS.md first.
@@ -131,7 +198,7 @@ Add or improve debug functions for:
 Debug features must not break normal gameplay.
 ```
 
-## 7. UI 验证任务模板
+## 11. UI 验证任务模板
 
 ```text
 Read AGENTS.md first.
@@ -154,7 +221,7 @@ Check or improve UI for:
 Do not change gameplay rules unless required by a UI bug.
 ```
 
-## 8. 美术资源生产任务模板
+## 12. 美术资源生产任务模板
 
 ```text
 Read AGENTS.md first.

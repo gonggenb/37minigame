@@ -1,0 +1,513 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dcafed9095ab4974790411f6cf571134, type: 3}
+  m_Name: GameDatabase
+  m_EditorClassIdentifier: WuxiaRoguelite.Config::WuxiaRoguelite.Config.GameDatabase
+  characters:
+  - id: player_wuxia
+    displayName: "\u65E0\u540D\u5C11\u4FA0"
+    kind: 0
+    visualId: crimson_warrior
+    maxHealth: 100
+    attack: 12
+    defense: 3
+    attackSpeed: 1
+    critChance: 0.05
+    critMultiplier: 1.5
+    lifeSteal: 0
+    dodgeChance: 0.03
+    moveSpeed: 5
+  - id: enemy_bandit
+    displayName: "\u5C71\u8D3C\u55BD\u5570"
+    kind: 1
+    visualId: bandit
+    maxHealth: 35
+    attack: 5
+    defense: 1
+    attackSpeed: 0.9
+    critChance: 0.03
+    critMultiplier: 1.5
+    lifeSteal: 0
+    dodgeChance: 0
+    moveSpeed: 3.5
+  - id: enemy_bamboo_puppet
+    displayName: "\u7AF9\u6797\u5080\u5121"
+    kind: 1
+    visualId: bamboo_puppet
+    maxHealth: 55
+    attack: 7
+    defense: 2
+    attackSpeed: 0.95
+    critChance: 0.03
+    critMultiplier: 1.5
+    lifeSteal: 0
+    dodgeChance: 0.01
+    moveSpeed: 3.2
+  - id: enemy_ink_wolf
+    displayName: "\u58A8\u5F71\u72FC"
+    kind: 1
+    visualId: ink_wolf
+    maxHealth: 72
+    attack: 9
+    defense: 2
+    attackSpeed: 1.15
+    critChance: 0.05
+    critMultiplier: 1.5
+    lifeSteal: 0
+    dodgeChance: 0.04
+    moveSpeed: 4.5
+  - id: enemy_stone_ape
+    displayName: "\u77F3\u81C2\u733F"
+    kind: 2
+    visualId: stone_ape
+    maxHealth: 120
+    attack: 13
+    defense: 5
+    attackSpeed: 0.75
+    critChance: 0.05
+    critMultiplier: 1.6
+    lifeSteal: 0
+    dodgeChance: 0
+    moveSpeed: 3
+  - id: enemy_orc_cave_guardian
+    displayName: "\u5B88\u6D1E\u6B66\u4EBA"
+    kind: 3
+    visualId: orc_cave_guardian
+    maxHealth: 160
+    attack: 14
+    defense: 4
+    attackSpeed: 0.85
+    critChance: 0.05
+    critMultiplier: 1.5
+    lifeSteal: 0
+    dodgeChance: 0
+    moveSpeed: 3.5
+  - id: boss_fox_demon
+    displayName: "\u4E5D\u5C3E\u5996\u59EC"
+    kind: 4
+    visualId: fox_demon_boss
+    maxHealth: 550
+    attack: 18
+    defense: 5
+    attackSpeed: 0.8
+    critChance: 0.08
+    critMultiplier: 1.6
+    lifeSteal: 0
+    dodgeChance: 0.02
+    moveSpeed: 3.5
+  - id: boss_orc_warlord
+    displayName: "\u88C2\u5C71\u5BE8\u4E3B"
+    kind: 4
+    visualId: orc_warlord
+    maxHealth: 680
+    attack: 21
+    defense: 7
+    attackSpeed: 0.72
+    critChance: 0.06
+    critMultiplier: 1.7
+    lifeSteal: 0
+    dodgeChance: 0
+    moveSpeed: 3
+  martialArts:
+  - id: skill_sword_qi
+    displayName: "\u5251\u6C14\u8BC0"
+    school: 0
+    isStarter: 1
+    maxRank: 3
+    effectType: 1
+    primaryStat: 1
+    primaryOperation: 0
+    secondaryStat: 1
+    secondaryOperation: 0
+    magnitudes:
+    - 0.6
+    - 0.8
+    - 1
+    secondaryValues:
+    - 0
+    - 0
+    - 0
+    triggerIntervals: 030000000200000002000000
+    maxStacks: 000000000000000000000000
+    description: "\u6309\u547D\u4E2D\u6B21\u6570\u8FFD\u52A0\u65E0\u89C6\u9632\u5FA1\u7684\u5251\u6C14\u4F24\u5BB3"
+  - id: skill_swift_sword
+    displayName: "\u75BE\u5251\u5F0F"
+    school: 0
+    isStarter: 0
+    maxRank: 3
+    effectType: 9
+    primaryStat: 3
+    primaryOperation: 0
+    secondaryStat: 3
+    secondaryOperation: 0
+    magnitudes:
+    - 0.12
+    - 0.24
+    - 0.36
+    secondaryValues:
+    - 0
+    - 0
+    - 0
+    triggerIntervals: 000000000000000000000000
+    maxStacks: 000000000000000000000000
+    description: "\u63D0\u9AD8\u81EA\u52A8\u653B\u51FB\u9891\u7387"
+  - id: skill_armor_break
+    displayName: "\u7834\u7532\u638C"
+    school: 0
+    isStarter: 0
+    maxRank: 3
+    effectType: 3
+    primaryStat: 2
+    primaryOperation: 0
+    secondaryStat: 2
+    secondaryOperation: 0
+    magnitudes:
+    - 0.35
+    - 0.7
+    - 1.05
+    secondaryValues:
+    - 0
+    - 0
+    - 0
+    triggerIntervals: 000000000000000000000000
+    maxStacks: 000000000000000000000000
+    description: "\u6BCF\u6B21\u547D\u4E2D\u524A\u5F31\u654C\u4EBA\u9632\u5FA1"
+  - id: skill_venom_palm
+    displayName: "\u6BD2\u7802\u638C"
+    school: 1
+    isStarter: 1
+    maxRank: 3
+    effectType: 2
+    primaryStat: 1
+    primaryOperation: 0
+    secondaryStat: 1
+    secondaryOperation: 0
+    magnitudes:
+    - 1
+    - 2
+    - 3
+    secondaryValues:
+    - 0.55
+    - 0.55
+    - 0.55
+    triggerIntervals: 000000000000000000000000
+    maxStacks: 080000000800000008000000
+    description: "\u6BCF\u6B21\u547D\u4E2D\u53E0\u52A0\u6BD2\u5C42"
+  - id: skill_poison_heart
+    displayName: "\u767E\u6BD2\u5FC3\u7ECF"
+    school: 1
+    isStarter: 0
+    maxRank: 3
+    effectType: 2
+    primaryStat: 1
+    primaryOperation: 0
+    secondaryStat: 1
+    secondaryOperation: 0
+    magnitudes:
+    - 0
+    - 0
+    - 0
+    secondaryValues:
+    - 0.8
+    - 1.05
+    - 1.3
+    triggerIntervals: 000000000000000000000000
+    maxStacks: 0c0000001000000014000000
+    description: "\u63D0\u9AD8\u6BD2\u5C42\u4E0A\u9650\u548C\u6BCF\u5C42\u4F24\u5BB3"
+  - id: skill_life_drain
+    displayName: "\u5438\u661F\u8BC0"
+    school: 1
+    isStarter: 0
+    maxRank: 3
+    effectType: 6
+    primaryStat: 6
+    primaryOperation: 0
+    secondaryStat: 11
+    secondaryOperation: 0
+    magnitudes:
+    - 0.04
+    - 0.08
+    - 0.12
+    secondaryValues:
+    - 0.1
+    - 0.2
+    - 0.3
+    triggerIntervals: 000000000000000000000000
+    maxStacks: 000000000000000000000000
+    description: "\u666E\u653B\u4E0E\u6BD2\u4F24\u8F6C\u5316\u4E3A\u6062\u590D"
+  - id: skill_iron_body
+    displayName: "\u94C1\u5E03\u886B"
+    school: 2
+    isStarter: 1
+    maxRank: 3
+    effectType: 9
+    primaryStat: 0
+    primaryOperation: 1
+    secondaryStat: 2
+    secondaryOperation: 0
+    magnitudes:
+    - 0.15
+    - 0.3
+    - 0.45
+    secondaryValues:
+    - 1
+    - 2
+    - 3
+    triggerIntervals: 000000000000000000000000
+    maxStacks: 000000000000000000000000
+    description: "\u63D0\u9AD8\u6700\u5927\u6C14\u8840\u4E0E\u9632\u5FA1"
+  - id: skill_golden_bell
+    displayName: "\u91D1\u949F\u7F69"
+    school: 2
+    isStarter: 0
+    maxRank: 3
+    effectType: 4
+    primaryStat: 2
+    primaryOperation: 0
+    secondaryStat: 2
+    secondaryOperation: 0
+    magnitudes:
+    - 8
+    - 16
+    - 24
+    secondaryValues:
+    - 1.5
+    - 3
+    - 4.5
+    triggerIntervals: 000000000000000000000000
+    maxStacks: 000000000000000000000000
+    description: "\u6BCF\u573A\u6218\u6597\u5F00\u59CB\u83B7\u5F97\u62A4\u76FE"
+  - id: skill_retaliation
+    displayName: "\u53CD\u9707\u8BC0"
+    school: 2
+    isStarter: 0
+    maxRank: 3
+    effectType: 5
+    primaryStat: 2
+    primaryOperation: 0
+    secondaryStat: 2
+    secondaryOperation: 0
+    magnitudes:
+    - 0.65
+    - 0.85
+    - 1.05
+    secondaryValues:
+    - 0
+    - 0
+    - 0
+    triggerIntervals: 000000000000000000000000
+    maxStacks: 000000000000000000000000
+    description: "\u53D7\u5230\u4F24\u5BB3\u540E\u6309\u9632\u5FA1\u53CD\u51FB"
+  equipment:
+  - id: equipment_qinggang_sword
+    displayName: "\u9752\u94A2\u5251"
+    slot: Weapon
+    rarity: Common
+    attackBonus: 4
+    defenseBonus: 0
+    maxHealthBonus: 0
+    attackSpeedBonus: 0
+    critChanceBonus: 0
+    dodgeChanceBonus: 0
+    effectType: 1
+    magnitude: 0.35
+    secondaryValue: 0
+    triggerInterval: 3
+    maxStacks: 0
+    description: "\u6BCF\u4E09\u6B21\u547D\u4E2D\u8FFD\u52A0\u5251\u6C14"
+  - id: equipment_light_scale
+    displayName: "\u8F7B\u9CDE\u8863"
+    slot: Armor
+    rarity: Fine
+    attackBonus: 0
+    defenseBonus: 2
+    maxHealthBonus: 18
+    attackSpeedBonus: 0
+    critChanceBonus: 0
+    dodgeChanceBonus: 0
+    effectType: 4
+    magnitude: 10
+    secondaryValue: 0
+    triggerInterval: 0
+    maxStacks: 0
+    description: "\u6BCF\u573A\u6218\u6597\u83B7\u5F97\u5341\u70B9\u62A4\u76FE"
+  - id: equipment_practice_bracer
+    displayName: "\u7EC3\u529F\u62A4\u8155"
+    slot: Accessory
+    rarity: Common
+    attackBonus: 0
+    defenseBonus: 0
+    maxHealthBonus: 0
+    attackSpeedBonus: 0.08
+    critChanceBonus: 0
+    dodgeChanceBonus: 0
+    effectType: 8
+    magnitude: 0.7
+    secondaryValue: 0
+    triggerInterval: 0
+    maxStacks: 0
+    description: "\u66B4\u51FB\u540E\u7F29\u77ED\u4E0B\u6B21\u653B\u51FB\u95F4\u9694"
+  - id: equipment_black_iron_ring
+    displayName: "\u7384\u94C1\u6212"
+    slot: Accessory
+    rarity: Rare
+    attackBonus: 2
+    defenseBonus: 0
+    maxHealthBonus: 0
+    attackSpeedBonus: 0
+    critChanceBonus: 0.04
+    dodgeChanceBonus: 0
+    effectType: 3
+    magnitude: 0.35
+    secondaryValue: 0
+    triggerInterval: 0
+    maxStacks: 0
+    description: "\u6BCF\u6B21\u547D\u4E2D\u8FFD\u52A0\u7834\u7532"
+  - id: equipment_wanderer_cloak
+    displayName: "\u6E38\u4FA0\u62AB\u98CE"
+    slot: Armor
+    rarity: Rare
+    attackBonus: 0
+    defenseBonus: 0
+    maxHealthBonus: 12
+    attackSpeedBonus: 0
+    critChanceBonus: 0
+    dodgeChanceBonus: 0.04
+    effectType: 7
+    magnitude: 0.03
+    secondaryValue: 0
+    triggerInterval: 0
+    maxStacks: 0
+    description: "\u95EA\u907F\u65F6\u6062\u590D\u6C14\u8840"
+  - id: equipment_poison_dart_pouch
+    displayName: "\u6BD2\u9556\u56CA"
+    slot: Accessory
+    rarity: Rare
+    attackBonus: 1
+    defenseBonus: 0
+    maxHealthBonus: 0
+    attackSpeedBonus: 0
+    critChanceBonus: 0
+    dodgeChanceBonus: 0
+    effectType: 2
+    magnitude: 1
+    secondaryValue: 0.55
+    triggerInterval: 0
+    maxStacks: 20
+    description: "\u6BCF\u6B21\u547D\u4E2D\u989D\u5916\u65BD\u52A0\u4E00\u5C42\u6BD2"
+  rewards:
+  - id: reward_normal_enemy
+    cultivation: 10
+    copper: 2
+    healRatio: 0
+    equipmentId: 
+    martialArtId: 
+  - id: reward_elite_enemy
+    cultivation: 20
+    copper: 5
+    healRatio: 0
+    equipmentId: 
+    martialArtId: 
+  - id: reward_treasure
+    cultivation: 18
+    copper: 10
+    healRatio: 0
+    equipmentId: 
+    martialArtId: 
+  - id: reward_herb
+    cultivation: 0
+    copper: 0
+    healRatio: 0.35
+    equipmentId: 
+    martialArtId: 
+  - id: reward_cave_enemy
+    cultivation: 25
+    copper: 8
+    healRatio: 0
+    equipmentId: 
+    martialArtId: 
+  - id: reward_cave_treasure
+    cultivation: 18
+    copper: 10
+    healRatio: 0
+    equipmentId: equipment_black_iron_ring
+    martialArtId: 
+  - id: reward_boss
+    cultivation: 60
+    copper: 30
+    healRatio: 0
+    equipmentId: 
+    martialArtId: 
+  spawns:
+  - id: spawn_east_bandit
+    regionId: east_forest
+    entityType: 0
+    configId: enemy_bandit
+    prefabId: prefab_enemy_bandit
+    rewardId: reward_normal_enemy
+    minCount: 3
+    maxCount: 5
+    weight: 1
+  - id: spawn_east_bamboo
+    regionId: east_forest
+    entityType: 0
+    configId: enemy_bamboo_puppet
+    prefabId: prefab_enemy_bamboo
+    rewardId: reward_normal_enemy
+    minCount: 2
+    maxCount: 4
+    weight: 0.8
+  - id: spawn_south_wolf
+    regionId: south_quarry
+    entityType: 0
+    configId: enemy_ink_wolf
+    prefabId: prefab_enemy_ink_wolf
+    rewardId: reward_normal_enemy
+    minCount: 2
+    maxCount: 4
+    weight: 1
+  - id: spawn_north_ape
+    regionId: north_pass
+    entityType: 0
+    configId: enemy_stone_ape
+    prefabId: prefab_enemy_stone_ape
+    rewardId: reward_elite_enemy
+    minCount: 1
+    maxCount: 2
+    weight: 0.45
+  - id: spawn_map_treasure
+    regionId: main_map
+    entityType: 1
+    configId: reward_treasure
+    prefabId: prefab_treasure
+    rewardId: reward_treasure
+    minCount: 2
+    maxCount: 4
+    weight: 0.7
+  - id: spawn_map_herb
+    regionId: main_map
+    entityType: 2
+    configId: reward_herb
+    prefabId: prefab_herb
+    rewardId: reward_herb
+    minCount: 2
+    maxCount: 4
+    weight: 0.8
+  - id: spawn_hidden_cave
+    regionId: main_map
+    entityType: 3
+    configId: 
+    prefabId: prefab_hidden_cave
+    rewardId: 
+    minCount: 1
+    maxCount: 2
+    weight: 0.35

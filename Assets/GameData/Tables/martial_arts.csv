@@ -1,0 +1,10 @@
+id,display_name,school,is_starter,max_rank,effect_type,primary_stat,primary_operation,secondary_stat,secondary_operation,magnitudes,secondary_values,trigger_intervals,max_stacks,description
+skill_sword_qi,剑气诀,SwiftSword,true,3,SwordQi,Attack,Add,Attack,Add,0.6|0.8|1.0,0|0|0,3|2|2,0|0|0,按命中次数追加无视防御的剑气伤害
+skill_swift_sword,疾剑式,SwiftSword,false,3,StatModifier,AttackSpeed,Add,AttackSpeed,Add,0.12|0.24|0.36,0|0|0,0|0|0,0|0|0,提高自动攻击频率
+skill_armor_break,破甲掌,SwiftSword,false,3,ArmorBreakOnHit,Defense,Add,Defense,Add,0.35|0.70|1.05,0|0|0,0|0|0,0|0|0,每次命中削弱敌人防御
+skill_venom_palm,毒砂掌,VenomPalm,true,3,PoisonOnHit,Attack,Add,Attack,Add,1|2|3,0.55|0.55|0.55,0|0|0,8|8|8,每次命中叠加毒层
+skill_poison_heart,百毒心经,VenomPalm,false,3,PoisonOnHit,Attack,Add,Attack,Add,0|0|0,0.8|1.05|1.3,0|0|0,12|16|20,提高毒层上限和每层伤害
+skill_life_drain,吸星诀,VenomPalm,false,3,LifeSteal,LifeSteal,Add,Recovery,Add,0.04|0.08|0.12,0.10|0.20|0.30,0|0|0,0|0|0,普攻与毒伤转化为恢复
+skill_iron_body,铁布衫,IronBody,true,3,StatModifier,MaxHealth,MultiplyBase,Defense,Add,0.15|0.30|0.45,1|2|3,0|0|0,0|0|0,提高最大气血与防御
+skill_golden_bell,金钟罩,IronBody,false,3,OpeningShield,Defense,Add,Defense,Add,8|16|24,1.5|3|4.5,0|0|0,0|0|0,每场战斗开始获得护盾
+skill_retaliation,反震诀,IronBody,false,3,Retaliation,Defense,Add,Defense,Add,0.65|0.85|1.05,0|0|0,0|0|0,0|0|0,受到伤害后按防御反击

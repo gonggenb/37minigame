@@ -1,0 +1,8 @@
+id,region_id,entity_type,config_id,prefab_id,reward_id,min_count,max_count,weight
+spawn_east_bandit,east_forest,Enemy,enemy_bandit,prefab_enemy_bandit,reward_normal_enemy,3,5,1
+spawn_east_bamboo,east_forest,Enemy,enemy_bamboo_puppet,prefab_enemy_bamboo,reward_normal_enemy,2,4,0.8
+spawn_south_wolf,south_quarry,Enemy,enemy_ink_wolf,prefab_enemy_ink_wolf,reward_normal_enemy,2,4,1
+spawn_north_ape,north_pass,Enemy,enemy_stone_ape,prefab_enemy_stone_ape,reward_elite_enemy,1,2,0.45
+spawn_map_treasure,main_map,Treasure,reward_treasure,prefab_treasure,reward_treasure,2,4,0.7
+spawn_map_herb,main_map,Herb,reward_herb,prefab_herb,reward_herb,2,4,0.8
+spawn_hidden_cave,main_map,Cave,,prefab_hidden_cave,,1,2,0.35

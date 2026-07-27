@@ -1,0 +1,373 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &3033355027115280657
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 410197055458721546}
+  - component: {fileID: 2148840675833292575}
+  - component: {fileID: 2795102722376742817}
+  - component: {fileID: 6996868362548396375}
+  m_Layer: 0
+  m_Name: SpriteVisual
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &410197055458721546
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3033355027115280657}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.12, z: 0}
+  m_LocalScale: {x: 2.1, y: 2.1, z: 2.1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2714997097844739780}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!212 &2148840675833292575
+SpriteRenderer:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3033355027115280657}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 10
+  m_MaskInteraction: 0
+  m_Sprite: {fileID: 584744719, guid: 75143ab42d73f414c935841835e63472, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 3, y: 3}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_SpriteSortPoint: 0
+  m_BlendShapeWeights: []
+--- !u!114 &2795102722376742817
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3033355027115280657}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0bde24c473bbe44d9b4c6de1b60634cd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WuxiaRoguelite.Visual.BillboardSprite
+  targetCamera: {fileID: 0}
+--- !u!114 &6996868362548396375
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3033355027115280657}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 825da49a4b0cb4889a00c2ad248da79f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WuxiaRoguelite.Visual.SpriteFrameAnimator
+  idleFrames:
+  - {fileID: -5735282888508474159, guid: a09c95e1fa033455586d47c007676152, type: 3}
+  - {fileID: -2413811058832895255, guid: a09c95e1fa033455586d47c007676152, type: 3}
+  - {fileID: 3435155481196652384, guid: a09c95e1fa033455586d47c007676152, type: 3}
+  - {fileID: 5212855164538451362, guid: a09c95e1fa033455586d47c007676152, type: 3}
+  - {fileID: -5238641217415204334, guid: a09c95e1fa033455586d47c007676152, type: 3}
+  - {fileID: 4848491989445532371, guid: a09c95e1fa033455586d47c007676152, type: 3}
+  - {fileID: -4491406384580593779, guid: a09c95e1fa033455586d47c007676152, type: 3}
+  - {fileID: 7750378799359501384, guid: a09c95e1fa033455586d47c007676152, type: 3}
+  moveFrames:
+  - {fileID: 584744719, guid: 75143ab42d73f414c935841835e63472, type: 3}
+  - {fileID: -417452213, guid: 75143ab42d73f414c935841835e63472, type: 3}
+  - {fileID: -2051538869, guid: 75143ab42d73f414c935841835e63472, type: 3}
+  - {fileID: 212797631, guid: 75143ab42d73f414c935841835e63472, type: 3}
+  - {fileID: -1093508133, guid: 75143ab42d73f414c935841835e63472, type: 3}
+  - {fileID: -366871148, guid: 75143ab42d73f414c935841835e63472, type: 3}
+  - {fileID: 1971833031, guid: 75143ab42d73f414c935841835e63472, type: 3}
+  - {fileID: -1672307250, guid: 75143ab42d73f414c935841835e63472, type: 3}
+  movementSource: {fileID: 6809934618761436341}
+  framesPerSecond: 8
+  randomizeStart: 0
+--- !u!1 &4210138966491808522
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2714997097844739780}
+  - component: {fileID: 2207997445235322679}
+  - component: {fileID: 1551351096662428480}
+  - component: {fileID: 7200159337572221081}
+  - component: {fileID: 5987119079301358653}
+  - component: {fileID: 6809934618761436341}
+  - component: {fileID: 7003123093622345230}
+  m_Layer: 0
+  m_Name: Player
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2714997097844739780
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4210138966491808522}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 410197055458721546}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!54 &2207997445235322679
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4210138966491808522}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 116
+  m_CollisionDetection: 0
+--- !u!136 &1551351096662428480
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4210138966491808522}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.32
+  m_Height: 1.4
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.7, z: 0}
+--- !u!114 &7200159337572221081
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4210138966491808522}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7cc3f620cdb2a4c198571e3216161c13, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WuxiaRoguelite.Player.PlayerEquipment
+  playerStats: {fileID: 5987119079301358653}
+  equippedWeapon:
+    id: 
+    displayName: 
+    slot: 0
+    rarity: 0
+    attackBonus: 0
+    defenseBonus: 0
+    maxHealthBonus: 0
+    attackSpeedBonus: 0
+    critChanceBonus: 0
+    dodgeChanceBonus: 0
+    swordQiInterval: 0
+    swordQiDamageRatio: 0
+    openingShield: 0
+    armorBreakPerHit: 0
+    poisonStacksPerHit: 0
+    criticalCooldownMultiplier: 1
+    dodgeHealRatio: 0
+    effectSummary: 
+  equippedArmor:
+    id: 
+    displayName: 
+    slot: 0
+    rarity: 0
+    attackBonus: 0
+    defenseBonus: 0
+    maxHealthBonus: 0
+    attackSpeedBonus: 0
+    critChanceBonus: 0
+    dodgeChanceBonus: 0
+    swordQiInterval: 0
+    swordQiDamageRatio: 0
+    openingShield: 0
+    armorBreakPerHit: 0
+    poisonStacksPerHit: 0
+    criticalCooldownMultiplier: 1
+    dodgeHealRatio: 0
+    effectSummary: 
+  equippedAccessory:
+    id: 
+    displayName: 
+    slot: 0
+    rarity: 0
+    attackBonus: 0
+    defenseBonus: 0
+    maxHealthBonus: 0
+    attackSpeedBonus: 0
+    critChanceBonus: 0
+    dodgeChanceBonus: 0
+    swordQiInterval: 0
+    swordQiDamageRatio: 0
+    openingShield: 0
+    armorBreakPerHit: 0
+    poisonStacksPerHit: 0
+    criticalCooldownMultiplier: 1
+    dodgeHealRatio: 0
+    effectSummary: 
+--- !u!114 &5987119079301358653
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4210138966491808522}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ca3ee64ac3aa14e5a939dbd6cf90809a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WuxiaRoguelite.Player.PlayerStats
+  baseStats:
+    displayName: "\u65E0\u540D\u5C11\u4FA0"
+    visualId: 
+    level: 0
+    maxHealth: 100
+    currentHealth: 100
+    attack: 12
+    defense: 3
+    attackSpeed: 1
+    critChance: 0.05
+    critMultiplier: 1.5
+    lifeSteal: 0
+    dodgeChance: 0.03
+    moveSpeed: 5
+  runtimeStats:
+    displayName: "\u5C11\u4FA0"
+    visualId: 
+    level: 0
+    maxHealth: 100
+    currentHealth: 100
+    attack: 12
+    defense: 3
+    attackSpeed: 1
+    critChance: 0.05
+    critMultiplier: 1.5
+    lifeSteal: 0
+    dodgeChance: 0
+    moveSpeed: 5
+  equipment: {fileID: 7200159337572221081}
+  level: 1
+  cultivation: 0
+  copper: 0
+  killCount: 0
+  caveEntries: 0
+--- !u!114 &6809934618761436341
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4210138966491808522}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6401e2986b5048919eda524ee53a54a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WuxiaRoguelite.Player.PlayerController
+  stats: {fileID: 5987119079301358653}
+  groundY: 0
+  movementReference: {fileID: 0}
+--- !u!114 &7003123093622345230
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4210138966491808522}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9ea2849d0628a9644a08a5757d250eec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WuxiaRoguelite.Architecture.Interaction.PlayerInteractionActor

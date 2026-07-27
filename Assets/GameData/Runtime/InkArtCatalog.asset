@@ -1,0 +1,162 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00e21c4ab38839948857677659e503a7, type: 3}
+  m_Name: InkArtCatalog
+  m_EditorClassIdentifier: WuxiaRoguelite.Config::WuxiaRoguelite.Config.InkArtCatalog
+  sprites:
+  - id: background.portrait.main
+    sprite: {fileID: 21300000, guid: c5dd03bde99172643b06eb8d2f12dfd3, type: 3}
+  - id: background.landscape.main
+    sprite: {fileID: 21300000, guid: df7386c3865875346822c989f9f6177e, type: 3}
+  - id: background.cave
+    sprite: {fileID: 21300000, guid: 69e7558dd878f9141a409fc718479da0, type: 3}
+  - id: world.map
+    sprite: {fileID: 21300000, guid: 9044b3c02d405a74dbf9b54dadb0fe83, type: 3}
+  - id: world.landmark.east
+    sprite: {fileID: 21300000, guid: 29e2bd732d729a6498ea488e01e72dbc, type: 3}
+  - id: world.landmark.west
+    sprite: {fileID: 21300000, guid: 010adfdd4b7f0444d89a487132734f6f, type: 3}
+  - id: world.landmark.north
+    sprite: {fileID: 21300000, guid: 78c117c77f76cbe419549a2edd83963b, type: 3}
+  - id: world.landmark.south
+    sprite: {fileID: 21300000, guid: 0e174f73eacabf4469a91723199bb9a7, type: 3}
+  - id: world.treasure
+    sprite: {fileID: 21300000, guid: fac6ee73cd7de6349a922c53131e6e29, type: 3}
+  - id: world.herb
+    sprite: {fileID: 21300000, guid: 83efac7016fe3384d9980680d4631cc6, type: 3}
+  - id: world.cave_entrance
+    sprite: {fileID: 21300000, guid: 04ba0854365c87043b8f220af40e7d81, type: 3}
+  - id: ui.panel
+    sprite: {fileID: 21300000, guid: c1b7d4c7cd497234f912d66ba3488308, type: 3}
+  - id: ui.button.primary
+    sprite: {fileID: 21300000, guid: 45adb51d5a9b8ec458d1b4eeea179160, type: 3}
+  - id: ui.top_frame
+    sprite: {fileID: 21300000, guid: a5e4b31327ef7154d913492b7d92f760, type: 3}
+  - id: ui.boss_frame
+    sprite: {fileID: 21300000, guid: 322d5d88cd0511949800d041284c6408, type: 3}
+  - id: ui.health_bar
+    sprite: {fileID: 21300000, guid: cb7dd7eb7920e4549b165cc2ccf27e17, type: 3}
+  - id: effect.impact
+    sprite: {fileID: 21300000, guid: eb6d694da3c307b4cb1c666e59d11231, type: 3}
+  - id: skill_sword_qi
+    sprite: {fileID: 21300000, guid: 29cfca92a1dc9de489c31d5c1882d5ba, type: 3}
+  - id: skill_swift_sword
+    sprite: {fileID: 21300000, guid: e8491aacbf251ac4a919fb731f37d4c1, type: 3}
+  - id: skill_armor_break
+    sprite: {fileID: 21300000, guid: 9006f1aaa45d46f42b7bc5f6ff29b200, type: 3}
+  - id: skill_venom_palm
+    sprite: {fileID: 21300000, guid: 3fc5fc159f9974f44b396fb6fd6bd339, type: 3}
+  - id: skill_poison_heart
+    sprite: {fileID: 21300000, guid: e5866de5b89c079438d96bcf0932309a, type: 3}
+  - id: skill_life_drain
+    sprite: {fileID: 21300000, guid: 7ec0adb65834e1842b024fff79838881, type: 3}
+  - id: skill_iron_body
+    sprite: {fileID: 21300000, guid: 45deed7361d267547b2169f88ee93262, type: 3}
+  - id: skill_golden_bell
+    sprite: {fileID: 21300000, guid: 37e2a33641ed0b14e9bc61d1460e021a, type: 3}
+  - id: skill_retaliation
+    sprite: {fileID: 21300000, guid: 598f193772ce834438608046cef569bc, type: 3}
+  - id: equipment_qinggang_sword
+    sprite: {fileID: 21300000, guid: e0137969f6a5a4644a177004a969177b, type: 3}
+  - id: equipment_light_scale
+    sprite: {fileID: 21300000, guid: 9e04f7723f45575448980895151f0139, type: 3}
+  - id: equipment_practice_bracer
+    sprite: {fileID: 21300000, guid: f5121464da1e7154fafae28aaca8dd85, type: 3}
+  - id: equipment_black_iron_ring
+    sprite: {fileID: 21300000, guid: ade4e85f5aed59346b7afd726dcf1dbb, type: 3}
+  - id: equipment_wanderer_cloak
+    sprite: {fileID: 21300000, guid: 7630d3dbaae2bd444921a7030aeffb88, type: 3}
+  - id: equipment_poison_dart_pouch
+    sprite: {fileID: 21300000, guid: ea9e3aca0d8a0e34fb074653d14a1d5f, type: 3}
+  characters:
+  - id: player_wuxia
+    idleFrames:
+    - {fileID: 21300000, guid: 93da73a0d6b132647aec17daaee6c8c2, type: 3}
+    moveFrames:
+    - {fileID: 21300000, guid: c7129421894eb6545bdca79b080639af, type: 3}
+    - {fileID: 21300000, guid: 6ed9b1132b4cfb44f8cdbf9e54d99b34, type: 3}
+    - {fileID: 21300000, guid: b7ed7b1b3bcf5d64d96a6861e033edcd, type: 3}
+    - {fileID: 21300000, guid: c7b75e8f47a122d4b896fd1f31027157, type: 3}
+    - {fileID: 21300000, guid: cf149b918d06c6d42b2be04040199601, type: 3}
+    - {fileID: 21300000, guid: cf8663b152e7a5845a8737daa63168c6, type: 3}
+    portrait: {fileID: 21300000, guid: 93da73a0d6b132647aec17daaee6c8c2, type: 3}
+    worldScale: 2.15
+  - id: enemy_bandit
+    idleFrames:
+    - {fileID: 21300000, guid: 02681baddf3e88248ba1c44d0af6f91e, type: 3}
+    moveFrames:
+    - {fileID: 21300000, guid: 7dce52e09d84ff74f852d2c190c592f3, type: 3}
+    - {fileID: 21300000, guid: 787634371e0990a45818a44e4df492a9, type: 3}
+    - {fileID: 21300000, guid: 137d29cfc0ec3124eb372a3d544a8eae, type: 3}
+    - {fileID: 21300000, guid: 244cd9625a8dda942b37a09603186619, type: 3}
+    - {fileID: 21300000, guid: abaadfb6754157f40805a13f5840aaa8, type: 3}
+    portrait: {fileID: 21300000, guid: 02681baddf3e88248ba1c44d0af6f91e, type: 3}
+    worldScale: 1.9
+  - id: enemy_bamboo_puppet
+    idleFrames:
+    - {fileID: 21300000, guid: 3994e00614028114c8a4b3f96c7b98f6, type: 3}
+    moveFrames:
+    - {fileID: 21300000, guid: 746ae3f8487fba54cbb70321f3fcb4d7, type: 3}
+    - {fileID: 21300000, guid: 70f26ca68cecac245841bb29498fc6b0, type: 3}
+    - {fileID: 21300000, guid: dd2108a1e527ffe4480e6a3fffbbebd0, type: 3}
+    - {fileID: 21300000, guid: f39df1cb0dd0ba14285467fc4c858506, type: 3}
+    - {fileID: 21300000, guid: 9acf5efef9a51c542b257009b1021ac2, type: 3}
+    portrait: {fileID: 21300000, guid: 3994e00614028114c8a4b3f96c7b98f6, type: 3}
+    worldScale: 1.8
+  - id: enemy_ink_wolf
+    idleFrames:
+    - {fileID: 21300000, guid: 5799ca8828939234d8a45ec63d5b1dd3, type: 3}
+    moveFrames:
+    - {fileID: 21300000, guid: f11e4d85577730c49bc7a8465d719fa8, type: 3}
+    - {fileID: 21300000, guid: e2c9415b2d1bf70439c8b3cb8f9092b7, type: 3}
+    - {fileID: 21300000, guid: 4a8855deac98cde4889967fc667d8999, type: 3}
+    - {fileID: 21300000, guid: 1f1785ea365186e4aa544c7c4b4cc5ce, type: 3}
+    - {fileID: 21300000, guid: b5d178a40c49907498a164944ae6ef41, type: 3}
+    portrait: {fileID: 21300000, guid: 5799ca8828939234d8a45ec63d5b1dd3, type: 3}
+    worldScale: 2.1
+  - id: enemy_stone_ape
+    idleFrames:
+    - {fileID: 21300000, guid: 19b1b4cdbfaa83a4db98998bce203d51, type: 3}
+    moveFrames:
+    - {fileID: 21300000, guid: 52551728a6ed32448ad94eb73d0117f4, type: 3}
+    - {fileID: 21300000, guid: 05957a626b5053147b09c0f12989dd62, type: 3}
+    - {fileID: 21300000, guid: 7757c4ea8f36d64499f35b4b64921596, type: 3}
+    - {fileID: 21300000, guid: 829881b7233cbd74fb46b658d2505306, type: 3}
+    - {fileID: 21300000, guid: 11d26455852bdde4393610d9c335c020, type: 3}
+    - {fileID: 21300000, guid: 3cb34925cc096884dbdaadb6684cf742, type: 3}
+    portrait: {fileID: 21300000, guid: 19b1b4cdbfaa83a4db98998bce203d51, type: 3}
+    worldScale: 2.2
+  - id: boss_fox_demon
+    idleFrames:
+    - {fileID: 21300000, guid: 0eb78243de025684dbcdec589a82435d, type: 3}
+    moveFrames:
+    - {fileID: 21300000, guid: 6318e686c30fe4a4898e68e55a6a86ef, type: 3}
+    - {fileID: 21300000, guid: 04bfa64df054fa94983635a6696dbd87, type: 3}
+    - {fileID: 21300000, guid: 556c60c165418264c90dd8983c71c710, type: 3}
+    - {fileID: 21300000, guid: 2cae68367065e8a419f35368337c8152, type: 3}
+    - {fileID: 21300000, guid: de645d3e8b78ab24595f89a105cb1331, type: 3}
+    - {fileID: 21300000, guid: 6a81ea2a57ec468439461e8e697eb18a, type: 3}
+    - {fileID: 21300000, guid: d63d2414d3ea6d3459b0b71586a95f6d, type: 3}
+    portrait: {fileID: 21300000, guid: 0eb78243de025684dbcdec589a82435d, type: 3}
+    worldScale: 2.45
+  - id: boss_orc_warlord
+    idleFrames:
+    - {fileID: 21300000, guid: 883ccee559c123f4d962b51314fde1d7, type: 3}
+    moveFrames:
+    - {fileID: 21300000, guid: 1799b63ee1b3aee4aaa456869081c9bf, type: 3}
+    - {fileID: 21300000, guid: a55df2478e0bf1a49bb5a4042fbd772d, type: 3}
+    - {fileID: 21300000, guid: 934f35ff440a8b24895a701388c572c5, type: 3}
+    - {fileID: 21300000, guid: 82fd7c11372e0c041a4173ec138c3b88, type: 3}
+    - {fileID: 21300000, guid: 5daef473970a844409ce38a24a7313e0, type: 3}
+    - {fileID: 21300000, guid: bc3df3a672bb31449a81426891b9306c, type: 3}
+    portrait: {fileID: 21300000, guid: 883ccee559c123f4d962b51314fde1d7, type: 3}
+    worldScale: 2.45

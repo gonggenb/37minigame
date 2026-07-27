@@ -1,0 +1,8 @@
+id,cultivation,copper,heal_ratio,equipment_id,martial_art_id
+reward_normal_enemy,10,2,0,,
+reward_elite_enemy,20,5,0,,
+reward_treasure,18,10,0,,
+reward_herb,0,0,0.35,,
+reward_cave_enemy,25,8,0,,
+reward_cave_treasure,18,10,0,equipment_black_iron_ring,
+reward_boss,60,30,0,,

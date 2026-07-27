@@ -1,0 +1,7 @@
+id,display_name,slot,rarity,attack_bonus,defense_bonus,max_health_bonus,attack_speed_bonus,crit_chance_bonus,dodge_chance_bonus,effect_type,magnitude,secondary_value,trigger_interval,max_stacks,description
+equipment_qinggang_sword,青钢剑,Weapon,Common,4,0,0,0,0,0,SwordQi,0.35,0,3,0,每三次命中追加剑气
+equipment_light_scale,轻鳞衣,Armor,Fine,0,2,18,0,0,0,OpeningShield,10,0,0,0,每场战斗获得十点护盾
+equipment_practice_bracer,练功护腕,Accessory,Common,0,0,0,0.08,0,0,CriticalHaste,0.70,0,0,0,暴击后缩短下次攻击间隔
+equipment_black_iron_ring,玄铁戒,Accessory,Rare,2,0,0,0,0.04,0,ArmorBreakOnHit,0.35,0,0,0,每次命中追加破甲
+equipment_wanderer_cloak,游侠披风,Armor,Rare,0,0,12,0,0,0.04,DodgeHeal,0.03,0,0,0,闪避时恢复气血
+equipment_poison_dart_pouch,毒镖囊,Accessory,Rare,1,0,0,0,0,0,PoisonOnHit,1,0.55,0,20,每次命中额外施加一层毒

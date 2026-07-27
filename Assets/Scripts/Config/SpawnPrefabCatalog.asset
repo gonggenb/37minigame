@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d4620b0fc824bee4eb5ff4dcd957d9dd, type: 3}
+  m_Name: SpawnPrefabCatalog
+  m_EditorClassIdentifier: Assembly-CSharp::WuxiaRoguelite.Architecture.Spawning.SpawnPrefabCatalog
+  entries:
+  - prefabId: prefab_enemy_bandit
+    prefab: {fileID: 7430563175687278803, guid: 7ad42a236b7ae7a49aa4a6666e2ca690, type: 3}
+  - prefabId: prefab_enemy_bamboo
+    prefab: {fileID: 3675083717706356575, guid: b594991e3a1dd024593935dc5b1148b3, type: 3}
+  - prefabId: prefab_enemy_ink_wolf
+    prefab: {fileID: 8143168018205454368, guid: 853d500022f88de4a85d61f1c5a58f32, type: 3}
+  - prefabId: prefab_enemy_stone_ape
+    prefab: {fileID: 6971733565701913543, guid: 49388c15c6a2689429391eae000e17a4, type: 3}
+  - prefabId: prefab_treasure
+    prefab: {fileID: 8181190911166075219, guid: a993ecac6d3025d4e864d0eeb74fe2ec, type: 3}
+  - prefabId: prefab_herb
+    prefab: {fileID: 2673963526858016225, guid: a6fa1f9f70f15a3448e8c7dde01dd1a1, type: 3}
+  - prefabId: prefab_hidden_cave
+    prefab: {fileID: 4399653613752245414, guid: 5484592af1eed1448ae645466072bb3a, type: 3}

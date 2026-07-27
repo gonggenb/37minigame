@@ -1,0 +1,17 @@
+{
+  "name": "WuxiaRoguelite.Config",
+  "rootNamespace": "WuxiaRoguelite.Config",
+  "references": [
+    "WuxiaRoguelite.Domain",
+    "WuxiaRoguelite.Application"
+  ],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": true,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false
+}
