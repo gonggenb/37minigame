@@ -622,7 +622,7 @@ namespace WuxiaRoguelite.UI
                 ResponsiveGui.PreferredSingleLineWidth(gameFlow.statusMessage, bodyStyle, 28f);
             float statusWidth = Mathf.Clamp(preferredStatusWidth,
                 ResponsiveGui.IsPortrait ? 260f : 360f, safe.width - 28f);
-            float messageY = ResponsiveGui.IsPortrait ? safe.yMax - 204f : safe.yMax - 44f;
+            float messageY = ResponsiveGui.IsPortrait ? safe.yMax - 48f : safe.yMax - 44f;
             Rect message = new Rect(safe.x + (safe.width - statusWidth) * 0.5f,
                 messageY, statusWidth, 30f);
             DrawPanel(message, new Color(0.03f, 0.04f, 0.04f, 0.84f), Gold);

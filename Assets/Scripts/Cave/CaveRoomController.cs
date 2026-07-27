@@ -282,8 +282,22 @@ namespace WuxiaRoguelite.Cave
             float preferredMessageWidth =
                 ResponsiveGui.PreferredSingleLineWidth(roomMessage, bodyStyle, 30f);
             float messageWidth = Mathf.Clamp(preferredMessageWidth, width * 0.58f, width - 28f);
-            float messageY = ResponsiveGui.IsPortrait ? height - 202f : height - 112f;
-            Rect message = new Rect((width - messageWidth) * 0.5f, messageY, messageWidth, 34f);
+            Rect safe = ResponsiveGui.SafeArea;
+            float messageX = (width - messageWidth) * 0.5f;
+            float messageY = height - 112f;
+            if (ResponsiveGui.IsPortrait)
+            {
+                const float edgePadding = 18f;
+                const float exitButtonWidth = 156f;
+                const float columnGap = 12f;
+                messageWidth = Mathf.Min(
+                    messageWidth,
+                    Mathf.Max(180f, safe.width - exitButtonWidth - edgePadding * 2f - columnGap));
+                messageX = safe.x + edgePadding;
+                messageY = safe.yMax - 52f;
+            }
+
+            Rect message = new Rect(messageX, messageY, messageWidth, 34f);
             FillRect(message, new Color(0f, 0f, 0f, 0.82f));
             FillRect(new Rect(message.x, message.y, message.width, 2f), Gold);
             ResponsiveGui.DrawSingleLineLabel(

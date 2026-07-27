@@ -207,12 +207,13 @@ namespace WuxiaRoguelite.UI
             Rect safeArea = Screen.safeArea;
             radiusScreen = joystickRadius * scale;
             float edgePadding = 18f * scale;
+            float portraitLift = ResponsiveGui.IsPortrait ? 64f * scale : 0f;
             float centerX = ResponsiveGui.IsPortrait
                 ? safeArea.center.x
                 : safeArea.xMin + radiusScreen + edgePadding;
             centerScreen = new Vector2(
                 centerX,
-                safeArea.yMin + radiusScreen + edgePadding);
+                safeArea.yMin + radiusScreen + edgePadding + portraitLift);
         }
 
         private void OnGUI()
