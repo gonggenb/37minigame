@@ -191,6 +191,13 @@ namespace WuxiaRoguelite.Audio
                     ActiveMusicState = "MainMap";
                     break;
 
+                case GamePhase.OpeningIntro:
+                    PlayMainMapMusic();
+                    SetOverlay(null);
+                    StopSpecialMusic();
+                    ActiveMusicState = "OpeningIntro";
+                    break;
+
                 case GamePhase.NormalBattleRunning:
                     PlayMainMapMusic();
                     SetOverlay(normalBattleStem);

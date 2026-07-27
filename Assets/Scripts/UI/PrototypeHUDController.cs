@@ -204,7 +204,8 @@ namespace WuxiaRoguelite.UI
 
         private void Update()
         {
-            if (gameFlow != null && gameFlow.IsBossIntroActive)
+            if (gameFlow != null &&
+                (gameFlow.IsBossIntroActive || gameFlow.IsOpeningIntroActive))
             {
                 return;
             }
@@ -278,6 +279,11 @@ namespace WuxiaRoguelite.UI
                 if (settingsOpen)
                 {
                     DrawSettingsPanel();
+                    return;
+                }
+
+                if (gameFlow.IsOpeningIntroActive)
+                {
                     return;
                 }
 

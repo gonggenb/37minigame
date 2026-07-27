@@ -13,6 +13,7 @@ namespace WuxiaRoguelite.GameFlow
     {
         Ready,
         MainMapRunning,
+        OpeningIntro,
         NormalBattleRunning,
         CaveRunning,
         LevelUpPaused,

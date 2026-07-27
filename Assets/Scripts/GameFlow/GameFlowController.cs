@@ -45,6 +45,41 @@ namespace WuxiaRoguelite.GameFlow
         public bool IsCharacterMenuPaused { get; private set; }
         public bool IsBossTransitionPending { get; private set; }
         public bool IsBossIntroActive { get; private set; }
+        public bool IsOpeningIntroActive => CurrentPhase == GamePhase.OpeningIntro;
+        public int OpeningDialogueIndex { get; private set; }
+        public int OpeningDialogueCount => 5;
+        public string OpeningPlayerName =>
+            playerStats != null && playerStats.runtimeStats != null
+                ? playerStats.runtimeStats.displayName
+                : "无名少侠";
+        public string CurrentOpeningSpeaker
+        {
+            get
+            {
+                return OpeningDialogueIndex switch
+                {
+                    0 => "旁白",
+                    1 => OpeningPlayerName,
+                    2 => bossStats.displayName,
+                    3 => OpeningPlayerName,
+                    _ => "出发提示"
+                };
+            }
+        }
+        public string CurrentOpeningDialogue
+        {
+            get
+            {
+                return OpeningDialogueIndex switch
+                {
+                    0 => "暮色压下青崖，村道尽头狐火明灭。山中妖物受九尾妖姬驱使，正截断你的去路。",
+                    1 => "妖气一路延至此处……九尾妖姬，现身。",
+                    2 => "想见我？先从这些傀儡手里活下来。六十息后，我在血月古刹等你。",
+                    3 => "六十息足够。斩妖、寻洞、练功——我会亲自到你面前。",
+                    _ => "主香点燃后，只有六十息准备。碰怪会自动交锋且主香不停；进入隐藏洞穴时主香暂停。寻找武学，赶往血月古刹。"
+                };
+            }
+        }
         public float BossIntroTimeRemaining { get; private set; }
         public BossApproachStage CurrentBossApproachStage
         {
@@ -110,6 +145,7 @@ namespace WuxiaRoguelite.GameFlow
             IsBossIntroActive = false;
             BossIntroTimeRemaining = 0f;
             pendingBoss = null;
+            ClearOpeningIntro();
             SetPhase(GamePhase.Ready);
             statusMessage = "按开始进入江湖";
         }
@@ -178,13 +214,13 @@ namespace WuxiaRoguelite.GameFlow
             IsBossIntroActive = false;
             BossIntroTimeRemaining = 0f;
             pendingBoss = null;
+            ClearOpeningIntro();
             pendingCultivationReward = 0;
             pendingCopperReward = 0;
             currentChoices.Clear();
             martialArtRerollsRemaining = 1;
             phaseBeforeLevelUp = GamePhase.MainMapRunning;
-            SetPhase(GamePhase.MainMapRunning);
-            statusMessage = "主地图探索开始：碰怪会自动战斗，主时间继续流逝。";
+            BeginOpeningIntro();
         }
 
         public void SetCharacterMenuPaused(bool paused)
@@ -315,6 +351,31 @@ namespace WuxiaRoguelite.GameFlow
             SetPhase(GamePhase.NormalBattleRunning);
             statusMessage = $"普通战斗：{enemy.displayName}。主地图时间继续流逝。";
             battleManager.BeginBattle(enemy, OnNormalBattleFinished);
+        }
+
+        private void BeginOpeningIntro()
+        {
+            OpeningDialogueIndex = 0;
+            SetPhase(GamePhase.OpeningIntro);
+            statusMessage = "狐火初现：完成序章后，主地图六十息倒计时开始。";
+        }
+
+        public void AdvanceOpeningIntro()
+        {
+            if (!IsOpeningIntroActive)
+            {
+                return;
+            }
+
+            if (OpeningDialogueIndex < OpeningDialogueCount - 1)
+            {
+                OpeningDialogueIndex += 1;
+                return;
+            }
+
+            ClearOpeningIntro();
+            SetPhase(GamePhase.MainMapRunning);
+            statusMessage = "主香已点燃：碰怪会自动战斗，主时间继续流逝。";
         }
 
         private void OnNormalBattleFinished(bool playerWon)
@@ -452,6 +513,7 @@ namespace WuxiaRoguelite.GameFlow
             IsBossTransitionPending = false;
             caveRoom?.ResetRoom();
             battleManager.CancelBattle();
+            ClearOpeningIntro();
             if (playerStats != null && playerStats.runtimeStats != null)
             {
                 playerStats.runtimeStats.ResetHealth();
@@ -618,6 +680,7 @@ namespace WuxiaRoguelite.GameFlow
             IsBossIntroActive = false;
             BossIntroTimeRemaining = 0f;
             pendingBoss = null;
+            ClearOpeningIntro();
             if (battleManager != null)
             {
                 battleManager.CancelBattle();
@@ -654,6 +717,11 @@ namespace WuxiaRoguelite.GameFlow
             {
                 playerController.SetMovementEnabled(canMove);
             }
+        }
+
+        private void ClearOpeningIntro()
+        {
+            OpeningDialogueIndex = 0;
         }
 
         private void OnDisable()
