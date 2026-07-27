@@ -797,20 +797,25 @@ namespace WuxiaRoguelite.UI
             Rect safe = ResponsiveGui.SafeArea;
             Rect statusRect = new Rect(safe.xMax - 58f, safe.y + 68f, 48f, 48f);
             Rect equipmentRect = new Rect(safe.xMax - 58f, safe.y + 122f, 48f, 48f);
-            if (GUI.Button(statusRect, new GUIContent(statusIcon, "角色状态"), iconButtonStyle))
+            if (GUI.Button(statusRect, new GUIContent(statusIcon), iconButtonStyle))
             {
                 ToggleCharacterPanel(CharacterView.Status);
             }
-            if (GUI.Button(equipmentRect, new GUIContent(equipmentIcon, "装备背包"), iconButtonStyle))
+            if (GUI.Button(equipmentRect, new GUIContent(equipmentIcon), iconButtonStyle))
             {
                 ToggleCharacterPanel(CharacterView.Equipment);
             }
 
-            if (!string.IsNullOrEmpty(GUI.tooltip))
+            Vector2 mouse = ResponsiveGui.MousePosition(ResponsiveGui.Scale);
+            string hoveredButton = statusRect.Contains(mouse)
+                ? "角色状态"
+                : equipmentRect.Contains(mouse)
+                    ? "装备背包"
+                    : string.Empty;
+            if (!string.IsNullOrEmpty(hoveredButton))
             {
-                Vector2 mouse = ResponsiveGui.MousePosition(ResponsiveGui.Scale);
                 float tooltipWidth = Mathf.Clamp(
-                    ResponsiveGui.PreferredSingleLineWidth(GUI.tooltip, bodyStyle, 20f),
+                    ResponsiveGui.PreferredSingleLineWidth(hoveredButton, bodyStyle, 20f),
                     82f, ResponsiveGui.Width - 20f);
                 const float tooltipHeight = 28f;
                 float tooltipX = Mathf.Clamp(mouse.x - tooltipWidth - 12f, 10f,
@@ -821,7 +826,7 @@ namespace WuxiaRoguelite.UI
                 FillRect(tooltip, Ink);
                 ResponsiveGui.DrawSingleLineLabel(
                     new Rect(tooltip.x + 8f, tooltip.y + 2f, tooltip.width - 16f, tooltip.height - 4f),
-                    GUI.tooltip, bodyStyle, 10);
+                    hoveredButton, bodyStyle, 10);
             }
         }
 
