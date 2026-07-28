@@ -409,3 +409,9 @@ Playwright 覆盖以下无模型流程：
 - **修改文件**：`plans/plan-ai-art-agent-platform-project-style-management.md`
 - **变更内容**：记录项目管理、风格圣经、只读素材源、参考库、任务引用选择和六类最近任务导航的完整设计、接口、数据流、错误处理、测试与完成标准。
 - **关联说明**：本文件是完整 V1 缺口整改的第一个子项目；后续动画/特效统一智能体和人工采用率/Unity 验收统计分别另立方案 B、方案 C 计划。
+
+### 2026-07-28 - 完成方案 A 详细实施计划
+
+- **修改文件**：`plans/plan-ai-art-agent-platform-project-style-management-implementation.md`、`plans/plan-ai-art-agent-platform-project-style-management.md`
+- **变更内容**：把书面设计拆分为 12 个测试先行任务，明确后端参考管理与活动聚合、前端项目/风格包管理、静态参考选择、最近任务恢复、离线端到端验收和全量门禁。
+- **关联说明**：实施计划要求逐文件暂存，保护当前仓库中大量用户既有改动；不授权 Unity MCP、Unity Editor 或真实 OpenAI 调用。
