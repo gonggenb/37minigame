@@ -9,11 +9,16 @@ namespace WuxiaRoguelite.Player
         public PlayerStats stats;
         public float groundY = 0f;
         public Transform movementReference;
+        [Header("Main Map Visual")]
+        public Transform visualRoot;
+        [Range(0.5f, 3f)] public float landscapeVisualScale = 1.82f;
+        [Range(0.5f, 3f)] public float portraitVisualScale = 1.5f;
 
         private Rigidbody body;
         private Vector2 moveInput;
         private bool canMove;
         private Vector3 spawnPosition;
+        private bool? appliedPortraitLayout;
 
         public bool IsMoving => canMove && moveInput.sqrMagnitude > 0.01f;
         public float HorizontalInput => canMove ? moveInput.x : 0f;
@@ -34,6 +39,13 @@ namespace WuxiaRoguelite.Player
             stats = stats == null ? GetComponent<PlayerStats>() : stats;
             body.useGravity = false;
             body.constraints = RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezeRotation;
+            if (visualRoot == null)
+            {
+                SpriteRenderer visualRenderer = GetComponentInChildren<SpriteRenderer>();
+                visualRoot = visualRenderer != null ? visualRenderer.transform : null;
+            }
+
+            ApplyResponsiveVisualScale(true);
         }
 
         public void ResetToSpawn()
@@ -48,6 +60,7 @@ namespace WuxiaRoguelite.Player
 
         private void Update()
         {
+            ApplyResponsiveVisualScale(false);
             if (!canMove)
             {
                 moveInput = Vector2.zero;
@@ -90,6 +103,27 @@ namespace WuxiaRoguelite.Player
 
             Vector3 direction = right * moveInput.x + forward * moveInput.y;
             return direction.sqrMagnitude > 1f ? direction.normalized : direction;
+        }
+
+        private void ApplyResponsiveVisualScale(bool force)
+        {
+            if (visualRoot == null)
+            {
+                return;
+            }
+
+            Camera mainCamera = Camera.main;
+            bool portrait = mainCamera != null && mainCamera.pixelWidth > 0 && mainCamera.pixelHeight > 0
+                ? mainCamera.pixelHeight > mainCamera.pixelWidth
+                : Screen.height > Screen.width;
+            if (!force && appliedPortraitLayout.HasValue && appliedPortraitLayout.Value == portrait)
+            {
+                return;
+            }
+
+            float scale = portrait ? portraitVisualScale : landscapeVisualScale;
+            visualRoot.localScale = Vector3.one * scale;
+            appliedPortraitLayout = portrait;
         }
     }
 }

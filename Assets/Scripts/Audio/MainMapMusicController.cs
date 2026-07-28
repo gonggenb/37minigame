@@ -15,6 +15,7 @@ namespace WuxiaRoguelite.Audio
         public AudioSource overlaySource;
         public AudioSource specialMusicSource;
         public AudioSource stingerSource;
+        public AudioSource timeWarningSource;
 
         [Header("Music Assets")]
         public AudioClip normalBattleStem;
@@ -27,11 +28,23 @@ namespace WuxiaRoguelite.Audio
         public AudioClip victoryStinger;
         public AudioClip defeatStinger;
 
+        [Header("Time Pressure Assets")]
+        [Tooltip("主时间剩余 40 秒时播放的古铜钟声。留空时从 Resources 自动加载正式素材。")]
+        public AudioClip timeWarningBell40;
+        [Tooltip("主时间剩余 20 秒时播放的低沉重钟声。留空时从 Resources 自动加载正式素材。")]
+        public AudioClip timeWarningBell20;
+
         [Header("Mix")]
         [Range(0f, 1f)] public float volume = 0.35f;
         [Range(0f, 1f)] public float overlayVolume = 0.2f;
         [Range(0f, 1f)] public float specialMusicVolume = 0.38f;
         [Range(0f, 1f)] public float stingerVolume = 0.55f;
+        [Range(0f, 1f)] public float timeWarning40Volume = 0.90f;
+        [Range(0f, 1f)] public float timeWarning20Volume = 1f;
+        [Tooltip("敲钟时背景音乐保留的音量比例。0.42 约等于短暂压低 7.5 dB。")]
+        [Range(0.1f, 1f)] public float timeWarningMusicDuckMultiplier = 0.42f;
+        [Min(0f)] public float timeWarningDuckHoldSeconds = 1.1f;
+        [Min(0.05f)] public float timeWarningDuckReleaseSeconds = 0.85f;
         [Min(0.01f)] public float overlayFadeInSeconds = 0.15f;
         [Min(0.01f)] public float overlayFadeOutSeconds = 0.25f;
         [Range(0.05f, 0.95f)] public float bossMomentumHealthRatio = 0.72f;
@@ -39,6 +52,8 @@ namespace WuxiaRoguelite.Audio
 
         public string ActiveMusicState { get; private set; } = "Ready";
         public bool MusicEnabled { get; private set; } = true;
+        public int TimeWarningBellStrikeCount { get; private set; }
+        public int LastTimeWarningThreshold { get; private set; }
         public string ActiveOverlayName =>
             overlaySource != null && overlaySource.clip != null && overlayTargetVolume > 0f
                 ? overlaySource.clip.name
@@ -51,16 +66,27 @@ namespace WuxiaRoguelite.Audio
         private bool overlayPaused;
         private bool specialMusicPaused;
         private bool stingerPaused;
+        private bool timeWarningPaused;
         private bool bossIntroActive;
         private bool resultStingerPlayed;
         private float previousMainTime = -1f;
+        private bool timeWarning40Played;
+        private bool timeWarning20Played;
+        private float timeWarningDuckRemaining;
+        private float timeWarningMusicMultiplier = 1f;
         private float overlayTargetVolume;
         private GamePhase levelUpMusicContext = GamePhase.MainMapRunning;
+
+        private const string TimeWarningBell40Resource =
+            "Audio/TimePressure/sfx_time_bell_40s_v01";
+        private const string TimeWarningBell20Resource =
+            "Audio/TimePressure/sfx_time_bell_20s_v01";
 
         private void Awake()
         {
             ResolveReferences(true);
             ConfigureSources();
+            ResolveTimeWarningAssets();
             MusicEnabled = PlayerPrefs.GetInt(MusicEnabledPreference, 1) != 0;
             ApplyMusicEnabledState();
         }
@@ -98,6 +124,7 @@ namespace WuxiaRoguelite.Audio
             SetMuted(overlaySource, muted);
             SetMuted(specialMusicSource, muted);
             SetMuted(stingerSource, muted);
+            SetMuted(timeWarningSource, muted);
         }
 
         private static void SetMuted(AudioSource source, bool muted)
@@ -135,6 +162,9 @@ namespace WuxiaRoguelite.Audio
                 ? specialMusicSource
                 : gameObject.AddComponent<AudioSource>();
             stingerSource = stingerSource != null ? stingerSource : gameObject.AddComponent<AudioSource>();
+            timeWarningSource = timeWarningSource != null
+                ? timeWarningSource
+                : gameObject.AddComponent<AudioSource>();
         }
 
         private void ConfigureSources()
@@ -143,6 +173,7 @@ namespace WuxiaRoguelite.Audio
             ConfigureSource(overlaySource, 184, true, overlayVolume);
             ConfigureSource(specialMusicSource, 188, false, specialMusicVolume);
             ConfigureSource(stingerSource, 160, false, stingerVolume);
+            ConfigureSource(timeWarningSource, 168, false, 1f);
         }
 
         private static void ConfigureSource(AudioSource source, int priority, bool loop, float configuredVolume)
@@ -172,6 +203,7 @@ namespace WuxiaRoguelite.Audio
             {
                 restartMainMusicOnNextRun = true;
                 resultStingerPlayed = false;
+                ResetTimeWarning();
             }
 
             GamePhase phase = gameFlow.CurrentPhase;
@@ -251,11 +283,14 @@ namespace WuxiaRoguelite.Audio
                     StopOverlayImmediately();
                     StopSpecialMusic();
                     StopSource(stingerSource, ref stingerPaused, true);
+                    StopTimeWarning(true);
                     restartMainMusicOnNextRun = true;
                     ActiveMusicState = "Ready";
                     break;
             }
 
+            SyncTimeWarning(phase);
+            UpdateTimeWarningDuck(phase);
             UpdateOverlayFade();
             previousPhase = phase;
             previousMainTime = gameFlow.mainTimeRemaining;
@@ -423,13 +458,14 @@ namespace WuxiaRoguelite.Audio
                 return;
             }
 
-            float fadeSeconds = overlayTargetVolume > overlaySource.volume
+            float effectiveTargetVolume = overlayTargetVolume * timeWarningMusicMultiplier;
+            float fadeSeconds = effectiveTargetVolume > overlaySource.volume
                 ? overlayFadeInSeconds
                 : overlayFadeOutSeconds;
             float speed = Mathf.Max(overlayVolume, 0.01f) / Mathf.Max(fadeSeconds, 0.01f);
             overlaySource.volume = Mathf.MoveTowards(
                 overlaySource.volume,
-                overlayTargetVolume,
+                effectiveTargetVolume,
                 speed * Time.unscaledDeltaTime);
 
             if (overlayTargetVolume <= 0f && overlaySource.volume <= 0.001f)
@@ -467,6 +503,171 @@ namespace WuxiaRoguelite.Audio
             }
 
             resultStingerPlayed = true;
+        }
+
+        private void SyncTimeWarning(GamePhase phase)
+        {
+            bool mainTimerRunning =
+                phase == GamePhase.MainMapRunning ||
+                phase == GamePhase.NormalBattleRunning;
+            bool mainTimerPaused =
+                phase == GamePhase.CaveRunning ||
+                phase == GamePhase.LevelUpPaused;
+
+            if (mainTimerPaused)
+            {
+                PauseTimeWarning();
+                return;
+            }
+
+            if (!mainTimerRunning)
+            {
+                StopTimeWarning(phase == GamePhase.BossBattle || phase == GamePhase.Result);
+                return;
+            }
+
+            ResumeTimeWarning();
+            float remaining = gameFlow.mainTimeRemaining;
+            if (remaining <= 0f)
+            {
+                return;
+            }
+
+            if (remaining <= 20.05f && !timeWarning20Played)
+            {
+                timeWarning40Played = true;
+                timeWarning20Played = true;
+                PlayTimeWarningBell(timeWarningBell20, timeWarning20Volume, 20);
+                return;
+            }
+
+            if (remaining <= 40.05f && !timeWarning40Played)
+            {
+                timeWarning40Played = true;
+                PlayTimeWarningBell(timeWarningBell40, timeWarning40Volume, 40);
+            }
+        }
+
+        private void PlayTimeWarningBell(AudioClip clip, float clipVolume, int threshold)
+        {
+            if (timeWarningSource == null || clip == null)
+            {
+                return;
+            }
+
+            timeWarningSource.PlayOneShot(clip, clipVolume);
+            timeWarningPaused = false;
+            timeWarningDuckRemaining = timeWarningDuckHoldSeconds;
+            timeWarningMusicMultiplier = Mathf.Min(
+                timeWarningMusicMultiplier,
+                timeWarningMusicDuckMultiplier);
+            TimeWarningBellStrikeCount++;
+            LastTimeWarningThreshold = threshold;
+        }
+
+        private void PauseTimeWarning()
+        {
+            if (timeWarningSource == null || timeWarningPaused)
+            {
+                return;
+            }
+
+            timeWarningSource.Pause();
+            timeWarningPaused = true;
+        }
+
+        private void ResumeTimeWarning()
+        {
+            if (timeWarningSource == null || !timeWarningPaused)
+            {
+                return;
+            }
+
+            timeWarningSource.UnPause();
+            timeWarningPaused = false;
+            if (timeWarningDuckRemaining > 0f)
+            {
+                timeWarningMusicMultiplier = Mathf.Min(
+                    timeWarningMusicMultiplier,
+                    timeWarningMusicDuckMultiplier);
+            }
+        }
+
+        private void StopTimeWarning(bool resetSchedule)
+        {
+            if (timeWarningSource != null)
+            {
+                timeWarningSource.Stop();
+            }
+
+            timeWarningPaused = false;
+            timeWarningDuckRemaining = 0f;
+            timeWarningMusicMultiplier = 1f;
+            if (resetSchedule)
+            {
+                ResetTimeWarning();
+            }
+        }
+
+        private void ResetTimeWarning()
+        {
+            timeWarning40Played = false;
+            timeWarning20Played = false;
+            TimeWarningBellStrikeCount = 0;
+            LastTimeWarningThreshold = 0;
+        }
+
+        private void ResolveTimeWarningAssets()
+        {
+            if (timeWarningBell40 == null)
+            {
+                timeWarningBell40 = Resources.Load<AudioClip>(TimeWarningBell40Resource);
+            }
+
+            if (timeWarningBell20 == null)
+            {
+                timeWarningBell20 = Resources.Load<AudioClip>(TimeWarningBell20Resource);
+            }
+        }
+
+        private void UpdateTimeWarningDuck(GamePhase phase)
+        {
+            bool mainTimerAudioActive =
+                phase == GamePhase.MainMapRunning ||
+                phase == GamePhase.NormalBattleRunning;
+            if (!mainTimerAudioActive)
+            {
+                timeWarningMusicMultiplier = 1f;
+                if (musicSource != null)
+                {
+                    musicSource.volume = volume;
+                }
+
+                return;
+            }
+
+            if (timeWarningDuckRemaining > 0f && !timeWarningPaused)
+            {
+                timeWarningDuckRemaining = Mathf.Max(
+                    0f,
+                    timeWarningDuckRemaining - Time.unscaledDeltaTime);
+            }
+
+            float targetMultiplier = timeWarningDuckRemaining > 0f
+                ? timeWarningMusicDuckMultiplier
+                : 1f;
+            float transitionSeconds = targetMultiplier < timeWarningMusicMultiplier
+                ? 0.04f
+                : timeWarningDuckReleaseSeconds;
+            timeWarningMusicMultiplier = Mathf.MoveTowards(
+                timeWarningMusicMultiplier,
+                targetMultiplier,
+                Time.unscaledDeltaTime / Mathf.Max(0.01f, transitionSeconds));
+
+            if (musicSource != null)
+            {
+                musicSource.volume = volume * timeWarningMusicMultiplier;
+            }
         }
 
         private static void PauseSource(AudioSource source, ref bool pausedByDirector)

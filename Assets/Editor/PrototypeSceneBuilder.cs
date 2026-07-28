@@ -38,7 +38,8 @@ namespace WuxiaRoguelite.EditorTools
         private const string PlayerIdlePath = CrimsonRoot + "/CrimsonWarrior_Idle_Right.png";
         private const string PlayerRunPath = CrimsonRoot + "/CrimsonWarrior_Run_Right.png";
         private const string PlayerAttackPath = CrimsonRoot + "/CrimsonWarrior_SwordAttack_Right.png";
-        private const float PlayerWorldVisualScale = 2.1f;
+        private const float PlayerLandscapeVisualScale = 1.82f;
+        private const float PlayerPortraitVisualScale = 1.5f;
         private const string EnemyIdlePath = TinyRoot + "/Units/RedWarrior/Warrior_Idle.png";
         private const string EnemyRunPath = TinyRoot + "/Units/RedWarrior/Warrior_Run.png";
         private const string EnemyAttackPath = TinyRoot + "/Units/RedWarrior/Warrior_Attack1.png";
@@ -127,6 +128,11 @@ namespace WuxiaRoguelite.EditorTools
         };
         private const string BossBattleBackgroundPath =
             GeneratedBackgroundRoot + "/bg_boss_bloodmoon_temple_v01.png";
+        private const string BossIntroUiRoot = "Assets/Art/Generated/UI/BossIntro";
+        private const string BossIntroPortraitPath =
+            BossIntroUiRoot + "/portrait_boss_fox_demon_circle_v01_256.png";
+        private const string BossIntroFramePath =
+            BossIntroUiRoot + "/frame_boss_intro_fox_demon_v01_256.png";
 
         [MenuItem("37 MiniGame/Build Main Prototype Scene")]
         public static void BuildMainPrototypeScene()
@@ -245,7 +251,8 @@ namespace WuxiaRoguelite.EditorTools
             musicController.specialMusicVolume = 0.38f;
             musicController.stingerVolume = 0.55f;
 
-            GameObject player = CreateSpriteActor("Player", playerIdle, playerRun, Vector3.zero, PlayerWorldVisualScale);
+            GameObject player = CreateSpriteActor(
+                "Player", playerIdle, playerRun, Vector3.zero, PlayerLandscapeVisualScale);
             Rigidbody playerBody = player.AddComponent<Rigidbody>();
             playerBody.useGravity = false;
             playerBody.constraints = RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezeRotation;
@@ -261,11 +268,18 @@ namespace WuxiaRoguelite.EditorTools
             playerController.stats = playerStats;
             playerController.groundY = 0f;
             playerController.movementReference = camera.transform;
-            player.GetComponentInChildren<SpriteFrameAnimator>().movementSource = playerController;
+            SpriteFrameAnimator playerAnimator = player.GetComponentInChildren<SpriteFrameAnimator>();
+            playerAnimator.movementSource = playerController;
+            playerController.visualRoot = playerAnimator.transform;
+            playerController.landscapeVisualScale = PlayerLandscapeVisualScale;
+            playerController.portraitVisualScale = PlayerPortraitVisualScale;
             CameraFollow follow = camera.gameObject.AddComponent<CameraFollow>();
             follow.target = player.transform;
             follow.offset = cameraOffset;
+            follow.portraitOffset = new Vector3(7.8f, 9.5f, -14f);
             follow.lookAtHeight = 0.85f;
+            follow.landscapeFieldOfView = 40f;
+            follow.portraitFieldOfView = 46f;
 
             gameFlow.playerStats = playerStats;
             gameFlow.playerController = playerController;
@@ -284,6 +298,7 @@ namespace WuxiaRoguelite.EditorTools
             hud.healthBarBase = AssetDatabase.LoadAssetAtPath<Texture2D>(HealthBarBasePath);
             hud.healthBarFill = AssetDatabase.LoadAssetAtPath<Texture2D>(HealthBarFillPath);
             BindHudContentIcons(hud);
+            BindBossIntroAssets(hud);
             battleScreen.gameFlow = gameFlow;
             battleScreen.playerStats = playerStats;
             battleScreen.battleManager = battleManager;
@@ -377,7 +392,7 @@ namespace WuxiaRoguelite.EditorTools
 
             animator.idleFrames = playerIdle;
             animator.moveFrames = playerRun;
-            animator.transform.localScale = Vector3.one * PlayerWorldVisualScale;
+            animator.transform.localScale = Vector3.one * PlayerLandscapeVisualScale;
             renderer.sprite = playerIdle[0];
             EditorUtility.SetDirty(animator);
             EditorUtility.SetDirty(renderer);
@@ -475,6 +490,7 @@ namespace WuxiaRoguelite.EditorTools
 
             EnsureFolders();
             ConfigureHudContentIcons();
+            ConfigureBossIntroAssets();
             PrototypeHUDController hud = UnityEngine.Object.FindAnyObjectByType<PrototypeHUDController>();
             if (hud == null)
             {
@@ -483,11 +499,12 @@ namespace WuxiaRoguelite.EditorTools
             }
 
             BindHudContentIcons(hud);
+            BindBossIntroAssets(hud);
             EditorUtility.SetDirty(hud);
             EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
             EditorSceneManager.SaveOpenScenes();
             AssetDatabase.SaveAssets();
-            Debug.Log("Six martial-art icons and five equipment icons refreshed in the active scene.");
+            Debug.Log("HUD content icons and Boss-introduction portrait art refreshed in the active scene.");
         }
 
         [MenuItem("37 MiniGame/Refresh Main Map Ground")]
@@ -1071,6 +1088,7 @@ namespace WuxiaRoguelite.EditorTools
             ConfigureBattleFeedbackAssets();
             ConfigureBattleBackgroundAssets();
             ConfigureHudContentIcons();
+            ConfigureBossIntroAssets();
 
             string[] tinySwordsSheets =
             {
@@ -1160,6 +1178,46 @@ namespace WuxiaRoguelite.EditorTools
                 Icon("wanderer_cloak", WandererCloakIconPath),
                 Icon("poison_dart_pouch", BlackIronRingIconPath)
             };
+        }
+
+        private static void BindBossIntroAssets(PrototypeHUDController hud)
+        {
+            hud.bossPortrait = AssetDatabase.LoadAssetAtPath<Texture2D>(BossIntroPortraitPath);
+            hud.bossPortraitFrame = AssetDatabase.LoadAssetAtPath<Texture2D>(BossIntroFramePath);
+        }
+
+        private static void ConfigureBossIntroAssets()
+        {
+            ConfigureBossIntroTexture(BossIntroPortraitPath);
+            ConfigureBossIntroTexture(BossIntroFramePath);
+        }
+
+        private static void ConfigureBossIntroTexture(string path)
+        {
+            if (!File.Exists(path))
+            {
+                Debug.LogWarning($"Missing Boss-introduction UI asset: {path}");
+                return;
+            }
+
+            AssetDatabase.ImportAsset(path, ImportAssetOptions.ForceSynchronousImport);
+            TextureImporter importer = AssetImporter.GetAtPath(path) as TextureImporter;
+            if (importer == null)
+            {
+                return;
+            }
+
+            importer.textureType = TextureImporterType.Sprite;
+            importer.spriteImportMode = SpriteImportMode.Single;
+            importer.spritePixelsPerUnit = 256f;
+            importer.npotScale = TextureImporterNPOTScale.None;
+            importer.filterMode = FilterMode.Bilinear;
+            importer.wrapMode = TextureWrapMode.Clamp;
+            importer.textureCompression = TextureImporterCompression.Uncompressed;
+            importer.mipmapEnabled = false;
+            importer.alphaIsTransparency = true;
+            importer.maxTextureSize = 256;
+            importer.SaveAndReimport();
         }
 
         private static PrototypeHUDController.IconEntry Icon(string id, string path)

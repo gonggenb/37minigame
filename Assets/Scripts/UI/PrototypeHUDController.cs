@@ -26,7 +26,19 @@ namespace WuxiaRoguelite.UI
         public static float Scale => CalculateScale(Screen.width, Screen.height);
         public static float Width => Screen.width / Scale;
         public static float Height => Screen.height / Scale;
-        public static bool IsPortrait => Screen.height > Screen.width;
+        public static bool IsPortrait
+        {
+            get
+            {
+                Camera mainCamera = Camera.main;
+                if (mainCamera != null && mainCamera.pixelWidth > 0 && mainCamera.pixelHeight > 0)
+                {
+                    return mainCamera.pixelHeight > mainCamera.pixelWidth;
+                }
+
+                return Screen.height > Screen.width;
+            }
+        }
         public static Rect SafeArea
         {
             get
@@ -146,6 +158,8 @@ namespace WuxiaRoguelite.UI
         public Texture2D healthBarBase;
         public Texture2D healthBarFill;
         public Texture2D mainMenuBackground;
+        public Texture2D bossPortrait;
+        public Texture2D bossPortraitFrame;
         public IconEntry[] martialArtIcons;
         public IconEntry[] equipmentItemIcons;
 
@@ -165,6 +179,7 @@ namespace WuxiaRoguelite.UI
         private GUIStyle settingsToggleStyle;
         private GUIStyle warningHeadingStyle;
         private GUIStyle dangerHeadingStyle;
+        private GUIStyle timeSecondsStyle;
         private GUIStyle bossWarningStyle;
         private GUIStyle bossCountdownStyle;
         private GUIStyle bossIntroTitleStyle;
@@ -409,13 +424,15 @@ namespace WuxiaRoguelite.UI
                 new Color(1f, 0.76f, 0.32f));
             dangerHeadingStyle = LabelStyle(16, FontStyle.Bold, TextAnchor.MiddleLeft,
                 new Color(1f, 0.30f, 0.20f));
+            timeSecondsStyle = LabelStyle(24, FontStyle.Bold, TextAnchor.MiddleRight,
+                new Color(1f, 0.86f, 0.46f));
             bossWarningStyle = LabelStyle(18, FontStyle.Bold, TextAnchor.MiddleCenter,
                 new Color(1f, 0.82f, 0.46f));
             bossCountdownStyle = LabelStyle(64, FontStyle.Bold, TextAnchor.MiddleCenter,
                 new Color(1f, 0.22f, 0.14f));
-            bossIntroTitleStyle = LabelStyle(21, FontStyle.Bold, TextAnchor.MiddleCenter,
+            bossIntroTitleStyle = LabelStyle(21, FontStyle.Bold, TextAnchor.MiddleLeft,
                 new Color(1f, 0.78f, 0.38f));
-            bossIntroNameStyle = LabelStyle(42, FontStyle.Bold, TextAnchor.MiddleCenter,
+            bossIntroNameStyle = LabelStyle(42, FontStyle.Bold, TextAnchor.MiddleLeft,
                 new Color(1f, 0.94f, 0.78f));
             runtimeSettingsIcon = CreateSettingsIcon(64);
         }
@@ -512,7 +529,7 @@ namespace WuxiaRoguelite.UI
                 "操作", headingStyle, 11);
             ResponsiveGui.DrawSingleLineLabel(
                 new Rect(panel.x + 22f, panel.y + 288f, panel.width - 44f, 22f),
-                "移动：左下角虚拟摇杆 / WASD", bodyStyle, 10);
+                "移动：竖屏滑动屏幕 / 横屏左下摇杆 / WASD", bodyStyle, 10);
             ResponsiveGui.DrawSingleLineLabel(
                 new Rect(panel.x + 22f, panel.y + 312f, panel.width - 44f, 22f),
                 "P 角色状态 · B 装备背包 · Esc 设置", mutedStyle, 9);
@@ -584,8 +601,8 @@ namespace WuxiaRoguelite.UI
         private void DrawCompactHud()
         {
             Rect safe = ResponsiveGui.SafeArea;
-            float hudWidth = ResponsiveGui.IsPortrait ? Mathf.Min(330f, safe.width - 86f) : 258f;
-            Rect hud = new Rect(safe.x + 14f, safe.y + 14f, hudWidth, 104f);
+            float hudWidth = ResponsiveGui.IsPortrait ? Mathf.Min(450f, safe.width - 90f) : 390f;
+            Rect hud = new Rect(safe.x + 14f, safe.y + 14f, hudWidth, 132f);
             BossApproachStage approachStage = gameFlow.CurrentBossApproachStage;
             float timeRatio = GetMainTimeRatio();
             Color accent = GetMainTimeColor(timeRatio);
@@ -597,27 +614,31 @@ namespace WuxiaRoguelite.UI
                     ? warningHeadingStyle
                     : headingStyle;
             DrawPanel(hud, Ink, accent);
-            ResponsiveGui.DrawSingleLineLabel(new Rect(hud.x + 12f, hud.y + 4f, hud.width - 74f, 25f),
-                "一炷江湖", timerLabelStyle, 12);
-            ResponsiveGui.DrawSingleLineLabel(new Rect(hud.xMax - 60f, hud.y + 5f, 48f, 23f),
-                $"Lv.{playerStats.level}", centeredStyle, 10);
+            ResponsiveGui.DrawSingleLineLabel(new Rect(hud.x + 12f, hud.y + 4f, hud.width - 136f, 25f),
+                GetMainTimePressureText(timeRatio), timerLabelStyle, 12);
+            timeSecondsStyle.normal.textColor = accent;
+            ResponsiveGui.DrawSingleLineLabel(new Rect(hud.xMax - 112f, hud.y + 2f, 100f, 29f),
+                $"{Mathf.CeilToInt(gameFlow.mainTimeRemaining):00}s", timeSecondsStyle, 16);
 
-            Rect timeTrack = new Rect(hud.x + 12f, hud.y + 32f, hud.width - 24f, 14f);
-            DrawMainTimeTrack(timeTrack, timeRatio, accent, false);
+            Rect timeTrack = new Rect(hud.x + 10f, hud.y + 32f, hud.width - 20f, 38f);
+            DrawMainTimeTrack(timeTrack, timeRatio, false);
             ResponsiveGui.DrawSingleLineLabel(
-                new Rect(hud.x + 12f, hud.y + 49f, hud.width - 82f, 18f),
-                GetMainTimeStateText(timeRatio), mutedStyle, 9);
+                new Rect(timeTrack.x + timeTrack.width / 3f - 24f, hud.y + 66f, 48f, 16f),
+                "20", centeredStyle, 8);
             ResponsiveGui.DrawSingleLineLabel(
-                new Rect(hud.xMax - 74f, hud.y + 49f, 62f, 18f),
-                $"余 {Mathf.CeilToInt(gameFlow.mainTimeRemaining)} 息", centeredStyle, 9);
+                new Rect(timeTrack.x + timeTrack.width * 2f / 3f - 24f, hud.y + 66f, 48f, 16f),
+                "40", centeredStyle, 8);
 
-            ResponsiveGui.DrawSingleLineLabel(new Rect(hud.x + 12f, hud.y + 70f, hud.width - 24f, 16f),
-                $"气血  {playerStats.runtimeStats.currentHealth:0}/{playerStats.runtimeStats.maxHealth:0}",
+            ResponsiveGui.DrawSingleLineLabel(new Rect(hud.x + 12f, hud.y + 83f, hud.width - 88f, 18f),
+                $"{GetMainTimeStateText(timeRatio)}    Lv.{playerStats.level}",
                 mutedStyle, 9);
-            Rect healthRect = new Rect(hud.x + 12f, hud.y + 88f, hud.width - 24f, 9f);
+            ResponsiveGui.DrawSingleLineLabel(new Rect(hud.xMax - 122f, hud.y + 83f, 110f, 18f),
+                $"气血 {playerStats.runtimeStats.currentHealth:0}/{playerStats.runtimeStats.maxHealth:0}",
+                mutedStyle, 8);
+            Rect healthRect = new Rect(hud.x + 12f, hud.y + 106f, hud.width - 24f, 10f);
             DrawHealthBar(healthRect, playerStats.runtimeStats.HealthRatio);
 
-            Rect resources = new Rect(safe.x + 14f, safe.y + 124f, hudWidth, 25f);
+            Rect resources = new Rect(safe.x + 14f, safe.y + 154f, hudWidth, 25f);
             DrawPanel(resources, new Color(0.04f, 0.05f, 0.05f, 0.9f), Gold);
             ResponsiveGui.DrawSingleLineLabel(
                 new Rect(resources.x + 10f, resources.y + 1f, resources.width - 20f, resources.height - 2f),
@@ -640,6 +661,14 @@ namespace WuxiaRoguelite.UI
         private void DrawBossApproachWarning()
         {
             BossApproachStage stage = gameFlow.CurrentBossApproachStage;
+            if (gameFlow.mainTimeRemaining > 0f &&
+                gameFlow.mainTimeRemaining <= 20f &&
+                stage != BossApproachStage.FinalCountdown)
+            {
+                float urgentPulse = 0.5f + 0.5f * Mathf.Abs(Mathf.Sin(Time.time * 5f));
+                DrawDangerEdges(0.10f + urgentPulse * 0.10f);
+            }
+
             if (stage == BossApproachStage.None)
             {
                 return;
@@ -716,58 +745,97 @@ namespace WuxiaRoguelite.UI
             FillRect(screen, new Color(0.01f, 0.008f, 0.01f, Mathf.Lerp(0.92f, 0.40f, reveal)));
             DrawDangerEdges(0.30f + pulse * 0.16f);
 
-            Sprite bossSprite = battleScreen != null
-                ? battleScreen.GetPreviewSprite(gameFlow.bossStats.visualId)
-                : null;
             Rect safe = ResponsiveGui.SafeArea;
-            float figureSize = ResponsiveGui.IsPortrait
-                ? Mathf.Min(300f, safe.width * 0.66f)
-                : Mathf.Min(340f, safe.height * 0.62f);
-            float figureY = ResponsiveGui.IsPortrait
-                ? safe.y + 96f
-                : safe.y + (safe.height - figureSize) * 0.36f;
-            Rect figureRect = new Rect(
-                safe.x + (safe.width - figureSize) * 0.5f,
-                figureY,
-                figureSize,
-                figureSize);
-            if (bossSprite != null)
-            {
-                Color previous = GUI.color;
-                GUI.color = new Color(1f, 1f, 1f, reveal);
-                DrawSpriteFrame(figureRect, bossSprite);
-                GUI.color = previous;
-            }
+            DrawBossIdentityCard(safe, progress, reveal);
+        }
 
-            float cardWidth = Mathf.Min(520f, safe.width - 34f);
-            float cardHeight = ResponsiveGui.IsPortrait ? 180f : 158f;
-            Rect titleCard = new Rect(
-                safe.x + (safe.width - cardWidth) * 0.5f,
-                safe.yMax - cardHeight - (ResponsiveGui.IsPortrait ? 82f : 30f),
+        private void DrawBossIdentityCard(Rect safe, float progress, float reveal)
+        {
+            bool portraitLayout = ResponsiveGui.IsPortrait;
+            float cardWidth = Mathf.Min(portraitLayout ? 500f : 720f, safe.width - 30f);
+            float cardHeight = portraitLayout ? 190f : 224f;
+            float targetX = portraitLayout
+                ? safe.x + (safe.width - cardWidth) * 0.5f
+                : safe.x + Mathf.Min(32f, safe.width * 0.04f);
+            float desiredY = safe.y + Mathf.Max(
+                portraitLayout ? 150f : 74f,
+                (safe.height - cardHeight) * (portraitLayout ? 0.34f : 0.42f));
+            float targetY = Mathf.Clamp(
+                desiredY,
+                safe.y + 18f,
+                Mathf.Max(safe.y + 18f, safe.yMax - cardHeight - 18f));
+            float slideStartX = safe.x - cardWidth - 24f;
+            float slide = Mathf.SmoothStep(0f, 1f, Mathf.Clamp01(progress / 0.30f));
+            Rect identityCard = new Rect(
+                Mathf.Lerp(slideStartX, targetX, slide),
+                targetY,
                 cardWidth,
                 cardHeight);
-            DrawPanel(titleCard, new Color(0.025f, 0.012f, 0.014f, 0.90f),
-                new Color(0.82f, 0.20f, 0.13f, 0.90f));
+            DrawPanel(identityCard, new Color(0.025f, 0.012f, 0.014f, 0.94f),
+                new Color(0.82f, 0.20f, 0.13f, 0.94f));
+            FillRect(
+                new Rect(identityCard.x + 8f, identityCard.y + 7f, identityCard.width - 16f, 2f),
+                new Color(0.94f, 0.62f, 0.20f, 0.82f));
+
+            float portraitSize = portraitLayout
+                ? Mathf.Min(180f, cardHeight - 14f)
+                : Mathf.Min(232f, cardHeight + 8f);
+            Rect portraitRect = new Rect(
+                identityCard.x + 5f,
+                identityCard.y + (identityCard.height - portraitSize) * 0.5f,
+                portraitSize,
+                portraitSize);
+            Color previousColor = GUI.color;
+            GUI.color = new Color(1f, 1f, 1f, reveal);
+            if (bossPortrait != null)
+            {
+                GUI.DrawTexture(portraitRect, bossPortrait, ScaleMode.ScaleToFit, true);
+            }
+            else
+            {
+                Sprite bossSprite = battleScreen != null
+                    ? battleScreen.GetPreviewSprite(gameFlow.bossStats.visualId)
+                    : null;
+                if (bossSprite != null)
+                {
+                    DrawSpriteFrame(portraitRect, bossSprite);
+                }
+            }
+
+            if (bossPortraitFrame != null)
+            {
+                GUI.DrawTexture(portraitRect, bossPortraitFrame, ScaleMode.ScaleToFit, true);
+            }
+
+            float textReveal = Mathf.SmoothStep(
+                0f,
+                1f,
+                Mathf.Clamp01((progress - 0.12f) / 0.24f));
+            GUI.color = new Color(1f, 1f, 1f, textReveal);
+            float textX = portraitRect.xMax + (portraitLayout ? 6f : 16f);
+            float textWidth = Mathf.Max(150f, identityCard.xMax - textX - 18f);
+            float titleY = identityCard.y + (portraitLayout ? 18f : 24f);
             ResponsiveGui.DrawSingleLineLabel(
-                new Rect(titleCard.x + 18f, titleCard.y + 10f, titleCard.width - 36f, 34f),
+                new Rect(textX, titleY, textWidth, 32f),
                 "终局强敌",
                 bossIntroTitleStyle,
                 13);
             ResponsiveGui.DrawSingleLineLabel(
-                new Rect(titleCard.x + 18f, titleCard.y + 42f, titleCard.width - 36f, 58f),
+                new Rect(textX, titleY + 32f, textWidth, portraitLayout ? 58f : 66f),
                 gameFlow.bossStats.displayName,
                 bossIntroNameStyle,
-                24);
+                portraitLayout ? 24 : 30);
             ResponsiveGui.DrawSingleLineLabel(
-                new Rect(titleCard.x + 18f, titleCard.y + 106f, titleCard.width - 36f, 28f),
+                new Rect(textX, titleY + (portraitLayout ? 92f : 112f), textWidth, 28f),
                 progress < 0.60f ? "妖气压境 · 杀意已至" : "气血已复 · 决战将启",
                 bossWarningStyle,
                 11);
             ResponsiveGui.DrawSingleLineLabel(
-                new Rect(titleCard.x + 18f, titleCard.yMax - 27f, titleCard.width - 36f, 20f),
+                new Rect(textX, identityCard.yMax - 32f, textWidth, 20f),
                 $"距离交锋  {gameFlow.BossIntroTimeRemaining:0.0}s",
                 mutedStyle,
                 9);
+            GUI.color = previousColor;
         }
 
         private static void DrawDangerEdges(float alpha)
@@ -1276,37 +1344,47 @@ namespace WuxiaRoguelite.UI
                 return "香尽 · 强敌已至";
             }
 
-            if (ratio <= 1f / 12f)
+            if (ratio <= 1f / 3f)
             {
-                return "一线余火";
+                return "丧钟已鸣 · 立即冲刺";
             }
 
-            if (ratio <= 0.25f)
+            if (ratio <= 2f / 3f)
             {
-                return "收束路线";
+                return "时间过半 · 争分夺秒";
             }
 
-            if (ratio <= 0.5f)
+            return "强敌逼近 · 抢占先机";
+        }
+
+        private static string GetMainTimePressureText(float ratio)
+        {
+            if (ratio <= 0f)
             {
-                return "加紧成长";
+                return "香尽 · 强敌已至";
             }
 
-            return "从容择路";
+            if (ratio <= 1f / 3f)
+            {
+                return "终局倒数 · 丧钟已鸣";
+            }
+
+            if (ratio <= 2f / 3f)
+            {
+                return "六十息终局 · 时间过半";
+            }
+
+            return "六十息终局 · 分秒必争";
         }
 
         private static Color GetMainTimeColor(float ratio)
         {
-            if (ratio <= 1f / 12f)
+            if (ratio <= 1f / 3f)
             {
                 return new Color(0.94f, 0.18f, 0.11f);
             }
 
-            if (ratio <= 0.25f)
-            {
-                return new Color(0.96f, 0.48f, 0.16f);
-            }
-
-            if (ratio <= 0.5f)
+            if (ratio <= 2f / 3f)
             {
                 return Gold;
             }
@@ -1314,42 +1392,9 @@ namespace WuxiaRoguelite.UI
             return Jade;
         }
 
-        private static void DrawMainTimeTrack(Rect rect, float ratio, Color color, bool paused)
+        private static void DrawMainTimeTrack(Rect rect, float ratio, bool paused)
         {
-            ratio = Mathf.Clamp01(ratio);
-            FillRect(rect, new Color(0.02f, 0.025f, 0.025f, 0.95f));
-
-            const float border = 2f;
-            Rect inner = new Rect(
-                rect.x + border,
-                rect.y + border,
-                Mathf.Max(0f, rect.width - border * 2f),
-                Mathf.Max(0f, rect.height - border * 2f));
-            FillRect(inner, new Color(0.20f, 0.20f, 0.18f, 0.48f));
-
-            float remainingWidth = inner.width * ratio;
-            if (remainingWidth > 0f)
-            {
-                Color fillColor = paused
-                    ? new Color(0.38f, 0.72f, 0.86f, 0.95f)
-                    : new Color(color.r, color.g, color.b, 0.95f);
-                FillRect(new Rect(inner.x, inner.y, remainingWidth, inner.height), fillColor);
-
-                float emberPulse = paused ? 0f : 0.5f + 0.5f * Mathf.Abs(Mathf.Sin(Time.time * 5f));
-                float emberWidth = paused ? 2f : 3f + emberPulse * 2f;
-                float emberX = Mathf.Clamp(inner.x + remainingWidth - emberWidth * 0.5f, inner.x, inner.xMax - emberWidth);
-                Color ember = paused
-                    ? new Color(0.75f, 0.92f, 1f, 0.85f)
-                    : new Color(1f, 0.82f, 0.32f, 0.75f + emberPulse * 0.25f);
-                FillRect(new Rect(emberX, inner.y - 1f, emberWidth, inner.height + 2f), ember);
-            }
-
-            for (int i = 1; i < 4; i++)
-            {
-                float markerX = inner.x + inner.width * i / 4f;
-                FillRect(new Rect(markerX, inner.y, 1f, inner.height),
-                    new Color(0f, 0f, 0f, 0.30f));
-            }
+            TimePressureBarRenderer.Draw(rect, ratio, paused);
         }
 
         private void DrawHealthBar(Rect rect, float ratio)

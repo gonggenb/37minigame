@@ -666,26 +666,25 @@ namespace WuxiaRoguelite.UI
                 ? "洞中凝时 · 主香暂停"
                 : approachStage == BossApproachStage.Arrived
                     ? "香已燃尽 · 胜此战后即入决战"
-                    : "交锋耗时 · 主香仍在燃烧";
+                    : timeRatio <= 1f / 3f
+                        ? $"丧钟已鸣 · 仅余 {Mathf.CeilToInt(gameFlow.mainTimeRemaining)} 息"
+                        : $"交锋耗时 · 仅余 {Mathf.CeilToInt(gameFlow.mainTimeRemaining)} 息";
             ResponsiveGui.DrawSingleLineLabel(
-                new Rect(headerRect.x + 14f, headerRect.y + 36f, headerRect.width - 28f, 18f),
+                new Rect(headerRect.x + 14f, headerRect.y + 33f, headerRect.width - 28f, 18f),
                 timerText, timerStyle, 10);
 
-            Color timeColor = timerPaused
-                ? new Color(0.38f, 0.72f, 0.86f)
-                : GetMainTimeColor(timeRatio);
             Rect timeTrack = new Rect(
-                headerRect.x + 24f,
-                headerRect.y + 56f,
-                headerRect.width - 48f,
-                11f);
-            DrawMainTimeTrack(timeTrack, timeRatio, timeColor, timerPaused);
+                headerRect.x + 18f,
+                headerRect.y + 49f,
+                headerRect.width - 36f,
+                29f);
+            DrawMainTimeTrack(timeTrack, timeRatio, timerPaused);
 
             string stateText = timerPaused
                 ? "香火停驻 · 返图后续燃"
                 : GetMainTimeStateText(timeRatio);
             ResponsiveGui.DrawSingleLineLabel(
-                new Rect(headerRect.x, headerRect.y + 68f, headerRect.width, 17f),
+                new Rect(headerRect.x, headerRect.y + 75f, headerRect.width, 14f),
                 stateText, captionStyle, 9);
         }
 
@@ -1163,81 +1162,22 @@ namespace WuxiaRoguelite.UI
                 return "香尽 · 强敌已至";
             }
 
-            if (ratio <= 1f / 12f)
+            if (ratio <= 1f / 3f)
             {
-                return "一线余火";
+                return "丧钟已鸣 · 立即决断";
             }
 
-            if (ratio <= 0.25f)
+            if (ratio <= 2f / 3f)
             {
-                return "收束路线";
+                return "时间过半 · 争分夺秒";
             }
 
-            if (ratio <= 0.5f)
-            {
-                return "加紧成长";
-            }
-
-            return "从容择路";
+            return "六十息倒数 · 分秒必争";
         }
 
-        private static Color GetMainTimeColor(float ratio)
+        private static void DrawMainTimeTrack(Rect rect, float ratio, bool paused)
         {
-            if (ratio <= 1f / 12f)
-            {
-                return new Color(0.94f, 0.18f, 0.11f);
-            }
-
-            if (ratio <= 0.25f)
-            {
-                return new Color(0.96f, 0.48f, 0.16f);
-            }
-
-            if (ratio <= 0.5f)
-            {
-                return Gold;
-            }
-
-            return new Color(0.27f, 0.68f, 0.53f);
-        }
-
-        private static void DrawMainTimeTrack(Rect rect, float ratio, Color color, bool paused)
-        {
-            ratio = Mathf.Clamp01(ratio);
-            FillRect(rect, new Color(0.015f, 0.02f, 0.02f, 0.96f));
-
-            const float border = 2f;
-            Rect inner = new Rect(
-                rect.x + border,
-                rect.y + border,
-                Mathf.Max(0f, rect.width - border * 2f),
-                Mathf.Max(0f, rect.height - border * 2f));
-            FillRect(inner, new Color(0.20f, 0.20f, 0.18f, 0.48f));
-
-            float remainingWidth = inner.width * ratio;
-            if (remainingWidth > 0f)
-            {
-                FillRect(new Rect(inner.x, inner.y, remainingWidth, inner.height),
-                    new Color(color.r, color.g, color.b, 0.95f));
-
-                float emberPulse = paused ? 0f : 0.5f + 0.5f * Mathf.Abs(Mathf.Sin(Time.time * 5f));
-                float emberWidth = paused ? 2f : 3f + emberPulse * 2f;
-                float emberX = Mathf.Clamp(
-                    inner.x + remainingWidth - emberWidth * 0.5f,
-                    inner.x,
-                    inner.xMax - emberWidth);
-                Color ember = paused
-                    ? new Color(0.75f, 0.92f, 1f, 0.85f)
-                    : new Color(1f, 0.82f, 0.32f, 0.75f + emberPulse * 0.25f);
-                FillRect(new Rect(emberX, inner.y - 1f, emberWidth, inner.height + 2f), ember);
-            }
-
-            for (int i = 1; i < 4; i++)
-            {
-                float markerX = inner.x + inner.width * i / 4f;
-                FillRect(new Rect(markerX, inner.y, 1f, inner.height),
-                    new Color(0f, 0f, 0f, 0.30f));
-            }
+            TimePressureBarRenderer.Draw(rect, ratio, paused);
         }
 
         private static GUIStyle CreateStyle(int fontSize, FontStyle fontStyle, TextAnchor alignment, Color color)

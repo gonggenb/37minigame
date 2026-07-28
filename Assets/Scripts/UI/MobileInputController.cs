@@ -47,7 +47,8 @@ namespace WuxiaRoguelite.UI
     }
 
     /// <summary>
-    /// Touch-first virtual joystick for the main map and cave exploration.
+    /// Touch-first movement for the main map and cave exploration.
+    /// Portrait uses an invisible swipe gesture, while landscape keeps the virtual joystick.
     /// Keyboard input remains available and is combined by the gameplay controllers.
     /// </summary>
     [DisallowMultipleComponent]
@@ -61,6 +62,9 @@ namespace WuxiaRoguelite.UI
         [Tooltip("Shows the joystick in touch-capable WebGL and desktop builds.")]
         public bool showOnDesktop = true;
         [Range(52f, 84f)] public float joystickRadius = 68f;
+        [Header("Portrait Swipe")]
+        [Range(4f, 32f)] public float portraitSwipeDeadZone = 12f;
+        [Range(48f, 160f)] public float portraitSwipeFullSpeedDistance = 96f;
 
         public static Vector2 MoveInput { get; private set; }
         public static bool IsDragging { get; private set; }
@@ -68,9 +72,11 @@ namespace WuxiaRoguelite.UI
         private int activeFingerId = -1;
         private bool mouseCaptured;
         private Vector2 centerScreen;
+        private Vector2 gestureStartScreen;
         private float radiusScreen;
         private Texture2D baseTexture;
         private Texture2D knobTexture;
+        private bool? appliedPortraitLayout;
 
         private bool ShouldShow =>
             gameFlow != null &&
@@ -121,26 +127,33 @@ namespace WuxiaRoguelite.UI
         private void Update()
         {
             UpdateGeometry();
+            bool portrait = ResponsiveGui.IsPortrait;
+            if (appliedPortraitLayout.HasValue && appliedPortraitLayout.Value != portrait)
+            {
+                ResetInput();
+            }
+
+            appliedPortraitLayout = portrait;
             if (!ShouldShow)
             {
                 ResetInput();
                 return;
             }
 
-            HandleTouches();
-            HandleEditorMouse();
+            HandleTouches(portrait);
+            HandleEditorMouse(portrait);
         }
 
-        private void HandleTouches()
+        private void HandleTouches(bool portrait)
         {
             for (int i = 0; i < Input.touchCount; i++)
             {
                 Touch touch = Input.GetTouch(i);
                 if (touch.phase == TouchPhase.Began && activeFingerId < 0 &&
-                    Vector2.Distance(touch.position, centerScreen) <= radiusScreen * 1.35f)
+                    CanBeginPointer(touch.position, portrait))
                 {
                     activeFingerId = touch.fingerId;
-                    UpdateMoveInput(touch.position);
+                    BeginPointer(touch.position, portrait);
                     continue;
                 }
 
@@ -157,12 +170,12 @@ namespace WuxiaRoguelite.UI
                 }
                 else
                 {
-                    UpdateMoveInput(touch.position);
+                    UpdatePointerInput(touch.position, portrait);
                 }
             }
         }
 
-        private void HandleEditorMouse()
+        private void HandleEditorMouse(bool portrait)
         {
             if (!Application.isEditor || !showInEditor || Input.touchCount > 0)
             {
@@ -171,10 +184,10 @@ namespace WuxiaRoguelite.UI
 
             Vector2 mousePosition = Input.mousePosition;
             if (Input.GetMouseButtonDown(0) &&
-                Vector2.Distance(mousePosition, centerScreen) <= radiusScreen * 1.35f)
+                CanBeginPointer(mousePosition, portrait))
             {
                 mouseCaptured = true;
-                UpdateMoveInput(mousePosition);
+                BeginPointer(mousePosition, portrait);
             }
 
             if (!mouseCaptured)
@@ -190,15 +203,88 @@ namespace WuxiaRoguelite.UI
             }
             else
             {
-                UpdateMoveInput(mousePosition);
+                UpdatePointerInput(mousePosition, portrait);
             }
         }
 
-        private void UpdateMoveInput(Vector2 pointerPosition)
+        private bool CanBeginPointer(Vector2 pointerPosition, bool portrait)
+        {
+            if (!portrait)
+            {
+                return Vector2.Distance(pointerPosition, centerScreen) <= radiusScreen * 1.35f;
+            }
+
+            return !IsPortraitUiControl(pointerPosition);
+        }
+
+        private void BeginPointer(Vector2 pointerPosition, bool portrait)
+        {
+            if (portrait)
+            {
+                gestureStartScreen = pointerPosition;
+                MoveInput = Vector2.zero;
+                IsDragging = false;
+                return;
+            }
+
+            UpdateJoystickInput(pointerPosition);
+        }
+
+        private void UpdatePointerInput(Vector2 pointerPosition, bool portrait)
+        {
+            if (portrait)
+            {
+                UpdatePortraitSwipeInput(pointerPosition);
+                return;
+            }
+
+            UpdateJoystickInput(pointerPosition);
+        }
+
+        private void UpdateJoystickInput(Vector2 pointerPosition)
         {
             Vector2 offset = (pointerPosition - centerScreen) / Mathf.Max(1f, radiusScreen);
             MoveInput = Vector2.ClampMagnitude(offset, 1f);
             IsDragging = true;
+        }
+
+        private void UpdatePortraitSwipeInput(Vector2 pointerPosition)
+        {
+            float scale = ResponsiveGui.Scale;
+            float deadZone = portraitSwipeDeadZone * scale;
+            float fullSpeedDistance = Mathf.Max(deadZone + 1f, portraitSwipeFullSpeedDistance * scale);
+            Vector2 delta = pointerPosition - gestureStartScreen;
+            float distance = delta.magnitude;
+            if (distance <= deadZone)
+            {
+                MoveInput = Vector2.zero;
+                IsDragging = false;
+                return;
+            }
+
+            float strength = Mathf.InverseLerp(deadZone, fullSpeedDistance, distance);
+            MoveInput = delta.normalized * strength;
+            IsDragging = true;
+        }
+
+        private bool IsPortraitUiControl(Vector2 pointerPosition)
+        {
+            float scale = ResponsiveGui.Scale;
+            Vector2 guiPosition = ResponsiveGui.ScreenPointToGui(pointerPosition, scale);
+            Rect safe = ResponsiveGui.SafeArea;
+            Rect shortcutRail = new Rect(safe.xMax - 76f, safe.y, 76f, 184f);
+            if (shortcutRail.Contains(guiPosition))
+            {
+                return true;
+            }
+
+            if (gameFlow.CurrentPhase == GamePhase.CaveRunning)
+            {
+                Rect exitControl = new Rect(safe.xMax - 182f, safe.yMax - 92f, 182f, 92f);
+                return exitControl.Contains(guiPosition);
+            }
+
+            return false;
         }
 
         private void UpdateGeometry()
@@ -218,7 +304,7 @@ namespace WuxiaRoguelite.UI
 
         private void OnGUI()
         {
-            if (!ShouldShow || baseTexture == null || knobTexture == null)
+            if (!ShouldShow || ResponsiveGui.IsPortrait || baseTexture == null || knobTexture == null)
             {
                 return;
             }
@@ -293,6 +379,7 @@ namespace WuxiaRoguelite.UI
         {
             activeFingerId = -1;
             mouseCaptured = false;
+            gestureStartScreen = Vector2.zero;
             MoveInput = Vector2.zero;
             IsDragging = false;
         }
