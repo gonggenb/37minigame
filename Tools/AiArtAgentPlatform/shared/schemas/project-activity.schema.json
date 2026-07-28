@@ -1,0 +1,139 @@
+{
+  "$defs": {
+    "AssetCategory": {
+      "enum": [
+        "character",
+        "scene",
+        "item",
+        "animation",
+        "effect",
+        "ui"
+      ],
+      "title": "AssetCategory",
+      "type": "string"
+    },
+    "ProjectActivityItem": {
+      "additionalProperties": false,
+      "properties": {
+        "asset_id": {
+          "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
+          "title": "Asset Id",
+          "type": "string"
+        },
+        "category": {
+          "$ref": "#/$defs/AssetCategory"
+        },
+        "name": {
+          "maxLength": 120,
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "run_id": {
+          "anyOf": [
+            {
+              "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Run Id"
+        },
+        "status": {
+          "maxLength": 80,
+          "minLength": 1,
+          "title": "Status",
+          "type": "string"
+        },
+        "updated_at": {
+          "format": "date-time",
+          "title": "Updated At",
+          "type": "string"
+        },
+        "workflow": {
+          "enum": [
+            "static",
+            "sequence"
+          ],
+          "title": "Workflow",
+          "type": "string"
+        }
+      },
+      "required": [
+        "workflow",
+        "category",
+        "asset_id",
+        "name",
+        "status",
+        "updated_at"
+      ],
+      "title": "ProjectActivityItem",
+      "type": "object"
+    },
+    "ProjectCategoryActivity": {
+      "additionalProperties": false,
+      "properties": {
+        "category": {
+          "$ref": "#/$defs/AssetCategory"
+        },
+        "recent": {
+          "items": {
+            "$ref": "#/$defs/ProjectActivityItem"
+          },
+          "maxItems": 5,
+          "title": "Recent",
+          "type": "array"
+        },
+        "task_count": {
+          "minimum": 0,
+          "title": "Task Count",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "category",
+        "task_count"
+      ],
+      "title": "ProjectCategoryActivity",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "categories": {
+      "items": {
+        "$ref": "#/$defs/ProjectCategoryActivity"
+      },
+      "maxItems": 6,
+      "minItems": 6,
+      "title": "Categories",
+      "type": "array"
+    },
+    "project_id": {
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
+      "title": "Project Id",
+      "type": "string"
+    },
+    "reference_count": {
+      "minimum": 0,
+      "title": "Reference Count",
+      "type": "integer"
+    },
+    "schema_version": {
+      "const": 1,
+      "default": 1,
+      "title": "Schema Version",
+      "type": "integer"
+    }
+  },
+  "required": [
+    "project_id",
+    "reference_count",
+    "categories"
+  ],
+  "title": "ProjectActivitySummary",
+  "type": "object"
+}
