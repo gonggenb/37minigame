@@ -62,6 +62,7 @@ it("creates updates and reads project activity", async () => {
   await createProject({
     project_id: "wuxia-new",
     display_name: "新项目",
+    visual_type: "wuxia-ink-chibi-topdown-2_5d",
     language: "zh-CN",
   });
   await updateProject("wuxia-new", completeProject);

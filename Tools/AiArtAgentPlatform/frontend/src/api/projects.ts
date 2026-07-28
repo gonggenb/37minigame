@@ -10,6 +10,7 @@ import type {
 export interface ProjectCreateInput {
   project_id: string;
   display_name: string;
+  visual_type: "wuxia-ink-chibi-topdown-2_5d";
   language: "zh-CN" | "en-US";
 }
 
