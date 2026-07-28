@@ -41,7 +41,15 @@ namespace WuxiaRoguelite.GameFlow
             critChance = 0.08f,
             critMultiplier = 1.6f
         };
-        [Min(0f)] public float bossIntroDuration = 4f;
+        [Min(0f)] public float bossIntroDuration = 6f;
+
+        [Header("Boss Intro Dialogue")]
+        [TextArea(1, 2)]
+        public string bossIntroNarration = "血月照临古刹，九道狐火沿石阶次第亮起。";
+        [TextArea(1, 2)]
+        public string bossIntroBossLine = "六十息已尽。带着这点修为，也敢来赴我的约？";
+        [TextArea(1, 2)]
+        public string bossIntroPlayerLine = "这六十息，足够让我找到斩你的办法。";
 
         public GamePhase CurrentPhase { get; private set; } = GamePhase.Ready;
         public bool IsCharacterMenuPaused { get; private set; }
@@ -83,6 +91,47 @@ namespace WuxiaRoguelite.GameFlow
             }
         }
         public float BossIntroTimeRemaining { get; private set; }
+        public float BossIntroProgress =>
+            bossIntroDuration <= 0f
+                ? 1f
+                : 1f - Mathf.Clamp01(BossIntroTimeRemaining / bossIntroDuration);
+        public int BossIntroDialogueIndex
+        {
+            get
+            {
+                float progress = BossIntroProgress;
+                if (progress < 0.34f)
+                {
+                    return 0;
+                }
+
+                return progress < 0.68f ? 1 : 2;
+            }
+        }
+        public string CurrentBossIntroSpeaker
+        {
+            get
+            {
+                return BossIntroDialogueIndex switch
+                {
+                    0 => "旁白",
+                    1 => bossStats != null ? bossStats.displayName : "终局强敌",
+                    _ => OpeningPlayerName
+                };
+            }
+        }
+        public string CurrentBossIntroDialogue
+        {
+            get
+            {
+                return BossIntroDialogueIndex switch
+                {
+                    0 => bossIntroNarration,
+                    1 => bossIntroBossLine,
+                    _ => bossIntroPlayerLine
+                };
+            }
+        }
         public BossApproachStage CurrentBossApproachStage
         {
             get

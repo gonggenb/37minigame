@@ -7102,7 +7102,10 @@ MonoBehaviour:
     lifeSteal: 0
     dodgeChance: 0
     moveSpeed: 5
-  bossIntroDuration: 4
+  bossIntroDuration: 6
+  bossIntroNarration: "\u8840\u6708\u7167\u4E34\u53E4\u5239\uFF0C\u4E5D\u9053\u72D0\u706B\u6CBF\u77F3\u9636\u6B21\u7B2C\u4EAE\u8D77\u3002"
+  bossIntroBossLine: "\u516D\u5341\u606F\u5DF2\u5C3D\u3002\u5E26\u7740\u8FD9\u70B9\u4FEE\u4E3A\uFF0C\u4E5F\u6562\u6765\u8D74\u6211\u7684\u7EA6\uFF1F"
+  bossIntroPlayerLine: "\u8FD9\u516D\u5341\u606F\uFF0C\u8DB3\u591F\u8BA9\u6211\u627E\u5230\u65A9\u4F60\u7684\u529E\u6CD5\u3002"
   statusMessage: "\u6309\u5F00\u59CB\u8FDB\u5165\u6C5F\u6E56"
   bossDefeated: 0
   pendingCultivationReward: 0

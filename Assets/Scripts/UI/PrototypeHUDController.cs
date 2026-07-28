@@ -184,6 +184,8 @@ namespace WuxiaRoguelite.UI
         private GUIStyle bossCountdownStyle;
         private GUIStyle bossIntroTitleStyle;
         private GUIStyle bossIntroNameStyle;
+        private GUIStyle bossDialogueSpeakerStyle;
+        private GUIStyle bossDialogueBodyStyle;
         private Texture2D runtimeSettingsIcon;
         private BattleScreenController battleScreen;
         private bool characterPanelOpen;
@@ -434,6 +436,9 @@ namespace WuxiaRoguelite.UI
                 new Color(1f, 0.78f, 0.38f));
             bossIntroNameStyle = LabelStyle(42, FontStyle.Bold, TextAnchor.MiddleLeft,
                 new Color(1f, 0.94f, 0.78f));
+            bossDialogueSpeakerStyle = LabelStyle(18, FontStyle.Bold, TextAnchor.MiddleLeft,
+                new Color(1f, 0.78f, 0.38f));
+            bossDialogueBodyStyle = LabelStyle(17, FontStyle.Normal, TextAnchor.UpperLeft, Paper);
             runtimeSettingsIcon = CreateSettingsIcon(64);
         }
 
@@ -601,8 +606,8 @@ namespace WuxiaRoguelite.UI
         private void DrawCompactHud()
         {
             Rect safe = ResponsiveGui.SafeArea;
-            float hudWidth = ResponsiveGui.IsPortrait ? Mathf.Min(450f, safe.width - 90f) : 390f;
-            Rect hud = new Rect(safe.x + 14f, safe.y + 14f, hudWidth, 132f);
+            float hudWidth = ResponsiveGui.IsPortrait ? Mathf.Min(390f, safe.width - 90f) : 310f;
+            Rect hud = new Rect(safe.x + 14f, safe.y + 14f, hudWidth, 104f);
             BossApproachStage approachStage = gameFlow.CurrentBossApproachStage;
             float timeRatio = GetMainTimeRatio();
             Color accent = GetMainTimeColor(timeRatio);
@@ -614,31 +619,31 @@ namespace WuxiaRoguelite.UI
                     ? warningHeadingStyle
                     : headingStyle;
             DrawPanel(hud, Ink, accent);
-            ResponsiveGui.DrawSingleLineLabel(new Rect(hud.x + 12f, hud.y + 4f, hud.width - 136f, 25f),
-                GetMainTimePressureText(timeRatio), timerLabelStyle, 12);
+            ResponsiveGui.DrawSingleLineLabel(new Rect(hud.x + 10f, hud.y + 2f, hud.width - 102f, 23f),
+                GetMainTimePressureText(timeRatio), timerLabelStyle, 10);
             timeSecondsStyle.normal.textColor = accent;
-            ResponsiveGui.DrawSingleLineLabel(new Rect(hud.xMax - 112f, hud.y + 2f, 100f, 29f),
-                $"{Mathf.CeilToInt(gameFlow.mainTimeRemaining):00}s", timeSecondsStyle, 16);
+            ResponsiveGui.DrawSingleLineLabel(new Rect(hud.xMax - 84f, hud.y + 1f, 74f, 25f),
+                $"{Mathf.CeilToInt(gameFlow.mainTimeRemaining):00}s", timeSecondsStyle, 14);
 
-            Rect timeTrack = new Rect(hud.x + 10f, hud.y + 32f, hud.width - 20f, 38f);
+            Rect timeTrack = new Rect(hud.x + 8f, hud.y + 27f, hud.width - 16f, 31f);
             DrawMainTimeTrack(timeTrack, timeRatio, false);
             ResponsiveGui.DrawSingleLineLabel(
-                new Rect(timeTrack.x + timeTrack.width / 3f - 24f, hud.y + 66f, 48f, 16f),
+                new Rect(timeTrack.x + timeTrack.width / 3f - 20f, hud.y + 55f, 40f, 14f),
                 "20", centeredStyle, 8);
             ResponsiveGui.DrawSingleLineLabel(
-                new Rect(timeTrack.x + timeTrack.width * 2f / 3f - 24f, hud.y + 66f, 48f, 16f),
+                new Rect(timeTrack.x + timeTrack.width * 2f / 3f - 20f, hud.y + 55f, 40f, 14f),
                 "40", centeredStyle, 8);
 
-            ResponsiveGui.DrawSingleLineLabel(new Rect(hud.x + 12f, hud.y + 83f, hud.width - 88f, 18f),
+            ResponsiveGui.DrawSingleLineLabel(new Rect(hud.x + 10f, hud.y + 69f, hud.width - 84f, 17f),
                 $"{GetMainTimeStateText(timeRatio)}    Lv.{playerStats.level}",
                 mutedStyle, 9);
-            ResponsiveGui.DrawSingleLineLabel(new Rect(hud.xMax - 122f, hud.y + 83f, 110f, 18f),
+            ResponsiveGui.DrawSingleLineLabel(new Rect(hud.xMax - 96f, hud.y + 69f, 86f, 17f),
                 $"气血 {playerStats.runtimeStats.currentHealth:0}/{playerStats.runtimeStats.maxHealth:0}",
                 mutedStyle, 8);
-            Rect healthRect = new Rect(hud.x + 12f, hud.y + 106f, hud.width - 24f, 10f);
+            Rect healthRect = new Rect(hud.x + 10f, hud.y + 90f, hud.width - 20f, 7f);
             DrawHealthBar(healthRect, playerStats.runtimeStats.HealthRatio);
 
-            Rect resources = new Rect(safe.x + 14f, safe.y + 154f, hudWidth, 25f);
+            Rect resources = new Rect(safe.x + 14f, safe.y + 124f, hudWidth, 22f);
             DrawPanel(resources, new Color(0.04f, 0.05f, 0.05f, 0.9f), Gold);
             ResponsiveGui.DrawSingleLineLabel(
                 new Rect(resources.x + 10f, resources.y + 1f, resources.width - 20f, resources.height - 2f),
@@ -746,10 +751,11 @@ namespace WuxiaRoguelite.UI
             DrawDangerEdges(0.30f + pulse * 0.16f);
 
             Rect safe = ResponsiveGui.SafeArea;
-            DrawBossIdentityCard(safe, progress, reveal);
+            Rect identityCard = DrawBossIdentityCard(safe, progress, reveal);
+            DrawBossIntroDialogue(safe, identityCard, progress, reveal);
         }
 
-        private void DrawBossIdentityCard(Rect safe, float progress, float reveal)
+        private Rect DrawBossIdentityCard(Rect safe, float progress, float reveal)
         {
             bool portraitLayout = ResponsiveGui.IsPortrait;
             float cardWidth = Mathf.Min(portraitLayout ? 500f : 720f, safe.width - 30f);
@@ -835,6 +841,72 @@ namespace WuxiaRoguelite.UI
                 $"距离交锋  {gameFlow.BossIntroTimeRemaining:0.0}s",
                 mutedStyle,
                 9);
+            GUI.color = previousColor;
+            return identityCard;
+        }
+
+        private void DrawBossIntroDialogue(Rect safe, Rect identityCard, float progress, float reveal)
+        {
+            bool portraitLayout = ResponsiveGui.IsPortrait;
+            float panelHeight = portraitLayout ? 130f : 118f;
+            float panelY = Mathf.Min(
+                identityCard.yMax + (portraitLayout ? 18f : 14f),
+                safe.yMax - panelHeight - 18f);
+            Rect dialoguePanel = new Rect(
+                identityCard.x,
+                Mathf.Max(safe.y + 18f, panelY),
+                identityCard.width,
+                panelHeight);
+
+            int dialogueIndex = gameFlow.BossIntroDialogueIndex;
+            float phaseStart = dialogueIndex switch
+            {
+                0 => 0f,
+                1 => 0.34f,
+                _ => 0.68f
+            };
+            float phaseEnd = dialogueIndex switch
+            {
+                0 => 0.34f,
+                1 => 0.68f,
+                _ => 1f
+            };
+            float localReveal = Mathf.InverseLerp(
+                phaseStart,
+                Mathf.Min(phaseStart + 0.08f, phaseEnd),
+                progress);
+            float textAlpha = reveal * Mathf.Lerp(
+                0.35f,
+                1f,
+                Mathf.SmoothStep(0f, 1f, localReveal));
+
+            Color accent = dialogueIndex switch
+            {
+                0 => Gold,
+                1 => new Color(0.92f, 0.24f, 0.16f, 1f),
+                _ => Jade
+            };
+            DrawPanel(
+                dialoguePanel,
+                new Color(0.025f, 0.018f, 0.016f, 0.94f),
+                new Color(accent.r, accent.g, accent.b, 0.90f));
+            FillRect(
+                new Rect(dialoguePanel.x + 8f, dialoguePanel.y + 10f, 4f, dialoguePanel.height - 20f),
+                new Color(accent.r, accent.g, accent.b, 0.90f));
+
+            Color previousColor = GUI.color;
+            GUI.color = new Color(1f, 1f, 1f, textAlpha);
+            float textX = dialoguePanel.x + 24f;
+            float textWidth = dialoguePanel.width - 44f;
+            ResponsiveGui.DrawSingleLineLabel(
+                new Rect(textX, dialoguePanel.y + 12f, textWidth, 26f),
+                gameFlow.CurrentBossIntroSpeaker,
+                bossDialogueSpeakerStyle,
+                12);
+            GUI.Label(
+                new Rect(textX, dialoguePanel.y + 42f, textWidth, dialoguePanel.height - 52f),
+                gameFlow.CurrentBossIntroDialogue,
+                bossDialogueBodyStyle);
             GUI.color = previousColor;
         }
 
