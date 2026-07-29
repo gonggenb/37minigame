@@ -1,14 +1,14 @@
 # Noto Sans CJK SC subset
 
-This folder contains project-specific subsets of:
+This folder contains project-specific TrueType subsets of:
 
-- `NotoSansCJKsc-Regular.otf`
-- `NotoSansCJKsc-Bold.otf`
+- `Noto Sans SC Regular`
+- `Noto Sans SC Bold`
 
 Source:
 
-- https://github.com/notofonts/noto-cjk
-- https://github.com/notofonts/noto-cjk/tree/main/Sans/OTF/SimplifiedChinese
+- https://fonts.google.com/noto/specimen/Noto+Sans+SC
+- https://developers.google.com/fonts/docs/css2
 
 License:
 
@@ -16,6 +16,11 @@ License:
 - See `OFL-NotoSansCJK.txt` in this folder.
 
 The subset files retain the Latin, punctuation, symbol, and CJK characters
-currently referenced by the project source, scene, configuration, and
-documentation files. Regenerate the subsets when new runtime text introduces
-characters that are not already covered.
+currently referenced by the runtime scripts, scenes, Resources, and configured
+data assets. The existing subset character set is also retained when the files
+are refreshed, so an unrelated text cleanup does not remove previously shipped
+glyphs.
+
+Regenerate both subsets whenever new runtime text introduces characters that
+are not already covered. WebGL cannot rely on the operating system to supply
+missing Chinese glyphs.
