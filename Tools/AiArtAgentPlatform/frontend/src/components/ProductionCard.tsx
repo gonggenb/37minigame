@@ -23,6 +23,7 @@ import {
 } from "../api/production";
 import { useReferencesQuery } from "../api/stylePack";
 import { useProductionDraftStore } from "../stores/production";
+import { useTaskNavigationStore } from "../stores/taskNavigation";
 import { CandidateEditor } from "./CandidateEditor";
 import { ReferencePicker } from "./ReferencePicker";
 
@@ -62,6 +63,8 @@ export function ProductionCard({ projectId }: ProductionCardProps) {
   const saveMask = useSaveProductionMaskMutation(projectId);
   const exportRun = useExportProductionMutation(projectId);
   const draft = useProductionDraftStore();
+  const navigationTarget = useTaskNavigationStore((state) => state.target);
+  const clearNavigation = useTaskNavigationStore((state) => state.clear);
   const [asset, setAsset] = useState<StaticAssetRecord | null>(null);
   const [run, setRun] = useState<ProductionRun | null>(null);
   const [prompt, setPrompt] = useState("");
@@ -93,10 +96,31 @@ export function ProductionCard({ projectId }: ProductionCardProps) {
     setAcceptStyleRisk(false);
     setExportVariant("default");
     draft.reset();
-  }, [projectId, draft.reset]);
+    if (navigationTarget && navigationTarget.projectId !== projectId) {
+      clearNavigation();
+    }
+  }, [clearNavigation, projectId, draft.reset]);
 
   useEffect(() => {
     if (!assets.data) return;
+    if (
+      navigationTarget?.workflow === "static" &&
+      navigationTarget.projectId === projectId
+    ) {
+      const requested = assets.data.find(
+        (record) =>
+          record.task.category === navigationTarget.category &&
+          record.task.asset_id === navigationTarget.assetId,
+      );
+      if (requested) {
+        setAsset(requested);
+        setRun(null);
+        if (!navigationTarget.runId) {
+          clearNavigation();
+        }
+        return;
+      }
+    }
     setAsset((current) => {
       if (current) {
         const refreshed = assets.data.find(
@@ -108,16 +132,29 @@ export function ProductionCard({ projectId }: ProductionCardProps) {
       }
       return assets.data[0] ?? null;
     });
-  }, [assets.data]);
+  }, [assets.data, clearNavigation, navigationTarget, projectId]);
 
   useEffect(() => {
     if (!runs.data) return;
+    if (
+      navigationTarget?.workflow === "static" &&
+      navigationTarget.projectId === projectId &&
+      asset?.task.category === navigationTarget.category &&
+      asset.task.asset_id === navigationTarget.assetId
+    ) {
+      const requested = navigationTarget.runId
+        ? runs.data.find((item) => item.run_id === navigationTarget.runId)
+        : null;
+      setRun(requested ?? runs.data[0] ?? null);
+      clearNavigation();
+      return;
+    }
     setRun((current) =>
       (current && runs.data.find((item) => item.run_id === current.run_id)) ??
       runs.data[0] ??
       null,
     );
-  }, [runs.data]);
+  }, [asset, clearNavigation, navigationTarget, projectId, runs.data]);
 
   useEffect(() => {
     setPrompt(run?.prompt ?? "");
@@ -125,7 +162,7 @@ export function ProductionCard({ projectId }: ProductionCardProps) {
 
   if (!projectId) {
     return (
-      <section className="paper-card paper-card--production">
+      <section id="static-production" className="paper-card paper-card--production">
         <p className="paper-card__label">静态资产生产</p>
         <h2>生成、比较、编辑、评审与导出</h2>
         <p className="empty-state">创建项目后即可生产静态资产。</p>
@@ -372,7 +409,7 @@ export function ProductionCard({ projectId }: ProductionCardProps) {
   };
 
   return (
-    <section className="paper-card paper-card--production">
+    <section id="static-production" className="paper-card paper-card--production">
       <p className="paper-card__label">静态资产生产</p>
       <h2>物品 → UI → 角色 → 场景纵向闭环</h2>
       <p>

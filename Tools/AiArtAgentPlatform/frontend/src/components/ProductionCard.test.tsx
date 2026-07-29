@@ -2,6 +2,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { afterEach, expect, it, vi } from "vitest";
 
+import { useTaskNavigationStore } from "../stores/taskNavigation";
 import { ProductionCard } from "./ProductionCard";
 
 vi.mock("./CandidateEditor", () => ({
@@ -10,6 +11,7 @@ vi.mock("./CandidateEditor", () => ({
 
 afterEach(() => {
   vi.unstubAllGlobals();
+  useTaskNavigationStore.getState().clear();
 });
 
 function renderCard(projectId?: string) {
@@ -468,4 +470,55 @@ it("switches between saved assets and their production runs", async () => {
   });
   expect(await screen.findByText("云雾山谷")).toBeInTheDocument();
   expect(await screen.findByAltText("候选 scene-candidate")).toBeInTheDocument();
+});
+
+it("opens a requested static run from project activity", async () => {
+  const assetRecord = {
+    schema_version: 1,
+    task,
+    created_at: "2026-07-28T00:00:00Z",
+    updated_at: "2026-07-28T00:00:00Z",
+  };
+  const requestedRun = {
+    ...run("selected"),
+    run_id: "run-2",
+    candidates: [
+      { ...candidate, candidate_id: "candidate-2", index: 2 },
+    ],
+    selected_candidate_id: "candidate-2",
+    prompt: "活动恢复的第二次运行",
+  };
+  useTaskNavigationStore.getState().requestOpen({
+    projectId: "wuxia-demo",
+    workflow: "static",
+    category: "item",
+    assetId: "green-sword",
+    runId: "run-2",
+  });
+  const fetchMock = vi.fn().mockImplementation((request: RequestInfo | URL) => {
+    const path = String(request);
+    let payload: unknown;
+    if (path.includes("/references?")) {
+      payload = [itemReference];
+    } else if (path.endsWith("/assets")) {
+      payload = [assetRecord];
+    } else if (path.endsWith("/runs")) {
+      payload = [run("reviewed", true), requestedRun];
+    } else {
+      throw new Error(`Unexpected request: ${path}`);
+    }
+    return Promise.resolve(
+      new Response(JSON.stringify(payload), {
+        status: 200,
+        headers: { "Content-Type": "application/json" },
+      }),
+    );
+  });
+  vi.stubGlobal("fetch", fetchMock);
+
+  renderCard("wuxia-demo");
+
+  expect(await screen.findByAltText("候选 candidate-2")).toBeInTheDocument();
+  expect(screen.getByLabelText("运行记录")).toHaveValue("run-2");
+  expect(useTaskNavigationStore.getState().target).toBeNull();
 });
