@@ -64,6 +64,14 @@ it("shows the read-only style pack and preserves manual prompt edits", async () 
           ),
         );
       }
+      if (path.includes("/reference-source?")) {
+        return Promise.resolve(
+          new Response("[]", {
+            status: 200,
+            headers: { "Content-Type": "application/json" },
+          }),
+        );
+      }
       if (path.endsWith("/references") && options?.method !== "POST") {
         return Promise.resolve(
           new Response(
@@ -113,6 +121,8 @@ it("shows the read-only style pack and preserves manual prompt edits", async () 
 
   expect(await screen.findByText("Q版水墨武侠俯视角")).toBeInTheDocument();
   expect(screen.getByText("只读来源")).toBeInTheDocument();
+  expect(screen.getByLabelText("搜索素材源")).toBeInTheDocument();
+  expect(screen.getByText(/源目录只读/)).toBeInTheDocument();
   expect(screen.getByText("已索引 1 张参考图")).toBeInTheDocument();
   expect(screen.queryByRole("button", { name: /修改源文件/ })).not.toBeInTheDocument();
 
@@ -180,6 +190,14 @@ it("updates the complete style guide from the editor", async () => {
             ),
             { status: 200, headers: { "Content-Type": "application/json" } },
           ),
+        );
+      }
+      if (path.includes("/reference-source?")) {
+        return Promise.resolve(
+          new Response("[]", {
+            status: 200,
+            headers: { "Content-Type": "application/json" },
+          }),
         );
       }
       if (path.endsWith("/references")) {

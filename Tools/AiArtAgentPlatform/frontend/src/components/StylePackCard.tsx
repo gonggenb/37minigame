@@ -2,13 +2,14 @@ import { useState } from "react";
 
 import {
   type PromptPreviewInput,
-  useImportReferenceMutation,
   usePromptPreviewMutation,
   useReferencesQuery,
   useStyleGuideQuery,
   useUpdateStyleGuideMutation,
 } from "../api/stylePack";
 import type { AssetCategory } from "../types/core";
+import { ReferenceLibrary } from "./ReferenceLibrary";
+import { ReferenceSourceBrowser } from "./ReferenceSourceBrowser";
 import { StyleGuideEditor } from "./StyleGuideEditor";
 
 const CATEGORY_OPTIONS: Array<{ value: AssetCategory; label: string }> = [
@@ -28,14 +29,11 @@ export function StylePackCard({ projectId }: StylePackCardProps) {
   const guide = useStyleGuideQuery(projectId);
   const updateGuide = useUpdateStyleGuideMutation(projectId);
   const references = useReferencesQuery(projectId);
-  const importMutation = useImportReferenceMutation(projectId);
   const previewMutation = usePromptPreviewMutation(projectId);
   const [category, setCategory] = useState<AssetCategory>("character");
   const [brief, setBrief] = useState("");
   const [promptText, setPromptText] = useState("");
   const [lastCompiledPrompt, setLastCompiledPrompt] = useState("");
-  const [referenceId, setReferenceId] = useState("");
-  const [sourcePath, setSourcePath] = useState("");
 
   if (!projectId) {
     return (
@@ -90,30 +88,6 @@ export function StylePackCard({ projectId }: StylePackCardProps) {
     });
   };
 
-  const submitReference = () => {
-    if (!referenceId.trim() || !sourcePath.trim()) {
-      return;
-    }
-    importMutation.mutate(
-      {
-        reference_id: referenceId.trim(),
-        source_relative_path: sourcePath.trim(),
-        categories: [category],
-        identities: [],
-        usages: [category === "scene" ? "battle-background" : "gameplay"],
-        viewpoints: [category === "ui" ? "ui-flat" : "topdown-45"],
-        materials: [],
-        notes: "",
-      },
-      {
-        onSuccess: () => {
-          setReferenceId("");
-          setSourcePath("");
-        },
-      },
-    );
-  };
-
   return (
     <section className="paper-card paper-card--style-pack">
       <p className="paper-card__label">风格包与提示词</p>
@@ -153,43 +127,10 @@ export function StylePackCard({ projectId }: StylePackCardProps) {
         />
       ) : null}
 
-      <div className="style-pack-columns">
-        <div className="style-pack-panel">
-          <h3>导入只读参考</h3>
-          <label>
-            参考 ID
-            <input
-              value={referenceId}
-              onChange={(event) => setReferenceId(event.target.value)}
-              placeholder="hero-main"
-            />
-          </label>
-          <label>
-            素材库相对路径
-            <input
-              value={sourcePath}
-              onChange={(event) => setSourcePath(event.target.value)}
-              placeholder="角色/hero.png"
-            />
-          </label>
-          <button
-            type="button"
-            disabled={
-              !guide.data ||
-              !referenceId.trim() ||
-              !sourcePath.trim() ||
-              importMutation.isPending
-            }
-            onClick={submitReference}
-          >
-            {importMutation.isPending ? "正在导入…" : "导入只读参考"}
-          </button>
-          {importMutation.isError ? (
-            <p className="model-test-error">参考导入失败，请检查 ID、路径和标签。</p>
-          ) : null}
-        </div>
+      <ReferenceSourceBrowser projectId={projectId} />
+      <ReferenceLibrary projectId={projectId} />
 
-        <div className="style-pack-panel style-pack-panel--prompt">
+      <div className="style-pack-panel style-pack-panel--prompt">
           <h3>提示词编译预览</h3>
           <label>
             资产类别
@@ -237,7 +178,6 @@ export function StylePackCard({ projectId }: StylePackCardProps) {
           {previewMutation.isError ? (
             <p className="model-test-error">提示词编译失败，请检查任务字段。</p>
           ) : null}
-        </div>
       </div>
     </section>
   );
