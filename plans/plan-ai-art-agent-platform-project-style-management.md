@@ -415,3 +415,10 @@ Playwright 覆盖以下无模型流程：
 - **修改文件**：`plans/plan-ai-art-agent-platform-project-style-management-implementation.md`、`plans/plan-ai-art-agent-platform-project-style-management.md`
 - **变更内容**：把书面设计拆分为 12 个测试先行任务，明确后端参考管理与活动聚合、前端项目/风格包管理、静态参考选择、最近任务恢复、离线端到端验收和全量门禁。
 - **关联说明**：实施计划要求逐文件暂存，保护当前仓库中大量用户既有改动；不授权 Unity MCP、Unity Editor 或真实 OpenAI 调用。
+
+### 2026-07-28 - 完成项目与风格包管理闭环
+
+- **修改文件**：后端活动聚合、参考标签/缩略图、项目与风格 API 及测试；前端项目工作区、完整风格编辑器、素材源浏览、参考库、参考选择器、六类活动导航、静态/序列恢复、App 集成及测试；`frontend/e2e/project-style-management.spec.ts`、`frontend/e2e/production.spec.ts`、两份 README 和方案 A 计划文件。
+- **变更内容**：用户可通过首页创建、选择、刷新恢复和编辑项目，完整维护风格圣经，搜索只读素材源并复制导入参考，维护缩略图和标签，为静态任务选择 0–4 张参考，并从六类活动重新打开静态与序列任务。
+- **验证结果**：后端 `137 passed`、Ruff/Mypy 通过；前端 `70 passed / 28 files`、类型检查和构建通过；Playwright `2 passed`；10 份 Schema 稳定；离线 Pilot `5 passed`；无密钥启动冒烟和端口释放通过。
+- **关联说明**：本次为脚本开发任务，未调用 Unity MCP、Unity Editor、Play Mode 或真实 OpenAI；只读素材和三条核心时间规则未改变。方案 B、C 仍是完整 V1 的后续工作。

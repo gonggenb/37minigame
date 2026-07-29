@@ -131,6 +131,23 @@ plans/                需求方案和变更轨迹
 - 不接入真实广告、支付、后端、账号、联机、排行榜或云存档。
 - 不修改三条核心时间规则，不更换 Unity 技术路线。
 
+## 本地 AI 美术工作台
+
+仓库在 `Tools/AiArtAgentPlatform/` 中包含一套与 Unity 运行时隔离的本地 2D 美术生产工作台。平台使用 React/Vite 前端与 FastAPI 后端，首个风格预设为“Q 版水墨武侠俯视角”。
+
+当前阶段已经提供本地健康检查、核心数据 Schema、风格预设、项目工作区、任务队列、取消/重试/恢复、SSE 进度事件、OpenAI 供应商适配层、结构化规划与评审、`gpt-image-2` 生成/蒙版编辑、只读参考素材索引、缩略图与标签筛选、角色身份摘要、固定顺序提示词编译/人工修改、六类资产约束器，以及物品、UI、角色和场景的静态资产生产闭环。动画/特效工作台支持从已批准角色基准帧创建固定网格、整条序列单次生成、逐格背景移除与 Alpha 清理、共享缩放、底部中心/中心锚点、逐帧 PNG、Sprite Sheet、GIF/WebP、漂移报告、刷新恢复和无覆盖批量导出。模型生成单格与最终导出帧已经分离：新任务默认以 `512 × 512` 单格组成合法二维模型网格，再由本地管线归一化为 `256 × 256` 最终帧；前后端会在产生模型费用前显示并阻止非法 `gpt-image-2` 画布。阶段 8 增加候选/参考对比板、固定 Schema 可解释评分、硬约束与风格问题分离、最多两次自动定向修复、费用未知记录汇总，以及 Konva 裁切/缩放/透明留白/画笔与矩形蒙版编辑器。阶段 9 已使用 18 张真实只读武侠素材完成六类离线试点，并为死亡等姿态变化较大的动作增加独立漂移阈值，避免放宽待机和移动的严格检查。平台只监听 `127.0.0.1`，本地 `.env` 与工作数据不提交到 Git；没有密钥时所有离线功能仍可运行，真实模型测试和生成只由用户主动触发。
+
+方案 A“项目与风格包管理闭环”已经完成：工作台首页可创建、选择、切换和编辑项目，刷新后恢复有效项目；完整风格圣经可编辑；参考源保持只读，项目参考库支持缩略图和标签维护；静态任务可选择 0–4 张参考；六类最近任务可重新打开。共享 Schema 已从 9 份增加为 10 份。方案 B、C 仍待实施，完整 V1 的真实模型采用率和 Unity 人工验收尚未完成。
+
+进入工具目录后运行：
+
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts/check-environment.ps1
+powershell -ExecutionPolicy Bypass -File scripts/start.ps1
+```
+
+完整范围和后续阶段见 `plans/plan-ai-art-agent-platform.md`；方案 A 的设计与实施记录见 `plans/plan-ai-art-agent-platform-project-style-management.md` 和 `plans/plan-ai-art-agent-platform-project-style-management-implementation.md`。阶段 9 的离线试点产物保存在 `Tools/AiArtAgentPlatform/pilot-output/wuxia-stage-9/` 与 `wuxia-stage-9-r2/`；Unity Editor 导入、Play Mode 动画节奏和整体风格仍需作为独立人工验收阶段执行。
+
 ## 开发规则
 
 执行任务前先阅读 `AGENTS.md` 和其中指定的 `docs/` 文档。重构设计、阶段与变更记录位于 `plans/plan-project-architecture-refactor.md`。

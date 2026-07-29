@@ -1,6 +1,6 @@
 # AI 美术智能体平台项目与风格包管理闭环 Implementation Plan
 
-> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (- [ ]) syntax for tracking.
+> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (- [x]) syntax for tracking.
 
 **Goal:** 完成方案 A，使用户能够在本地工作台中管理多个项目、完整维护武侠风格包、选择参考图创建静态资产任务，并从六类最近任务中恢复工作。
 
@@ -59,7 +59,7 @@
 - Modify: Tools/AiArtAgentPlatform/backend/app/style_pack/references.py
 - Modify: Tools/AiArtAgentPlatform/backend/tests/test_reference_catalog.py
 
-- [ ] **Step 1: 写入失败测试**
+- [x] **Step 1: 写入失败测试**
 
 在 test_reference_catalog.py 增加导入：
 
@@ -135,7 +135,7 @@ def test_reference_metadata_update_thumbnail_and_material_filter(
         )
 ~~~
 
-- [ ] **Step 2: 运行测试并确认失败**
+- [x] **Step 2: 运行测试并确认失败**
 
 Run:
 
@@ -145,7 +145,7 @@ python -m pytest backend/tests/test_reference_catalog.py::test_reference_metadat
 
 Expected: FAIL，提示 ReferenceUpdateRequest、update_reference、read_thumbnail 或 material 尚不存在。
 
-- [ ] **Step 3: 实现 Schema**
+- [x] **Step 3: 实现 Schema**
 
 在 ReferenceImportRequest 后增加：
 
@@ -171,7 +171,7 @@ class ReferenceFilters(StrictModel):
     limit: int = Field(default=100, ge=1, le=500)
 ~~~
 
-- [ ] **Step 4: 实现 ReferenceCatalog**
+- [x] **Step 4: 实现 ReferenceCatalog**
 
 导入 ReferenceUpdateRequest，并在 delete_reference 前加入：
 
@@ -243,7 +243,7 @@ class ReferenceFilters(StrictModel):
         )
 ~~~
 
-- [ ] **Step 5: 运行参考目录测试**
+- [x] **Step 5: 运行参考目录测试**
 
 Run:
 
@@ -253,7 +253,7 @@ python -m pytest backend/tests/test_reference_catalog.py -v
 
 Expected: PASS。
 
-- [ ] **Step 6: 提交**
+- [x] **Step 6: 提交**
 
 ~~~powershell
 git add Tools/AiArtAgentPlatform/backend/app/schemas/style_pack.py Tools/AiArtAgentPlatform/backend/app/style_pack/references.py Tools/AiArtAgentPlatform/backend/tests/test_reference_catalog.py
@@ -269,7 +269,7 @@ git commit -m "feat: manage reference metadata"
 - Modify: Tools/AiArtAgentPlatform/backend/app/api/style_pack.py
 - Modify: Tools/AiArtAgentPlatform/backend/tests/test_style_pack_api.py
 
-- [ ] **Step 1: 写入 API 失败测试**
+- [x] **Step 1: 写入 API 失败测试**
 
 在现有综合路由测试导入参考之后、身份保存之前加入：
 
@@ -329,7 +329,7 @@ git commit -m "feat: manage reference metadata"
     assert missing_thumbnail.status_code == httpx.codes.NOT_FOUND
 ~~~
 
-- [ ] **Step 2: 运行测试并确认失败**
+- [x] **Step 2: 运行测试并确认失败**
 
 Run:
 
@@ -339,7 +339,7 @@ python -m pytest backend/tests/test_style_pack_api.py -v
 
 Expected: FAIL，PUT 和 thumbnail 路由返回 405 或 404。
 
-- [ ] **Step 3: 实现 API**
+- [x] **Step 3: 实现 API**
 
 从 schemas.style_pack 导入 ReferenceUpdateRequest。给 list_references 增加参数：
 
@@ -397,7 +397,7 @@ def read_reference_thumbnail(
     return Response(content=content, media_type="image/png")
 ~~~
 
-- [ ] **Step 4: 运行 API 测试**
+- [x] **Step 4: 运行 API 测试**
 
 Run:
 
@@ -407,7 +407,7 @@ python -m pytest backend/tests/test_style_pack_api.py backend/tests/test_referen
 
 Expected: PASS。
 
-- [ ] **Step 5: 提交**
+- [x] **Step 5: 提交**
 
 ~~~powershell
 git add Tools/AiArtAgentPlatform/backend/app/api/style_pack.py Tools/AiArtAgentPlatform/backend/tests/test_style_pack_api.py
@@ -425,7 +425,7 @@ git commit -m "feat: expose reference library editing"
 - Modify: Tools/AiArtAgentPlatform/backend/app/production/sequence_service.py
 - Create: Tools/AiArtAgentPlatform/backend/tests/test_project_activity.py
 
-- [ ] **Step 1: 写入项目活动失败测试**
+- [x] **Step 1: 写入项目活动失败测试**
 
 创建 test_project_activity.py：
 
@@ -565,7 +565,7 @@ def test_project_activity_groups_static_and_sequence_work(
     assert sequences.list_project_runs("wuxia-demo")[0].run_id == "run-effect"
 ~~~
 
-- [ ] **Step 2: 运行测试并确认失败**
+- [x] **Step 2: 运行测试并确认失败**
 
 Run:
 
@@ -575,7 +575,7 @@ python -m pytest backend/tests/test_project_activity.py -v
 
 Expected: FAIL，activity 模块和 list_project_runs 不存在。
 
-- [ ] **Step 3: 创建活动 Schema**
+- [x] **Step 3: 创建活动 Schema**
 
 创建 activity.py：
 
@@ -619,7 +619,7 @@ class ProjectActivitySummary(StrictModel):
         return self
 ~~~
 
-- [ ] **Step 4: 增加序列项目级读取**
+- [x] **Step 4: 增加序列项目级读取**
 
 在 SequenceProductionService.list_runs 后加入：
 
@@ -644,7 +644,7 @@ class ProjectActivitySummary(StrictModel):
         return sorted(runs, key=lambda item: item.updated_at, reverse=True)
 ~~~
 
-- [ ] **Step 5: 创建聚合服务**
+- [x] **Step 5: 创建聚合服务**
 
 创建 project_activity.py：
 
@@ -745,7 +745,7 @@ class ProjectActivityService:
         )
 ~~~
 
-- [ ] **Step 6: 运行领域测试**
+- [x] **Step 6: 运行领域测试**
 
 Run:
 
@@ -755,7 +755,7 @@ python -m pytest backend/tests/test_project_activity.py backend/tests/test_seque
 
 Expected: PASS。
 
-- [ ] **Step 7: 提交**
+- [x] **Step 7: 提交**
 
 ~~~powershell
 git add Tools/AiArtAgentPlatform/backend/app/schemas/activity.py Tools/AiArtAgentPlatform/backend/app/workspace/project_activity.py Tools/AiArtAgentPlatform/backend/app/production/sequence_service.py Tools/AiArtAgentPlatform/backend/tests/test_project_activity.py
@@ -774,7 +774,7 @@ git commit -m "feat: aggregate project activity"
 - Modify: Tools/AiArtAgentPlatform/backend/tests/test_projects_api.py
 - Create: Tools/AiArtAgentPlatform/shared/schemas/project-activity.schema.json
 
-- [ ] **Step 1: 写入活动路由失败测试**
+- [x] **Step 1: 写入活动路由失败测试**
 
 在 test_projects_api.py 创建项目后加入：
 
@@ -818,7 +818,7 @@ git commit -m "feat: aggregate project activity"
         assert missing_activity.status_code == httpx.codes.NOT_FOUND
 ~~~
 
-- [ ] **Step 2: 运行测试并确认失败**
+- [x] **Step 2: 运行测试并确认失败**
 
 Run:
 
@@ -828,7 +828,7 @@ python -m pytest backend/tests/test_projects_api.py -v
 
 Expected: FAIL，activity 路由不存在。
 
-- [ ] **Step 3: 装配服务与路由**
+- [x] **Step 3: 装配服务与路由**
 
 在 main.py 创建 sequence_production_service 局部变量，再同时写入 state：
 
@@ -877,7 +877,7 @@ def read_project_activity(
         ) from error
 ~~~
 
-- [ ] **Step 4: 导出活动 Schema**
+- [x] **Step 4: 导出活动 Schema**
 
 在 schemas/export.py 导入 ProjectActivitySummary，并在 SCHEMA_MODELS 首项加入：
 
@@ -893,7 +893,7 @@ powershell -ExecutionPolicy Bypass -File scripts/generate-schemas.ps1
 
 Expected: shared/schemas/project-activity.schema.json 生成，目录共有 10 个 Schema。
 
-- [ ] **Step 5: 运行后端回归**
+- [x] **Step 5: 运行后端回归**
 
 Run:
 
@@ -905,7 +905,7 @@ python -m mypy backend/app
 
 Expected: 全部 PASS。
 
-- [ ] **Step 6: 提交**
+- [x] **Step 6: 提交**
 
 ~~~powershell
 git add Tools/AiArtAgentPlatform/backend/app/api/projects.py Tools/AiArtAgentPlatform/backend/app/main.py Tools/AiArtAgentPlatform/backend/app/schemas/export.py Tools/AiArtAgentPlatform/backend/tests/test_projects_api.py Tools/AiArtAgentPlatform/shared/schemas/project-activity.schema.json
@@ -926,7 +926,7 @@ git commit -m "feat: expose project activity summary"
 - Modify: Tools/AiArtAgentPlatform/frontend/src/api/stylePack.ts
 - Modify: Tools/AiArtAgentPlatform/frontend/src/api/stylePack.test.ts
 
-- [ ] **Step 1: 写入 API 失败测试**
+- [x] **Step 1: 写入 API 失败测试**
 
 在 client.test.ts 增加：
 
@@ -1019,7 +1019,7 @@ it("creates updates and reads project activity", async () => {
 
 在 stylePack.test.ts 增加 update、material filter、thumbnail 和 delete 断言。
 
-- [ ] **Step 2: 运行测试并确认失败**
+- [x] **Step 2: 运行测试并确认失败**
 
 Run:
 
@@ -1029,7 +1029,7 @@ pnpm --dir frontend test -- src/api/client.test.ts src/api/projects.test.ts src/
 
 Expected: FAIL，缺少 deleteRequest 与新 API。
 
-- [ ] **Step 3: 实现 client 和完整类型**
+- [x] **Step 3: 实现 client 和完整类型**
 
 在 client.ts 增加：
 
@@ -1082,7 +1082,7 @@ export interface ProjectActivitySummary {
 }
 ~~~
 
-- [ ] **Step 4: 实现项目 API**
+- [x] **Step 4: 实现项目 API**
 
 projects.ts 增加 createProject、updateProject、fetchProjectActivity、useCreateProjectMutation、useUpdateProjectMutation 和 useProjectActivityQuery。Mutation 成功后失效：
 
@@ -1103,7 +1103,7 @@ export interface ProjectCreateInput {
 }
 ~~~
 
-- [ ] **Step 5: 实现风格包 API**
+- [x] **Step 5: 实现风格包 API**
 
 stylePack.ts 增加：
 
@@ -1130,7 +1130,7 @@ export type ReferenceUpdateInput = Pick<
 
 实现 updateStyleGuide、fetchReferenceSource、fetchReferences(filters)、updateReference、deleteReference 和 referenceThumbnailUrl。Query Key 必须包含 projectId 与筛选对象；更新、导入和删除成功后同时失效 references 与 project-activity。
 
-- [ ] **Step 6: 运行 API 测试**
+- [x] **Step 6: 运行 API 测试**
 
 Run:
 
@@ -1141,7 +1141,7 @@ pnpm --dir frontend typecheck
 
 Expected: PASS。
 
-- [ ] **Step 7: 提交**
+- [x] **Step 7: 提交**
 
 ~~~powershell
 git add Tools/AiArtAgentPlatform/frontend/src/api/client.ts Tools/AiArtAgentPlatform/frontend/src/api/client.test.ts Tools/AiArtAgentPlatform/frontend/src/types/core.ts Tools/AiArtAgentPlatform/frontend/src/api/projects.ts Tools/AiArtAgentPlatform/frontend/src/api/projects.test.ts Tools/AiArtAgentPlatform/frontend/src/api/stylePack.ts Tools/AiArtAgentPlatform/frontend/src/api/stylePack.test.ts
@@ -1159,7 +1159,7 @@ git commit -m "feat: add project and reference APIs"
 - Create: Tools/AiArtAgentPlatform/frontend/src/components/ProjectWorkspaceCard.tsx
 - Create: Tools/AiArtAgentPlatform/frontend/src/components/ProjectWorkspaceCard.test.tsx
 
-- [ ] **Step 1: 写入 Store 失败测试**
+- [x] **Step 1: 写入 Store 失败测试**
 
 创建 projectWorkspace.test.ts：
 
@@ -1192,7 +1192,7 @@ it("persists the selected project id", () => {
 });
 ~~~
 
-- [ ] **Step 2: 写入组件失败测试**
+- [x] **Step 2: 写入组件失败测试**
 
 创建 ProjectWorkspaceCard.test.tsx，mock 项目 API，验证：
 
@@ -1215,7 +1215,7 @@ await waitFor(() => expect(onSelect).toHaveBeenCalledWith("wuxia-new"));
 
 再验证编辑表单发送完整 ProjectConfig，project_id 和 visual_type 输入为 disabled。
 
-- [ ] **Step 3: 运行测试并确认失败**
+- [x] **Step 3: 运行测试并确认失败**
 
 Run:
 
@@ -1225,7 +1225,7 @@ pnpm --dir frontend test -- src/stores/projectWorkspace.test.ts src/components/P
 
 Expected: FAIL，文件不存在。
 
-- [ ] **Step 4: 实现 Store**
+- [x] **Step 4: 实现 Store**
 
 创建 projectWorkspace.ts：
 
@@ -1266,7 +1266,7 @@ export const useProjectWorkspaceStore = create<ProjectWorkspaceState>()(
 );
 ~~~
 
-- [ ] **Step 5: 实现项目工作区面板**
+- [x] **Step 5: 实现项目工作区面板**
 
 组件 Props 固定为：
 
@@ -1300,7 +1300,7 @@ createProject.mutate(
 
 编辑表单从 activeProject 深拷贝为 draft，完整渲染 models、generation 和 review 字段；保存时调用 updateProject.mutate。页面明确显示 visual_type 为固定武侠预设，项目 ID 不可编辑。活动摘要显示 reference_count 和六类 task_count。
 
-- [ ] **Step 6: 运行组件测试**
+- [x] **Step 6: 运行组件测试**
 
 Run:
 
@@ -1311,7 +1311,7 @@ pnpm --dir frontend typecheck
 
 Expected: PASS。
 
-- [ ] **Step 7: 提交**
+- [x] **Step 7: 提交**
 
 ~~~powershell
 git add Tools/AiArtAgentPlatform/frontend/src/stores/projectWorkspace.ts Tools/AiArtAgentPlatform/frontend/src/stores/projectWorkspace.test.ts Tools/AiArtAgentPlatform/frontend/src/components/ProjectWorkspaceCard.tsx Tools/AiArtAgentPlatform/frontend/src/components/ProjectWorkspaceCard.test.tsx
@@ -1329,7 +1329,7 @@ git commit -m "feat: manage active art projects"
 - Modify: Tools/AiArtAgentPlatform/frontend/src/components/StylePackCard.tsx
 - Modify: Tools/AiArtAgentPlatform/frontend/src/components/StylePackCard.test.tsx
 
-- [ ] **Step 1: 写入失败测试**
+- [x] **Step 1: 写入失败测试**
 
 创建 StyleGuideEditor.test.tsx，传入完整 guide，验证：
 
@@ -1353,7 +1353,7 @@ expect(onSave).not.toHaveBeenCalled();
 
 修正角度后再次保存，断言 onSave 参数包含三项 palette.base、全部 rendering/readability/ui/forbidden 字段，并保持 style_id 与 mode 不变。
 
-- [ ] **Step 2: 运行测试并确认失败**
+- [x] **Step 2: 运行测试并确认失败**
 
 Run:
 
@@ -1363,7 +1363,7 @@ pnpm --dir frontend test -- src/components/StyleGuideEditor.test.tsx
 
 Expected: FAIL，组件不存在。
 
-- [ ] **Step 3: 实现编辑器**
+- [x] **Step 3: 实现编辑器**
 
 在组件中使用以下纯函数：
 
@@ -1393,7 +1393,7 @@ interface StyleGuideEditorProps {
 
 表单必须完整渲染 display_name、reference_source.path、camera 五个字段、palette 两个列表、rendering 五个字段、readability 四个开关、ui 两个字段和 forbidden 列表。style_id 与 reference_source.mode 使用 disabled 输入。保存前执行角度范围校验，提交时对所有列表调用 splitLines。
 
-- [ ] **Step 4: 集成 StylePackCard**
+- [x] **Step 4: 集成 StylePackCard**
 
 StylePackCard 使用 useUpdateStyleGuideMutation，并在 guide.data 存在时渲染：
 
@@ -1408,7 +1408,7 @@ StylePackCard 使用 useUpdateStyleGuideMutation，并在 guide.data 存在时�
 
 保留原有提示词编译预览，不在本任务移除。
 
-- [ ] **Step 5: 运行测试**
+- [x] **Step 5: 运行测试**
 
 Run:
 
@@ -1419,7 +1419,7 @@ pnpm --dir frontend typecheck
 
 Expected: PASS。
 
-- [ ] **Step 6: 提交**
+- [x] **Step 6: 提交**
 
 ~~~powershell
 git add Tools/AiArtAgentPlatform/frontend/src/components/StyleGuideEditor.tsx Tools/AiArtAgentPlatform/frontend/src/components/StyleGuideEditor.test.tsx Tools/AiArtAgentPlatform/frontend/src/components/StylePackCard.tsx Tools/AiArtAgentPlatform/frontend/src/components/StylePackCard.test.tsx
@@ -1439,7 +1439,7 @@ git commit -m "feat: edit complete style guide"
 - Modify: Tools/AiArtAgentPlatform/frontend/src/components/StylePackCard.tsx
 - Modify: Tools/AiArtAgentPlatform/frontend/src/app/styles.css
 
-- [ ] **Step 1: 写入素材源浏览器失败测试**
+- [x] **Step 1: 写入素材源浏览器失败测试**
 
 测试 mock /reference-source?query=hero&limit=100，验证只读提示、搜索结果和导入请求：
 
@@ -1468,11 +1468,11 @@ await waitFor(() =>
 expect(screen.getByText(/源目录只读/)).toBeInTheDocument();
 ~~~
 
-- [ ] **Step 2: 写入参考库失败测试**
+- [x] **Step 2: 写入参考库失败测试**
 
 测试 9、10、31 张参考分别显示三种数量提示；测试 category/identity/usage/viewpoint/material 筛选；编辑 hero-main 后 PUT；确认删除后 DELETE；图片 src 包含 /thumbnail?v=<sha256>。
 
-- [ ] **Step 3: 运行测试并确认失败**
+- [x] **Step 3: 运行测试并确认失败**
 
 Run:
 
@@ -1482,7 +1482,7 @@ pnpm --dir frontend test -- src/components/ReferenceSourceBrowser.test.tsx src/c
 
 Expected: FAIL，组件不存在。
 
-- [ ] **Step 4: 实现 ReferenceSourceBrowser**
+- [x] **Step 4: 实现 ReferenceSourceBrowser**
 
 组件 Props：
 
@@ -1505,7 +1505,7 @@ function splitTags(value: string): string[] {
 
 搜索结果只提供“选择”操作；导入按钮文案固定为“复制到项目参考库”；不得渲染任何移动、重命名或删除源文件操作。
 
-- [ ] **Step 5: 实现 ReferenceLibrary**
+- [x] **Step 5: 实现 ReferenceLibrary**
 
 组件使用本地 filter state 调用 useReferencesQuery。数量提示函数：
 
@@ -1519,11 +1519,11 @@ function coverageMessage(count: number): string {
 
 每张卡片渲染缩略图、ID、尺寸、类别和五类标签。编辑表单使用 useUpdateReferenceMutation；删除前使用 window.confirm("只移除项目副本，不会删除只读源文件。")，确认后调用 useDeleteReferenceMutation。
 
-- [ ] **Step 6: 集成并添加样式**
+- [x] **Step 6: 集成并添加样式**
 
 StylePackCard 依次渲染 StyleGuideEditor、ReferenceSourceBrowser、ReferenceLibrary 和原有提示词预览。styles.css 增加 source-browser、reference-grid、reference-card、reference-filters 的响应式网格；缩略图使用 object-fit: contain，透明棋盘背景，最小可点击区域 44px。
 
-- [ ] **Step 7: 运行测试**
+- [x] **Step 7: 运行测试**
 
 Run:
 
@@ -1534,7 +1534,7 @@ pnpm --dir frontend typecheck
 
 Expected: PASS。
 
-- [ ] **Step 8: 提交**
+- [x] **Step 8: 提交**
 
 ~~~powershell
 git add Tools/AiArtAgentPlatform/frontend/src/components/ReferenceSourceBrowser.tsx Tools/AiArtAgentPlatform/frontend/src/components/ReferenceSourceBrowser.test.tsx Tools/AiArtAgentPlatform/frontend/src/components/ReferenceLibrary.tsx Tools/AiArtAgentPlatform/frontend/src/components/ReferenceLibrary.test.tsx Tools/AiArtAgentPlatform/frontend/src/components/StylePackCard.tsx Tools/AiArtAgentPlatform/frontend/src/app/styles.css
@@ -1553,7 +1553,7 @@ git commit -m "feat: browse and manage art references"
 - Modify: Tools/AiArtAgentPlatform/frontend/src/components/ProductionCard.tsx
 - Modify: Tools/AiArtAgentPlatform/frontend/src/components/ProductionCard.test.tsx
 
-- [ ] **Step 1: 写入 ReferencePicker 失败测试**
+- [x] **Step 1: 写入 ReferencePicker 失败测试**
 
 创建四个已选和一个未选参考，断言第五个 disabled；取消一个后第五个可选：
 
@@ -1565,7 +1565,7 @@ fireEvent.click(screen.getByLabelText("选择 ref-5"));
 expect(onChange).toHaveBeenLastCalledWith(["ref-2", "ref-3", "ref-4", "ref-5"]);
 ~~~
 
-- [ ] **Step 2: 扩展 ProductionCard 测试**
+- [x] **Step 2: 扩展 ProductionCard 测试**
 
 参考 API 返回 item-ref 和 scene-ref。选择 item-ref 后创建资产，断言 POST body：
 
@@ -1577,7 +1577,7 @@ expect(String(createCall?.[1]?.body)).toContain(
 
 增加两个资产和两个 run fixture，使用“已有资产”和“运行记录”下拉框切换，断言当前资产与候选随选择变化。
 
-- [ ] **Step 3: 运行测试并确认失败**
+- [x] **Step 3: 运行测试并确认失败**
 
 Run:
 
@@ -1587,7 +1587,7 @@ pnpm --dir frontend test -- src/components/ReferencePicker.test.tsx src/componen
 
 Expected: FAIL。
 
-- [ ] **Step 4: 实现 ReferencePicker**
+- [x] **Step 4: 实现 ReferencePicker**
 
 Props：
 
@@ -1614,11 +1614,11 @@ const toggle = (referenceId: string) => {
 };
 ~~~
 
-- [ ] **Step 5: 扩展生产草稿 Store**
+- [x] **Step 5: 扩展生产草稿 Store**
 
 增加 referenceIds、setReferenceIds 和 reset，并在类别变化时清空 referenceIds。默认值为 []。
 
-- [ ] **Step 6: 修改 ProductionCard**
+- [x] **Step 6: 修改 ProductionCard**
 
 调用 useReferencesQuery(projectId, { category: draft.category, limit: 100 })，渲染 ReferencePicker。创建任务时使用：
 
@@ -1643,7 +1643,7 @@ useEffect(() => {
 
 选择历史资产后清空当前 run；runs 查询完成后选择目标 run 或第一项。任务尚无 run 时允许 PUT 更新 reference_ids；已有 run 时参考选择只读并提示“该任务已进入生产，参考上下文已锁定”。
 
-- [ ] **Step 7: 运行测试**
+- [x] **Step 7: 运行测试**
 
 Run:
 
@@ -1654,7 +1654,7 @@ pnpm --dir frontend typecheck
 
 Expected: PASS。
 
-- [ ] **Step 8: 提交**
+- [x] **Step 8: 提交**
 
 ~~~powershell
 git add Tools/AiArtAgentPlatform/frontend/src/components/ReferencePicker.tsx Tools/AiArtAgentPlatform/frontend/src/components/ReferencePicker.test.tsx Tools/AiArtAgentPlatform/frontend/src/stores/production.ts Tools/AiArtAgentPlatform/frontend/src/components/ProductionCard.tsx Tools/AiArtAgentPlatform/frontend/src/components/ProductionCard.test.tsx
@@ -1677,7 +1677,7 @@ git commit -m "feat: select references for static assets"
 - Modify: Tools/AiArtAgentPlatform/frontend/src/components/SequenceCard.tsx
 - Modify: Tools/AiArtAgentPlatform/frontend/src/components/SequenceCard.test.tsx
 
-- [ ] **Step 1: 写入导航 Store 与活动卡片失败测试**
+- [x] **Step 1: 写入导航 Store 与活动卡片失败测试**
 
 目标类型：
 
@@ -1693,11 +1693,11 @@ export interface TaskNavigationTarget {
 
 测试点击静态和序列项分别调用 requestOpen，并确保六个分类标题总是存在，即使 recent 为空。
 
-- [ ] **Step 2: 写入序列恢复失败测试**
+- [x] **Step 2: 写入序列恢复失败测试**
 
 mock GET /sequences/effect/sword-flash/runs/run-effect，先向 Store 写入 sequence 目标，渲染 SequenceCard，断言“剑光”、run-effect 预览和恢复后的 draft.assetId。
 
-- [ ] **Step 3: 运行测试并确认失败**
+- [x] **Step 3: 运行测试并确认失败**
 
 Run:
 
@@ -1707,7 +1707,7 @@ pnpm --dir frontend test -- src/stores/taskNavigation.test.ts src/components/Pro
 
 Expected: FAIL。
 
-- [ ] **Step 4: 实现导航 Store 与活动卡片**
+- [x] **Step 4: 实现导航 Store 与活动卡片**
 
 Store：
 
@@ -1733,7 +1733,7 @@ document
   ?.scrollIntoView({ behavior: "smooth", block: "start" });
 ~~~
 
-- [ ] **Step 5: 增加单个序列运行 API**
+- [x] **Step 5: 增加单个序列运行 API**
 
 在 sequences.ts 增加 fetchSequenceRun 与 useSequenceRunQuery，Query Key 为：
 
@@ -1743,7 +1743,7 @@ document
 
 仅在四个标识都存在时 enabled。
 
-- [ ] **Step 6: 消费导航目标**
+- [x] **Step 6: 消费导航目标**
 
 ProductionCard 监听 workflow=static 且 projectId 匹配的目标，从 assets.data 找到 asset；runs.data 到达后选 runId；完成后 clear。
 
@@ -1758,7 +1758,7 @@ navigation.clear();
 
 两个生产 section 分别设置 id="static-production" 和 id="sequence-production"。项目切换时清除不匹配的导航目标。
 
-- [ ] **Step 7: 运行测试**
+- [x] **Step 7: 运行测试**
 
 Run:
 
@@ -1769,7 +1769,7 @@ pnpm --dir frontend typecheck
 
 Expected: PASS。
 
-- [ ] **Step 8: 提交**
+- [x] **Step 8: 提交**
 
 ~~~powershell
 git add Tools/AiArtAgentPlatform/frontend/src/stores/taskNavigation.ts Tools/AiArtAgentPlatform/frontend/src/stores/taskNavigation.test.ts Tools/AiArtAgentPlatform/frontend/src/components/ProjectActivityCard.tsx Tools/AiArtAgentPlatform/frontend/src/components/ProjectActivityCard.test.tsx Tools/AiArtAgentPlatform/frontend/src/api/sequences.ts Tools/AiArtAgentPlatform/frontend/src/api/sequences.test.ts Tools/AiArtAgentPlatform/frontend/src/components/ProductionCard.tsx Tools/AiArtAgentPlatform/frontend/src/components/SequenceCard.tsx Tools/AiArtAgentPlatform/frontend/src/components/SequenceCard.test.tsx
@@ -1786,7 +1786,7 @@ git commit -m "feat: reopen recent art tasks"
 - Modify: Tools/AiArtAgentPlatform/frontend/src/app/App.test.tsx
 - Modify: Tools/AiArtAgentPlatform/frontend/src/app/styles.css
 
-- [ ] **Step 1: 写入 App 失败测试**
+- [x] **Step 1: 写入 App 失败测试**
 
 在 App.test.tsx mock 两个项目和各自 activity。设置 localStorage activeProjectId=project-b，渲染后断言 project-b 被选中；切换 project-a 后断言风格、参考、资产和 activity 请求均使用 project-a。再模拟 localStorage 保存 missing，断言回退 project-a。
 
@@ -1804,7 +1804,7 @@ await waitFor(() =>
 );
 ~~~
 
-- [ ] **Step 2: 运行测试并确认失败**
+- [x] **Step 2: 运行测试并确认失败**
 
 Run:
 
@@ -1814,7 +1814,7 @@ pnpm --dir frontend test -- src/app/App.test.tsx
 
 Expected: FAIL，App 仍固定 projects.data[0]。
 
-- [ ] **Step 3: 集成当前项目**
+- [x] **Step 3: 集成当前项目**
 
 App 读取 activeProjectId Store，并使用 effect：
 
@@ -1845,11 +1845,11 @@ useEffect(() => {
 
 所有其他卡片继续传入 activeProject?.project_id。
 
-- [ ] **Step 4: 更新布局样式**
+- [x] **Step 4: 更新布局样式**
 
 为项目管理、活动六列、风格编辑、素材浏览和参考库增加桌面双列/移动端单列规则。生产区保持整行宽度，避免参考管理压缩候选画布。不得改变现有武侠宣纸配色变量。
 
-- [ ] **Step 5: 运行前端全量测试**
+- [x] **Step 5: 运行前端全量测试**
 
 Run:
 
@@ -1861,7 +1861,7 @@ pnpm --dir frontend build
 
 Expected: 全部 PASS。
 
-- [ ] **Step 6: 提交**
+- [x] **Step 6: 提交**
 
 ~~~powershell
 git add Tools/AiArtAgentPlatform/frontend/src/app/App.tsx Tools/AiArtAgentPlatform/frontend/src/app/App.test.tsx Tools/AiArtAgentPlatform/frontend/src/app/styles.css
@@ -1882,7 +1882,7 @@ git commit -m "feat: integrate project style workspace"
 - Modify: plans/plan-ai-art-agent-platform-project-style-management.md
 - Modify: plans/plan-ai-art-agent-platform-project-style-management-implementation.md
 
-- [ ] **Step 1: 写入离线 Playwright 场景**
+- [x] **Step 1: 写入离线 Playwright 场景**
 
 新用例拦截全部 /api/v1 请求，以内存对象保存 projects、styleGuide、references、assets 和 sequenceRuns。流程必须执行：
 
@@ -1898,7 +1898,7 @@ git commit -m "feat: integrate project style workspace"
 
 测试内的 PNG 缩略图使用已有 1×1 PNG Buffer，不访问磁盘外部素材。
 
-- [ ] **Step 2: 运行 Playwright 并修复 fixture**
+- [x] **Step 2: 运行 Playwright 并修复 fixture**
 
 Run:
 
@@ -1908,7 +1908,7 @@ pnpm --dir frontend e2e -- project-style-management.spec.ts production.spec.ts
 
 Expected: 2 passed。
 
-- [ ] **Step 3: 更新文档与计划轨迹**
+- [x] **Step 3: 更新文档与计划轨迹**
 
 Tools/AiArtAgentPlatform/README.md 和根 README.md 更新为：
 
@@ -1921,7 +1921,7 @@ Tools/AiArtAgentPlatform/README.md 和根 README.md 更新为：
 
 在主计划和方案 A 规格的变更记录追加 2026-07-28 记录，列出实际文件、实现内容和最终验证结果。实施计划中把全部完成的 checkbox 改为 [x]，并追加变更记录。
 
-- [ ] **Step 4: 执行后端全量门禁**
+- [x] **Step 4: 执行后端全量门禁**
 
 Run:
 
@@ -1933,7 +1933,7 @@ python -m mypy backend/app
 
 Expected: 全部 PASS，测试数不少于实施前的 134 项。
 
-- [ ] **Step 5: 执行前端全量门禁**
+- [x] **Step 5: 执行前端全量门禁**
 
 Run:
 
@@ -1946,7 +1946,7 @@ pnpm --dir frontend e2e
 
 Expected: 全部 PASS，Playwright 至少 2 项。
 
-- [ ] **Step 6: 验证 Schema 稳定**
+- [x] **Step 6: 验证 Schema 稳定**
 
 Run:
 
@@ -1959,7 +1959,7 @@ Get-FileHash shared/schemas/*.json | Sort-Object Path
 
 Expected: 两次 10 个 Schema 的 SHA256 完全一致。
 
-- [ ] **Step 7: 执行无密钥启动冒烟**
+- [x] **Step 7: 执行无密钥启动冒烟**
 
 Run:
 
@@ -1970,7 +1970,7 @@ powershell -ExecutionPolicy Bypass -File scripts/start.ps1 -SmokeTest
 
 Expected: 健康检查成功，127.0.0.1:5173 与 127.0.0.1:8765 在脚本退出后释放，不产生 OpenAI 请求。
 
-- [ ] **Step 8: 验证只读素材未变化**
+- [x] **Step 8: 验证只读素材未变化**
 
 对 shared/presets/wuxia-ink-chibi-topdown-2_5d/style-guide.yaml 中 reference_source.path 指向的源目录执行项目既有 Pilot 哈希检查，比较阶段 9 保存的 28 个源文件记录。
 
@@ -1982,7 +1982,7 @@ python -m pytest backend/tests/test_offline_pilot.py -v
 
 Expected: PASS；源素材哈希与阶段 9 记录一致。
 
-- [ ] **Step 9: 最终提交**
+- [x] **Step 9: 最终提交**
 
 先确认暂存区只包含方案 A 文件：
 
@@ -2015,3 +2015,10 @@ git commit -m "feat: complete project style management"
 - **修改文件**：plans/plan-ai-art-agent-platform-project-style-management-implementation.md
 - **变更内容**：将方案 A 拆分为 12 个可独立验证和提交的 TDD 任务，覆盖后端参考管理、活动聚合、前端项目/风格包管理、任务恢复、离线端到端验收与全量门禁。
 - **关联说明**：实施阶段必须使用 superpowers:subagent-driven-development 或 superpowers:executing-plans；本计划不授权 Unity MCP、Unity Editor 或真实 OpenAI 调用。
+
+### 2026-07-28 - 完成 12 项测试先行实施任务
+
+- **修改文件**：后端活动/参考 Schema、服务、API、测试和 `project-activity.schema.json`；前端项目、风格、参考、生产、活动导航、序列恢复、App 集成、Vitest 与 Playwright；`Tools/AiArtAgentPlatform/README.md`、根 `README.md` 和方案 A 计划文件。
+- **变更内容**：完成 Task 1–12，并逐任务提交后端参考管理与活动聚合、前端项目/风格包闭环、静态参考选择、六类最近任务恢复、应用级项目隔离和离线端到端验收。
+- **验证结果**：后端 `137 passed`、Ruff/Mypy 通过；前端 `70 passed / 28 files`、类型检查、Vite 构建和 Playwright `2 passed`；10 份 Schema 两次生成哈希一致；离线 Pilot `5 passed`；环境检查和无密钥启动冒烟通过，端口已释放。
+- **关联说明**：未调用真实 OpenAI、Unity MCP、Unity Editor 或 Play Mode，未修改只读素材、Unity 资源和三条核心时间规则。方案 A 已完成，但方案 B、C 尚未实施。
