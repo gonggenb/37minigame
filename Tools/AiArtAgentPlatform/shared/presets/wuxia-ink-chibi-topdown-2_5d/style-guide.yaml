@@ -1,0 +1,47 @@
+schema_version: 1
+style_id: wuxia-ink-chibi-topdown-2_5d
+display_name: Q版水墨武侠俯视角
+reference_source:
+  path: 'D:\MiniGame\素材\Q版中国风水墨武侠割草游戏仙侠武器音效动画UI图标界面美术素材\Q版中国风水墨武侠割草游戏仙侠武器音效动画UI图标界面美术素材\Q版水墨国风（行侠仗义五千年）'
+  mode: read_only
+camera:
+  projection: orthographic_like
+  pitch_semantic_min: 35
+  pitch_semantic_max: 55
+  shared_view_required: true
+  default_facing: right
+palette:
+  base:
+    - rice_paper
+    - ink_gray
+    - blue_gray
+    - moss_green
+    - warm_earth
+  accents:
+    - vermilion
+    - dark_gold
+rendering:
+  character_proportion: chibi_wuxia
+  character_outline: clean_ink
+  environment_detail: restrained
+  surface_finish: matte_painted_2d
+  shadow_direction: lower_right
+readability:
+  protect_playfield: true
+  character_contrast_above_environment: true
+  preserve_clear_silhouette: true
+  avoid_high_frequency_ground_noise: true
+ui:
+  formal_text_baked_in: false
+  border_language:
+    - ink_edge
+    - rice_paper
+    - vermilion_seal
+    - dark_gold_accent
+forbidden:
+  - pixel_art
+  - photorealism
+  - low_poly_3d
+  - reflective_pbr
+  - neon_palette
+  - baked_text

@@ -1,0 +1,140 @@
+{
+  "$defs": {
+    "GenerationSettings": {
+      "additionalProperties": false,
+      "properties": {
+        "automatic_retry_count": {
+          "default": 2,
+          "maximum": 2,
+          "minimum": 0,
+          "title": "Automatic Retry Count",
+          "type": "integer"
+        },
+        "candidate_count": {
+          "default": 4,
+          "maximum": 4,
+          "minimum": 1,
+          "title": "Candidate Count",
+          "type": "integer"
+        },
+        "image_quality": {
+          "default": "high",
+          "enum": [
+            "low",
+            "medium",
+            "high",
+            "auto"
+          ],
+          "title": "Image Quality",
+          "type": "string"
+        },
+        "transparency_mode": {
+          "default": "postprocess",
+          "enum": [
+            "postprocess",
+            "opaque"
+          ],
+          "title": "Transparency Mode",
+          "type": "string"
+        }
+      },
+      "title": "GenerationSettings",
+      "type": "object"
+    },
+    "ModelSettings": {
+      "additionalProperties": false,
+      "properties": {
+        "image_model": {
+          "default": "gpt-image-2",
+          "title": "Image Model",
+          "type": "string"
+        },
+        "planner_model": {
+          "default": "gpt-5.6",
+          "title": "Planner Model",
+          "type": "string"
+        },
+        "review_model": {
+          "default": "gpt-5.6",
+          "title": "Review Model",
+          "type": "string"
+        }
+      },
+      "title": "ModelSettings",
+      "type": "object"
+    },
+    "ReviewSettings": {
+      "additionalProperties": false,
+      "properties": {
+        "enabled": {
+          "default": true,
+          "title": "Enabled",
+          "type": "boolean"
+        },
+        "hard_constraints_required": {
+          "default": true,
+          "title": "Hard Constraints Required",
+          "type": "boolean"
+        },
+        "minimum_style_score": {
+          "default": 75,
+          "maximum": 100,
+          "minimum": 0,
+          "title": "Minimum Style Score",
+          "type": "integer"
+        }
+      },
+      "title": "ReviewSettings",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "display_name": {
+      "maxLength": 120,
+      "minLength": 1,
+      "title": "Display Name",
+      "type": "string"
+    },
+    "generation": {
+      "$ref": "#/$defs/GenerationSettings"
+    },
+    "language": {
+      "default": "zh-CN",
+      "enum": [
+        "zh-CN",
+        "en-US"
+      ],
+      "title": "Language",
+      "type": "string"
+    },
+    "models": {
+      "$ref": "#/$defs/ModelSettings"
+    },
+    "project_id": {
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
+      "title": "Project Id",
+      "type": "string"
+    },
+    "review": {
+      "$ref": "#/$defs/ReviewSettings"
+    },
+    "schema_version": {
+      "const": 1,
+      "default": 1,
+      "title": "Schema Version",
+      "type": "integer"
+    },
+    "visual_type": {
+      "default": "wuxia-ink-chibi-topdown-2_5d",
+      "title": "Visual Type",
+      "type": "string"
+    }
+  },
+  "required": [
+    "project_id",
+    "display_name"
+  ],
+  "title": "ProjectConfig",
+  "type": "object"
+}

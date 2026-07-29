@@ -1,0 +1,141 @@
+{
+  "$defs": {
+    "AssetCategory": {
+      "enum": [
+        "character",
+        "scene",
+        "item",
+        "animation",
+        "effect",
+        "ui"
+      ],
+      "title": "AssetCategory",
+      "type": "string"
+    },
+    "ImageOutputSpec": {
+      "additionalProperties": false,
+      "properties": {
+        "format": {
+          "const": "png",
+          "default": "png",
+          "title": "Format",
+          "type": "string"
+        },
+        "height": {
+          "exclusiveMinimum": 0,
+          "maximum": 3840,
+          "title": "Height",
+          "type": "integer"
+        },
+        "transparent_required": {
+          "default": true,
+          "title": "Transparent Required",
+          "type": "boolean"
+        },
+        "width": {
+          "exclusiveMinimum": 0,
+          "maximum": 3840,
+          "title": "Width",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "width",
+        "height"
+      ],
+      "title": "ImageOutputSpec",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "asset_type": {
+      "$ref": "#/$defs/AssetCategory"
+    },
+    "camera": {
+      "title": "Camera",
+      "type": "string"
+    },
+    "composition": {
+      "title": "Composition",
+      "type": "string"
+    },
+    "identity_constraints": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Identity Constraints",
+      "type": "array"
+    },
+    "lighting": {
+      "title": "Lighting",
+      "type": "string"
+    },
+    "negative_constraints": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Negative Constraints",
+      "type": "array"
+    },
+    "output_spec": {
+      "$ref": "#/$defs/ImageOutputSpec"
+    },
+    "postprocess_steps": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Postprocess Steps",
+      "type": "array"
+    },
+    "prompt": {
+      "minLength": 1,
+      "title": "Prompt",
+      "type": "string"
+    },
+    "quality_checks": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Quality Checks",
+      "type": "array"
+    },
+    "repair_strategy": {
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "title": "Repair Strategy",
+      "type": "array"
+    },
+    "selected_reference_ids": {
+      "items": {
+        "type": "string"
+      },
+      "maxItems": 4,
+      "title": "Selected Reference Ids",
+      "type": "array"
+    },
+    "usage": {
+      "title": "Usage",
+      "type": "string"
+    }
+  },
+  "required": [
+    "asset_type",
+    "usage",
+    "selected_reference_ids",
+    "composition",
+    "camera",
+    "lighting",
+    "identity_constraints",
+    "prompt",
+    "negative_constraints",
+    "output_spec",
+    "postprocess_steps",
+    "quality_checks",
+    "repair_strategy"
+  ],
+  "title": "GenerationPlan",
+  "type": "object"
+}

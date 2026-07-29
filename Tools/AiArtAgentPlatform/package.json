@@ -1,0 +1,11 @@
+{
+  "name": "ai-art-agent-platform-workspace",
+  "private": true,
+  "packageManager": "pnpm@11.9.0",
+  "scripts": {
+    "dev": "pnpm --dir frontend dev",
+    "build": "pnpm --dir frontend build",
+    "test": "pnpm --dir frontend test",
+    "typecheck": "pnpm --dir frontend typecheck"
+  }
+}

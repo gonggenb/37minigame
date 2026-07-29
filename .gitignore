@@ -106,3 +106,21 @@ InitTestScene*.unity*
 # Auto-generated scenes by play mode tests
 /[Aa]ssets/[Ii]nit[Tt]est[Ss]cene*.unity*
 /Assets/Art/Q版水墨国风（行侠仗义五千年）
+
+# Local AI art agent platform
+/Tools/AiArtAgentPlatform/.env
+/Tools/AiArtAgentPlatform/.venv/
+/Tools/AiArtAgentPlatform/data/
+/Tools/AiArtAgentPlatform/node_modules/
+/Tools/AiArtAgentPlatform/frontend/node_modules/
+/Tools/AiArtAgentPlatform/frontend/dist/
+/Tools/AiArtAgentPlatform/.pytest_cache/
+/Tools/AiArtAgentPlatform/**/__pycache__/
+/Tools/AiArtAgentPlatform/**/*.pyc
+/Tools/AiArtAgentPlatform/frontend/tsconfig.tsbuildinfo
+/Tools/AiArtAgentPlatform/.coverage
+/Tools/AiArtAgentPlatform/coverage/
+/Tools/AiArtAgentPlatform/playwright-report/
+/Tools/AiArtAgentPlatform/test-results/
+/Tools/AiArtAgentPlatform/frontend/test-results/
+/Tools/AiArtAgentPlatform/pilot-output/

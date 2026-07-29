@@ -1,0 +1,662 @@
+{
+  "$defs": {
+    "AssetCategory": {
+      "enum": [
+        "character",
+        "scene",
+        "item",
+        "animation",
+        "effect",
+        "ui"
+      ],
+      "title": "AssetCategory",
+      "type": "string"
+    },
+    "SequenceCandidate": {
+      "additionalProperties": false,
+      "properties": {
+        "candidate_id": {
+          "pattern": "^candidate-[0-3]$",
+          "title": "Candidate Id",
+          "type": "string"
+        },
+        "index": {
+          "maximum": 3,
+          "minimum": 0,
+          "title": "Index",
+          "type": "integer"
+        },
+        "output": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/SequenceOutput"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "raw_strip_relative_path": {
+          "maxLength": 1000,
+          "minLength": 1,
+          "title": "Raw Strip Relative Path",
+          "type": "string"
+        }
+      },
+      "required": [
+        "candidate_id",
+        "index",
+        "raw_strip_relative_path"
+      ],
+      "title": "SequenceCandidate",
+      "type": "object"
+    },
+    "SequenceDriftReport": {
+      "additionalProperties": false,
+      "properties": {
+        "blend_mode_hint": {
+          "default": "alpha",
+          "enum": [
+            "alpha",
+            "additive"
+          ],
+          "title": "Blend Mode Hint",
+          "type": "string"
+        },
+        "failed_frames": {
+          "items": {
+            "type": "integer"
+          },
+          "title": "Failed Frames",
+          "type": "array"
+        },
+        "first_last_difference": {
+          "minimum": 0,
+          "title": "First Last Difference",
+          "type": "number"
+        },
+        "issues": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Issues",
+          "type": "array"
+        },
+        "max_area_drift_ratio": {
+          "minimum": 0,
+          "title": "Max Area Drift Ratio",
+          "type": "number"
+        },
+        "max_baseline_drift_px": {
+          "minimum": 0,
+          "title": "Max Baseline Drift Px",
+          "type": "number"
+        },
+        "max_brightness_jump": {
+          "minimum": 0,
+          "title": "Max Brightness Jump",
+          "type": "number"
+        },
+        "max_center_drift_px": {
+          "minimum": 0,
+          "title": "Max Center Drift Px",
+          "type": "number"
+        },
+        "max_color_drift": {
+          "minimum": 0,
+          "title": "Max Color Drift",
+          "type": "number"
+        },
+        "max_size_drift_ratio": {
+          "minimum": 0,
+          "title": "Max Size Drift Ratio",
+          "type": "number"
+        },
+        "overflow_frames": {
+          "items": {
+            "type": "integer"
+          },
+          "title": "Overflow Frames",
+          "type": "array"
+        },
+        "passed": {
+          "title": "Passed",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "passed",
+        "max_center_drift_px",
+        "max_size_drift_ratio",
+        "max_baseline_drift_px",
+        "max_area_drift_ratio",
+        "max_color_drift",
+        "max_brightness_jump",
+        "first_last_difference"
+      ],
+      "title": "SequenceDriftReport",
+      "type": "object"
+    },
+    "SequenceFrameRecord": {
+      "additionalProperties": false,
+      "properties": {
+        "alpha_bounds": {
+          "maxItems": 4,
+          "minItems": 4,
+          "prefixItems": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "integer"
+            },
+            {
+              "type": "integer"
+            },
+            {
+              "type": "integer"
+            }
+          ],
+          "title": "Alpha Bounds",
+          "type": "array"
+        },
+        "area_ratio": {
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Area Ratio",
+          "type": "number"
+        },
+        "baseline_y": {
+          "title": "Baseline Y",
+          "type": "number"
+        },
+        "brightness": {
+          "maximum": 255,
+          "minimum": 0,
+          "title": "Brightness",
+          "type": "number"
+        },
+        "center_x": {
+          "title": "Center X",
+          "type": "number"
+        },
+        "center_y": {
+          "title": "Center Y",
+          "type": "number"
+        },
+        "index": {
+          "maximum": 31,
+          "minimum": 0,
+          "title": "Index",
+          "type": "integer"
+        },
+        "mean_rgb": {
+          "maxItems": 3,
+          "minItems": 3,
+          "prefixItems": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "integer"
+            },
+            {
+              "type": "integer"
+            }
+          ],
+          "title": "Mean Rgb",
+          "type": "array"
+        },
+        "relative_path": {
+          "maxLength": 1000,
+          "minLength": 1,
+          "title": "Relative Path",
+          "type": "string"
+        },
+        "subject_height": {
+          "minimum": 0,
+          "title": "Subject Height",
+          "type": "integer"
+        },
+        "subject_width": {
+          "minimum": 0,
+          "title": "Subject Width",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "index",
+        "relative_path",
+        "alpha_bounds",
+        "center_x",
+        "center_y",
+        "subject_width",
+        "subject_height",
+        "baseline_y",
+        "area_ratio",
+        "mean_rgb",
+        "brightness"
+      ],
+      "title": "SequenceFrameRecord",
+      "type": "object"
+    },
+    "SequenceOutput": {
+      "additionalProperties": false,
+      "properties": {
+        "columns": {
+          "maximum": 8,
+          "minimum": 1,
+          "title": "Columns",
+          "type": "integer"
+        },
+        "content_sha256": {
+          "pattern": "^[a-f0-9]{64}$",
+          "title": "Content Sha256",
+          "type": "string"
+        },
+        "drift_report": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/SequenceDriftReport"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "drift_report_relative_path": {
+          "maxLength": 1000,
+          "minLength": 1,
+          "title": "Drift Report Relative Path",
+          "type": "string"
+        },
+        "frame_count": {
+          "maximum": 32,
+          "minimum": 1,
+          "title": "Frame Count",
+          "type": "integer"
+        },
+        "frame_height": {
+          "exclusiveMinimum": 0,
+          "maximum": 1024,
+          "title": "Frame Height",
+          "type": "integer"
+        },
+        "frame_relative_paths": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 32,
+          "minItems": 1,
+          "title": "Frame Relative Paths",
+          "type": "array"
+        },
+        "frame_width": {
+          "exclusiveMinimum": 0,
+          "maximum": 1024,
+          "title": "Frame Width",
+          "type": "integer"
+        },
+        "frames": {
+          "items": {
+            "$ref": "#/$defs/SequenceFrameRecord"
+          },
+          "maxItems": 32,
+          "title": "Frames",
+          "type": "array"
+        },
+        "gif_relative_path": {
+          "maxLength": 1000,
+          "minLength": 1,
+          "title": "Gif Relative Path",
+          "type": "string"
+        },
+        "rows": {
+          "maximum": 8,
+          "minimum": 1,
+          "title": "Rows",
+          "type": "integer"
+        },
+        "sprite_sheet_height": {
+          "exclusiveMinimum": 0,
+          "maximum": 8192,
+          "title": "Sprite Sheet Height",
+          "type": "integer"
+        },
+        "sprite_sheet_relative_path": {
+          "maxLength": 1000,
+          "minLength": 1,
+          "title": "Sprite Sheet Relative Path",
+          "type": "string"
+        },
+        "sprite_sheet_width": {
+          "exclusiveMinimum": 0,
+          "maximum": 8192,
+          "title": "Sprite Sheet Width",
+          "type": "integer"
+        },
+        "webp_relative_path": {
+          "maxLength": 1000,
+          "minLength": 1,
+          "title": "Webp Relative Path",
+          "type": "string"
+        }
+      },
+      "required": [
+        "frame_count",
+        "rows",
+        "columns",
+        "frame_width",
+        "frame_height",
+        "sprite_sheet_width",
+        "sprite_sheet_height",
+        "frame_relative_paths",
+        "sprite_sheet_relative_path",
+        "gif_relative_path",
+        "webp_relative_path",
+        "drift_report_relative_path",
+        "content_sha256"
+      ],
+      "title": "SequenceOutput",
+      "type": "object"
+    },
+    "SequenceTask": {
+      "additionalProperties": false,
+      "properties": {
+        "action": {
+          "maxLength": 80,
+          "minLength": 1,
+          "title": "Action",
+          "type": "string"
+        },
+        "asset_id": {
+          "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
+          "title": "Asset Id",
+          "type": "string"
+        },
+        "base_frame_workspace_relative_path": {
+          "anyOf": [
+            {
+              "maxLength": 1000,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Base Frame Workspace Relative Path"
+        },
+        "baseline": {
+          "default": "bottom_center",
+          "enum": [
+            "bottom_center",
+            "center",
+            "custom"
+          ],
+          "title": "Baseline",
+          "type": "string"
+        },
+        "blend_mode_hint": {
+          "default": "alpha",
+          "enum": [
+            "alpha",
+            "additive"
+          ],
+          "title": "Blend Mode Hint",
+          "type": "string"
+        },
+        "category": {
+          "$ref": "#/$defs/AssetCategory"
+        },
+        "columns": {
+          "maximum": 8,
+          "minimum": 1,
+          "title": "Columns",
+          "type": "integer"
+        },
+        "frame_count": {
+          "maximum": 32,
+          "minimum": 1,
+          "title": "Frame Count",
+          "type": "integer"
+        },
+        "frame_height": {
+          "exclusiveMinimum": 0,
+          "maximum": 1024,
+          "title": "Frame Height",
+          "type": "integer"
+        },
+        "frame_width": {
+          "exclusiveMinimum": 0,
+          "maximum": 1024,
+          "title": "Frame Width",
+          "type": "integer"
+        },
+        "generation_frame_height": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "maximum": 3840,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Generation Frame Height"
+        },
+        "generation_frame_width": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "maximum": 3840,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Generation Frame Width"
+        },
+        "lock_first_frame": {
+          "default": false,
+          "title": "Lock First Frame",
+          "type": "boolean"
+        },
+        "loop": {
+          "default": true,
+          "title": "Loop",
+          "type": "boolean"
+        },
+        "max_baseline_drift_px": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Max Baseline Drift Px"
+        },
+        "max_center_drift_px": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Max Center Drift Px"
+        },
+        "max_size_drift_ratio": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Max Size Drift Ratio"
+        },
+        "name": {
+          "maxLength": 120,
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "pivot_x": {
+          "default": 0.5,
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Pivot X",
+          "type": "number"
+        },
+        "pivot_y": {
+          "default": 0.5,
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Pivot Y",
+          "type": "number"
+        },
+        "preview_fps": {
+          "exclusiveMinimum": 0,
+          "maximum": 60,
+          "title": "Preview Fps",
+          "type": "number"
+        },
+        "rows": {
+          "maximum": 8,
+          "minimum": 1,
+          "title": "Rows",
+          "type": "integer"
+        },
+        "schema_version": {
+          "const": 1,
+          "default": 1,
+          "title": "Schema Version",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "asset_id",
+        "category",
+        "name",
+        "action",
+        "frame_count",
+        "rows",
+        "columns",
+        "frame_width",
+        "frame_height",
+        "preview_fps"
+      ],
+      "title": "SequenceTask",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "candidates": {
+      "items": {
+        "$ref": "#/$defs/SequenceCandidate"
+      },
+      "maxItems": 4,
+      "title": "Candidates",
+      "type": "array"
+    },
+    "created_at": {
+      "format": "date-time",
+      "title": "Created At",
+      "type": "string"
+    },
+    "project_id": {
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
+      "title": "Project Id",
+      "type": "string"
+    },
+    "prompt": {
+      "default": "",
+      "title": "Prompt",
+      "type": "string"
+    },
+    "reference_grid_relative_path": {
+      "anyOf": [
+        {
+          "maxLength": 1000,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Reference Grid Relative Path"
+    },
+    "run_id": {
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
+      "title": "Run Id",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": 1,
+      "default": 1,
+      "title": "Schema Version",
+      "type": "integer"
+    },
+    "selected_candidate_id": {
+      "anyOf": [
+        {
+          "pattern": "^candidate-[0-3]$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Selected Candidate Id"
+    },
+    "status": {
+      "default": "draft",
+      "enum": [
+        "draft",
+        "reference_ready",
+        "generated",
+        "processed",
+        "exported",
+        "failed"
+      ],
+      "title": "Status",
+      "type": "string"
+    },
+    "task": {
+      "$ref": "#/$defs/SequenceTask"
+    },
+    "updated_at": {
+      "format": "date-time",
+      "title": "Updated At",
+      "type": "string"
+    }
+  },
+  "required": [
+    "run_id",
+    "project_id",
+    "task"
+  ],
+  "title": "SequenceRun",
+  "type": "object"
+}

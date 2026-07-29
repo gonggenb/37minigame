@@ -1,0 +1,95 @@
+{
+  "$defs": {
+    "AssetCategory": {
+      "enum": [
+        "character",
+        "scene",
+        "item",
+        "animation",
+        "effect",
+        "ui"
+      ],
+      "title": "AssetCategory",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "asset_id": {
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
+      "title": "Asset Id",
+      "type": "string"
+    },
+    "brief": {
+      "maxLength": 4000,
+      "minLength": 1,
+      "title": "Brief",
+      "type": "string"
+    },
+    "candidate_count": {
+      "default": 4,
+      "maximum": 4,
+      "minimum": 1,
+      "title": "Candidate Count",
+      "type": "integer"
+    },
+    "category": {
+      "$ref": "#/$defs/AssetCategory"
+    },
+    "constraint_overrides": {
+      "additionalProperties": true,
+      "title": "Constraint Overrides",
+      "type": "object"
+    },
+    "constraint_profile": {
+      "maxLength": 120,
+      "minLength": 1,
+      "title": "Constraint Profile",
+      "type": "string"
+    },
+    "name": {
+      "maxLength": 120,
+      "minLength": 1,
+      "title": "Name",
+      "type": "string"
+    },
+    "output_mode": {
+      "maxLength": 80,
+      "minLength": 1,
+      "title": "Output Mode",
+      "type": "string"
+    },
+    "reference_ids": {
+      "items": {
+        "type": "string"
+      },
+      "maxItems": 4,
+      "title": "Reference Ids",
+      "type": "array"
+    },
+    "style_pack": {
+      "maxLength": 160,
+      "minLength": 1,
+      "title": "Style Pack",
+      "type": "string"
+    },
+    "usage": {
+      "maxLength": 120,
+      "minLength": 1,
+      "title": "Usage",
+      "type": "string"
+    }
+  },
+  "required": [
+    "asset_id",
+    "category",
+    "name",
+    "brief",
+    "usage",
+    "style_pack",
+    "constraint_profile",
+    "output_mode"
+  ],
+  "title": "AssetTask",
+  "type": "object"
+}

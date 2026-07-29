@@ -1,0 +1,180 @@
+schema_version: 1
+pilot_id: wuxia-stage-9
+display_name: Q 版水墨武侠真实素材离线试点
+source_root: 'D:\MiniGame\素材\Q版中国风水墨武侠割草游戏仙侠武器音效动画UI图标界面美术素材\Q版中国风水墨武侠割草游戏仙侠武器音效动画UI图标界面美术素材\Q版水墨国风（行侠仗义五千年）'
+references:
+  - reference_id: hero-zhangsanfeng
+    source_relative_path: 角色立绘/mp_img_wudangpai_zhangsanfeng.png
+    categories: [character]
+    identities: [wudang-master]
+    usages: [character-portrait]
+    viewpoints: [front-portrait]
+    materials: [ink-wash, hand-painted]
+    notes: 武当角色比例、服装与青灰配色参考。
+  - reference_id: hero-meiyanfeng
+    source_relative_path: 角色立绘/mp_img_taohuagu_meiyanfeng.png
+    categories: [character]
+    identities: [female-wuxia]
+    usages: [character-portrait]
+    viewpoints: [front-portrait]
+    materials: [ink-wash, hand-painted]
+    notes: 女性角色轮廓与点色参考。
+  - reference_id: monster-yiren-sheet
+    source_relative_path: 角色切图/sactx-0-1024x512-ETC2-ActorModel_Monster_yiren-d6f5eaf0.png
+    categories: [character, animation]
+    usages: [gameplay-sprite]
+    viewpoints: [topdown-45]
+    notes: 游戏内角色切图和俯视比例参考。
+  - reference_id: hero-yuanchengcike-base
+    source_relative_path: 动画序列/yuanchengcike-idle_0.png
+    categories: [character, animation]
+    identities: [yuanchengcike]
+    usages: [approved-base-frame]
+    viewpoints: [topdown-45]
+    notes: 五动作试点的统一身份基准帧。
+  - reference_id: scene-jianghu
+    source_relative_path: 场景背景/jq_bg_001.png
+    categories: [scene]
+    usages: [battle-background]
+    viewpoints: [topdown-45]
+    materials: [ink-wash, parchment]
+    notes: 主场景层次和水墨地表参考。
+  - reference_id: scene-dungeon
+    source_relative_path: 场景背景/dl_bg_002.png
+    categories: [scene]
+    usages: [cave-background]
+    viewpoints: [topdown-45]
+    notes: 暗部场景和洞穴层次参考。
+  - reference_id: scene-shaolin-map
+    source_relative_path: 场景背景/sactx-3-2048x2048-ETC2-Textures_Map_shaolin-cc8e713e.png
+    categories: [scene]
+    usages: [map-texture]
+    viewpoints: [topdown-45]
+    notes: 少林区域地面纹理和色阶参考。
+  - reference_id: item-chest
+    source_relative_path: 道具图标/icon_sjbx_bs5.png
+    categories: [item]
+    usages: [reward-icon]
+    notes: 宝箱图标轮廓和金色点缀参考。
+  - reference_id: item-sword
+    source_relative_path: 道具图标/icon_cj_qjz.png
+    categories: [item]
+    usages: [weapon-icon]
+    notes: 武器图标构图和留白参考。
+  - reference_id: item-elixir
+    source_relative_path: 道具图标/icon_hh_yxl_03.png
+    categories: [item]
+    usages: [consumable-icon]
+    notes: 消耗品图标材质和高光参考。
+  - reference_id: ui-green-button
+    source_relative_path: UI界面/common_btn_big_green.png
+    categories: [ui]
+    usages: [primary-button]
+    notes: 宣纸、木框与青绿按钮参考。
+  - reference_id: ui-item-name-board
+    source_relative_path: UI界面/common_board_itemname.png
+    categories: [ui]
+    usages: [label-board]
+    notes: 轻量水墨面板边框参考。
+  - reference_id: ui-close-icon
+    source_relative_path: UI界面/common_icon_close.png
+    categories: [ui]
+    usages: [close-icon]
+    notes: 小尺寸功能图标辨识度参考。
+  - reference_id: anim-yuanchengcike-move
+    source_relative_path: 动画序列/yuanchengcike-run_0.png
+    categories: [animation]
+    identities: [yuanchengcike]
+    usages: [move-frame]
+    viewpoints: [topdown-45]
+    notes: 移动动作首帧参考。
+  - reference_id: anim-yuanchengcike-attack
+    source_relative_path: 动画序列/yuanchengcike-skill1_0.png
+    categories: [animation]
+    identities: [yuanchengcike]
+    usages: [attack-frame]
+    viewpoints: [topdown-45]
+    notes: 技能攻击动作首帧参考。
+  - reference_id: anim-yuanchengcike-death
+    source_relative_path: 动画序列/yuanchengcike-death_0.png
+    categories: [animation]
+    identities: [yuanchengcike]
+    usages: [death-frame]
+    viewpoints: [topdown-45]
+    notes: 死亡动作首帧参考。
+  - reference_id: effect-fire-sheet
+    source_relative_path: 特效序列/fire_026_4x4_Tex.png
+    categories: [effect]
+    usages: [combat-effect]
+    notes: 4×4 火焰序列与加法混合参考。
+  - reference_id: effect-smoke-sheet
+    source_relative_path: 特效序列/xulie_smoke_006_4x4_3_Tex.png
+    categories: [effect]
+    usages: [smoke-effect]
+    notes: 水墨烟尘序列和透明衰减参考。
+static_assets:
+  - asset_id: pilot-yuanchengcike
+    category: character
+    source_relative_path: 动画序列/yuanchengcike-idle_0.png
+  - asset_id: pilot-jianghu-scene
+    category: scene
+    source_relative_path: 场景背景/jq_bg_001.png
+  - asset_id: pilot-sword-icon
+    category: item
+    source_relative_path: 道具图标/icon_cj_qjz.png
+  - asset_id: pilot-green-button
+    category: ui
+    source_relative_path: UI界面/common_btn_big_green.png
+character_id: yuanchengcike
+actions:
+  - action: idle
+    source_relative_paths: [动画序列/yuanchengcike-idle_0.png]
+    frame_count: 4
+    preview_fps: 6
+    loop: true
+  - action: move
+    source_relative_paths:
+      - 动画序列/yuanchengcike-run_0.png
+      - 动画序列/yuanchengcike-run_1.png
+      - 动画序列/yuanchengcike-run_2.png
+      - 动画序列/yuanchengcike-run_3.png
+      - 动画序列/yuanchengcike-run_4.png
+    frame_count: 8
+    preview_fps: 10
+    loop: true
+  - action: attack
+    source_relative_paths:
+      - 动画序列/yuanchengcike-skill1_0.png
+      - 动画序列/yuanchengcike-skill1_1.png
+      - 动画序列/yuanchengcike-skill1_2.png
+    frame_count: 6
+    preview_fps: 12
+    loop: false
+  - action: hit
+    source_relative_paths: [动画序列/yuanchengcike-idle_0.png]
+    frame_count: 4
+    preview_fps: 12
+    loop: false
+    derive_hit_proxy: true
+  - action: death
+    source_relative_paths:
+      - 动画序列/yuanchengcike-death_0.png
+      - 动画序列/yuanchengcike-death_1.png
+      - 动画序列/yuanchengcike-death_2.png
+      - 动画序列/yuanchengcike-death_3.png
+      - 动画序列/yuanchengcike-death_4.png
+    frame_count: 8
+    preview_fps: 8
+    loop: false
+    max_center_drift_px: 16
+    max_size_drift_ratio: 0.2
+    max_baseline_drift_px: 2
+effect:
+  asset_id: pilot-fire
+  source_relative_path: 特效序列/fire_026_4x4_Tex.png
+  frame_count: 16
+  rows: 4
+  columns: 4
+  preview_fps: 12
+  loop: false
+  blend_mode_hint: additive

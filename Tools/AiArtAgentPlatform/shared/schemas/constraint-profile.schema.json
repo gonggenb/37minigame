@@ -1,0 +1,283 @@
+{
+  "$defs": {
+    "AssetCategory": {
+      "enum": [
+        "character",
+        "scene",
+        "item",
+        "animation",
+        "effect",
+        "ui"
+      ],
+      "title": "AssetCategory",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "baseline": {
+      "anyOf": [
+        {
+          "enum": [
+            "bottom_center",
+            "center",
+            "custom"
+          ],
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Baseline"
+    },
+    "category": {
+      "$ref": "#/$defs/AssetCategory"
+    },
+    "columns": {
+      "anyOf": [
+        {
+          "exclusiveMinimum": 0,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Columns"
+    },
+    "crop_mode": {
+      "default": "alpha_bounds",
+      "enum": [
+        "alpha_bounds",
+        "fixed",
+        "none"
+      ],
+      "title": "Crop Mode",
+      "type": "string"
+    },
+    "filename_template": {
+      "default": "{asset_id}_{variant}.png",
+      "title": "Filename Template",
+      "type": "string"
+    },
+    "frame_count": {
+      "anyOf": [
+        {
+          "exclusiveMinimum": 0,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Frame Count"
+    },
+    "frame_height": {
+      "anyOf": [
+        {
+          "exclusiveMinimum": 0,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Frame Height"
+    },
+    "frame_width": {
+      "anyOf": [
+        {
+          "exclusiveMinimum": 0,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Frame Width"
+    },
+    "lock_first_frame": {
+      "default": false,
+      "title": "Lock First Frame",
+      "type": "boolean"
+    },
+    "loop": {
+      "anyOf": [
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Loop"
+    },
+    "master_height": {
+      "exclusiveMinimum": 0,
+      "maximum": 3840,
+      "title": "Master Height",
+      "type": "integer"
+    },
+    "master_width": {
+      "exclusiveMinimum": 0,
+      "maximum": 3840,
+      "title": "Master Width",
+      "type": "integer"
+    },
+    "max_center_drift_px": {
+      "anyOf": [
+        {
+          "minimum": 0,
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Max Center Drift Px"
+    },
+    "max_file_bytes": {
+      "default": 8388608,
+      "exclusiveMinimum": 0,
+      "title": "Max File Bytes",
+      "type": "integer"
+    },
+    "max_size_drift_ratio": {
+      "anyOf": [
+        {
+          "minimum": 0,
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Max Size Drift Ratio"
+    },
+    "occupancy_ratio": {
+      "default": 0.75,
+      "exclusiveMinimum": 0,
+      "maximum": 1,
+      "title": "Occupancy Ratio",
+      "type": "number"
+    },
+    "output_height": {
+      "exclusiveMinimum": 0,
+      "maximum": 3840,
+      "title": "Output Height",
+      "type": "integer"
+    },
+    "output_sprite_sheet": {
+      "default": false,
+      "title": "Output Sprite Sheet",
+      "type": "boolean"
+    },
+    "output_width": {
+      "exclusiveMinimum": 0,
+      "maximum": 3840,
+      "title": "Output Width",
+      "type": "integer"
+    },
+    "padding_ratio": {
+      "default": 0.125,
+      "exclusiveMaximum": 0.5,
+      "minimum": 0,
+      "title": "Padding Ratio",
+      "type": "number"
+    },
+    "pivot_x": {
+      "default": 0.5,
+      "maximum": 1,
+      "minimum": 0,
+      "title": "Pivot X",
+      "type": "number"
+    },
+    "pivot_y": {
+      "default": 0.5,
+      "maximum": 1,
+      "minimum": 0,
+      "title": "Pivot Y",
+      "type": "number"
+    },
+    "preview_fps": {
+      "anyOf": [
+        {
+          "exclusiveMinimum": 0,
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Preview Fps"
+    },
+    "profile_id": {
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
+      "title": "Profile Id",
+      "type": "string"
+    },
+    "require_rgba": {
+      "default": true,
+      "title": "Require Rgba",
+      "type": "boolean"
+    },
+    "require_transparency": {
+      "default": true,
+      "title": "Require Transparency",
+      "type": "boolean"
+    },
+    "resize_algorithm": {
+      "default": "lanczos",
+      "enum": [
+        "lanczos",
+        "nearest"
+      ],
+      "title": "Resize Algorithm",
+      "type": "string"
+    },
+    "rows": {
+      "anyOf": [
+        {
+          "exclusiveMinimum": 0,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Rows"
+    },
+    "schema_version": {
+      "const": 1,
+      "default": 1,
+      "title": "Schema Version",
+      "type": "integer"
+    },
+    "shared_scale": {
+      "default": true,
+      "title": "Shared Scale",
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "profile_id",
+    "category",
+    "master_width",
+    "master_height",
+    "output_width",
+    "output_height"
+  ],
+  "title": "ConstraintProfile",
+  "type": "object"
+}

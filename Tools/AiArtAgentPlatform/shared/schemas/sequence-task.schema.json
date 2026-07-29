@@ -1,0 +1,219 @@
+{
+  "$defs": {
+    "AssetCategory": {
+      "enum": [
+        "character",
+        "scene",
+        "item",
+        "animation",
+        "effect",
+        "ui"
+      ],
+      "title": "AssetCategory",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "action": {
+      "maxLength": 80,
+      "minLength": 1,
+      "title": "Action",
+      "type": "string"
+    },
+    "asset_id": {
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
+      "title": "Asset Id",
+      "type": "string"
+    },
+    "base_frame_workspace_relative_path": {
+      "anyOf": [
+        {
+          "maxLength": 1000,
+          "minLength": 1,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Base Frame Workspace Relative Path"
+    },
+    "baseline": {
+      "default": "bottom_center",
+      "enum": [
+        "bottom_center",
+        "center",
+        "custom"
+      ],
+      "title": "Baseline",
+      "type": "string"
+    },
+    "blend_mode_hint": {
+      "default": "alpha",
+      "enum": [
+        "alpha",
+        "additive"
+      ],
+      "title": "Blend Mode Hint",
+      "type": "string"
+    },
+    "category": {
+      "$ref": "#/$defs/AssetCategory"
+    },
+    "columns": {
+      "maximum": 8,
+      "minimum": 1,
+      "title": "Columns",
+      "type": "integer"
+    },
+    "frame_count": {
+      "maximum": 32,
+      "minimum": 1,
+      "title": "Frame Count",
+      "type": "integer"
+    },
+    "frame_height": {
+      "exclusiveMinimum": 0,
+      "maximum": 1024,
+      "title": "Frame Height",
+      "type": "integer"
+    },
+    "frame_width": {
+      "exclusiveMinimum": 0,
+      "maximum": 1024,
+      "title": "Frame Width",
+      "type": "integer"
+    },
+    "generation_frame_height": {
+      "anyOf": [
+        {
+          "exclusiveMinimum": 0,
+          "maximum": 3840,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Generation Frame Height"
+    },
+    "generation_frame_width": {
+      "anyOf": [
+        {
+          "exclusiveMinimum": 0,
+          "maximum": 3840,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Generation Frame Width"
+    },
+    "lock_first_frame": {
+      "default": false,
+      "title": "Lock First Frame",
+      "type": "boolean"
+    },
+    "loop": {
+      "default": true,
+      "title": "Loop",
+      "type": "boolean"
+    },
+    "max_baseline_drift_px": {
+      "anyOf": [
+        {
+          "minimum": 0,
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Max Baseline Drift Px"
+    },
+    "max_center_drift_px": {
+      "anyOf": [
+        {
+          "minimum": 0,
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Max Center Drift Px"
+    },
+    "max_size_drift_ratio": {
+      "anyOf": [
+        {
+          "minimum": 0,
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Max Size Drift Ratio"
+    },
+    "name": {
+      "maxLength": 120,
+      "minLength": 1,
+      "title": "Name",
+      "type": "string"
+    },
+    "pivot_x": {
+      "default": 0.5,
+      "maximum": 1,
+      "minimum": 0,
+      "title": "Pivot X",
+      "type": "number"
+    },
+    "pivot_y": {
+      "default": 0.5,
+      "maximum": 1,
+      "minimum": 0,
+      "title": "Pivot Y",
+      "type": "number"
+    },
+    "preview_fps": {
+      "exclusiveMinimum": 0,
+      "maximum": 60,
+      "title": "Preview Fps",
+      "type": "number"
+    },
+    "rows": {
+      "maximum": 8,
+      "minimum": 1,
+      "title": "Rows",
+      "type": "integer"
+    },
+    "schema_version": {
+      "const": 1,
+      "default": 1,
+      "title": "Schema Version",
+      "type": "integer"
+    }
+  },
+  "required": [
+    "asset_id",
+    "category",
+    "name",
+    "action",
+    "frame_count",
+    "rows",
+    "columns",
+    "frame_width",
+    "frame_height",
+    "preview_fps"
+  ],
+  "title": "SequenceTask",
+  "type": "object"
+}
