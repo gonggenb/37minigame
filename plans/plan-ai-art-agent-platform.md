@@ -658,3 +658,9 @@ V1 不实现数据库、登录、多用户、正式审批、云部署、计费�
 - **前置提交**：`4e98315 chore: track ai art platform foundation`
 - **变更内容**：采用“基线先行并增量扩展”方案，固化动画/特效的结构化规划、项目参考与角色身份上下文、确定性硬约束、可解释视觉评审、最多两次完整条带定向修复、父子运行、风格风险导出门禁和前端工作流设计。
 - **关联说明**：方案 B 将复用现有 `ReviewProvider`、`GenerationPlan`、`QualityReport` 和 `RepairPlanner`，所有生成与修复继续遵守“整条序列一次模型调用”，禁止逐帧调用。当前仅完成设计，尚未实施；方案 C、真实模型采用率和 Unity 人工验收仍待后续处理。
+
+### 2026-07-29 - 批准 React + Tauri 无后端目标架构
+
+- **新增文件**：`docs/superpowers/specs/2026-07-29-ai-art-agent-tauri-design.md`、`plans/plan-ai-art-agent-platform-tauri-redesign.md`
+- **变更内容**：将目标产品重新定位为个人 Windows 单机 2D 游戏资产生产工作台，确认资产任务主流程、六类资产范围、静态优先实施顺序、Tauri 本地核心、Windows 凭据库、`gpt-image-2` Image API、文件工作区兼容和无 HTTP 服务的目标架构。
+- **关联说明**：本主计划此前记录的 React + FastAPI 内容继续作为当前实现和建设历史；新的目标架构由 Tauri 重构设计取代。方案 B 的动画/特效功能目标可在 Tauri 序列阶段继续采用，但其 FastAPI API 和 SSE 假设不再作为实现目标。
