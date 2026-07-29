@@ -651,3 +651,10 @@ V1 不实现数据库、登录、多用户、正式审批、云部署、计费�
 - **变更内容**：完成项目创建、持久化切换与安全编辑，完整风格圣经编辑，只读素材源搜索与复制导入，参考缩略图、五类标签筛选和项目副本维护，静态任务 0–4 张显式参考选择，以及六类最近任务的静态/序列恢复；共享 Schema 数量增至 10。
 - **验证结果**：后端 `137 passed`，Ruff 通过，Mypy 检查 80 个源码文件通过；前端 Vitest `70 passed / 28 files`，TypeScript 与 Vite 构建通过；Playwright Chromium `2 passed`；10 份 Schema 连续生成哈希一致；离线 Pilot `5 passed` 且只读源素材哈希保持一致；环境检查和无密钥启动冒烟通过，5173/8765 端口已释放。
 - **关联说明**：未配置 `.env`，未调用真实 OpenAI、Unity MCP、Unity Editor 或 Play Mode，未修改只读参考素材、Unity Scene/Prefab/玩法代码或三条核心时间规则。方案 B、C 仍待实施，当前不宣称完整 V1 已完成。
+
+### 2026-07-29 - 批准方案 B：动画与特效统一智能体闭环
+
+- **新增文件**：`plans/plan-ai-art-agent-platform-sequence-agent.md`
+- **前置提交**：`4e98315 chore: track ai art platform foundation`
+- **变更内容**：采用“基线先行并增量扩展”方案，固化动画/特效的结构化规划、项目参考与角色身份上下文、确定性硬约束、可解释视觉评审、最多两次完整条带定向修复、父子运行、风格风险导出门禁和前端工作流设计。
+- **关联说明**：方案 B 将复用现有 `ReviewProvider`、`GenerationPlan`、`QualityReport` 和 `RepairPlanner`，所有生成与修复继续遵守“整条序列一次模型调用”，禁止逐帧调用。当前仅完成设计，尚未实施；方案 C、真实模型采用率和 Unity 人工验收仍待后续处理。
