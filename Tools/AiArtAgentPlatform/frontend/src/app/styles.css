@@ -670,6 +670,64 @@ h2 {
   border-left: 3px solid #8a4b37;
 }
 
+.reference-picker {
+  display: grid;
+  gap: 10px;
+}
+
+.reference-picker__heading {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+}
+
+.reference-picker__heading span {
+  color: #6d6e62;
+  font-size: 12px;
+}
+
+.reference-picker__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.reference-picker__item {
+  display: grid !important;
+  grid-template-columns: auto 1fr;
+  gap: 9px !important;
+  align-items: start;
+  min-height: 58px;
+  padding: 10px;
+  background: rgb(255 252 239 / 65%);
+  border: 1px solid #b8aa89;
+  cursor: pointer;
+}
+
+.reference-picker__item--selected {
+  border-color: #8a4b37;
+  box-shadow: inset 3px 0 #8a4b37;
+}
+
+.reference-picker__item input {
+  width: auto !important;
+  margin-top: 3px;
+}
+
+.reference-picker__item span,
+.reference-picker__item strong,
+.reference-picker__item small {
+  display: block;
+  min-width: 0;
+}
+
+.reference-picker__item small {
+  margin-top: 4px;
+  color: #737365;
+  font-weight: 400;
+}
+
 .style-pack-panel {
   display: grid;
   align-content: start;
@@ -921,6 +979,10 @@ h2 {
   grid-column: span 3;
 }
 
+.production-form__wide {
+  grid-column: 1 / -1;
+}
+
 .production-form button,
 .production-stage button,
 .candidate-card button,
@@ -946,6 +1008,41 @@ h2 {
   margin: 12px 0 0;
   color: #596d50;
   font-size: 12px;
+}
+
+.production-history-controls {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(220px, 0.7fr) minmax(220px, 0.7fr);
+  gap: 12px;
+  align-items: end;
+  margin: 16px 0;
+}
+
+.production-history-controls label {
+  display: grid;
+  gap: 6px;
+  color: #665e4d;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.production-history-controls select {
+  min-height: 44px;
+  padding: 10px 11px;
+  color: #242820;
+  background: rgb(255 252 239 / 75%);
+  border: 1px solid #b8aa89;
+  font: inherit;
+}
+
+.production-reference-context {
+  margin: 16px 0;
+  padding: 14px;
+  border: 1px solid rgb(83 89 70 / 18%);
+}
+
+.production-reference-context:disabled {
+  opacity: 0.72;
 }
 
 .production-stage,
@@ -1534,6 +1631,8 @@ h2 {
   .reference-filters,
   .reference-grid,
   .reference-editor__grid,
+  .reference-picker__grid,
+  .production-history-controls,
   .constraint-layout,
   .constraint-result,
   .production-form,
@@ -1579,6 +1678,10 @@ h2 {
   }
 
   .production-form__brief {
+    grid-column: auto;
+  }
+
+  .production-form__wide {
     grid-column: auto;
   }
 
