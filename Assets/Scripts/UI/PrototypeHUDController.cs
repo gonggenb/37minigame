@@ -192,9 +192,19 @@ namespace WuxiaRoguelite.UI
         private GUIStyle bossIntroNameStyle;
         private GUIStyle bossDialogueSpeakerStyle;
         private GUIStyle bossDialogueBodyStyle;
+        private GUIStyle hudValueStyle;
+        private GUIStyle skillBadgeStyle;
+        private GUIStyle skillCooldownStyle;
+        private GUIStyle skillReadyStyle;
         private Texture2D runtimeSettingsIcon;
         private Texture2D runtimePortraitBackdrop;
         private BattleScreenController battleScreen;
+        private readonly System.Collections.Generic.List<PlayerStats.TimedBuffSnapshot> timedBuffBuffer =
+            new System.Collections.Generic.List<PlayerStats.TimedBuffSnapshot>(4);
+        private WuxiaRoguelite.Runtime.CombatantStats trackedHudStats;
+        private float previousHudHealth;
+        private float healthBeforeDamageRatio;
+        private float healthDamageStartedAt = -10f;
         private bool characterPanelOpen;
         private bool settingsOpen;
         private bool debugVisible;
@@ -215,6 +225,9 @@ namespace WuxiaRoguelite.UI
         private static readonly Color Gold = new Color(0.86f, 0.68f, 0.32f, 1f);
         private static readonly Color Paper = new Color(0.92f, 0.88f, 0.74f, 1f);
         private static readonly Color Muted = new Color(0.66f, 0.70f, 0.67f, 1f);
+        private static readonly Color Crimson = new Color(0.76f, 0.12f, 0.10f, 1f);
+        private const float SkillReadyHighlightDuration = 0.72f;
+        private const float HealthLossTrailDuration = 0.82f;
 
         private void Awake()
         {
@@ -224,10 +237,13 @@ namespace WuxiaRoguelite.UI
             }
 
             battleScreen = FindAnyObjectByType<BattleScreenController>();
+            ResetHealthFeedbackTracking();
         }
 
         private void Update()
         {
+            UpdateHealthFeedback();
+
             if (gameFlow != null &&
                 (gameFlow.IsBossIntroActive || gameFlow.IsOpeningIntroActive))
             {
@@ -318,6 +334,7 @@ namespace WuxiaRoguelite.UI
 
                 if (battleManager != null && battleManager.IsBattleActive)
                 {
+                    DrawUnifiedCombatHud();
                     DrawSettingsButton();
                     return;
                 }
@@ -451,6 +468,11 @@ namespace WuxiaRoguelite.UI
             bossDialogueSpeakerStyle = LabelStyle(18, FontStyle.Bold, TextAnchor.MiddleLeft,
                 new Color(1f, 0.78f, 0.38f));
             bossDialogueBodyStyle = LabelStyle(17, FontStyle.Normal, TextAnchor.UpperLeft, Paper);
+            hudValueStyle = LabelStyle(12, FontStyle.Bold, TextAnchor.MiddleCenter, Color.white);
+            skillBadgeStyle = LabelStyle(9, FontStyle.Bold, TextAnchor.MiddleCenter, Color.white);
+            skillCooldownStyle = LabelStyle(12, FontStyle.Bold, TextAnchor.MiddleCenter, Color.white);
+            skillReadyStyle = LabelStyle(9, FontStyle.Bold, TextAnchor.MiddleCenter,
+                new Color(1f, 0.94f, 0.70f));
             runtimeSettingsIcon = CreateSettingsIcon(64);
             runtimePortraitBackdrop = CreateCircleTexture(64,
                 new Color(0.045f, 0.055f, 0.052f, 0.96f));
@@ -622,14 +644,15 @@ namespace WuxiaRoguelite.UI
             Rect safe = ResponsiveGui.SafeArea;
             bool portraitLayout = ResponsiveGui.IsPortrait;
             float hudWidth = portraitLayout
-                ? Mathf.Min(268f, safe.width - 24f)
-                : Mathf.Min(306f, safe.width - 24f);
-            float portraitSize = portraitLayout ? 74f : 64f;
+                ? Mathf.Min(414f, safe.width - 82f)
+                : Mathf.Min(372f, safe.width - 92f);
+            float portraitSize = portraitLayout ? 76f : 70f;
             float portraitInset = portraitLayout ? 6f : 5f;
-            float topHeight = portraitLayout ? 84f : 68f;
-            float detailHeight = portraitLayout ? 38f : 30f;
+            float topHeight = portraitLayout ? 88f : 82f;
+            float detailHeight = portraitLayout ? 32f : 30f;
+            float loadoutHeight = portraitLayout ? 64f : 60f;
             Rect hud = new Rect(safe.x + 12f, safe.y + 12f, hudWidth,
-                topHeight + 4f + detailHeight);
+                topHeight + 4f + detailHeight + 4f + loadoutHeight);
             float timeRatio = GetMainTimeRatio();
             Color accent = GetMainTimeColor(timeRatio);
 
@@ -692,16 +715,19 @@ namespace WuxiaRoguelite.UI
             ResponsiveGui.DrawSingleLineLabel(
                 new Rect(contentX + 8f, hud.y + 29f, contentWidth - 16f, 17f),
                 $"气血  {playerStats.runtimeStats.currentHealth:0}/{playerStats.runtimeStats.maxHealth:0}",
-                mutedStyle, 9);
-            Rect healthRect = new Rect(contentX + 8f, hud.y + 47f, contentWidth - 16f, 8f);
+                hudValueStyle, 9);
+            Rect healthRect = new Rect(contentX + 8f, hud.y + 47f, contentWidth - 16f, 15f);
             DrawHealthBar(healthRect, playerStats.runtimeStats.HealthRatio);
 
             Rect timeTrack = new Rect(contentX + 8f,
-                hud.y + (portraitLayout ? 63f : 57f), contentWidth - 16f, 10f);
+                hud.y + (portraitLayout ? 68f : 67f), contentWidth - 16f, 10f);
             DrawMainTimeTrack(timeTrack, timeRatio, false);
 
             Rect detailRow = new Rect(hud.x, hud.y + topHeight + 4f, hud.width, detailHeight);
             DrawHudDetailRow(detailRow, portraitLayout, accent);
+
+            Rect loadoutRow = new Rect(hud.x, detailRow.yMax + 4f, hud.width, loadoutHeight);
+            DrawLoadoutStrip(loadoutRow, false);
 
             float preferredStatusWidth =
                 ResponsiveGui.PreferredSingleLineWidth(gameFlow.statusMessage, bodyStyle, 28f);
@@ -714,6 +740,43 @@ namespace WuxiaRoguelite.UI
             ResponsiveGui.DrawSingleLineLabel(
                 new Rect(message.x + 12f, message.y + 3f, message.width - 24f, message.height - 6f),
                 gameFlow.statusMessage, bodyStyle, 10);
+        }
+
+        private void DrawUnifiedCombatHud()
+        {
+            Rect safe = ResponsiveGui.SafeArea;
+            bool portraitLayout = ResponsiveGui.IsPortrait;
+            float width = portraitLayout
+                ? Mathf.Max(218f, (safe.width - 44f) * 0.5f)
+                : Mathf.Min(340f, safe.width * 0.35f);
+            float healthTop = portraitLayout
+                ? safe.y + 104f
+                : Mathf.Clamp(ResponsiveGui.Height * 0.145f, 98f, 108f);
+            float height = portraitLayout ? 126f : 140f;
+            Rect hud = new Rect(safe.x + (portraitLayout ? 16f : Mathf.Clamp(ResponsiveGui.Width * 0.055f, 34f, 72f)),
+                healthTop, width, height);
+            Color accent = gameFlow.CurrentPhase == GamePhase.BossBattle
+                ? new Color(0.88f, 0.27f, 0.18f)
+                : gameFlow.CurrentPhase == GamePhase.CaveRunning
+                    ? new Color(0.30f, 0.66f, 0.90f)
+                    : Jade;
+
+            DrawPanel(hud, new Color(0.025f, 0.035f, 0.038f, 0.94f), accent);
+            ResponsiveGui.DrawSingleLineLabel(
+                new Rect(hud.x + 12f, hud.y + 4f, hud.width * 0.56f, 22f),
+                playerStats.runtimeStats.displayName, headingStyle, 10);
+            ResponsiveGui.DrawSingleLineLabel(
+                new Rect(hud.x + hud.width * 0.55f, hud.y + 4f, hud.width * 0.40f, 22f),
+                $"等级 {playerStats.level}", mutedStyle, 9);
+
+            Rect health = new Rect(hud.x + 12f, hud.y + 28f, hud.width - 24f, 23f);
+            DrawHealthBar(health, playerStats.runtimeStats.HealthRatio);
+            ResponsiveGui.DrawSingleLineLabel(health,
+                $"气血  {playerStats.runtimeStats.currentHealth:0} / {playerStats.runtimeStats.maxHealth:0}",
+                hudValueStyle, 9);
+
+            Rect loadout = new Rect(hud.x + 7f, hud.y + 58f, hud.width - 14f, hud.height - 65f);
+            DrawLoadoutStrip(loadout, true);
         }
 
         private void DrawHudDetailRow(Rect rect, bool portraitLayout, Color accent)
@@ -753,6 +816,364 @@ namespace WuxiaRoguelite.UI
             ResponsiveGui.DrawSingleLineLabel(
                 new Rect(rect.x + iconSize + 5f, rect.y, rect.width - iconSize - 7f, rect.height),
                 $"{label} {value}", mutedStyle, 8);
+        }
+
+        private void DrawLoadoutStrip(Rect rect, bool combatLayout)
+        {
+            playerStats.GetTimedBuffSnapshots(timedBuffBuffer);
+            FillRect(rect, new Color(0.018f, 0.024f, 0.025f, 0.94f));
+            DrawRectOutline(rect, new Color(1f, 1f, 1f, 0.10f), 1f);
+
+            float headerHeight = combatLayout ? 13f : 15f;
+            float gap = combatLayout ? 3f : 4f;
+            float slotSize = Mathf.Min(combatLayout ? 45f : 46f, rect.height - headerHeight - 4f);
+            int buffCount = Mathf.Min(timedBuffBuffer.Count,
+                combatLayout && ResponsiveGui.IsPortrait ? 1 : 2);
+            float buffWidth = buffCount > 0 ? buffCount * slotSize + Mathf.Max(0, buffCount - 1) * gap + 8f : 0f;
+            float skillWidth = Mathf.Max(slotSize, rect.width - 10f - buffWidth);
+            int capacity = Mathf.Max(1, Mathf.FloorToInt((skillWidth + gap) / (slotSize + gap)));
+            int learnedCount = playerStats.learnedMartialArts.Count;
+            bool needsOverflow = learnedCount > capacity;
+            int visibleSkills = Mathf.Min(learnedCount, needsOverflow ? Mathf.Max(0, capacity - 1) : capacity);
+
+            ResponsiveGui.DrawSingleLineLabel(
+                new Rect(rect.x + 6f, rect.y, skillWidth - 8f, headerHeight),
+                battleManager != null && battleManager.IsBattleActive ? "武学 · 自动运转" : "武学 · 流派与品类",
+                mutedStyle, 8);
+            if (buffCount > 0)
+            {
+                ResponsiveGui.DrawSingleLineLabel(
+                    new Rect(rect.xMax - buffWidth, rect.y, buffWidth - 2f, headerHeight),
+                    "限时增益", mutedStyle, 8);
+            }
+
+            float y = rect.y + headerHeight + 2f;
+            float x = rect.x + 5f;
+            Rect hoveredRect = default;
+            string hoveredTitle = string.Empty;
+            string hoveredBody = string.Empty;
+            Vector2 mouse = ResponsiveGui.MousePosition(ResponsiveGui.Scale);
+
+            if (learnedCount == 0)
+            {
+                int emptySlots = Mathf.Min(3, capacity);
+                for (int i = 0; i < emptySlots; i++)
+                {
+                    Rect slot = new Rect(x + i * (slotSize + gap), y, slotSize, slotSize);
+                    FillRect(slot, new Color(0.07f, 0.08f, 0.08f, 0.80f));
+                    DrawRectOutline(slot, new Color(0.38f, 0.40f, 0.39f, 0.55f), 1f);
+                    ResponsiveGui.DrawSingleLineLabel(slot, i == 1 ? "待习" : "·", mutedStyle, 8);
+                }
+            }
+            else
+            {
+                for (int i = 0; i < visibleSkills; i++)
+                {
+                    string artId = playerStats.learnedMartialArts[i];
+                    Rect slot = new Rect(x + i * (slotSize + gap), y, slotSize, slotSize);
+                    DrawSkillSlot(slot, artId);
+                    if (slot.Contains(mouse))
+                    {
+                        MartialArtDefinition definition = MartialArtCatalog.Get(artId);
+                        hoveredRect = slot;
+                        hoveredTitle = definition == null ? artId : $"{artId} · {definition.category}";
+                        hoveredBody = definition == null
+                            ? string.Empty
+                            : $"{RankName(playerStats.GetMartialArtRank(artId))} · {definition.GetEffectSummary(playerStats.GetMartialArtRank(artId))}";
+                    }
+                }
+
+                if (needsOverflow)
+                {
+                    int remaining = learnedCount - visibleSkills;
+                    Rect overflow = new Rect(x + visibleSkills * (slotSize + gap), y, slotSize, slotSize);
+                    FillRect(overflow, new Color(0.08f, 0.09f, 0.085f, 0.96f));
+                    DrawRectOutline(overflow, new Color(Gold.r, Gold.g, Gold.b, 0.62f), 1f);
+                    ResponsiveGui.DrawSingleLineLabel(overflow, $"+{remaining}", centeredStyle, 10);
+                    if (overflow.Contains(mouse))
+                    {
+                        hoveredRect = overflow;
+                        hoveredTitle = "其余武学";
+                        hoveredBody = string.Join(" · ", playerStats.learnedMartialArts.Skip(visibleSkills));
+                    }
+                }
+            }
+
+            if (buffCount > 0)
+            {
+                float dividerX = rect.xMax - buffWidth - 1f;
+                FillRect(new Rect(dividerX, y, 1f, slotSize), new Color(Jade.r, Jade.g, Jade.b, 0.38f));
+                float buffX = dividerX + 7f;
+                for (int i = 0; i < buffCount; i++)
+                {
+                    PlayerStats.TimedBuffSnapshot buff = timedBuffBuffer[i];
+                    Rect slot = new Rect(buffX + i * (slotSize + gap), y, slotSize, slotSize);
+                    DrawTimedBuffSlot(slot, buff);
+                    if (slot.Contains(mouse))
+                    {
+                        hoveredRect = slot;
+                        hoveredTitle = buff.displayName;
+                        hoveredBody = $"{buff.effectSummary} · 剩余 {buff.remainingDuration:0.0} 秒";
+                    }
+                }
+            }
+
+            if (!string.IsNullOrEmpty(hoveredTitle))
+            {
+                DrawLoadoutTooltip(hoveredRect, hoveredTitle, hoveredBody);
+            }
+        }
+
+        private void DrawSkillSlot(Rect rect, string artId)
+        {
+            MartialArtDefinition definition = MartialArtCatalog.Get(artId);
+            string category = definition != null ? definition.category : "武学";
+            Color featureColor = definition != null
+                ? SchoolColor(definition.school)
+                : Gold;
+            int rank = Mathf.Max(1, playerStats.GetMartialArtRank(artId));
+            GetSkillCooldownState(artId, out float cooldownRatio, out bool unavailable, out string cooldownText);
+
+            float activationAge = battleManager == null
+                ? 100f
+                : Time.unscaledTime - battleManager.GetMartialArtLastActivationTime(artId);
+            bool highlighted = activationAge >= 0f && activationAge < SkillReadyHighlightDuration;
+            if (highlighted)
+            {
+                float pulse = 1f - activationAge / SkillReadyHighlightDuration;
+                Rect aura = new Rect(rect.x - 3f - pulse * 2f, rect.y - 3f - pulse * 2f,
+                    rect.width + 6f + pulse * 4f, rect.height + 6f + pulse * 4f);
+                DrawRectOutline(aura, new Color(featureColor.r, featureColor.g, featureColor.b, 0.35f + pulse * 0.65f),
+                    2f);
+            }
+
+            FillRect(rect, new Color(0.035f, 0.045f, 0.045f, 0.98f));
+            DrawRectOutline(rect, highlighted ? featureColor : new Color(featureColor.r, featureColor.g, featureColor.b, 0.72f),
+                highlighted ? 2f : 1f);
+
+            Texture2D icon = FindMartialArtIcon(artId);
+            if (icon != null)
+            {
+                Color previous = GUI.color;
+                GUI.color = unavailable
+                    ? new Color(0.40f, 0.42f, 0.41f, 0.76f)
+                    : Color.white;
+                GUI.DrawTexture(new Rect(rect.x + 3f, rect.y + 3f, rect.width - 6f, rect.height - 6f),
+                    icon, ScaleMode.ScaleToFit, true);
+                GUI.color = previous;
+            }
+
+            if (unavailable && cooldownRatio > 0f)
+            {
+                float maskHeight = (rect.height - 4f) * Mathf.Clamp01(cooldownRatio);
+                FillRect(new Rect(rect.x + 2f, rect.y + 2f, rect.width - 4f, maskHeight),
+                    new Color(0.04f, 0.05f, 0.05f, 0.68f));
+            }
+
+            string badge = CategoryBadge(category);
+            Rect categoryBadge = new Rect(rect.x + 2f, rect.yMax - 14f, 17f, 12f);
+            FillRect(categoryBadge, new Color(featureColor.r, featureColor.g, featureColor.b, 0.90f));
+            ResponsiveGui.DrawSingleLineLabel(categoryBadge, badge, skillBadgeStyle, 7);
+
+            Rect rankBadge = new Rect(rect.xMax - 17f, rect.y + 2f, 15f, 13f);
+            FillRect(rankBadge, new Color(0.02f, 0.025f, 0.025f, 0.92f));
+            ResponsiveGui.DrawSingleLineLabel(rankBadge, rank.ToString(), skillBadgeStyle, 7);
+
+            if (!string.IsNullOrEmpty(cooldownText) && unavailable)
+            {
+                FillRect(new Rect(rect.x + 3f, rect.center.y - 9f, rect.width - 6f, 18f),
+                    new Color(0.02f, 0.025f, 0.025f, 0.72f));
+                ResponsiveGui.DrawSingleLineLabel(rect, cooldownText, skillCooldownStyle, 8);
+            }
+
+            if (highlighted)
+            {
+                Rect ready = new Rect(rect.x + 2f, rect.yMax - 13f, rect.width - 4f, 11f);
+                FillRect(ready, new Color(featureColor.r, featureColor.g, featureColor.b, 0.88f));
+                ResponsiveGui.DrawSingleLineLabel(ready, SkillFeatureLabel(artId), skillReadyStyle, 7);
+            }
+        }
+
+        private void DrawTimedBuffSlot(Rect rect, PlayerStats.TimedBuffSnapshot buff)
+        {
+            float pulse = buff.remainingDuration <= 0.7f
+                ? 0.5f + 0.5f * Mathf.Abs(Mathf.Sin(Time.unscaledTime * 9f))
+                : 0f;
+            Color accent = new Color(0.28f + pulse * 0.22f, 0.78f, 0.59f, 1f);
+            FillRect(rect, new Color(0.025f, 0.045f, 0.04f, 0.98f));
+            DrawRectOutline(rect, accent, pulse > 0f ? 2f : 1f);
+
+            Texture2D icon = FindMartialArtIcon(buff.iconId);
+            if (icon != null)
+            {
+                GUI.DrawTexture(new Rect(rect.x + 3f, rect.y + 3f, rect.width - 6f, rect.height - 6f),
+                    icon, ScaleMode.ScaleToFit, true);
+            }
+
+            float elapsedRatio = 1f - buff.RemainingRatio;
+            if (elapsedRatio > 0f)
+            {
+                FillRect(new Rect(rect.x + 2f, rect.y + 2f, rect.width - 4f,
+                        (rect.height - 4f) * elapsedRatio),
+                    new Color(0.02f, 0.035f, 0.03f, 0.42f));
+            }
+
+            Rect timer = new Rect(rect.x + 2f, rect.yMax - 15f, rect.width - 4f, 13f);
+            FillRect(timer, new Color(0.015f, 0.025f, 0.022f, 0.88f));
+            ResponsiveGui.DrawSingleLineLabel(timer, $"{buff.remainingDuration:0.0}s", skillCooldownStyle, 7);
+            if (buff.stackCount > 1)
+            {
+                Rect stack = new Rect(rect.xMax - 18f, rect.y + 2f, 16f, 13f);
+                FillRect(stack, new Color(0.02f, 0.025f, 0.025f, 0.92f));
+                ResponsiveGui.DrawSingleLineLabel(stack, $"×{buff.stackCount}", skillBadgeStyle, 7);
+            }
+        }
+
+        private void GetSkillCooldownState(
+            string artId,
+            out float cooldownRatio,
+            out bool unavailable,
+            out string cooldownText)
+        {
+            cooldownRatio = 0f;
+            unavailable = false;
+            cooldownText = string.Empty;
+            if (battleManager == null || !battleManager.IsBattleActive)
+            {
+                return;
+            }
+
+            switch (artId)
+            {
+                case "剑气诀":
+                    int rank = Mathf.Max(1, playerStats.GetMartialArtRank(artId));
+                    int interval = rank == 1 ? 3 : 2;
+                    int progress = battleManager.PlayerSuccessfulHits % interval;
+                    int hitsRemaining = interval - progress;
+                    cooldownRatio = hitsRemaining / (float)interval;
+                    unavailable = hitsRemaining > 0;
+                    cooldownText = $"{hitsRemaining}招";
+                    break;
+                case "毒砂掌":
+                case "破甲掌":
+                    cooldownRatio = battleManager.PlayerAttackCooldownRatio;
+                    unavailable = cooldownRatio > 0.02f;
+                    cooldownText = battleManager.PlayerAttackCooldownRemaining > 0.05f
+                        ? $"{battleManager.PlayerAttackCooldownRemaining:0.0}s"
+                        : string.Empty;
+                    break;
+                case "反震诀":
+                    cooldownRatio = battleManager.EnemyAttackCooldownRatio;
+                    unavailable = cooldownRatio > 0.02f;
+                    cooldownText = battleManager.EnemyAttackCooldownRemaining > 0.05f
+                        ? $"{battleManager.EnemyAttackCooldownRemaining:0.0}s"
+                        : string.Empty;
+                    break;
+                case "金钟罩":
+                    cooldownRatio = 1f;
+                    unavailable = true;
+                    cooldownText = "本场";
+                    break;
+            }
+        }
+
+        private void DrawLoadoutTooltip(Rect source, string title, string body)
+        {
+            float width = Mathf.Min(306f, ResponsiveGui.SafeArea.width - 24f);
+            float height = string.IsNullOrEmpty(body) ? 34f : 57f;
+            float x = Mathf.Clamp(source.center.x - width * 0.5f, ResponsiveGui.SafeArea.x + 8f,
+                ResponsiveGui.SafeArea.xMax - width - 8f);
+            float y = source.yMax + 8f;
+            if (y + height > ResponsiveGui.SafeArea.yMax - 8f)
+            {
+                y = source.y - height - 8f;
+            }
+
+            Rect tooltip = new Rect(x, y, width, height);
+            DrawPanel(tooltip, new Color(0.025f, 0.032f, 0.03f, 0.98f), Gold);
+            ResponsiveGui.DrawSingleLineLabel(
+                new Rect(tooltip.x + 10f, tooltip.y + 3f, tooltip.width - 20f, 24f),
+                title, headingStyle, 10);
+            if (!string.IsNullOrEmpty(body))
+            {
+                ResponsiveGui.DrawSingleLineLabel(
+                    new Rect(tooltip.x + 10f, tooltip.y + 27f, tooltip.width - 20f, 24f),
+                    body, mutedStyle, 8);
+            }
+        }
+
+        private void UpdateHealthFeedback()
+        {
+            if (playerStats == null || playerStats.runtimeStats == null)
+            {
+                trackedHudStats = null;
+                return;
+            }
+
+            if (!ReferenceEquals(trackedHudStats, playerStats.runtimeStats))
+            {
+                ResetHealthFeedbackTracking();
+                return;
+            }
+
+            float current = playerStats.runtimeStats.currentHealth;
+            if (current < previousHudHealth - 0.01f)
+            {
+                healthBeforeDamageRatio = playerStats.runtimeStats.maxHealth <= 0f
+                    ? 0f
+                    : Mathf.Clamp01(previousHudHealth / playerStats.runtimeStats.maxHealth);
+                healthDamageStartedAt = Time.unscaledTime;
+            }
+
+            previousHudHealth = current;
+        }
+
+        private void ResetHealthFeedbackTracking()
+        {
+            trackedHudStats = playerStats != null ? playerStats.runtimeStats : null;
+            previousHudHealth = trackedHudStats != null ? trackedHudStats.currentHealth : 0f;
+            healthBeforeDamageRatio = trackedHudStats != null ? trackedHudStats.HealthRatio : 0f;
+            healthDamageStartedAt = -10f;
+        }
+
+        private static string CategoryBadge(string category)
+        {
+            switch (category)
+            {
+                case "外功": return "外";
+                case "内功": return "内";
+                case "身法": return "身";
+                case "心法": return "心";
+                default: return "武";
+            }
+        }
+
+        private static string SkillFeatureLabel(string artId)
+        {
+            switch (artId)
+            {
+                case "剑气诀": return "剑气";
+                case "毒砂掌": return "施毒";
+                case "破甲掌": return "破甲";
+                case "反震诀": return "反震";
+                case "金钟罩": return "护盾";
+                case "吸星诀": return "回气";
+                case "百毒心经": return "毒发";
+                default: return "就绪";
+            }
+        }
+
+        private static Color SchoolColor(MartialArtSchool school)
+        {
+            switch (school)
+            {
+                case MartialArtSchool.SwiftSword:
+                    return new Color(0.42f, 0.72f, 0.96f, 1f);
+                case MartialArtSchool.VenomPalm:
+                    return new Color(0.42f, 0.82f, 0.48f, 1f);
+                default:
+                    return new Color(0.92f, 0.52f, 0.25f, 1f);
+            }
         }
 
         private void DrawBossApproachWarning()
@@ -1162,7 +1583,7 @@ namespace WuxiaRoguelite.UI
             DrawStatRow(new Rect(rect.x, y, rect.width, 27f), "气血", $"{playerStats.runtimeStats.currentHealth:0}/{playerStats.runtimeStats.maxHealth:0}", "攻击", playerStats.runtimeStats.attack.ToString("0"));
             DrawStatRow(new Rect(rect.x, y + 31f, rect.width, 27f), "防御", playerStats.runtimeStats.defense.ToString("0"), "攻速", playerStats.runtimeStats.attackSpeed.ToString("0.00"));
             DrawStatRow(new Rect(rect.x, y + 62f, rect.width, 27f), "暴击", $"{playerStats.runtimeStats.critChance * 100f:0.#}%", "闪避", $"{playerStats.runtimeStats.dodgeChance * 100f:0.#}%");
-            DrawStatRow(new Rect(rect.x, y + 93f, rect.width, 27f), "吸血", $"{playerStats.runtimeStats.lifeSteal * 100f:0.#}%", "移速", playerStats.runtimeStats.moveSpeed.ToString("0.0"));
+            DrawStatRow(new Rect(rect.x, y + 93f, rect.width, 27f), "吸血", $"{playerStats.runtimeStats.lifeSteal * 100f:0.#}%", "移速", playerStats.CurrentMoveSpeed.ToString("0.0"));
 
             GUI.Label(new Rect(rect.x, y + 130f, rect.width, 22f), "已习武学", headingStyle);
             if (playerStats.learnedMartialArts.Count == 0)
@@ -1523,25 +1944,60 @@ namespace WuxiaRoguelite.UI
 
         private void DrawHealthBar(Rect rect, float ratio)
         {
-            if (healthBarBase != null)
+            ratio = Mathf.Clamp01(ratio);
+            float lowHealthPulse = ratio <= 0.25f
+                ? 0.5f + 0.5f * Mathf.Abs(Mathf.Sin(Time.unscaledTime * 7f))
+                : 0f;
+            Color borderColor = ratio <= 0.25f
+                ? new Color(0.88f, 0.15f + lowHealthPulse * 0.18f, 0.10f, 1f)
+                : new Color(0.68f, 0.49f, 0.24f, 1f);
+            FillRect(rect, new Color(0.025f, 0.02f, 0.018f, 0.98f));
+            DrawRectOutline(rect, borderColor, ratio <= 0.25f ? 2f : 1f);
+
+            float inset = Mathf.Clamp(rect.height * 0.16f, 2f, 4f);
+            Rect track = new Rect(rect.x + inset, rect.y + inset,
+                Mathf.Max(0f, rect.width - inset * 2f), Mathf.Max(1f, rect.height - inset * 2f));
+            FillRect(track, new Color(0.13f, 0.045f, 0.035f, 1f));
+
+            float damageAge = Time.unscaledTime - healthDamageStartedAt;
+            if (damageAge >= 0f && damageAge < HealthLossTrailDuration && healthBeforeDamageRatio > ratio)
             {
-                GUI.DrawTexture(rect, healthBarBase, ScaleMode.StretchToFill, true);
-            }
-            else
-            {
-                FillRect(rect, new Color(0.12f, 0.08f, 0.07f));
+                float trailAlpha = 1f - damageAge / HealthLossTrailDuration;
+                Rect loss = new Rect(track.x + track.width * ratio, track.y,
+                    track.width * (healthBeforeDamageRatio - ratio), track.height);
+                FillRect(loss, new Color(1f, 0.67f, 0.20f, 0.88f * trailAlpha));
             }
 
-            float border = Mathf.Clamp(rect.height * 0.22f, 2f, 5f);
-            Rect fill = new Rect(rect.x + border, rect.y + border, Mathf.Max(0f, (rect.width - border * 2f) * ratio), rect.height - border * 2f);
-            if (healthBarFill != null)
+            Color healthColor = ratio <= 0.25f
+                ? new Color(0.88f, 0.12f, 0.09f)
+                : ratio <= 0.5f
+                    ? new Color(0.88f, 0.34f, 0.12f)
+                    : Crimson;
+            Rect current = new Rect(track.x, track.y, track.width * ratio, track.height);
+            FillRect(current, healthColor);
+            if (current.width > 2f)
             {
-                GUI.DrawTexture(fill, healthBarFill, ScaleMode.StretchToFill, true);
+                FillRect(new Rect(current.x, current.y, current.width, Mathf.Max(1f, current.height * 0.25f)),
+                    new Color(1f, 0.62f, 0.42f, 0.40f));
+                FillRect(new Rect(current.xMax - 2f, current.y, 2f, current.height),
+                    new Color(1f, 0.83f, 0.56f, 0.72f));
             }
-            else
+
+            for (int i = 1; i < 4; i++)
             {
-                FillRect(fill, new Color(0.72f, 0.18f, 0.16f));
+                float markerX = track.x + track.width * i * 0.25f;
+                FillRect(new Rect(markerX, track.y, 1f, track.height),
+                    new Color(0.02f, 0.02f, 0.018f, 0.38f));
             }
+        }
+
+        private static void DrawRectOutline(Rect rect, Color color, float thickness)
+        {
+            thickness = Mathf.Max(1f, thickness);
+            FillRect(new Rect(rect.x, rect.y, rect.width, thickness), color);
+            FillRect(new Rect(rect.x, rect.yMax - thickness, rect.width, thickness), color);
+            FillRect(new Rect(rect.x, rect.y, thickness, rect.height), color);
+            FillRect(new Rect(rect.xMax - thickness, rect.y, thickness, rect.height), color);
         }
 
         private static void DrawPanel(Rect rect, Color background, Color accent)

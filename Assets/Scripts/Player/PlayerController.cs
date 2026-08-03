@@ -79,7 +79,7 @@ namespace WuxiaRoguelite.Player
 
         private void FixedUpdate()
         {
-            float speed = stats != null && stats.runtimeStats != null ? stats.runtimeStats.moveSpeed : 5f;
+            float speed = stats != null && stats.runtimeStats != null ? stats.CurrentMoveSpeed : 5f;
             Vector3 movementDirection = GetMovementDirection();
             Vector3 movement = movementDirection * speed * Time.fixedDeltaTime;
             Vector3 nextPosition = body.position + movement;

@@ -3093,6 +3093,7 @@ GameObject:
   - component: {fileID: 285907369}
   - component: {fileID: 285907368}
   - component: {fileID: 285907367}
+  - component: {fileID: 285907373}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -3300,6 +3301,21 @@ Transform:
   - {fileID: 979273217}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &285907373
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 285907366}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2e87dcbfd659049199c1699845717357, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::WuxiaRoguelite.Player.PlayerSpeedBoostVfx
+  playerController: {fileID: 285907367}
+  playerStats: {fileID: 285907368}
+  immortalQiTexture: {fileID: 2800000, guid: 543b22c8ce666417d890d825a1de676d, type: 3}
 --- !u!1 &299636343
 GameObject:
   m_ObjectHideFlags: 0
@@ -7093,6 +7109,8 @@ MonoBehaviour:
   mainTimeLimit: 60
   mainTimeRemaining: 0
   bossBattleTime: 0
+  normalVictoryMoveSpeedBonusRatio: 0.25
+  normalVictoryMoveSpeedBonusDuration: 2.5
   bossStats:
     displayName: "\u4E5D\u5C3E\u5996\u59EC"
     visualId: fox_demon_boss

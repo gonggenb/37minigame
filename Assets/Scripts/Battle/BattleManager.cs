@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using WuxiaRoguelite.Player;
 using WuxiaRoguelite.Runtime;
@@ -26,9 +27,31 @@ namespace WuxiaRoguelite.Battle
         public int EnemyPoisonStacks { get; private set; }
         public float EnemyArmorBreak { get; private set; }
         public float PlayerShield { get; private set; }
+        public float PlayerAttackCooldownRemaining { get; private set; }
+        public float PlayerAttackCooldownDuration { get; private set; }
+        public float EnemyAttackCooldownRemaining { get; private set; }
+        public float EnemyAttackCooldownDuration { get; private set; }
 
         private Coroutine battleRoutine;
         private float poisonTickCooldown;
+        private readonly Dictionary<string, float> martialArtLastActivationTimes =
+            new Dictionary<string, float>();
+
+        public float PlayerAttackCooldownRatio => PlayerAttackCooldownDuration <= 0f
+            ? 0f
+            : Mathf.Clamp01(PlayerAttackCooldownRemaining / PlayerAttackCooldownDuration);
+
+        public float EnemyAttackCooldownRatio => EnemyAttackCooldownDuration <= 0f
+            ? 0f
+            : Mathf.Clamp01(EnemyAttackCooldownRemaining / EnemyAttackCooldownDuration);
+
+        public float GetMartialArtLastActivationTime(string artId)
+        {
+            return !string.IsNullOrEmpty(artId) &&
+                   martialArtLastActivationTimes.TryGetValue(artId, out float activatedAt)
+                ? activatedAt
+                : -100f;
+        }
 
         public void BeginBattle(CombatantStats enemy, Action<bool> onComplete)
         {
@@ -45,7 +68,12 @@ namespace WuxiaRoguelite.Battle
             EnemyPoisonStacks = 0;
             EnemyArmorBreak = 0f;
             poisonTickCooldown = 1f;
+            martialArtLastActivationTimes.Clear();
             PlayerShield = CalculateOpeningShield();
+            if (playerStats.GetMartialArtRank("金钟罩") > 0)
+            {
+                RegisterMartialArtActivation("金钟罩");
+            }
             battleLog = PlayerShield > 0f
                 ? $"遭遇 {currentEnemy.displayName}，护盾 +{PlayerShield:0}"
                 : $"遭遇 {currentEnemy.displayName}";
@@ -65,27 +93,35 @@ namespace WuxiaRoguelite.Battle
             PlayerShield = 0f;
             EnemyPoisonStacks = 0;
             EnemyArmorBreak = 0f;
+            PlayerAttackCooldownRemaining = 0f;
+            PlayerAttackCooldownDuration = 0f;
+            EnemyAttackCooldownRemaining = 0f;
+            EnemyAttackCooldownDuration = 0f;
+            martialArtLastActivationTimes.Clear();
         }
 
         private IEnumerator RunBattle(Action<bool> onComplete)
         {
-            float playerCooldown = 0.2f;
-            float enemyCooldown = 0.7f;
+            PlayerAttackCooldownRemaining = 0.2f;
+            PlayerAttackCooldownDuration = 0.2f;
+            EnemyAttackCooldownRemaining = 0.7f;
+            EnemyAttackCooldownDuration = 0.7f;
 
             while (playerStats.runtimeStats != null && !playerStats.runtimeStats.IsDead &&
                    currentEnemy != null && !currentEnemy.IsDead)
             {
                 float combatDeltaTime = Time.deltaTime * BattleSpeedMultiplier;
                 BattleElapsed += Time.deltaTime;
-                playerCooldown -= combatDeltaTime;
-                enemyCooldown -= combatDeltaTime;
+                PlayerAttackCooldownRemaining -= combatDeltaTime;
+                EnemyAttackCooldownRemaining -= combatDeltaTime;
                 poisonTickCooldown -= combatDeltaTime;
 
-                if (playerCooldown <= 0f)
+                if (PlayerAttackCooldownRemaining <= 0f)
                 {
                     float cooldownMultiplier = DoAttack(playerStats.runtimeStats, currentEnemy);
-                    playerCooldown = 1f / Mathf.Max(0.1f, playerStats.runtimeStats.attackSpeed) *
-                                     cooldownMultiplier;
+                    PlayerAttackCooldownDuration =
+                        1f / Mathf.Max(0.1f, playerStats.runtimeStats.attackSpeed) * cooldownMultiplier;
+                    PlayerAttackCooldownRemaining = PlayerAttackCooldownDuration;
                 }
 
                 if (currentEnemy != null && !currentEnemy.IsDead && poisonTickCooldown <= 0f)
@@ -94,10 +130,11 @@ namespace WuxiaRoguelite.Battle
                     poisonTickCooldown += 1f;
                 }
 
-                if (currentEnemy != null && !currentEnemy.IsDead && enemyCooldown <= 0f)
+                if (currentEnemy != null && !currentEnemy.IsDead && EnemyAttackCooldownRemaining <= 0f)
                 {
                     DoAttack(currentEnemy, playerStats.runtimeStats);
-                    enemyCooldown = 1f / Mathf.Max(0.1f, currentEnemy.attackSpeed);
+                    EnemyAttackCooldownDuration = 1f / Mathf.Max(0.1f, currentEnemy.attackSpeed);
+                    EnemyAttackCooldownRemaining = EnemyAttackCooldownDuration;
                 }
 
                 yield return null;
@@ -271,6 +308,10 @@ namespace WuxiaRoguelite.Battle
 
             EnemyArmorBreak = Mathf.Min(currentEnemy.defense, EnemyArmorBreak + amount);
             effects[effectCount++] = $"破甲 {EnemyArmorBreak:0.0}";
+            if (rank > 0)
+            {
+                RegisterMartialArtActivation("破甲掌");
+            }
         }
 
         private void ApplyPoison(ref string[] effects, ref int effectCount)
@@ -290,6 +331,10 @@ namespace WuxiaRoguelite.Battle
             int maxStacks = 8 + poisonHeartRank * 4;
             EnemyPoisonStacks = Mathf.Min(maxStacks, EnemyPoisonStacks + stacks);
             effects[effectCount++] = $"毒 {EnemyPoisonStacks}";
+            if (playerStats.GetMartialArtRank("毒砂掌") > 0)
+            {
+                RegisterMartialArtActivation("毒砂掌");
+            }
         }
 
         private float ApplySwordQi(CombatantStats attacker, CombatantStats defender)
@@ -302,6 +347,7 @@ namespace WuxiaRoguelite.Battle
                 if (PlayerSuccessfulHits % interval == 0)
                 {
                     ratio += 0.4f + rank * 0.2f;
+                    RegisterMartialArtActivation("剑气诀");
                 }
             }
 
@@ -331,6 +377,7 @@ namespace WuxiaRoguelite.Battle
             float ratio = 0.45f + rank * 0.20f;
             float damage = Mathf.Max(1f, playerStats.runtimeStats.defense * ratio);
             attacker.TakeDamage(damage);
+            RegisterMartialArtActivation("反震诀");
             return damage;
         }
 
@@ -357,7 +404,24 @@ namespace WuxiaRoguelite.Battle
             LastDamage = damage;
             LastTriggeredEffect = $"毒发 {EnemyPoisonStacks} 层";
             AttackSequence += 1;
+            RegisterMartialArtActivation("毒砂掌");
+            if (poisonHeartRank > 0)
+            {
+                RegisterMartialArtActivation("百毒心经");
+            }
+            if (lifeDrainRank > 0)
+            {
+                RegisterMartialArtActivation("吸星诀");
+            }
             battleLog = $"{currentEnemy.displayName} 毒发，受到 {damage:0} 伤害";
+        }
+
+        private void RegisterMartialArtActivation(string artId)
+        {
+            if (!string.IsNullOrEmpty(artId))
+            {
+                martialArtLastActivationTimes[artId] = Time.unscaledTime;
+            }
         }
 
         private static string JoinEffects(string[] effects, int count)

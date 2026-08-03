@@ -75,6 +75,8 @@ namespace WuxiaRoguelite.EditorTools
         private const float BossBattleVisualScale = 1.62f;
         private const float CaveBattleVisualScale = 1.48f;
         private const string CombatImpactVfxPath = "Assets/Art/Generated/Effects/spr_vfx_wuxia_impact_6f_v01.png";
+        private const string SpeedBoostVfxPath =
+            "Assets/Art/Generated/Effects/tex_vfx_speed_boost_wisp_v01.png";
         private const string CombatAudioRoot = "Assets/Audio/Generated/Combat";
         private const string CombatSwingSfxPath = CombatAudioRoot + "/sfx_combat_sword_swing_v01.wav";
         private const string CombatImpactSfxPath = CombatAudioRoot + "/sfx_combat_impact_light_v01.wav";
@@ -275,6 +277,10 @@ namespace WuxiaRoguelite.EditorTools
             playerController.stats = playerStats;
             playerController.groundY = 0f;
             playerController.movementReference = camera.transform;
+            PlayerSpeedBoostVfx speedBoostVfx = player.AddComponent<PlayerSpeedBoostVfx>();
+            speedBoostVfx.playerController = playerController;
+            speedBoostVfx.playerStats = playerStats;
+            speedBoostVfx.immortalQiTexture = AssetDatabase.LoadAssetAtPath<Texture2D>(SpeedBoostVfxPath);
             SpriteFrameAnimator playerAnimator = player.GetComponentInChildren<SpriteFrameAnimator>();
             playerAnimator.movementSource = playerController;
             playerController.visualRoot = playerAnimator.transform;
@@ -1100,6 +1106,7 @@ namespace WuxiaRoguelite.EditorTools
             ConfigureEnemyVarietyAssets();
             ConfigureGeneratedMonsterAssets();
             ConfigureBattleFeedbackAssets();
+            ConfigureMovementVfxAsset();
             ConfigureBattleBackgroundAssets();
             ConfigureHudContentIcons();
             ConfigureBossIntroAssets();
@@ -1144,6 +1151,32 @@ namespace WuxiaRoguelite.EditorTools
                     Debug.LogWarning($"Missing combat audio asset: {path}; procedural fallback will be used.");
                 }
             }
+        }
+
+        private static void ConfigureMovementVfxAsset()
+        {
+            if (!File.Exists(SpeedBoostVfxPath))
+            {
+                Debug.LogWarning($"Missing movement VFX asset: {SpeedBoostVfxPath}");
+                return;
+            }
+
+            AssetDatabase.ImportAsset(SpeedBoostVfxPath, ImportAssetOptions.ForceSynchronousImport);
+            TextureImporter importer = AssetImporter.GetAtPath(SpeedBoostVfxPath) as TextureImporter;
+            if (importer == null)
+            {
+                return;
+            }
+
+            importer.textureType = TextureImporterType.Default;
+            importer.npotScale = TextureImporterNPOTScale.None;
+            importer.filterMode = FilterMode.Bilinear;
+            importer.wrapMode = TextureWrapMode.Clamp;
+            importer.textureCompression = TextureImporterCompression.Uncompressed;
+            importer.mipmapEnabled = false;
+            importer.alphaIsTransparency = true;
+            importer.maxTextureSize = 256;
+            importer.SaveAndReimport();
         }
 
         private static void BindCombatAudio(BattleFeedbackAudio feedbackAudio)

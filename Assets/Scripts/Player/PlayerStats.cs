@@ -7,6 +7,46 @@ namespace WuxiaRoguelite.Player
 {
     public class PlayerStats : MonoBehaviour
     {
+        public readonly struct TimedBuffSnapshot
+        {
+            public readonly string id;
+            public readonly string displayName;
+            public readonly string effectSummary;
+            public readonly string iconId;
+            public readonly float remainingDuration;
+            public readonly float totalDuration;
+            public readonly int stackCount;
+
+            public TimedBuffSnapshot(
+                string id,
+                string displayName,
+                string effectSummary,
+                string iconId,
+                float remainingDuration,
+                float totalDuration,
+                int stackCount)
+            {
+                this.id = id;
+                this.displayName = displayName;
+                this.effectSummary = effectSummary;
+                this.iconId = iconId;
+                this.remainingDuration = remainingDuration;
+                this.totalDuration = totalDuration;
+                this.stackCount = stackCount;
+            }
+
+            public float RemainingRatio => totalDuration <= 0f
+                ? 0f
+                : Mathf.Clamp01(remainingDuration / totalDuration);
+        }
+
+        private sealed class TimedMoveSpeedBuff
+        {
+            public float ratio;
+            public float remainingDuration;
+            public float totalDuration;
+        }
+
         public CombatantStats baseStats = new CombatantStats
         {
             displayName = "无名少侠",
@@ -33,6 +73,29 @@ namespace WuxiaRoguelite.Player
         public readonly Dictionary<string, int> martialArtRanks = new Dictionary<string, int>();
 
         private readonly int[] levelRequirements = { 20, 35, 55, 80, 120 };
+        private readonly List<TimedMoveSpeedBuff> temporaryMoveSpeedBuffs =
+            new List<TimedMoveSpeedBuff>();
+
+        public float CurrentMoveSpeed
+        {
+            get
+            {
+                if (runtimeStats == null)
+                {
+                    return 0f;
+                }
+
+                float totalBonusRatio = 0f;
+                foreach (TimedMoveSpeedBuff buff in temporaryMoveSpeedBuffs)
+                {
+                    totalBonusRatio += buff.ratio;
+                }
+
+                return runtimeStats.moveSpeed * (1f + totalBonusRatio);
+            }
+        }
+
+        public int ActiveTemporaryMoveSpeedBuffCount => temporaryMoveSpeedBuffs.Count;
 
         public int NextLevelRequirement
         {
@@ -45,6 +108,7 @@ namespace WuxiaRoguelite.Player
 
         public void ResetRun()
         {
+            ClearTemporaryMoveSpeedBuffs();
             runtimeStats = baseStats.Clone();
             runtimeStats.ResetHealth();
             equipment = equipment == null ? GetComponent<PlayerEquipment>() : equipment;
@@ -114,6 +178,91 @@ namespace WuxiaRoguelite.Player
         public void ApplyMoveSpeedBuff(float ratio)
         {
             runtimeStats.moveSpeed *= 1f + Mathf.Max(0f, ratio);
+        }
+
+        public bool ApplyTemporaryMoveSpeedBuff(float ratio, float duration)
+        {
+            float safeRatio = Mathf.Clamp(ratio, 0f, 1f);
+            float safeDuration = Mathf.Clamp(duration, 0f, 3f);
+            if (safeRatio <= 0f || safeDuration <= 0f)
+            {
+                return false;
+            }
+
+            temporaryMoveSpeedBuffs.Add(new TimedMoveSpeedBuff
+            {
+                ratio = safeRatio,
+                remainingDuration = safeDuration,
+                totalDuration = safeDuration
+            });
+            return true;
+        }
+
+        /// <summary>
+        /// Copies current timed effects into a caller-owned buffer so the HUD can
+        /// render them without allocating every IMGUI pass. Effects of the same
+        /// type are grouped and the timer shows the next stack that will expire.
+        /// Future timed buffs should add another snapshot here while keeping their
+        /// gameplay ownership in PlayerStats (or the system that applies them).
+        /// </summary>
+        public void GetTimedBuffSnapshots(List<TimedBuffSnapshot> buffer)
+        {
+            if (buffer == null)
+            {
+                return;
+            }
+
+            buffer.Clear();
+            if (temporaryMoveSpeedBuffs.Count == 0)
+            {
+                return;
+            }
+
+            float totalRatio = 0f;
+            float nextExpiry = float.MaxValue;
+            float nextExpiryDuration = 0f;
+            foreach (TimedMoveSpeedBuff buff in temporaryMoveSpeedBuffs)
+            {
+                totalRatio += buff.ratio;
+                if (buff.remainingDuration < nextExpiry)
+                {
+                    nextExpiry = buff.remainingDuration;
+                    nextExpiryDuration = buff.totalDuration;
+                }
+            }
+
+            buffer.Add(new TimedBuffSnapshot(
+                "normal_victory_move_speed",
+                "乘胜轻身",
+                $"移速 +{Mathf.RoundToInt(totalRatio * 100f)}%",
+                "疾剑式",
+                Mathf.Max(0f, nextExpiry),
+                Mathf.Max(0.01f, nextExpiryDuration),
+                temporaryMoveSpeedBuffs.Count));
+        }
+
+        public void AdvanceTemporaryMoveSpeedBuffs(float deltaTime)
+        {
+            float safeDeltaTime = Mathf.Max(0f, deltaTime);
+            if (safeDeltaTime <= 0f)
+            {
+                return;
+            }
+
+            for (int i = temporaryMoveSpeedBuffs.Count - 1; i >= 0; i--)
+            {
+                TimedMoveSpeedBuff buff = temporaryMoveSpeedBuffs[i];
+                buff.remainingDuration -= safeDeltaTime;
+                if (buff.remainingDuration <= 0f)
+                {
+                    temporaryMoveSpeedBuffs.RemoveAt(i);
+                }
+            }
+        }
+
+        public void ClearTemporaryMoveSpeedBuffs()
+        {
+            temporaryMoveSpeedBuffs.Clear();
         }
 
         public void ApplyMysteryPoison(float healthLossRatio)

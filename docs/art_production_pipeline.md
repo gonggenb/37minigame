@@ -379,3 +379,10 @@ Briefed -> SeedApproved -> Generated -> Normalized -> Imported -> InEngineQA -> 
 - 普通命中、暴击、玩家受击和闪避必须能听出差异。
 - 屏幕震动、红边、伤害字、特效和音效使用未缩放时间，暂停或慢速状态下不能卡住。
 - 连续攻击时不得创建新的 GameObject、材质或磁盘资源；运行期只复用已导入资源。
+
+### 12.4 移动增益仙气
+
+- `tex_vfx_speed_boost_wisp_v01.png` 为单帧 `256 × 256` 淡玉青流云纹理，暖金只作为小面积亮点。
+- 只在普通敌人战后临时移速增益生效且玩家实际移动时发射；停步、增益结束或进入 Boss 后停止新增粒子。
+- 粒子在移动期间按时间发射，并使用世界空间保留短尾迹；生命周期不超过 `0.72` 秒，避免遮挡主角和地图交互物。
+- 原始生成图保留在 `ArtSource/Raw/VFX/`，透明归一化母版保留在 `ArtSource/Normalized/VFX/`，Unity 交付图位于 `Assets/Art/Generated/Effects/`。

@@ -165,13 +165,14 @@ namespace WuxiaRoguelite.UI
             float healthWidth = portrait
                 ? (safe.width - 44f) * 0.5f
                 : Mathf.Min(400f, width * 0.34f);
-            Rect playerHealthRect = new Rect(sidePadding, healthTop, healthWidth, healthHeight);
             Rect enemyHealthRect = portrait
                 ? new Rect(safe.xMax - 16f - healthWidth, healthTop, healthWidth, healthHeight)
                 : new Rect(width - sidePadding - healthWidth, healthTop, healthWidth, healthHeight);
-            DrawHealthPanel(playerHealthRect, playerStats.runtimeStats, playerDamageAmount, playerDamageStartedAt, true);
+            // The player health bar now lives in PrototypeHUDController's unified
+            // health + martial-art HUD. Keep the enemy panel here so combat still
+            // has a clear target readout without duplicating the player's health.
             DrawHealthPanel(enemyHealthRect, battleManager.currentEnemy, enemyDamageAmount, enemyDamageStartedAt, false);
-            float duelTop = portrait ? healthTop + healthHeight + 8f : healthTop;
+            float duelTop = portrait ? healthTop + 134f : healthTop;
             float duelHeight = portrait ? 58f : healthHeight;
             DrawDuelFocus(width, duelTop, duelHeight);
 
@@ -179,7 +180,9 @@ namespace WuxiaRoguelite.UI
             Rect messageRect = portrait
                 ? new Rect(safe.x + 12f, safe.yMax - messageHeight - 12f, safe.width - 24f, messageHeight)
                 : new Rect(width * 0.05f, height - messageHeight - 12f, width * 0.90f, messageHeight);
-            float stageTop = portrait ? duelTop + duelHeight + 4f : healthTop + healthHeight + 2f;
+            float stageTop = portrait
+                ? duelTop + duelHeight + 4f
+                : Mathf.Max(healthTop + healthHeight + 2f, healthTop + 144f);
             float stageBottom = messageRect.y - 2f;
             float stageHeight = Mathf.Max(80f, stageBottom - stageTop);
             Rect stageRect = new Rect(0f, stageTop, width, stageHeight);

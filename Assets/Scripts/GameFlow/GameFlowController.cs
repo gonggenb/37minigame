@@ -28,6 +28,10 @@ namespace WuxiaRoguelite.GameFlow
         public float mainTimeRemaining;
         public float bossBattleTime;
 
+        [Header("Normal Victory Movement Boost")]
+        [Range(0.2f, 0.3f)] public float normalVictoryMoveSpeedBonusRatio = 0.25f;
+        [Range(0.1f, 3f)] public float normalVictoryMoveSpeedBonusDuration = 2.5f;
+
         [Header("Boss")]
         public CombatantStats bossStats = new CombatantStats
         {
@@ -207,6 +211,11 @@ namespace WuxiaRoguelite.GameFlow
 
         private void Update()
         {
+            if (CurrentPhase == GamePhase.MainMapRunning && playerStats != null)
+            {
+                playerStats.AdvanceTemporaryMoveSpeedBuffs(Time.deltaTime);
+            }
+
             if (CurrentPhase == GamePhase.MainMapRunning || CurrentPhase == GamePhase.NormalBattleRunning)
             {
                 mainTimeRemaining -= Time.deltaTime;
@@ -474,6 +483,10 @@ namespace WuxiaRoguelite.GameFlow
             }
 
             playerStats.killCount += 1;
+            bool grantedMovementBoost = pendingEnemyType == EncounterType.NormalEnemy &&
+                                        playerStats.ApplyTemporaryMoveSpeedBuff(
+                                            normalVictoryMoveSpeedBonusRatio,
+                                            normalVictoryMoveSpeedBonusDuration);
             int cultivationReward = pendingCultivationReward;
             int copperReward = pendingCopperReward;
             string dropText = ResolveEnemyDrop(
@@ -488,6 +501,12 @@ namespace WuxiaRoguelite.GameFlow
             if (!string.IsNullOrEmpty(dropText))
             {
                 rewardSummary += $"，掉落 {dropText}";
+            }
+            if (grantedMovementBoost)
+            {
+                rewardSummary +=
+                    $"，乘胜轻身：移速 +{Mathf.RoundToInt(normalVictoryMoveSpeedBonusRatio * 100f)}%" +
+                    $"（{normalVictoryMoveSpeedBonusDuration:0.#} 秒）";
             }
 
             pendingCultivationReward = 0;
@@ -619,6 +638,7 @@ namespace WuxiaRoguelite.GameFlow
             ClearOpeningIntro();
             if (playerStats != null && playerStats.runtimeStats != null)
             {
+                playerStats.ClearTemporaryMoveSpeedBuffs();
                 playerStats.runtimeStats.ResetHealth();
             }
 
