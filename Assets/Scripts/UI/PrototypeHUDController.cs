@@ -644,13 +644,13 @@ namespace WuxiaRoguelite.UI
             Rect safe = ResponsiveGui.SafeArea;
             bool portraitLayout = ResponsiveGui.IsPortrait;
             float hudWidth = portraitLayout
-                ? Mathf.Min(414f, safe.width - 82f)
-                : Mathf.Min(372f, safe.width - 92f);
-            float portraitSize = portraitLayout ? 76f : 70f;
-            float portraitInset = portraitLayout ? 6f : 5f;
-            float topHeight = portraitLayout ? 88f : 82f;
-            float detailHeight = portraitLayout ? 32f : 30f;
-            float loadoutHeight = portraitLayout ? 64f : 60f;
+                ? Mathf.Min(360f, safe.width - 82f)
+                : Mathf.Min(330f, safe.width - 92f);
+            float portraitSize = portraitLayout ? 64f : 58f;
+            float portraitInset = portraitLayout ? 5f : 4f;
+            float topHeight = portraitLayout ? 72f : 66f;
+            float detailHeight = portraitLayout ? 28f : 26f;
+            float loadoutHeight = portraitLayout ? 54f : 52f;
             Rect hud = new Rect(safe.x + 12f, safe.y + 12f, hudWidth,
                 topHeight + 4f + detailHeight + 4f + loadoutHeight);
             float timeRatio = GetMainTimeRatio();
@@ -684,8 +684,8 @@ namespace WuxiaRoguelite.UI
                 GUI.DrawTexture(portrait, playerPortraitFrame, ScaleMode.ScaleToFit, true);
             }
 
-            float badgeInset = portraitLayout ? 14f : 12f;
-            float badgeHeight = portraitLayout ? 18f : 16f;
+            float badgeInset = portraitLayout ? 12f : 10f;
+            float badgeHeight = 14f;
             Rect levelBadge = new Rect(portrait.x + badgeInset, portrait.yMax - badgeHeight,
                 portrait.width - badgeInset * 2f, badgeHeight);
             FillRect(levelBadge, new Color(0.025f, 0.03f, 0.03f, 0.94f));
@@ -697,30 +697,30 @@ namespace WuxiaRoguelite.UI
                 ? "无名少侠"
                 : playerStats.baseStats.displayName;
             ResponsiveGui.DrawSingleLineLabel(
-                new Rect(contentX + 8f, hud.y + 6f, contentWidth - 82f, 22f),
+                new Rect(contentX + 7f, hud.y + 4f, contentWidth - 70f, 18f),
                 playerName, headingStyle, 10);
 
-            Rect timerChip = new Rect(hud.xMax - 78f, hud.y + 6f, 70f, 22f);
+            Rect timerChip = new Rect(hud.xMax - 64f, hud.y + 4f, 58f, 18f);
             FillRect(timerChip, new Color(0.025f, 0.03f, 0.03f, 0.93f));
             if (timeHudIcon != null)
             {
-                GUI.DrawTexture(new Rect(timerChip.x + 3f, timerChip.y + 2f, 18f, 18f),
+                GUI.DrawTexture(new Rect(timerChip.x + 2f, timerChip.y + 2f, 14f, 14f),
                     timeHudIcon, ScaleMode.ScaleToFit, true);
             }
             timeSecondsStyle.normal.textColor = accent;
             ResponsiveGui.DrawSingleLineLabel(
-                new Rect(timerChip.x + 21f, timerChip.y, timerChip.width - 25f, timerChip.height),
-                $"{Mathf.CeilToInt(gameFlow.mainTimeRemaining):00}s", timeSecondsStyle, 12);
+                new Rect(timerChip.x + 16f, timerChip.y, timerChip.width - 19f, timerChip.height),
+                $"{Mathf.CeilToInt(gameFlow.mainTimeRemaining):00}s", timeSecondsStyle, 10);
 
             ResponsiveGui.DrawSingleLineLabel(
-                new Rect(contentX + 8f, hud.y + 29f, contentWidth - 16f, 17f),
+                new Rect(contentX + 7f, hud.y + 23f, contentWidth - 14f, 15f),
                 $"气血  {playerStats.runtimeStats.currentHealth:0}/{playerStats.runtimeStats.maxHealth:0}",
-                hudValueStyle, 9);
-            Rect healthRect = new Rect(contentX + 8f, hud.y + 47f, contentWidth - 16f, 15f);
+                hudValueStyle, 8);
+            Rect healthRect = new Rect(contentX + 7f, hud.y + 39f, contentWidth - 14f, 12f);
             DrawHealthBar(healthRect, playerStats.runtimeStats.HealthRatio);
 
-            Rect timeTrack = new Rect(contentX + 8f,
-                hud.y + (portraitLayout ? 68f : 67f), contentWidth - 16f, 10f);
+            Rect timeTrack = new Rect(contentX + 7f,
+                hud.y + (portraitLayout ? 56f : 54f), contentWidth - 14f, 8f);
             DrawMainTimeTrack(timeTrack, timeRatio, false);
 
             Rect detailRow = new Rect(hud.x, hud.y + topHeight + 4f, hud.width, detailHeight);
@@ -748,11 +748,11 @@ namespace WuxiaRoguelite.UI
             bool portraitLayout = ResponsiveGui.IsPortrait;
             float width = portraitLayout
                 ? Mathf.Max(218f, (safe.width - 44f) * 0.5f)
-                : Mathf.Min(340f, safe.width * 0.35f);
+                : Mathf.Min(286f, safe.width * 0.30f);
             float healthTop = portraitLayout
-                ? safe.y + 104f
-                : Mathf.Clamp(ResponsiveGui.Height * 0.145f, 98f, 108f);
-            float height = portraitLayout ? 126f : 140f;
+                ? safe.y + 88f
+                : safe.y + 89f;
+            float height = 112f;
             Rect hud = new Rect(safe.x + (portraitLayout ? 16f : Mathf.Clamp(ResponsiveGui.Width * 0.055f, 34f, 72f)),
                 healthTop, width, height);
             Color accent = gameFlow.CurrentPhase == GamePhase.BossBattle
@@ -763,19 +763,19 @@ namespace WuxiaRoguelite.UI
 
             DrawPanel(hud, new Color(0.025f, 0.035f, 0.038f, 0.94f), accent);
             ResponsiveGui.DrawSingleLineLabel(
-                new Rect(hud.x + 12f, hud.y + 4f, hud.width * 0.56f, 22f),
+                new Rect(hud.x + 10f, hud.y + 3f, hud.width * 0.58f, 18f),
                 playerStats.runtimeStats.displayName, headingStyle, 10);
             ResponsiveGui.DrawSingleLineLabel(
-                new Rect(hud.x + hud.width * 0.55f, hud.y + 4f, hud.width * 0.40f, 22f),
-                $"等级 {playerStats.level}", mutedStyle, 9);
+                new Rect(hud.x + hud.width * 0.57f, hud.y + 3f, hud.width * 0.38f, 18f),
+                $"等级 {playerStats.level}", mutedStyle, 8);
 
-            Rect health = new Rect(hud.x + 12f, hud.y + 28f, hud.width - 24f, 23f);
+            Rect health = new Rect(hud.x + 10f, hud.y + 23f, hud.width - 20f, 19f);
             DrawHealthBar(health, playerStats.runtimeStats.HealthRatio);
             ResponsiveGui.DrawSingleLineLabel(health,
                 $"气血  {playerStats.runtimeStats.currentHealth:0} / {playerStats.runtimeStats.maxHealth:0}",
-                hudValueStyle, 9);
+                hudValueStyle, 8);
 
-            Rect loadout = new Rect(hud.x + 7f, hud.y + 58f, hud.width - 14f, hud.height - 65f);
+            Rect loadout = new Rect(hud.x + 6f, hud.y + 48f, hud.width - 12f, hud.height - 54f);
             DrawLoadoutStrip(loadout, true);
         }
 
@@ -824,9 +824,9 @@ namespace WuxiaRoguelite.UI
             FillRect(rect, new Color(0.018f, 0.024f, 0.025f, 0.94f));
             DrawRectOutline(rect, new Color(1f, 1f, 1f, 0.10f), 1f);
 
-            float headerHeight = combatLayout ? 13f : 15f;
-            float gap = combatLayout ? 3f : 4f;
-            float slotSize = Mathf.Min(combatLayout ? 45f : 46f, rect.height - headerHeight - 4f);
+            float headerHeight = combatLayout ? 12f : 13f;
+            float gap = 3f;
+            float slotSize = Mathf.Min(combatLayout ? 37f : 40f, rect.height - headerHeight - 4f);
             int buffCount = Mathf.Min(timedBuffBuffer.Count,
                 combatLayout && ResponsiveGui.IsPortrait ? 1 : 2);
             float buffWidth = buffCount > 0 ? buffCount * slotSize + Mathf.Max(0, buffCount - 1) * gap + 8f : 0f;
