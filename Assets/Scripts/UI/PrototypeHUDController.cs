@@ -158,6 +158,12 @@ namespace WuxiaRoguelite.UI
         public Texture2D healthBarBase;
         public Texture2D healthBarFill;
         public Texture2D mainMenuBackground;
+        [Header("Main Map HUD")]
+        public Texture2D playerPortrait;
+        public Texture2D playerPortraitFrame;
+        public Texture2D timeHudIcon;
+        public Texture2D copperHudIcon;
+        public Texture2D cultivationHudIcon;
         public Texture2D bossPortrait;
         public Texture2D bossPortraitFrame;
         public IconEntry[] martialArtIcons;
@@ -187,6 +193,7 @@ namespace WuxiaRoguelite.UI
         private GUIStyle bossDialogueSpeakerStyle;
         private GUIStyle bossDialogueBodyStyle;
         private Texture2D runtimeSettingsIcon;
+        private Texture2D runtimePortraitBackdrop;
         private BattleScreenController battleScreen;
         private bool characterPanelOpen;
         private bool settingsOpen;
@@ -275,6 +282,11 @@ namespace WuxiaRoguelite.UI
             if (runtimeSettingsIcon != null)
             {
                 Destroy(runtimeSettingsIcon);
+            }
+
+            if (runtimePortraitBackdrop != null)
+            {
+                Destroy(runtimePortraitBackdrop);
             }
         }
 
@@ -440,6 +452,8 @@ namespace WuxiaRoguelite.UI
                 new Color(1f, 0.78f, 0.38f));
             bossDialogueBodyStyle = LabelStyle(17, FontStyle.Normal, TextAnchor.UpperLeft, Paper);
             runtimeSettingsIcon = CreateSettingsIcon(64);
+            runtimePortraitBackdrop = CreateCircleTexture(64,
+                new Color(0.045f, 0.055f, 0.052f, 0.96f));
         }
 
         private void SetSettingsOpen(bool open)
@@ -606,49 +620,88 @@ namespace WuxiaRoguelite.UI
         private void DrawCompactHud()
         {
             Rect safe = ResponsiveGui.SafeArea;
-            float hudWidth = ResponsiveGui.IsPortrait ? Mathf.Min(390f, safe.width - 90f) : 310f;
-            Rect hud = new Rect(safe.x + 14f, safe.y + 14f, hudWidth, 104f);
-            BossApproachStage approachStage = gameFlow.CurrentBossApproachStage;
+            bool portraitLayout = ResponsiveGui.IsPortrait;
+            float hudWidth = portraitLayout
+                ? Mathf.Min(268f, safe.width - 24f)
+                : Mathf.Min(306f, safe.width - 24f);
+            float portraitSize = portraitLayout ? 74f : 64f;
+            float portraitInset = portraitLayout ? 6f : 5f;
+            float topHeight = portraitLayout ? 84f : 68f;
+            float detailHeight = portraitLayout ? 38f : 30f;
+            Rect hud = new Rect(safe.x + 12f, safe.y + 12f, hudWidth,
+                topHeight + 4f + detailHeight);
             float timeRatio = GetMainTimeRatio();
             Color accent = GetMainTimeColor(timeRatio);
-            GUIStyle timerLabelStyle = approachStage == BossApproachStage.FinalCountdown ||
-                                       approachStage == BossApproachStage.Arrived
-                ? dangerHeadingStyle
-                : approachStage == BossApproachStage.Imminent ||
-                  approachStage == BossApproachStage.Omen
-                    ? warningHeadingStyle
-                    : headingStyle;
-            DrawPanel(hud, Ink, accent);
-            ResponsiveGui.DrawSingleLineLabel(new Rect(hud.x + 10f, hud.y + 2f, hud.width - 102f, 23f),
-                GetMainTimePressureText(timeRatio), timerLabelStyle, 10);
+
+            Rect card = new Rect(
+                hud.x + portraitSize * 0.72f,
+                hud.y + 4f,
+                hud.width - portraitSize * 0.72f,
+                topHeight - 4f);
+            DrawPanel(card, Ink, accent);
+
+            Rect portrait = new Rect(hud.x, hud.y, portraitSize, portraitSize);
+            if (runtimePortraitBackdrop != null)
+            {
+                GUI.DrawTexture(new Rect(portrait.x + 5f, portrait.y + 5f,
+                    portrait.width - 10f, portrait.height - 10f), runtimePortraitBackdrop,
+                    ScaleMode.ScaleToFit, true);
+            }
+            if (playerPortrait != null)
+            {
+                GUI.DrawTexture(new Rect(
+                        portrait.x + portraitInset,
+                        portrait.y + portraitInset,
+                        portrait.width - portraitInset * 2f,
+                        portrait.height - portraitInset * 2f),
+                    playerPortrait, ScaleMode.ScaleAndCrop, true);
+            }
+            if (playerPortraitFrame != null)
+            {
+                GUI.DrawTexture(portrait, playerPortraitFrame, ScaleMode.ScaleToFit, true);
+            }
+
+            float badgeInset = portraitLayout ? 14f : 12f;
+            float badgeHeight = portraitLayout ? 18f : 16f;
+            Rect levelBadge = new Rect(portrait.x + badgeInset, portrait.yMax - badgeHeight,
+                portrait.width - badgeInset * 2f, badgeHeight);
+            FillRect(levelBadge, new Color(0.025f, 0.03f, 0.03f, 0.94f));
+            ResponsiveGui.DrawSingleLineLabel(levelBadge, $"Lv.{playerStats.level}", centeredStyle, 8);
+
+            float contentX = portrait.xMax - 5f;
+            float contentWidth = hud.xMax - contentX - 7f;
+            string playerName = string.IsNullOrEmpty(playerStats.baseStats.displayName)
+                ? "无名少侠"
+                : playerStats.baseStats.displayName;
+            ResponsiveGui.DrawSingleLineLabel(
+                new Rect(contentX + 8f, hud.y + 6f, contentWidth - 82f, 22f),
+                playerName, headingStyle, 10);
+
+            Rect timerChip = new Rect(hud.xMax - 78f, hud.y + 6f, 70f, 22f);
+            FillRect(timerChip, new Color(0.025f, 0.03f, 0.03f, 0.93f));
+            if (timeHudIcon != null)
+            {
+                GUI.DrawTexture(new Rect(timerChip.x + 3f, timerChip.y + 2f, 18f, 18f),
+                    timeHudIcon, ScaleMode.ScaleToFit, true);
+            }
             timeSecondsStyle.normal.textColor = accent;
-            ResponsiveGui.DrawSingleLineLabel(new Rect(hud.xMax - 84f, hud.y + 1f, 74f, 25f),
-                $"{Mathf.CeilToInt(gameFlow.mainTimeRemaining):00}s", timeSecondsStyle, 14);
-
-            Rect timeTrack = new Rect(hud.x + 8f, hud.y + 27f, hud.width - 16f, 31f);
-            DrawMainTimeTrack(timeTrack, timeRatio, false);
             ResponsiveGui.DrawSingleLineLabel(
-                new Rect(timeTrack.x + timeTrack.width / 3f - 20f, hud.y + 55f, 40f, 14f),
-                "20", centeredStyle, 8);
-            ResponsiveGui.DrawSingleLineLabel(
-                new Rect(timeTrack.x + timeTrack.width * 2f / 3f - 20f, hud.y + 55f, 40f, 14f),
-                "40", centeredStyle, 8);
+                new Rect(timerChip.x + 21f, timerChip.y, timerChip.width - 25f, timerChip.height),
+                $"{Mathf.CeilToInt(gameFlow.mainTimeRemaining):00}s", timeSecondsStyle, 12);
 
-            ResponsiveGui.DrawSingleLineLabel(new Rect(hud.x + 10f, hud.y + 69f, hud.width - 84f, 17f),
-                $"{GetMainTimeStateText(timeRatio)}    Lv.{playerStats.level}",
+            ResponsiveGui.DrawSingleLineLabel(
+                new Rect(contentX + 8f, hud.y + 29f, contentWidth - 16f, 17f),
+                $"气血  {playerStats.runtimeStats.currentHealth:0}/{playerStats.runtimeStats.maxHealth:0}",
                 mutedStyle, 9);
-            ResponsiveGui.DrawSingleLineLabel(new Rect(hud.xMax - 96f, hud.y + 69f, 86f, 17f),
-                $"气血 {playerStats.runtimeStats.currentHealth:0}/{playerStats.runtimeStats.maxHealth:0}",
-                mutedStyle, 8);
-            Rect healthRect = new Rect(hud.x + 10f, hud.y + 90f, hud.width - 20f, 7f);
+            Rect healthRect = new Rect(contentX + 8f, hud.y + 47f, contentWidth - 16f, 8f);
             DrawHealthBar(healthRect, playerStats.runtimeStats.HealthRatio);
 
-            Rect resources = new Rect(safe.x + 14f, safe.y + 124f, hudWidth, 22f);
-            DrawPanel(resources, new Color(0.04f, 0.05f, 0.05f, 0.9f), Gold);
-            ResponsiveGui.DrawSingleLineLabel(
-                new Rect(resources.x + 10f, resources.y + 1f, resources.width - 20f, resources.height - 2f),
-                $"修为 {playerStats.cultivation}/{playerStats.NextLevelRequirement}    铜钱 {playerStats.copper}",
-                mutedStyle, 9);
+            Rect timeTrack = new Rect(contentX + 8f,
+                hud.y + (portraitLayout ? 63f : 57f), contentWidth - 16f, 10f);
+            DrawMainTimeTrack(timeTrack, timeRatio, false);
+
+            Rect detailRow = new Rect(hud.x, hud.y + topHeight + 4f, hud.width, detailHeight);
+            DrawHudDetailRow(detailRow, portraitLayout, accent);
 
             float preferredStatusWidth =
                 ResponsiveGui.PreferredSingleLineWidth(gameFlow.statusMessage, bodyStyle, 28f);
@@ -661,6 +714,45 @@ namespace WuxiaRoguelite.UI
             ResponsiveGui.DrawSingleLineLabel(
                 new Rect(message.x + 12f, message.y + 3f, message.width - 24f, message.height - 6f),
                 gameFlow.statusMessage, bodyStyle, 10);
+        }
+
+        private void DrawHudDetailRow(Rect rect, bool portraitLayout, Color accent)
+        {
+            DrawPanel(rect, new Color(0.04f, 0.05f, 0.05f, 0.92f), accent);
+            float inset = portraitLayout ? 5f : 4f;
+            float gap = 4f;
+            float contentWidth = rect.width - inset * 2f;
+            float copperWidth = portraitLayout ? 92f : 104f;
+            float cultivationWidth = contentWidth - copperWidth - gap;
+            Rect cultivation = new Rect(rect.x + inset, rect.y + 3f,
+                cultivationWidth, rect.height - 6f);
+            Rect copper = new Rect(cultivation.xMax + gap, cultivation.y,
+                copperWidth, cultivation.height);
+
+            DrawResourceChip(cultivation, cultivationHudIcon, "修为",
+                $"{playerStats.cultivation}/{playerStats.NextLevelRequirement}", Jade);
+            DrawResourceChip(copper, copperHudIcon, "铜钱",
+                playerStats.copper.ToString(), Gold);
+        }
+
+        private void DrawResourceChip(
+            Rect rect,
+            Texture2D icon,
+            string label,
+            string value,
+            Color accent)
+        {
+            FillRect(rect, new Color(0.025f, 0.03f, 0.03f, 0.88f));
+            FillRect(new Rect(rect.x, rect.y, 2f, rect.height), accent);
+            float iconSize = Mathf.Min(22f, rect.height - 4f);
+            if (icon != null)
+            {
+                GUI.DrawTexture(new Rect(rect.x + 3f, rect.y + (rect.height - iconSize) * 0.5f,
+                    iconSize, iconSize), icon, ScaleMode.ScaleToFit, true);
+            }
+            ResponsiveGui.DrawSingleLineLabel(
+                new Rect(rect.x + iconSize + 5f, rect.y, rect.width - iconSize - 7f, rect.height),
+                $"{label} {value}", mutedStyle, 8);
         }
 
         private void DrawBossApproachWarning()
@@ -1409,46 +1501,6 @@ namespace WuxiaRoguelite.UI
             return Mathf.Clamp01(gameFlow.mainTimeRemaining / Mathf.Max(0.01f, gameFlow.mainTimeLimit));
         }
 
-        private static string GetMainTimeStateText(float ratio)
-        {
-            if (ratio <= 0f)
-            {
-                return "香尽 · 强敌已至";
-            }
-
-            if (ratio <= 1f / 3f)
-            {
-                return "丧钟已鸣 · 立即冲刺";
-            }
-
-            if (ratio <= 2f / 3f)
-            {
-                return "时间过半 · 争分夺秒";
-            }
-
-            return "强敌逼近 · 抢占先机";
-        }
-
-        private static string GetMainTimePressureText(float ratio)
-        {
-            if (ratio <= 0f)
-            {
-                return "香尽 · 强敌已至";
-            }
-
-            if (ratio <= 1f / 3f)
-            {
-                return "终局倒数 · 丧钟已鸣";
-            }
-
-            if (ratio <= 2f / 3f)
-            {
-                return "六十息终局 · 时间过半";
-            }
-
-            return "六十息终局 · 分秒必争";
-        }
-
         private static Color GetMainTimeColor(float ratio)
         {
             if (ratio <= 1f / 3f)
@@ -1581,6 +1633,34 @@ namespace WuxiaRoguelite.UI
                     bool gearBody = normalizedRadius <= teeth && normalizedRadius >= 0.28f;
                     bool centerRing = normalizedRadius <= 0.46f && normalizedRadius >= 0.28f;
                     pixels[y * size + x] = gearBody || centerRing ? gearColor : Color.clear;
+                }
+            }
+
+            texture.SetPixels(pixels);
+            texture.Apply(false, true);
+            return texture;
+        }
+
+        private static Texture2D CreateCircleTexture(int size, Color fill)
+        {
+            Texture2D texture = new Texture2D(size, size, TextureFormat.RGBA32, false)
+            {
+                name = "RuntimePortraitBackdrop",
+                filterMode = FilterMode.Bilinear,
+                wrapMode = TextureWrapMode.Clamp,
+                hideFlags = HideFlags.HideAndDontSave
+            };
+            Color[] pixels = new Color[size * size];
+            Vector2 center = Vector2.one * (size - 1) * 0.5f;
+            float radius = size * 0.49f;
+            float feather = Mathf.Max(1f, size * 0.035f);
+            for (int y = 0; y < size; y++)
+            {
+                for (int x = 0; x < size; x++)
+                {
+                    float distance = Vector2.Distance(new Vector2(x, y), center);
+                    float alpha = 1f - Mathf.Clamp01((distance - radius + feather) / feather);
+                    pixels[y * size + x] = new Color(fill.r, fill.g, fill.b, fill.a * alpha);
                 }
             }
 

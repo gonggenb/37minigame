@@ -7008,11 +7008,16 @@ MonoBehaviour:
   playerStats: {fileID: 285907368}
   battleManager: {fileID: 755778986}
   musicController: {fileID: 0}
-  statusIcon: {fileID: 2800000, guid: f57731138f3a04e158b19d28e19570c4, type: 3}
+  statusIcon: {fileID: 2800000, guid: 315aea99611d47e1a8909c918c7b1a22, type: 3}
   equipmentIcon: {fileID: 2800000, guid: 11245450444e6418a8c293a34894b268, type: 3}
   healthBarBase: {fileID: 2800000, guid: d34e3fb6fd5d54833b80c388c74031bf, type: 3}
   healthBarFill: {fileID: 2800000, guid: 18b01b336d7ff45bfb131bf03f7b94a7, type: 3}
   mainMenuBackground: {fileID: 2800000, guid: 3feee5944b7ff4ae993f0e4076b874a9, type: 3}
+  playerPortrait: {fileID: 2800000, guid: 315aea99611d47e1a8909c918c7b1a22, type: 3}
+  playerPortraitFrame: {fileID: 2800000, guid: 9a112c3f7e5a340fa97067b85faf7858, type: 3}
+  timeHudIcon: {fileID: 2800000, guid: 3c0bb3db3d5bb4586b47db02660dc032, type: 3}
+  copperHudIcon: {fileID: 2800000, guid: e537527bf05f14692a5bee328ffc4ec0, type: 3}
+  cultivationHudIcon: {fileID: 2800000, guid: b0ae579e118114911a16c8598445467e, type: 3}
   bossPortrait: {fileID: 2800000, guid: 32c67fbadf3d445d0b9fb0ad84293d80, type: 3}
   bossPortraitFrame: {fileID: 2800000, guid: 3eb89c4d4cfb742fb9ac8f3ba43a7e25, type: 3}
   martialArtIcons:

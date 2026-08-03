@@ -108,6 +108,13 @@ namespace WuxiaRoguelite.EditorTools
         private const string PracticeBracerIconPath = EquipmentItemIconRoot + "/ico_equipment_practice_bracer_v01_128.png";
         private const string BlackIronRingIconPath = EquipmentItemIconRoot + "/ico_equipment_black_iron_ring_v01_128.png";
         private const string WandererCloakIconPath = EquipmentItemIconRoot + "/ico_equipment_wanderer_cloak_v01_128.png";
+        private const string MainHudIconRoot = "Assets/Art/Generated/Icons/HUD";
+        private const string MainHudUiRoot = "Assets/Art/Generated/UI/MainHUD";
+        private const string MainHudPortraitFramePath = MainHudUiRoot + "/frame_hud_player_v01_128.png";
+        private const string MainHudPlayerStatusIconPath = MainHudIconRoot + "/ico_hud_player_status_v01_128.png";
+        private const string MainHudTimeIconPath = MainHudIconRoot + "/ico_hud_time_v01_128.png";
+        private const string MainHudCopperIconPath = MainHudIconRoot + "/ico_hud_copper_v01_128.png";
+        private const string MainHudCultivationIconPath = MainHudIconRoot + "/ico_hud_cultivation_v01_128.png";
         private const string GoldPath = TinyRoot + "/World/Gold_Resource.png";
         private const string TreasureChestPath = "Assets/Art/Generated/World/spr_treasure_chest_closed_v01.png";
         private const string HerbPath = TinyRoot + "/World/Bush.png";
@@ -293,7 +300,7 @@ namespace WuxiaRoguelite.EditorTools
             hud.gameFlow = gameFlow;
             hud.playerStats = playerStats;
             hud.battleManager = battleManager;
-            hud.statusIcon = AssetDatabase.LoadAssetAtPath<Texture2D>(StatusIconPath);
+            hud.statusIcon = AssetDatabase.LoadAssetAtPath<Texture2D>(MainHudPlayerStatusIconPath);
             hud.equipmentIcon = AssetDatabase.LoadAssetAtPath<Texture2D>(EquipmentIconPath);
             hud.healthBarBase = AssetDatabase.LoadAssetAtPath<Texture2D>(HealthBarBasePath);
             hud.healthBarFill = AssetDatabase.LoadAssetAtPath<Texture2D>(HealthBarFillPath);
@@ -397,6 +404,13 @@ namespace WuxiaRoguelite.EditorTools
             EditorUtility.SetDirty(animator);
             EditorUtility.SetDirty(renderer);
             EditorUtility.SetDirty(animator.transform);
+
+            PrototypeHUDController hud = UnityEngine.Object.FindAnyObjectByType<PrototypeHUDController>();
+            if (hud != null)
+            {
+                hud.playerPortrait = AssetDatabase.LoadAssetAtPath<Texture2D>(MainHudPlayerStatusIconPath);
+                EditorUtility.SetDirty(hud);
+            }
 
             BattleScreenController battleScreen = UnityEngine.Object.FindAnyObjectByType<BattleScreenController>();
             if (battleScreen != null)
@@ -1147,7 +1161,9 @@ namespace WuxiaRoguelite.EditorTools
                          JianQiIconPath, JiJianIconPath, TieBuShanIconPath,
                          XiXingIconPath, DuShaZhangIconPath, PoJiaZhangIconPath,
                          QingGangSwordIconPath, LightScaleIconPath, PracticeBracerIconPath,
-                         BlackIronRingIconPath, WandererCloakIconPath
+                         BlackIronRingIconPath, WandererCloakIconPath,
+                         MainHudPortraitFramePath, MainHudPlayerStatusIconPath, MainHudTimeIconPath,
+                         MainHudCopperIconPath, MainHudCultivationIconPath
                      })
             {
                 ConfigureIconTexture(path);
@@ -1157,6 +1173,11 @@ namespace WuxiaRoguelite.EditorTools
         private static void BindHudContentIcons(PrototypeHUDController hud)
         {
             hud.mainMenuBackground = AssetDatabase.LoadAssetAtPath<Texture2D>(MainMenuBackgroundPath);
+            hud.playerPortrait = AssetDatabase.LoadAssetAtPath<Texture2D>(MainHudPlayerStatusIconPath);
+            hud.playerPortraitFrame = AssetDatabase.LoadAssetAtPath<Texture2D>(MainHudPortraitFramePath);
+            hud.timeHudIcon = AssetDatabase.LoadAssetAtPath<Texture2D>(MainHudTimeIconPath);
+            hud.copperHudIcon = AssetDatabase.LoadAssetAtPath<Texture2D>(MainHudCopperIconPath);
+            hud.cultivationHudIcon = AssetDatabase.LoadAssetAtPath<Texture2D>(MainHudCultivationIconPath);
             hud.martialArtIcons = new[]
             {
                 Icon("剑气诀", JianQiIconPath),

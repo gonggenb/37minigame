@@ -298,6 +298,7 @@ Briefed -> SeedApproved -> Generated -> Normalized -> Imported -> InEngineQA -> 
 | --- | ---: | --- | --- |
 | 核心武学 | 6 | `Assets/Art/Generated/Icons/Skills/` | `InEngineQA` |
 | 局内装备 | 5 | `Assets/Art/Generated/Icons/Equipment/` | `InEngineQA` |
+| 主地图 HUD（头像框 / 时间 / 铜钱 / 修为） | 4 | `Assets/Art/Generated/Icons/HUD/`、`Assets/Art/Generated/UI/MainHUD/` | `InEngineQA` |
 | 九尾妖姬 Boss（Idle / Attack） | 2 | `Assets/Art/Generated/Characters/Bosses/FoxDemon/` | `InEngineQA` |
 
 - 生成母版保留在 `ArtSource/Raw/Icons/`。
