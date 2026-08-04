@@ -201,6 +201,7 @@ namespace WuxiaRoguelite.UI
         private GUIStyle skillCooldownStyle;
         private GUIStyle skillReadyStyle;
         private Texture2D runtimeSettingsIcon;
+        private Texture2D runtimeHomeIcon;
         private Texture2D runtimePortraitBackdrop;
         private BattleScreenController battleScreen;
         private readonly System.Collections.Generic.List<PlayerStats.TimedBuffSnapshot> timedBuffBuffer =
@@ -302,6 +303,11 @@ namespace WuxiaRoguelite.UI
             if (runtimeSettingsIcon != null)
             {
                 Destroy(runtimeSettingsIcon);
+            }
+
+            if (runtimeHomeIcon != null)
+            {
+                Destroy(runtimeHomeIcon);
             }
 
             if (runtimePortraitBackdrop != null)
@@ -478,6 +484,7 @@ namespace WuxiaRoguelite.UI
             skillReadyStyle = LabelStyle(9, FontStyle.Bold, TextAnchor.MiddleCenter,
                 new Color(1f, 0.94f, 0.70f));
             runtimeSettingsIcon = CreateSettingsIcon(64);
+            runtimeHomeIcon = CreateHomeIcon(64);
             runtimePortraitBackdrop = CreateCircleTexture(64,
                 new Color(0.045f, 0.055f, 0.052f, 0.96f));
         }
@@ -579,8 +586,19 @@ namespace WuxiaRoguelite.UI
                 new Rect(panel.x + 22f, panel.y + 312f, panel.width - 44f, 22f),
                 "快捷键：P 角色状态 · B 装备背包 · Esc 设置", mutedStyle, 9);
 
+            Rect bottomRow = new Rect(panel.x + 22f, panel.yMax - 52f, panel.width - 44f, 34f);
+            const float homeButtonWidth = 136f;
             if (GUI.Button(
-                    new Rect(panel.x + 22f, panel.yMax - 52f, panel.width - 44f, 34f),
+                    new Rect(bottomRow.x, bottomRow.y, homeButtonWidth, bottomRow.height),
+                    new GUIContent("返回首页", runtimeHomeIcon, "返回游戏开始画面"), settingsToggleStyle))
+            {
+                SetSettingsOpen(false);
+                gameFlow.ReturnToMainMenu();
+            }
+
+            if (GUI.Button(
+                    new Rect(bottomRow.x + homeButtonWidth + 10f, bottomRow.y,
+                        bottomRow.width - homeButtonWidth - 10f, bottomRow.height),
                     "返回游戏", actionButtonStyle))
             {
                 SetSettingsOpen(false);
@@ -2138,6 +2156,37 @@ namespace WuxiaRoguelite.UI
                     bool gearBody = normalizedRadius <= teeth && normalizedRadius >= 0.28f;
                     bool centerRing = normalizedRadius <= 0.46f && normalizedRadius >= 0.28f;
                     pixels[y * size + x] = gearBody || centerRing ? gearColor : Color.clear;
+                }
+            }
+
+            texture.SetPixels(pixels);
+            texture.Apply(false, true);
+            return texture;
+        }
+
+        private static Texture2D CreateHomeIcon(int size)
+        {
+            Texture2D texture = new Texture2D(size, size, TextureFormat.RGBA32, false)
+            {
+                name = "RuntimeHomeIcon",
+                filterMode = FilterMode.Bilinear,
+                wrapMode = TextureWrapMode.Clamp,
+                hideFlags = HideFlags.HideAndDontSave
+            };
+            Color[] pixels = new Color[size * size];
+            Vector2 center = Vector2.one * (size - 1) * 0.5f;
+            float radius = size * 0.5f;
+            Color homeColor = new Color(0.92f, 0.79f, 0.48f, 1f);
+            for (int y = 0; y < size; y++)
+            {
+                for (int x = 0; x < size; x++)
+                {
+                    Vector2 point = (new Vector2(x, y) - center) / radius;
+                    bool roof = point.y >= 0f && point.y <= 0.72f &&
+                                Mathf.Abs(point.x) <= (0.72f - point.y) * 0.92f + 0.08f;
+                    bool body = Mathf.Abs(point.x) <= 0.50f && point.y >= -0.62f && point.y <= 0.10f;
+                    bool door = Mathf.Abs(point.x) <= 0.14f && point.y >= -0.62f && point.y <= -0.20f;
+                    pixels[y * size + x] = (roof || body) && !door ? homeColor : Color.clear;
                 }
             }
 

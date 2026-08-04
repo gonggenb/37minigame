@@ -66,9 +66,12 @@ namespace WuxiaRoguelite.Cave
         private EncounterTrigger entrance;
         private Vector2 playerPosition;
         private const float ExitInteractionDistance = 0.12f;
+        private const float EventInteractionDistance = 0.115f;
+        private const float EventRearmDistance = 0.16f;
         private bool eventStarted;
         private bool eventCompleted;
         private bool merchantOpen;
+        private bool merchantAwaitingReapproach;
         private bool facingLeft;
         private Vector2 currentMoveInput;
         private string roomMessage = string.Empty;
@@ -113,6 +116,7 @@ namespace WuxiaRoguelite.Cave
             eventStarted = false;
             eventCompleted = false;
             merchantOpen = false;
+            merchantAwaitingReapproach = false;
             facingLeft = false;
             roomMessage = ObjectiveText();
             merchantRefreshed = false;
@@ -130,6 +134,7 @@ namespace WuxiaRoguelite.Cave
             IsRoomActive = false;
             entrance = null;
             merchantOpen = false;
+            merchantAwaitingReapproach = false;
             eventStarted = false;
             eventCompleted = false;
         }
@@ -176,7 +181,14 @@ namespace WuxiaRoguelite.Cave
             playerPosition.x = Mathf.Clamp(playerPosition.x, 0.09f, 0.91f);
             playerPosition.y = Mathf.Clamp(playerPosition.y, 0.12f, 0.88f);
 
-            if (!eventCompleted && !eventStarted && Vector2.Distance(playerPosition, CurrentEventPosition) < 0.115f)
+            float eventDistance = Vector2.Distance(playerPosition, CurrentEventPosition);
+            if (merchantAwaitingReapproach && eventDistance >= EventRearmDistance)
+            {
+                merchantAwaitingReapproach = false;
+            }
+
+            if (!eventCompleted && !eventStarted && !merchantAwaitingReapproach &&
+                eventDistance < EventInteractionDistance)
             {
                 BeginEvent();
             }
@@ -406,7 +418,7 @@ namespace WuxiaRoguelite.Cave
                 new Rect(playerCenter.x - 60f, playerCenter.y + playerActorSize * 0.43f, 120f, 22f),
                 "无名少侠", centeredStyle, 10);
 
-            if (!eventCompleted)
+            if (!eventCompleted || CurrentContent == CaveContentType.Merchant)
             {
                 DrawEventTarget(targetCenter, actorSize);
             }
@@ -642,8 +654,10 @@ namespace WuxiaRoguelite.Cave
         private void FinishMerchantEvent()
         {
             merchantOpen = false;
-            eventCompleted = true;
-            roomMessage = "交易结束。前往左下方石门返回江湖。";
+            eventStarted = false;
+            eventCompleted = false;
+            merchantAwaitingReapproach = true;
+            roomMessage = "交易暂歇。离开商人后再次靠近可继续交易，也可从左下石门撤离洞穴。";
         }
 
         private void DrawMerchantCard(Rect card, MerchantOffer offer)

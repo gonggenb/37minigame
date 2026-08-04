@@ -291,6 +291,44 @@ namespace WuxiaRoguelite.GameFlow
             BeginOpeningIntro();
         }
 
+        public void ReturnToMainMenu()
+        {
+            if (battleManager != null)
+            {
+                battleManager.CancelBattle();
+            }
+
+            caveRoom?.ResetRoom();
+            playerStats?.ResetRun();
+            playerController?.ResetToSpawn();
+            cameraFollow?.ResetVision();
+
+            foreach (EncounterTrigger encounter in FindObjectsByType<EncounterTrigger>(FindObjectsInactive.Include))
+            {
+                encounter.ResetEncounter(rerollCaveContent: true);
+            }
+
+            mainTimeRemaining = mainTimeLimit;
+            bossBattleTime = 0f;
+            bossDefeated = false;
+            IsBossTransitionPending = false;
+            IsBossIntroActive = false;
+            BossIntroTimeRemaining = 0f;
+            pendingBoss = null;
+            ClearOpeningIntro();
+            pendingCultivationReward = 0;
+            pendingCopperReward = 0;
+            pendingEnemyName = string.Empty;
+            pendingEnemyLevel = 0;
+            pendingEnemyType = EncounterType.NormalEnemy;
+            currentChoices.Clear();
+            martialArtRerollsRemaining = 1;
+            phaseBeforeLevelUp = GamePhase.MainMapRunning;
+            SetPhase(GamePhase.Ready);
+            Time.timeScale = 1f;
+            statusMessage = "按开始进入江湖";
+        }
+
         public void SetCharacterMenuPaused(bool paused)
         {
             if (paused && CurrentPhase != GamePhase.MainMapRunning)
