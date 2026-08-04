@@ -7,6 +7,14 @@ namespace WuxiaRoguelite.Player
     [DisallowMultipleComponent]
     public class PlayerEquipment : MonoBehaviour
     {
+        public static readonly string[] TreasureItemIds =
+        {
+            "black_iron_ring", "wanderer_cloak", "poison_dart_pouch",
+            "wind_chaser_sword", "bone_rot_gloves", "black_tortoise_armor",
+            "nightwalker_cloak", "blood_drinking_blade", "poison_needle_case",
+            "mountain_bracer", "swallow_boots", "crimson_heart_pendant"
+        };
+
         public PlayerStats playerStats;
         public readonly List<EquipmentItem> inventory = new List<EquipmentItem>();
         public EquipmentItem equippedWeapon;
@@ -160,6 +168,41 @@ namespace WuxiaRoguelite.Player
             return autoEquipped ? $"{reward.displayName}（已自动装备）" : reward.displayName;
         }
 
+        public bool HasItem(string itemId)
+        {
+            return !string.IsNullOrEmpty(itemId) && inventory.Exists(item => item.id == itemId);
+        }
+
+        public EquipmentItem GetTemplate(string itemId)
+        {
+            BuildTreasurePool();
+            EquipmentItem template = treasurePool.Find(item => item.id == itemId);
+            if (template != null)
+            {
+                return template.Clone();
+            }
+
+            EquipmentItem owned = inventory.Find(item => item.id == itemId);
+            return owned?.Clone();
+        }
+
+        public string AddItemById(string itemId)
+        {
+            if (HasItem(itemId))
+            {
+                return string.Empty;
+            }
+
+            EquipmentItem template = GetTemplate(itemId);
+            if (template == null)
+            {
+                return string.Empty;
+            }
+
+            bool autoEquipped = AddItem(template);
+            return autoEquipped ? $"{template.displayName}（已自动装备）" : template.displayName;
+        }
+
         public float GetOpeningShield()
         {
             return SumEquipped(item => item.openingShield);
@@ -280,6 +323,33 @@ namespace WuxiaRoguelite.Player
             treasurePool.Add(Item("poison_dart_pouch", "毒镖囊", EquipmentSlot.Accessory,
                 EquipmentRarity.Rare, attack: 1f, poisonStacksPerHit: 1,
                 effectSummary: "命中额外施加 1 层毒"));
+            treasurePool.Add(Item("wind_chaser_sword", "追风剑", EquipmentSlot.Weapon,
+                EquipmentRarity.Rare, attack: 5f, speed: 0.12f,
+                criticalCooldownMultiplier: 0.82f, effectSummary: "暴击后下次攻击间隔缩短 18%"));
+            treasurePool.Add(Item("bone_rot_gloves", "腐骨手套", EquipmentSlot.Accessory,
+                EquipmentRarity.Rare, attack: 2f, armorBreakPerHit: 0.55f,
+                effectSummary: "命中破甲 0.55"));
+            treasurePool.Add(Item("black_tortoise_armor", "玄武甲", EquipmentSlot.Armor,
+                EquipmentRarity.Rare, defense: 4f, health: 28f, openingShield: 16f,
+                effectSummary: "每场战斗获得 16 点护盾"));
+            treasurePool.Add(Item("nightwalker_cloak", "夜行披风", EquipmentSlot.Armor,
+                EquipmentRarity.Rare, health: 14f, dodge: 0.07f, dodgeHealRatio: 0.02f,
+                effectSummary: "闪避时恢复 2% 气血"));
+            treasurePool.Add(Item("blood_drinking_blade", "饮血刀", EquipmentSlot.Weapon,
+                EquipmentRarity.Rare, attack: 7f, crit: 0.05f,
+                effectSummary: "重刃高攻，适合血刀构筑"));
+            treasurePool.Add(Item("poison_needle_case", "淬毒针匣", EquipmentSlot.Accessory,
+                EquipmentRarity.Rare, speed: 0.06f, poisonStacksPerHit: 2,
+                effectSummary: "命中额外施加 2 层毒"));
+            treasurePool.Add(Item("mountain_bracer", "镇岳护腕", EquipmentSlot.Accessory,
+                EquipmentRarity.Rare, defense: 2f, openingShield: 12f,
+                effectSummary: "开战护盾 +12"));
+            treasurePool.Add(Item("swallow_boots", "飞燕靴", EquipmentSlot.Armor,
+                EquipmentRarity.Rare, speed: 0.10f, dodge: 0.06f,
+                effectSummary: "攻速与闪避同步提升"));
+            treasurePool.Add(Item("crimson_heart_pendant", "赤心坠", EquipmentSlot.Accessory,
+                EquipmentRarity.Rare, health: 24f, crit: 0.06f,
+                effectSummary: "气血与暴击兼备"));
         }
 
         private static EquipmentItem Item(

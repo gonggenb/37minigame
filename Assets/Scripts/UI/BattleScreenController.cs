@@ -653,7 +653,7 @@ namespace WuxiaRoguelite.UI
             {
                 ResponsiveGui.DrawSingleLineLabel(
                     new Rect(headerRect.x, headerRect.y + 30f, headerRect.width, 20f),
-                    $"Boss 独立时间  {gameFlow.bossBattleTime:0.0}s", timerStyle, 9);
+                    $"决战独立计时  {gameFlow.bossBattleTime:0.0} 秒", timerStyle, 9);
                 ResponsiveGui.DrawSingleLineLabel(
                     new Rect(headerRect.x, headerRect.y + 51f, headerRect.width, 15f),
                     "主时间停止 · 自动交锋", captionStyle, 8);
@@ -963,7 +963,7 @@ namespace WuxiaRoguelite.UI
             int exchange = Mathf.Max(1, battleManager.AttackSequence);
             ResponsiveGui.DrawSingleLineLabel(
                 new Rect(focusRect.x, focusRect.y + 4f, focusRect.width, 19f),
-                $"第 {exchange} 招 · {battleManager.BattleElapsed:0.0}s", detailStyle, 8);
+                $"第 {exchange} 招 · {battleManager.BattleElapsed:0.0} 秒", detailStyle, 8);
             ResponsiveGui.DrawSingleLineLabel(
                 new Rect(focusRect.x, focusRect.y + 22f, focusRect.width, 15f),
                 battleManager.LastAttackWasCritical ? "暴击交锋" :

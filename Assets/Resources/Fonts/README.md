@@ -24,3 +24,9 @@ glyphs.
 Regenerate both subsets whenever new runtime text introduces characters that
 are not already covered. WebGL cannot rely on the operating system to supply
 missing Chinese glyphs.
+
+Before every WebGL build, `WebGLChineseFontBuildValidator` scans runtime C#
+strings plus serialized scene/resource text. The build fails when either font
+subset is missing a required non-ASCII glyph or when `Include Font Data` is
+disabled. You can also run `37 MiniGame/Validate WebGL Chinese Fonts` from the
+Unity menu for an immediate check.

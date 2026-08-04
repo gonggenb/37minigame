@@ -301,6 +301,10 @@ Briefed -> SeedApproved -> Generated -> Normalized -> Imported -> InEngineQA -> 
 | 主地图 HUD（头像框 / 时间 / 铜钱 / 修为） | 4 | `Assets/Art/Generated/Icons/HUD/`、`Assets/Art/Generated/UI/MainHUD/` | `InEngineQA` |
 | 九尾妖姬 Boss（Idle / Attack） | 2 | `Assets/Art/Generated/Characters/Bosses/FoxDemon/` | `InEngineQA` |
 
+后续商店、五流派武学、跨派秘传、奇物、丹药与洞穴 icon 的批次、稳定 ID 和使用尺寸见
+[深度构筑、云游商店与图标计划](build_shop_icon_plan.md)。所有商品必须有独立 icon，
+现有图标回退只允许作为灰盒阶段临时方案。
+
 - 生成母版保留在 `ArtSource/Raw/Icons/`。
 - 图标切分与安全区归一化使用 `Tools/ArtPipeline/normalize_icon_sheet.py`。
 - 武学三选一卡显示 `64 px` 级图标；悬停时显示类型、当前实际属性效果和说明。
@@ -386,3 +390,22 @@ Briefed -> SeedApproved -> Generated -> Normalized -> Imported -> InEngineQA -> 
 - 只在普通敌人战后临时移速增益生效且玩家实际移动时发射；停步、增益结束或进入 Boss 后停止新增粒子。
 - 粒子在移动期间按时间发射，并使用世界空间保留短尾迹；生命周期不超过 `0.72` 秒，避免遮挡主角和地图交互物。
 - 原始生成图保留在 `ArtSource/Raw/VFX/`，透明归一化母版保留在 `ArtSource/Normalized/VFX/`，Unity 交付图位于 `Assets/Art/Generated/Effects/`。
+
+## 13. 正式洞穴场景组
+
+洞穴继续保持“一间洞室 + 一个核心事件 + 返回主地图”的短内容结构，不扩成多层副本。为避免每种事件各做一张互不统一的背景，正式场景按氛围和功能归为四组：
+
+| 场景主题 | 对应洞穴内容 | 主色与构图 | 当前状态 |
+| --- | --- | --- | --- |
+| `combat` | 守洞敌人、血契石坛、隐窟试炼 | 冷灰石阵、右上/中右事件台 | 横屏 `InEngineQA`，竖屏 `Imported` |
+| `sanctuary` | 云游商人、药庐、残卷石室 | 暖金灯火、洞中庇护所 | 横屏 `InEngineQA`，竖屏 `Imported` |
+| `vault` | 秘藏宝箱、铸兵台、遗物神龛 | 玉青矿脉、兵器与锻造遗迹 | 横屏 `InEngineQA`，竖屏 `Imported` |
+| `mystic` | 盲匣赌局、地脉药圃 | 地脉水光、晶石与药草 | 横屏 `InEngineQA`，竖屏 `Imported` |
+
+- 生成方式：`imagegen` 的 `Generate` 模式；提示词使用“古风武侠手绘绘本场景、低反射石材、开放移动地面、留空事件台、无人物、无文字、无 UI、无水印”，分别生成 `16:9` 和 `9:16` 版本。
+- 原始生成图：`ArtSource/Raw/CaveScenes/`。
+- 归一化母版：`ArtSource/Normalized/CaveScenes/`，横屏 `1920 × 1080`，竖屏 `1080 × 1920`。
+- Unity 运行资源：`Assets/Resources/CaveScenes/`；运行时根据洞穴类型与屏幕方向自动加载，无需场景手动绑定。
+- 出口石门使用独立透明前景 `cave_exit_arch_v01.png`，不烘焙进背景，便于按角色位置和交互状态单独绘制。
+- 可重复处理脚本：`Tools/process_cave_scene_assets.py`；组合预览位于 `docs/previews/cave_scene_set_v01.png`。
+- 当前已在横屏 Play Mode 实际进入 `sanctuary` 与 `mystic` 洞穴并验证渲染和主计时暂停；竖屏资源已完成尺寸、命名和 `Resources` 加载校验，仍需在目标手机比例做脚点与 UI 遮挡验收后才能进入 `Approved`。

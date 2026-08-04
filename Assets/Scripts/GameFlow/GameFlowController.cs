@@ -465,8 +465,10 @@ namespace WuxiaRoguelite.GameFlow
             }
 
             ClearOpeningIntro();
-            SetPhase(GamePhase.MainMapRunning);
-            statusMessage = "主香已点燃：碰怪会自动战斗，主时间继续流逝。";
+            phaseBeforeLevelUp = GamePhase.MainMapRunning;
+            GenerateMartialArtChoices();
+            SetPhase(GamePhase.LevelUpPaused);
+            statusMessage = "选择本局起手流派；确认后主地图六十息倒计时开始。";
         }
 
         private void OnNormalBattleFinished(bool playerWon)
@@ -600,6 +602,36 @@ namespace WuxiaRoguelite.GameFlow
             return art;
         }
 
+        public List<string> GetMerchantMartialArtCandidates()
+        {
+            return GetEligibleMartialArts();
+        }
+
+        public bool IsMartialArtEligible(string artId)
+        {
+            return GetEligibleMartialArts().Contains(artId);
+        }
+
+        public string GrantCrossSchoolMartialArt()
+        {
+            List<string> candidates = GetEligibleMartialArts();
+            if (candidates.Count == 0)
+            {
+                return string.Empty;
+            }
+
+            MartialArtSchool dominant = GetDominantSchool();
+            candidates.RemoveAll(id => MartialArtCatalog.Get(id)?.school == dominant);
+            if (candidates.Count == 0)
+            {
+                return GrantRandomMartialArt();
+            }
+
+            string art = candidates[UnityEngine.Random.Range(0, candidates.Count)];
+            playerStats.ApplyMartialArt(art);
+            return art;
+        }
+
         public void RerollMartialArtChoices()
         {
             if (CurrentPhase != GamePhase.LevelUpPaused || martialArtRerollsRemaining <= 0)
@@ -668,14 +700,14 @@ namespace WuxiaRoguelite.GameFlow
             CombatantStats boss = pendingBoss ?? bossStats.Clone();
             pendingBoss = null;
             boss.ResetHealth();
-            statusMessage = "气血已恢复，最终 Boss 战开始：不再消耗主地图 60 秒时间。";
+            statusMessage = "气血已恢复，最终决战开始：不再消耗主地图六十息。";
             battleManager.BeginBattle(boss, OnBossBattleFinished);
         }
 
         private void OnBossBattleFinished(bool playerWon)
         {
             bossDefeated = playerWon;
-            EndRun(playerWon, playerWon ? $"击败{bossStats.displayName}" : "Boss 战失败");
+            EndRun(playerWon, playerWon ? $"击败{bossStats.displayName}" : "决战落败");
         }
 
         private bool GiveRewards(int cultivationReward, int copperReward)
@@ -800,11 +832,12 @@ namespace WuxiaRoguelite.GameFlow
             bool hasAnySchool = playerStats.martialArtRanks.Count > 0;
             if (!hasAnySchool)
             {
-                foreach (MartialArtSchool school in Enum.GetValues(typeof(MartialArtSchool)))
+                List<string> starters = available.Where(id => MartialArtCatalog.Get(id).isStarter).ToList();
+                while (currentChoices.Count < 3 && starters.Count > 0)
                 {
-                    AddRandomChoice(available.Where(id =>
-                        MartialArtCatalog.Get(id).school == school &&
-                        MartialArtCatalog.Get(id).isStarter).ToList());
+                    int index = UnityEngine.Random.Range(0, starters.Count);
+                    currentChoices.Add(starters[index]);
+                    starters.RemoveAt(index);
                 }
             }
             else
@@ -845,6 +878,12 @@ namespace WuxiaRoguelite.GameFlow
             {
                 MartialArtDefinition definition = MartialArtCatalog.Get(artId);
                 if (definition == null || playerStats.GetMartialArtRank(artId) >= definition.maxRank)
+                {
+                    continue;
+                }
+
+                if (definition.isCapstone &&
+                    playerStats.GetMartialArtSchoolRank(definition.school) < definition.requiredSchoolRank)
                 {
                     continue;
                 }
@@ -912,7 +951,7 @@ namespace WuxiaRoguelite.GameFlow
             }
 
             IsBossTransitionPending = true;
-            statusMessage = "主地图时间已尽：完成当前战斗后进入最终 Boss 战。";
+            statusMessage = "主地图时间已尽：完成当前战斗后进入最终决战。";
         }
 
         private void SetPhase(GamePhase phase)

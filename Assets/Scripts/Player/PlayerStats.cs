@@ -71,8 +71,11 @@ namespace WuxiaRoguelite.Player
         public int caveEntries;
         public readonly List<string> learnedMartialArts = new List<string>();
         public readonly Dictionary<string, int> martialArtRanks = new Dictionary<string, int>();
+        public readonly List<string> unlockedSecrets = new List<string>();
+        public readonly Dictionary<string, int> secretRanks = new Dictionary<string, int>();
+        public readonly List<string> relics = new List<string>();
 
-        private readonly int[] levelRequirements = { 20, 35, 55, 80, 120 };
+        private readonly int[] levelRequirements = { 18, 27, 35, 45, 60, 80 };
         private readonly List<TimedMoveSpeedBuff> temporaryMoveSpeedBuffs =
             new List<TimedMoveSpeedBuff>();
 
@@ -119,6 +122,9 @@ namespace WuxiaRoguelite.Player
             caveEntries = 0;
             learnedMartialArts.Clear();
             martialArtRanks.Clear();
+            unlockedSecrets.Clear();
+            secretRanks.Clear();
+            relics.Clear();
             equipment?.ResetRun(this);
         }
 
@@ -290,6 +296,18 @@ namespace WuxiaRoguelite.Player
                 : 0;
         }
 
+        public int GetSecretRank(string secretId)
+        {
+            return !string.IsNullOrEmpty(secretId) && secretRanks.TryGetValue(secretId, out int rank)
+                ? rank
+                : 0;
+        }
+
+        public bool HasRelic(string relicId)
+        {
+            return !string.IsNullOrEmpty(relicId) && relics.Contains(relicId);
+        }
+
         public bool HasMartialArtSchool(MartialArtSchool school)
         {
             foreach (KeyValuePair<string, int> entry in martialArtRanks)
@@ -354,9 +372,155 @@ namespace WuxiaRoguelite.Player
                 case "吸星诀":
                     runtimeStats.lifeSteal = Mathf.Clamp01(runtimeStats.lifeSteal + 0.04f);
                     break;
+                case "踏雪无痕":
+                    runtimeStats.dodgeChance = Mathf.Clamp01(runtimeStats.dodgeChance + 0.04f);
+                    break;
+                case "流云步":
+                    runtimeStats.moveSpeed *= 1.08f;
+                    runtimeStats.attackSpeed += 0.06f;
+                    break;
+                case "饮血刀法":
+                    runtimeStats.lifeSteal = Mathf.Clamp01(runtimeStats.lifeSteal + 0.03f);
+                    break;
+                case "沸血诀":
+                    runtimeStats.attack *= 1.08f;
+                    runtimeStats.attackSpeed += 0.05f;
+                    break;
+                case "修罗血域":
+                    runtimeStats.lifeSteal = Mathf.Clamp01(runtimeStats.lifeSteal + 0.02f + newRank * 0.01f);
+                    break;
             }
 
+            RefreshMartialArtSecrets();
+
             return newRank;
+        }
+
+        public string UpgradeRandomMartialArt()
+        {
+            List<string> candidates = new List<string>();
+            foreach (string artId in learnedMartialArts)
+            {
+                MartialArtDefinition definition = MartialArtCatalog.Get(artId);
+                if (definition != null && GetMartialArtRank(artId) < definition.maxRank)
+                {
+                    candidates.Add(artId);
+                }
+            }
+
+            if (candidates.Count == 0)
+            {
+                return string.Empty;
+            }
+
+            string selected = candidates[Random.Range(0, candidates.Count)];
+            int rank = ApplyMartialArt(selected);
+            return $"{selected}·{rank}重";
+        }
+
+        public bool GrantRelic(string relicId)
+        {
+            RunRelicDefinition relic = RunContentCatalog.GetRelic(relicId);
+            if (relic == null || HasRelic(relicId) || relics.Count >= 2)
+            {
+                return false;
+            }
+
+            relics.Add(relicId);
+            switch (relicId)
+            {
+                case "compass":
+                    runtimeStats.moveSpeed *= 1.08f;
+                    break;
+                case "abacus":
+                    copper += 4;
+                    break;
+                case "meditation_mat":
+                    cultivation += 12;
+                    break;
+                case "broken_sword_tassel":
+                    runtimeStats.attackSpeed += 0.08f;
+                    break;
+                case "toad_jade":
+                    runtimeStats.lifeSteal = Mathf.Clamp01(runtimeStats.lifeSteal + 0.03f);
+                    break;
+                case "mountain_bell":
+                    runtimeStats.defense += 1.5f;
+                    break;
+                case "shadow_jade":
+                    runtimeStats.dodgeChance = Mathf.Clamp01(runtimeStats.dodgeChance + 0.04f);
+                    break;
+                case "blood_marrow_pearl":
+                    float healthGain = runtimeStats.maxHealth * 0.12f;
+                    runtimeStats.maxHealth += healthGain;
+                    runtimeStats.Heal(healthGain);
+                    break;
+            }
+
+            return true;
+        }
+
+        public bool ApplyConsumable(string consumableId)
+        {
+            RunConsumableDefinition consumable = RunContentCatalog.GetConsumable(consumableId);
+            if (consumable == null)
+            {
+                return false;
+            }
+
+            switch (consumableId)
+            {
+                case "healing_salve":
+                    HealPercent(0.45f);
+                    break;
+                case "tiger_bone_pill":
+                    ApplyDefenseBuff(1.5f);
+                    break;
+                case "lightness_powder":
+                    ApplyMoveSpeedBuff(0.12f);
+                    break;
+                case "red_sun_pill":
+                    ApplyAttackBuff(0.12f);
+                    break;
+                case "foundation_pill":
+                    float healthGain = runtimeStats.maxHealth * 0.10f;
+                    runtimeStats.maxHealth += healthGain;
+                    runtimeStats.Heal(healthGain);
+                    break;
+                case "insight_incense":
+                    cultivation += 18;
+                    break;
+            }
+
+            return true;
+        }
+
+        private void RefreshMartialArtSecrets()
+        {
+            foreach (string secretId in MartialArtCatalog.AllSecretIds)
+            {
+                MartialArtSecretDefinition secret = MartialArtCatalog.GetSecret(secretId);
+                if (secret == null)
+                {
+                    continue;
+                }
+
+                int pairedDepth = Mathf.Min(
+                    GetMartialArtSchoolRank(secret.firstSchool),
+                    GetMartialArtSchoolRank(secret.secondSchool));
+                int targetRank = pairedDepth >= 4 ? 2 : pairedDepth >= 2 ? 1 : 0;
+                int currentRank = GetSecretRank(secretId);
+                if (targetRank <= currentRank)
+                {
+                    continue;
+                }
+
+                secretRanks[secretId] = targetRank;
+                if (currentRank == 0)
+                {
+                    unlockedSecrets.Add(secretId);
+                }
+            }
         }
     }
 }

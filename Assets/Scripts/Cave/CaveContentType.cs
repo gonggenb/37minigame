@@ -5,6 +5,14 @@ namespace WuxiaRoguelite.Cave
         Random,
         Enemy,
         Merchant,
-        Treasure
+        Treasure,
+        Altar,
+        Trial,
+        Healer,
+        Library,
+        Forge,
+        Gambler,
+        HerbGarden,
+        RelicShrine
     }
 }

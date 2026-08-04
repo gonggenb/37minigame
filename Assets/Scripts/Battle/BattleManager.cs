@@ -24,6 +24,7 @@ namespace WuxiaRoguelite.Battle
         public float LastDamage { get; private set; }
         public string LastTriggeredEffect { get; private set; } = string.Empty;
         public int PlayerSuccessfulHits { get; private set; }
+        public int EnemyAttackAttempts { get; private set; }
         public int EnemyPoisonStacks { get; private set; }
         public float EnemyArmorBreak { get; private set; }
         public float PlayerShield { get; private set; }
@@ -65,6 +66,7 @@ namespace WuxiaRoguelite.Battle
             LastAttackWasDodged = false;
             LastTriggeredEffect = string.Empty;
             PlayerSuccessfulHits = 0;
+            EnemyAttackAttempts = 0;
             EnemyPoisonStacks = 0;
             EnemyArmorBreak = 0f;
             poisonTickCooldown = 1f;
@@ -159,12 +161,28 @@ namespace WuxiaRoguelite.Battle
             LastTriggeredEffect = string.Empty;
             AttackSequence += 1;
 
-            if (UnityEngine.Random.value < defender.dodgeChance)
+            bool forcedShadowDodge = false;
+            if (!isPlayerAttack)
+            {
+                EnemyAttackAttempts += 1;
+                int shadowRank = playerStats.GetMartialArtRank("无相残影");
+                int interval = shadowRank <= 0 ? int.MaxValue : 7 - shadowRank;
+                forcedShadowDodge = interval < int.MaxValue && EnemyAttackAttempts % interval == 0;
+            }
+
+            if (forcedShadowDodge || UnityEngine.Random.value < defender.dodgeChance)
             {
                 LastAttackWasDodged = true;
                 if (!isPlayerAttack)
                 {
                     HealPlayerOnDodge();
+                    if (forcedShadowDodge)
+                    {
+                        RegisterMartialArtActivation("无相残影");
+                        LastTriggeredEffect = string.IsNullOrEmpty(LastTriggeredEffect)
+                            ? "无相残影"
+                            : LastTriggeredEffect + " · 无相残影";
+                    }
                 }
 
                 string dodgeText = $"{defender.displayName} 闪开了 {attacker.displayName} 的攻击";
@@ -180,11 +198,54 @@ namespace WuxiaRoguelite.Battle
                 effectiveDefense = Mathf.Max(0f, effectiveDefense - EnemyArmorBreak);
             }
 
-            float damage = Mathf.Max(1f, attacker.attack - effectiveDefense);
-            bool isCrit = UnityEngine.Random.value < attacker.critChance;
+            float attackPower = attacker.attack;
+            if (isPlayerAttack)
+            {
+                int openingRank = playerStats.GetMartialArtRank("惊鸿一式");
+                if (openingRank > 0 && PlayerSuccessfulHits == 0)
+                {
+                    attackPower *= 1f + 0.20f + openingRank * 0.25f;
+                    RegisterMartialArtActivation("惊鸿一式");
+                }
+
+                int bloodBattleRank = playerStats.GetMartialArtRank("血战八方");
+                if (bloodBattleRank > 0 && attacker.currentHealth <= attacker.maxHealth * 0.5f)
+                {
+                    attackPower *= 1f + 0.06f + bloodBattleRank * 0.12f;
+                    RegisterMartialArtActivation("血战八方");
+                }
+            }
+
+            float damage = Mathf.Max(1f, attackPower - effectiveDefense);
+            float critChance = attacker.critChance;
+            if (isPlayerAttack && attacker.currentHealth <= attacker.maxHealth * 0.5f)
+            {
+                int bloodDomainRank = playerStats.GetMartialArtRank("修罗血域");
+                if (bloodDomainRank > 0)
+                {
+                    critChance += 0.04f + bloodDomainRank * 0.06f;
+                }
+            }
+            bool isCrit = UnityEngine.Random.value < Mathf.Clamp01(critChance);
             if (isCrit)
             {
                 damage *= Mathf.Max(1f, attacker.critMultiplier);
+            }
+
+            if (!isPlayerAttack)
+            {
+                float reduction = playerStats.GetMartialArtRank("不动明王身") * 0.06f + 0.02f;
+                if (playerStats.GetMartialArtRank("不动明王身") <= 0)
+                {
+                    reduction = 0f;
+                }
+
+                int bloodArmorRank = playerStats.GetSecretRank("血铸金身");
+                if (bloodArmorRank > 0 && defender.currentHealth <= defender.maxHealth * 0.5f)
+                {
+                    reduction += bloodArmorRank * 0.06f;
+                }
+                damage *= 1f - Mathf.Clamp(reduction, 0f, 0.65f);
             }
 
             float shieldBefore = PlayerShield;
@@ -195,8 +256,9 @@ namespace WuxiaRoguelite.Battle
 
             defender.TakeDamage(damage);
             float totalDamage = damage;
-            string[] effects = new string[3];
+            string[] effects = new string[8];
             int effectCount = 0;
+            bool triggeredSwiftCapstone = false;
             float shieldAbsorbed = shieldBefore - PlayerShield;
             if (shieldAbsorbed > 0f)
             {
@@ -213,6 +275,13 @@ namespace WuxiaRoguelite.Battle
                 {
                     totalDamage += swordQiDamage;
                     effects[effectCount++] = $"剑气 {swordQiDamage:0}";
+                }
+                float comboDamage = ApplySwiftCapstone(attacker, defender);
+                if (comboDamage > 0f)
+                {
+                    triggeredSwiftCapstone = true;
+                    totalDamage += comboDamage;
+                    effects[effectCount++] = $"连环剑 {comboDamage:0}";
                 }
             }
             else if (damage > 0f)
@@ -233,6 +302,11 @@ namespace WuxiaRoguelite.Battle
                 attacker.Heal(totalDamage * attacker.lifeSteal);
             }
 
+            if (isPlayerAttack && isCrit && playerStats.GetMartialArtRank("修罗血域") > 0)
+            {
+                RegisterMartialArtActivation("修罗血域");
+            }
+
             string attackText = isCrit
                 ? $"{attacker.displayName} 暴击造成 {totalDamage:0} 伤害"
                 : $"{attacker.displayName} 造成 {totalDamage:0} 伤害";
@@ -240,9 +314,14 @@ namespace WuxiaRoguelite.Battle
                 ? attackText
                 : $"{attackText}（{LastTriggeredEffect}）";
 
-            return isPlayerAttack && isCrit && playerStats.equipment != null
-                ? playerStats.equipment.GetCriticalCooldownMultiplier()
-                : 1f;
+            float cooldownMultiplier = triggeredSwiftCapstone ? 0.55f : 1f;
+            if (isPlayerAttack && isCrit && playerStats.equipment != null)
+            {
+                cooldownMultiplier = Mathf.Min(
+                    cooldownMultiplier,
+                    playerStats.equipment.GetCriticalCooldownMultiplier());
+            }
+            return cooldownMultiplier;
         }
 
         private float CalculateOpeningShield()
@@ -257,6 +336,13 @@ namespace WuxiaRoguelite.Battle
             if (rank > 0)
             {
                 shield += rank * (8f + playerStats.runtimeStats.defense * 1.5f);
+            }
+
+            int immovableRank = playerStats.GetMartialArtRank("不动明王身");
+            if (immovableRank > 0)
+            {
+                shield += immovableRank * 12f;
+                RegisterMartialArtActivation("不动明王身");
             }
 
             return shield;
@@ -276,20 +362,34 @@ namespace WuxiaRoguelite.Battle
 
         private void HealPlayerOnDodge()
         {
-            if (playerStats.equipment == null)
+            float healRatio = playerStats.equipment != null
+                ? playerStats.equipment.GetDodgeHealRatio()
+                : 0f;
+            if (healRatio > 0f)
             {
-                return;
+                float heal = playerStats.runtimeStats.maxHealth * healRatio;
+                playerStats.runtimeStats.Heal(heal);
+                LastTriggeredEffect = $"闪避回血 {heal:0}";
             }
 
-            float healRatio = playerStats.equipment.GetDodgeHealRatio();
-            if (healRatio <= 0f)
+            int bellShadowRank = playerStats.GetSecretRank("虚实金钟");
+            if (bellShadowRank > 0)
             {
-                return;
+                float shieldGain = playerStats.runtimeStats.maxHealth * bellShadowRank * 0.04f;
+                PlayerShield += shieldGain;
+                LastTriggeredEffect = string.IsNullOrEmpty(LastTriggeredEffect)
+                    ? $"虚实金钟 +{shieldGain:0}盾"
+                    : LastTriggeredEffect + $" · 虚实金钟 +{shieldGain:0}盾";
             }
 
-            float heal = playerStats.runtimeStats.maxHealth * healRatio;
-            playerStats.runtimeStats.Heal(heal);
-            LastTriggeredEffect = $"游侠披风回血 {heal:0}";
+            int pursuitRank = playerStats.GetSecretRank("无影追风");
+            if (pursuitRank > 0)
+            {
+                PlayerAttackCooldownRemaining *= 1f - pursuitRank * 0.35f;
+                LastTriggeredEffect = string.IsNullOrEmpty(LastTriggeredEffect)
+                    ? "无影追风"
+                    : LastTriggeredEffect + " · 无影追风";
+            }
         }
 
         private void ApplyArmorBreak(ref string[] effects, ref int effectCount)
@@ -328,7 +428,7 @@ namespace WuxiaRoguelite.Battle
             }
 
             int poisonHeartRank = playerStats.GetMartialArtRank("百毒心经");
-            int maxStacks = 8 + poisonHeartRank * 4;
+            int maxStacks = 8 + poisonHeartRank * 4 + playerStats.GetMartialArtRank("化功毒雾") * 3;
             EnemyPoisonStacks = Mathf.Min(maxStacks, EnemyPoisonStacks + stacks);
             effects[effectCount++] = $"毒 {EnemyPoisonStacks}";
             if (playerStats.GetMartialArtRank("毒砂掌") > 0)
@@ -363,6 +463,33 @@ namespace WuxiaRoguelite.Battle
 
             float damage = attacker.attack * ratio;
             defender.TakeDamage(damage);
+            int temperedPoisonRank = playerStats.GetSecretRank("青锋淬毒");
+            if (temperedPoisonRank > 0 && currentEnemy != null)
+            {
+                int maxStacks = 8 + playerStats.GetMartialArtRank("百毒心经") * 4 +
+                                playerStats.GetMartialArtRank("化功毒雾") * 3;
+                EnemyPoisonStacks = Mathf.Min(maxStacks, EnemyPoisonStacks + temperedPoisonRank);
+            }
+            return damage;
+        }
+
+        private float ApplySwiftCapstone(CombatantStats attacker, CombatantStats defender)
+        {
+            int rank = playerStats.GetMartialArtRank("无影连环剑");
+            if (rank <= 0)
+            {
+                return 0f;
+            }
+
+            int interval = 6 - rank;
+            if (PlayerSuccessfulHits % interval != 0)
+            {
+                return 0f;
+            }
+
+            float damage = attacker.attack * (0.70f + rank * 0.20f);
+            defender.TakeDamage(damage);
+            RegisterMartialArtActivation("无影连环剑");
             return damage;
         }
 
@@ -390,12 +517,24 @@ namespace WuxiaRoguelite.Battle
 
             int poisonHeartRank = playerStats.GetMartialArtRank("百毒心经");
             float damage = EnemyPoisonStacks * (0.55f + poisonHeartRank * 0.25f);
+            int poisonMistRank = playerStats.GetMartialArtRank("化功毒雾");
+            if (poisonMistRank > 0)
+            {
+                damage *= 1f + 0.05f + poisonMistRank * 0.15f;
+                EnemyArmorBreak = Mathf.Min(currentEnemy.defense, EnemyArmorBreak + poisonMistRank * 0.45f);
+                RegisterMartialArtActivation("化功毒雾");
+            }
             currentEnemy.TakeDamage(damage);
 
             int lifeDrainRank = playerStats.GetMartialArtRank("吸星诀");
             if (lifeDrainRank > 0)
             {
                 playerStats.runtimeStats.Heal(damage * lifeDrainRank * 0.10f);
+            }
+            int poisonBloodRank = playerStats.GetSecretRank("以毒养血");
+            if (poisonBloodRank > 0)
+            {
+                playerStats.runtimeStats.Heal(damage * poisonBloodRank * 0.08f);
             }
 
             LastAttackWasPlayer = true;

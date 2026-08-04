@@ -14,6 +14,7 @@ using WuxiaRoguelite.CameraTools;
 using WuxiaRoguelite.Cave;
 using WuxiaRoguelite.GameFlow;
 using WuxiaRoguelite.Map;
+using WuxiaRoguelite.MartialArts;
 using WuxiaRoguelite.Player;
 using WuxiaRoguelite.Runtime;
 using WuxiaRoguelite.UI;
@@ -675,8 +676,126 @@ namespace WuxiaRoguelite.EditorTools
             EditorSceneManager.SaveOpenScenes();
             AssetDatabase.SaveAssets();
             Debug.Log(
-                "Main map refined to 52 x 46 with layered 60-second routes, " +
-                "26 enemies, seven caves, six treasure chests, and distributed recovery/buff pickups.");
+                "Main map refined to 64 x 56 with layered 60-second routes, " +
+                "30 enemies, eight caves, six treasure chests, and distributed recovery/buff pickups.");
+        }
+
+        [MenuItem("37 MiniGame/Validate Expanded Build Content")]
+        public static void ValidateExpandedBuildContent()
+        {
+            EncounterTrigger[] encounters = UnityEngine.Object.FindObjectsByType<EncounterTrigger>(FindObjectsInactive.Include);
+            int normalEnemies = encounters.Count(item => item.encounterType == EncounterType.NormalEnemy);
+            int eliteEnemies = encounters.Count(item => item.encounterType == EncounterType.EliteEnemy);
+            int caves = encounters.Count(item => item.encounterType == EncounterType.HiddenCave);
+            int iconCount = Resources.LoadAll<Texture2D>("Icons").Length;
+
+            List<string> failures = new List<string>();
+            if (MartialArtCatalog.AllIds.Length != 20) failures.Add($"武学 {MartialArtCatalog.AllIds.Length}/20");
+            if (MartialArtCatalog.AllSecretIds.Length != 5) failures.Add($"秘传 {MartialArtCatalog.AllSecretIds.Length}/5");
+            if (PlayerEquipment.TreasureItemIds.Length + 3 != 15) failures.Add($"装备 {PlayerEquipment.TreasureItemIds.Length + 3}/15");
+            if (RunContentCatalog.AllRelicIds.Length != 8) failures.Add($"遗物 {RunContentCatalog.AllRelicIds.Length}/8");
+            if (RunContentCatalog.AllConsumableIds.Length != 6) failures.Add($"消耗品 {RunContentCatalog.AllConsumableIds.Length}/6");
+            if (normalEnemies != 22) failures.Add($"普通敌人 {normalEnemies}/22");
+            if (eliteEnemies != 8) failures.Add($"精英敌人 {eliteEnemies}/8");
+            if (caves != 8) failures.Add($"洞穴 {caves}/8");
+            if (iconCount < 70) failures.Add($"独立图标 {iconCount}/70");
+            ValidateCaveSceneAssets(failures);
+
+            if (failures.Count > 0)
+            {
+                Debug.LogError("Expanded build validation failed: " + string.Join(" · ", failures));
+                return;
+            }
+
+            Debug.Log(
+                "Expanded build validation passed: 20 arts, 5 secrets, 15 equipment, " +
+                "8 relics, 6 consumables, 22 normal enemies, 8 elite enemies, 8 caves, 70 icons, " +
+                "and nine formal cave scene assets.");
+        }
+
+        [MenuItem("37 MiniGame/Refresh Cave Scene Art")]
+        public static void RefreshCaveSceneArt()
+        {
+            string[] guids = AssetDatabase.FindAssets(
+                "t:Texture2D",
+                new[] { "Assets/Resources/CaveScenes" });
+            int refreshed = 0;
+            foreach (string guid in guids)
+            {
+                string assetPath = AssetDatabase.GUIDToAssetPath(guid);
+                TextureImporter importer = AssetImporter.GetAtPath(assetPath) as TextureImporter;
+                if (importer == null)
+                {
+                    continue;
+                }
+
+                bool isExit = assetPath.EndsWith("cave_exit_arch_v01.png");
+                importer.textureType = TextureImporterType.Default;
+                importer.npotScale = TextureImporterNPOTScale.None;
+                importer.mipmapEnabled = false;
+                importer.isReadable = false;
+                importer.alphaIsTransparency = isExit;
+                importer.wrapMode = TextureWrapMode.Clamp;
+                importer.filterMode = FilterMode.Bilinear;
+                importer.maxTextureSize = 2048;
+                importer.textureCompression = TextureImporterCompression.CompressedHQ;
+                importer.SaveAndReimport();
+                refreshed += 1;
+            }
+
+            AssetDatabase.SaveAssets();
+            Debug.Log($"Cave scene art refreshed: {refreshed} textures configured for runtime use.");
+        }
+
+        [MenuItem("37 MiniGame/Validate Cave Scene Art")]
+        public static void ValidateCaveSceneArt()
+        {
+            List<string> failures = new List<string>();
+            ValidateCaveSceneAssets(failures);
+            if (failures.Count > 0)
+            {
+                Debug.LogError("Cave scene art validation failed: " + string.Join(" · ", failures));
+                return;
+            }
+
+            Debug.Log(
+                "Cave scene art validation passed: four landscape backgrounds, four portrait backgrounds, " +
+                "and one transparent exit arch.");
+        }
+
+        private static void ValidateCaveSceneAssets(List<string> failures)
+        {
+            string[] themes = { "combat", "sanctuary", "vault", "mystic" };
+            foreach (string theme in themes)
+            {
+                ValidateCaveTexture(
+                    $"CaveScenes/bg_cave_{theme}_landscape_v01", 1920, 1080, failures);
+                ValidateCaveTexture(
+                    $"CaveScenes/bg_cave_{theme}_portrait_v01", 1080, 1920, failures);
+            }
+
+            ValidateCaveTexture("CaveScenes/cave_exit_arch_v01", 512, 512, failures);
+        }
+
+        private static void ValidateCaveTexture(
+            string resourcePath,
+            int expectedWidth,
+            int expectedHeight,
+            List<string> failures)
+        {
+            Texture2D texture = Resources.Load<Texture2D>(resourcePath);
+            if (texture == null)
+            {
+                failures.Add(resourcePath + " 缺失");
+                return;
+            }
+
+            if (texture.width != expectedWidth || texture.height != expectedHeight)
+            {
+                failures.Add(
+                    $"{resourcePath} {texture.width}x{texture.height}/" +
+                    $"{expectedWidth}x{expectedHeight}");
+            }
         }
 
         [MenuItem("37 MiniGame/Refresh Enemy Variety")]
@@ -1800,16 +1919,16 @@ namespace WuxiaRoguelite.EditorTools
                 UnityEngine.Object.DestroyImmediate(previousExpansion.gameObject);
             }
 
-            ResizeMapObject(mapRoot.transform, "Walkable Ground", Vector3.zero, new Vector3(5.2f, 1f, 4.6f));
-            ResizeMapObject(mapRoot.transform, "Main Dirt Road", new Vector3(0f, 0.025f, 0f), new Vector3(3.2f, 0.05f, 43f));
-            ResizeMapObject(mapRoot.transform, "Cross Dirt Road", new Vector3(0f, 0.03f, 0.8f), new Vector3(49f, 0.05f, 2.5f));
+            ResizeMapObject(mapRoot.transform, "Walkable Ground", Vector3.zero, new Vector3(6.4f, 1f, 5.6f));
+            ResizeMapObject(mapRoot.transform, "Main Dirt Road", new Vector3(0f, 0.025f, 0f), new Vector3(3.2f, 0.05f, 53f));
+            ResizeMapObject(mapRoot.transform, "Cross Dirt Road", new Vector3(0f, 0.03f, 0.8f), new Vector3(61f, 0.05f, 2.5f));
             ResizeMapObject(mapRoot.transform, "North Ridge Road", new Vector3(-8.2f, 0.028f, 7.2f), new Vector3(16f, 0.05f, 2.1f));
             ResizeMapObject(mapRoot.transform, "South Cave Road", new Vector3(8.5f, 0.028f, -7.2f), new Vector3(17f, 0.05f, 2.1f));
 
-            ResizeMapObject(mapRoot.transform, "North Boundary", new Vector3(0f, 0.55f, 23.2f), new Vector3(52f, 1.1f, 0.45f));
-            ResizeMapObject(mapRoot.transform, "South Boundary", new Vector3(0f, 0.55f, -23.2f), new Vector3(52f, 1.1f, 0.45f));
-            ResizeMapObject(mapRoot.transform, "West Boundary", new Vector3(-26.2f, 0.55f, 0f), new Vector3(0.45f, 1.1f, 46f));
-            ResizeMapObject(mapRoot.transform, "East Boundary", new Vector3(26.2f, 0.55f, 0f), new Vector3(0.45f, 1.1f, 46f));
+            ResizeMapObject(mapRoot.transform, "North Boundary", new Vector3(0f, 0.55f, 28.2f), new Vector3(64f, 1.1f, 0.45f));
+            ResizeMapObject(mapRoot.transform, "South Boundary", new Vector3(0f, 0.55f, -28.2f), new Vector3(64f, 1.1f, 0.45f));
+            ResizeMapObject(mapRoot.transform, "West Boundary", new Vector3(-32.2f, 0.55f, 0f), new Vector3(0.45f, 1.1f, 56f));
+            ResizeMapObject(mapRoot.transform, "East Boundary", new Vector3(32.2f, 0.55f, 0f), new Vector3(0.45f, 1.1f, 56f));
 
             Material path = GetMapMaterial(mapRoot.transform, "Main Dirt Road", "Prototype_Path", new Color(0.38f, 0.32f, 0.24f));
             GameObject expansion = new GameObject("Expanded Main Map Content");
@@ -1827,6 +1946,10 @@ namespace WuxiaRoguelite.EditorTools
             CreateCube("West Frontier Trail", roads.transform, new Vector3(-23f, 0.028f, 0f), new Vector3(2.05f, 0.05f, 42f), path);
             CreateCube("North Frontier Road", roads.transform, new Vector3(0f, 0.029f, 21f), new Vector3(48f, 0.05f, 2.05f), path);
             CreateCube("South Frontier Road", roads.transform, new Vector3(0f, 0.029f, -21f), new Vector3(48f, 0.05f, 2.05f), path);
+            CreateCube("Far East Ring", roads.transform, new Vector3(29f, 0.029f, 0f), new Vector3(2.05f, 0.05f, 49f), path);
+            CreateCube("Far West Ring", roads.transform, new Vector3(-29f, 0.029f, 0f), new Vector3(2.05f, 0.05f, 49f), path);
+            CreateCube("Far North Route", roads.transform, new Vector3(0f, 0.029f, 25.5f), new Vector3(58f, 0.05f, 2.05f), path);
+            CreateCube("Far South Route", roads.transform, new Vector3(0f, 0.029f, -25.5f), new Vector3(58f, 0.05f, 2.05f), path);
 
             GameObject scenery = new GameObject("Expanded KayKit Scenery");
             scenery.transform.SetParent(expansion.transform);
@@ -1964,6 +2087,22 @@ namespace WuxiaRoguelite.EditorTools
                 EncounterType.EliteEnemy,
                 Stats("北漠刀魁", 175, 17, 6, 0.8f, "stone_ape", critChance: 0.06f),
                 45, 16, 1.25f);
+            GameObject farEastShadow = CreateEncounter("东海影客", inkWolfIdle, inkWolfIdle, new Vector3(29f, 0f, 12f),
+                EncounterType.NormalEnemy,
+                Stats("东海影客", 82, 12, 2, 1.35f, "ink_wolf", critChance: 0.09f, dodgeChance: 0.14f),
+                27, 9, 1.35f);
+            GameObject farWestBlood = CreateEncounter("西漠血徒", riderRun, riderRun, new Vector3(-29f, 0f, -10f),
+                EncounterType.NormalEnemy,
+                Stats("西漠血徒", 96, 14, 3, 1.02f, "rider", critChance: 0.07f, lifeSteal: 0.16f),
+                29, 10, 1.2f);
+            GameObject farNorthPoisonElite = CreateEncounter("北门毒宗", bambooPuppetIdle, bambooPuppetIdle, new Vector3(-12f, 0f, 25.5f),
+                EncounterType.EliteEnemy,
+                Stats("北门毒宗", 190, 18, 5, 0.96f, "bamboo_puppet", dodgeChance: 0.07f, lifeSteal: 0.18f),
+                48, 17, 1.2f);
+            GameObject farSouthIronElite = CreateEncounter("南岭铁僧", stoneApeIdle, stoneApeIdle, new Vector3(13f, 0f, -25.5f),
+                EncounterType.EliteEnemy,
+                Stats("南岭铁僧", 220, 18, 8, 0.70f, "stone_ape", critChance: 0.04f),
+                50, 18, 1.3f);
             GameObject southCave = CreateCaveEncounter("岩壁密窟", new Vector3(19.2f, 0f, -14.8f),
                 Stats("岩窟守卫", 175, 16, 5, 0.82f, "stone_ape"), 42, 14, CaveContentType.Random);
             GameObject eastCloudCave = CreateCaveEncounter("东岭云窟", new Vector3(24f, 0f, 16.5f),
@@ -1972,6 +2111,8 @@ namespace WuxiaRoguelite.EditorTools
                 Stats("残窟守卫", 180, 16, 6, 0.8f, "orc_cave_guardian"), 44, 15, CaveContentType.Random);
             GameObject southwestHiddenCave = CreateCaveEncounter("西南藏窟", new Vector3(-22f, 0f, -19f),
                 Stats("藏窟守卫", 185, 17, 6, 0.8f, "orc_cave_guardian"), 46, 16, CaveContentType.Random);
+            GameObject farWestRelicCave = CreateCaveEncounter("西陲供器窟", new Vector3(-29f, 0f, -24f),
+                Stats("供器守卫", 195, 18, 6, 0.82f, "orc_cave_guardian"), 48, 17, CaveContentType.RelicShrine);
             GameObject northTreasure = CreateEncounter("北岭宝箱", new[] { treasureChestSprite }, null, new Vector3(-7f, 0f, 16.2f),
                 EncounterType.Treasure, Stats("宝箱", 1, 0, 0, 1f), 18, 10, 0.9f);
             GameObject innerTreasure = CreateEncounter("古道补给箱", new[] { treasureChestSprite }, null, new Vector3(4.8f, 0f, 6.8f),
@@ -2006,8 +2147,9 @@ namespace WuxiaRoguelite.EditorTools
                 eastBandit, northBallista, westWolf, southRider, northElite,
                 eastQuickblade, westPoisoner, northGuard, southAssassin, westSiegeBow, eastScout,
                 innerSwordsman, eastAmbush, westRatPack, northWanderer, southBlade,
-                eastFrontierElite, northFrontierElite,
-                southCave, eastCloudCave, northwestRuinCave, southwestHiddenCave,
+                eastFrontierElite, northFrontierElite, farEastShadow, farWestBlood,
+                farNorthPoisonElite, farSouthIronElite,
+                southCave, eastCloudCave, northwestRuinCave, southwestHiddenCave, farWestRelicCave,
                 northTreasure, innerTreasure, westTreasure, southTreasure,
                 eastMysteryHerb, northSpeedHerb, southHealingHerb, eastDefenseHerb
             };

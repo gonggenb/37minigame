@@ -80,8 +80,8 @@ namespace WuxiaRoguelite.UI
             GUI.depth = -100;
             float guiScale = ResponsiveGui.Scale;
             Vector2 guiPoint = ResponsiveGui.ScreenPointToGui(screenPoint, guiScale);
-            Rect labelRect = new Rect(guiPoint.x - 24f, guiPoint.y - 9f, 48f, 18f);
-            string levelText = $"Lv.{encounter.enemyStats.DisplayLevel}";
+            Rect labelRect = new Rect(guiPoint.x - 26f, guiPoint.y - 9f, 52f, 18f);
+            string levelText = $"{encounter.enemyStats.DisplayLevel}级";
             Matrix4x4 originalGuiMatrix = ResponsiveGui.ApplyScale(guiScale);
             ResponsiveGui.DrawSingleLineLabel(
                 new Rect(labelRect.x + 1f, labelRect.y + 1f, labelRect.width, labelRect.height),
@@ -106,8 +106,8 @@ namespace WuxiaRoguelite.UI
             Vector2 markerPoint = WorldIndicatorUtility.GetClampedGuiPoint(
                 worldCamera, anchor, guiScale, out Vector2 direction);
             string arrow = WorldIndicatorUtility.DirectionArrow(direction);
-            string label = $"{arrow} Lv.{encounter.enemyStats.DisplayLevel}  {Mathf.CeilToInt(playerDistance)}m";
-            Rect panel = new Rect(markerPoint.x - 47f, markerPoint.y - 13f, 94f, 26f);
+            string label = $"{arrow} {encounter.enemyStats.DisplayLevel}级  {Mathf.CeilToInt(playerDistance)}步";
+            Rect panel = new Rect(markerPoint.x - 54f, markerPoint.y - 13f, 108f, 26f);
 
             int playerLevel = playerStats != null ? playerStats.level : 1;
             int levelDelta = encounter.enemyStats.DisplayLevel - playerLevel;

@@ -174,8 +174,8 @@ namespace WuxiaRoguelite.UI
             Vector2 markerPoint = WorldIndicatorUtility.GetClampedGuiPoint(
                 worldCamera, anchor, guiScale, out Vector2 direction);
             string arrow = WorldIndicatorUtility.DirectionArrow(direction);
-            string label = $"{arrow} 宝箱  {Mathf.CeilToInt(playerDistance)}m";
-            Rect panel = new Rect(markerPoint.x - 53f, markerPoint.y - 14f, 106f, 28f);
+            string label = $"{arrow} 宝箱  {Mathf.CeilToInt(playerDistance)}步";
+            Rect panel = new Rect(markerPoint.x - 57f, markerPoint.y - 14f, 114f, 28f);
             float pulse = 0.78f + Mathf.Sin(Time.unscaledTime * pulseSpeed) * 0.18f;
 
             GUI.depth = -122;

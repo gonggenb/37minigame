@@ -115,10 +115,14 @@ namespace WuxiaRoguelite.UI
             style.wordWrap = false;
             style.clipping = TextClipping.Clip;
             style.fontSize = startingFontSize;
+            // CJK fonts usually report a taller line box than Latin fonts. Shrinking
+            // against that reported height made otherwise valid Chinese labels tiny.
+            // The label rect already clips vertically, so only fit the single line
+            // against the available width here.
             while (style.fontSize > minimumFontSize)
             {
                 Vector2 measured = style.CalcSize(content);
-                if (measured.x <= rect.width && measured.y <= rect.height)
+                if (measured.x <= rect.width)
                 {
                     break;
                 }
@@ -455,7 +459,7 @@ namespace WuxiaRoguelite.UI
                 new Color(1f, 0.76f, 0.32f));
             dangerHeadingStyle = LabelStyle(16, FontStyle.Bold, TextAnchor.MiddleLeft,
                 new Color(1f, 0.30f, 0.20f));
-            timeSecondsStyle = LabelStyle(24, FontStyle.Bold, TextAnchor.MiddleRight,
+            timeSecondsStyle = LabelStyle(16, FontStyle.Bold, TextAnchor.MiddleRight,
                 new Color(1f, 0.86f, 0.46f));
             bossWarningStyle = LabelStyle(18, FontStyle.Bold, TextAnchor.MiddleCenter,
                 new Color(1f, 0.82f, 0.46f));
@@ -524,7 +528,7 @@ namespace WuxiaRoguelite.UI
                 "背景音乐", headingStyle, 11);
             ResponsiveGui.DrawSingleLineLabel(
                 new Rect(musicRow.x + 14f, musicRow.y + 31f, musicRow.width - 150f, 22f),
-                "包含主地图、战斗、山洞与 Boss 音乐", mutedStyle, 9);
+                "包含主地图、战斗、洞穴与决战音乐", mutedStyle, 9);
 
             bool musicEnabled = musicController == null || musicController.MusicEnabled;
             string musicButtonText = musicEnabled ? "已开启" : "已关闭";
@@ -570,10 +574,10 @@ namespace WuxiaRoguelite.UI
                 "操作", headingStyle, 11);
             ResponsiveGui.DrawSingleLineLabel(
                 new Rect(panel.x + 22f, panel.y + 288f, panel.width - 44f, 22f),
-                "移动：竖屏滑动屏幕 / 横屏左下摇杆 / WASD", bodyStyle, 10);
+                "移动：竖屏滑动 / 横屏摇杆 / 键盘 W、A、S、D", bodyStyle, 10);
             ResponsiveGui.DrawSingleLineLabel(
                 new Rect(panel.x + 22f, panel.y + 312f, panel.width - 44f, 22f),
-                "P 角色状态 · B 装备背包 · Esc 设置", mutedStyle, 9);
+                "快捷键：P 角色状态 · B 装备背包 · Esc 设置", mutedStyle, 9);
 
             if (GUI.Button(
                     new Rect(panel.x + 22f, panel.yMax - 52f, panel.width - 44f, 34f),
@@ -689,7 +693,7 @@ namespace WuxiaRoguelite.UI
             Rect levelBadge = new Rect(portrait.x + badgeInset, portrait.yMax - badgeHeight,
                 portrait.width - badgeInset * 2f, badgeHeight);
             FillRect(levelBadge, new Color(0.025f, 0.03f, 0.03f, 0.94f));
-            ResponsiveGui.DrawSingleLineLabel(levelBadge, $"Lv.{playerStats.level}", centeredStyle, 8);
+            ResponsiveGui.DrawSingleLineLabel(levelBadge, $"{playerStats.level}级", centeredStyle, 8);
 
             float contentX = portrait.xMax - 5f;
             float contentWidth = hud.xMax - contentX - 7f;
@@ -710,7 +714,7 @@ namespace WuxiaRoguelite.UI
             timeSecondsStyle.normal.textColor = accent;
             ResponsiveGui.DrawSingleLineLabel(
                 new Rect(timerChip.x + 16f, timerChip.y, timerChip.width - 19f, timerChip.height),
-                $"{Mathf.CeilToInt(gameFlow.mainTimeRemaining):00}s", timeSecondsStyle, 10);
+                $"{Mathf.CeilToInt(gameFlow.mainTimeRemaining):00}秒", timeSecondsStyle, 10);
 
             ResponsiveGui.DrawSingleLineLabel(
                 new Rect(contentX + 7f, hud.y + 23f, contentWidth - 14f, 15f),
@@ -1020,7 +1024,7 @@ namespace WuxiaRoguelite.UI
 
             Rect timer = new Rect(rect.x + 2f, rect.yMax - 15f, rect.width - 4f, 13f);
             FillRect(timer, new Color(0.015f, 0.025f, 0.022f, 0.88f));
-            ResponsiveGui.DrawSingleLineLabel(timer, $"{buff.remainingDuration:0.0}s", skillCooldownStyle, 7);
+            ResponsiveGui.DrawSingleLineLabel(timer, $"{buff.remainingDuration:0.0}秒", skillCooldownStyle, 7);
             if (buff.stackCount > 1)
             {
                 Rect stack = new Rect(rect.xMax - 18f, rect.y + 2f, 16f, 13f);
@@ -1059,14 +1063,14 @@ namespace WuxiaRoguelite.UI
                     cooldownRatio = battleManager.PlayerAttackCooldownRatio;
                     unavailable = cooldownRatio > 0.02f;
                     cooldownText = battleManager.PlayerAttackCooldownRemaining > 0.05f
-                        ? $"{battleManager.PlayerAttackCooldownRemaining:0.0}s"
+                        ? $"{battleManager.PlayerAttackCooldownRemaining:0.0}秒"
                         : string.Empty;
                     break;
                 case "反震诀":
                     cooldownRatio = battleManager.EnemyAttackCooldownRatio;
                     unavailable = cooldownRatio > 0.02f;
                     cooldownText = battleManager.EnemyAttackCooldownRemaining > 0.05f
-                        ? $"{battleManager.EnemyAttackCooldownRemaining:0.0}s"
+                        ? $"{battleManager.EnemyAttackCooldownRemaining:0.0}秒"
                         : string.Empty;
                     break;
                 case "金钟罩":
@@ -1351,7 +1355,7 @@ namespace WuxiaRoguelite.UI
                 11);
             ResponsiveGui.DrawSingleLineLabel(
                 new Rect(textX, identityCard.yMax - 32f, textWidth, 20f),
-                $"距离交锋  {gameFlow.BossIntroTimeRemaining:0.0}s",
+                $"距离交锋  {gameFlow.BossIntroTimeRemaining:0.0} 秒",
                 mutedStyle,
                 9);
             GUI.color = previousColor;
@@ -1556,7 +1560,9 @@ namespace WuxiaRoguelite.UI
 
         private void DrawStatus(Rect rect)
         {
-            const float contentHeight = 405f;
+            int artRows = Mathf.Max(1, Mathf.CeilToInt(playerStats.learnedMartialArts.Count / 3f));
+            int secretRows = Mathf.Max(0, Mathf.CeilToInt(playerStats.unlockedSecrets.Count / 3f));
+            float contentHeight = 286f + artRows * 54f + (secretRows > 0 ? 34f + secretRows * 54f : 0f);
             bool needsScroll = rect.height < contentHeight;
             if (needsScroll)
             {
@@ -1592,7 +1598,7 @@ namespace WuxiaRoguelite.UI
             }
             else
             {
-                string[] learned = playerStats.learnedMartialArts.Take(9).ToArray();
+                string[] learned = playerStats.learnedMartialArts.Take(20).ToArray();
                 const float gap = 8f;
                 float tileWidth = (rect.width - gap * 2f) / 3f;
                 for (int i = 0; i < learned.Length; i++)
@@ -1602,6 +1608,31 @@ namespace WuxiaRoguelite.UI
                     Rect tile = new Rect(rect.x + column * (tileWidth + gap),
                         y + 154f + row * 54f, tileWidth, 48f);
                     DrawMartialArtTile(tile, learned[i]);
+                }
+            }
+
+            if (playerStats.unlockedSecrets.Count > 0)
+            {
+                float secretsY = y + 160f + artRows * 54f;
+                GUI.Label(new Rect(rect.x, secretsY, rect.width, 22f), "已悟秘传", headingStyle);
+                const float gap = 8f;
+                float tileWidth = (rect.width - gap * 2f) / 3f;
+                for (int i = 0; i < playerStats.unlockedSecrets.Count; i++)
+                {
+                    string secretId = playerStats.unlockedSecrets[i];
+                    int column = i % 3;
+                    int row = i / 3;
+                    Rect tile = new Rect(rect.x + column * (tileWidth + gap),
+                        secretsY + 26f + row * 54f, tileWidth, 48f);
+                    FillRect(tile, new Color(0.12f, 0.095f, 0.15f, 1f));
+                    DrawIcon(new Rect(tile.x + 5f, tile.y + 5f, 38f, 38f),
+                        FindMartialArtIcon(secretId), new Color(0.72f, 0.46f, 0.86f));
+                    ResponsiveGui.DrawSingleLineLabel(
+                        new Rect(tile.x + 49f, tile.y + 3f, tile.width - 54f, 22f),
+                        secretId, headingStyle, 8);
+                    ResponsiveGui.DrawSingleLineLabel(
+                        new Rect(tile.x + 49f, tile.y + 24f, tile.width - 54f, 20f),
+                        $"秘传 {playerStats.GetSecretRank(secretId)} 重", mutedStyle, 8);
                 }
             }
             if (needsScroll)
@@ -1826,6 +1857,15 @@ namespace WuxiaRoguelite.UI
 
         private Texture2D FindMartialArtIcon(string id)
         {
+            string resourceId = ContentIconCatalog.MartialArt(id);
+            Texture2D resourceIcon = string.IsNullOrEmpty(resourceId)
+                ? null
+                : Resources.Load<Texture2D>("Icons/" + resourceId);
+            if (resourceIcon != null)
+            {
+                return resourceIcon;
+            }
+
             Texture2D icon = FindIcon(martialArtIcons, id);
             if (icon != null)
             {
@@ -1847,6 +1887,15 @@ namespace WuxiaRoguelite.UI
 
         private Texture2D FindEquipmentIcon(string id)
         {
+            string resourceId = ContentIconCatalog.Equipment(id);
+            Texture2D resourceIcon = string.IsNullOrEmpty(resourceId)
+                ? null
+                : Resources.Load<Texture2D>("Icons/" + resourceId);
+            if (resourceIcon != null)
+            {
+                return resourceIcon;
+            }
+
             Texture2D icon = FindIcon(equipmentItemIcons, id);
             return icon != null || id != "poison_dart_pouch"
                 ? icon
@@ -1911,7 +1960,7 @@ namespace WuxiaRoguelite.UI
             if (GUI.Button(new Rect(panel.x + 8f, panel.y + 8f, panel.width - 16f, 26f), "重新开始")) gameFlow.StartRun();
             if (GUI.Button(new Rect(panel.x + 8f, panel.y + 40f, panel.width - 16f, 26f), "增加修为")) gameFlow.AddDebugCultivation();
             if (GUI.Button(new Rect(panel.x + 8f, panel.y + 72f, panel.width - 16f, 26f), "增加战力")) gameFlow.AddDebugPower();
-            if (GUI.Button(new Rect(panel.x + 8f, panel.y + 104f, panel.width - 16f, 26f), "进入 Boss")) gameFlow.ForceEnterBoss();
+            if (GUI.Button(new Rect(panel.x + 8f, panel.y + 104f, panel.width - 16f, 26f), "进入决战")) gameFlow.ForceEnterBoss();
             if (GUI.Button(new Rect(panel.x + 8f, panel.y + 136f, panel.width - 16f, 26f), "敌人洞穴")) gameFlow.DebugEnterCave(CaveContentType.Enemy);
             if (GUI.Button(new Rect(panel.x + 8f, panel.y + 168f, panel.width - 16f, 26f), "商人洞穴")) gameFlow.DebugEnterCave(CaveContentType.Merchant);
             if (GUI.Button(new Rect(panel.x + 8f, panel.y + 200f, panel.width - 16f, 26f), "宝箱洞穴")) gameFlow.DebugEnterCave(CaveContentType.Treasure);
