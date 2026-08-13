@@ -185,6 +185,9 @@ def main() -> None:
         "InkWolf": "ink_wolf",
         "StoneApe": "stone_ape",
         "BambooPuppet": "bamboo_puppet",
+        "ReedMantis": "reed_mantis",
+        "BronzeToad": "bronze_toad",
+        "CrimsonScorpion": "crimson_scorpion",
     }[args.name]
     assets_dir = Path(args.assets_dir)
     save_strip(

@@ -63,6 +63,20 @@ detached pieces, duplicated weapons, shadows, text or UI.
 
 ## Shared technical constraints
 
+## v02 action source grids
+
+- 青芦刀螳 / Reed Blade Mantis: strict 4x2 right-facing action grid; guard,
+  breathe, crouch, wind-up, slash contact, follow-through, recoil, guard.
+- 铜甲石蟾 / Bronze-Armored Stone Toad: strict 4x2 right-facing action grid;
+  guard, inhale, rise, coil, slam, compressed landing, rebound, guard.
+- 赤砂毒蝎 / Crimson Sand Venom Scorpion: strict 4x2 right-facing action grid;
+  guard, claw flex, tail coil, anticipation, claw contact, stinger follow-through,
+  recoil, guard.
+- All three use one consistent creature per cell, a common ground line and a flat
+  `#ff00ff` chroma background with no grid lines, scenery, text or UI.
+
+## Shared technical constraints
+
 - Final frame: `256x256` RGBA.
 - Final animation strip: `2048x256`, eight frames in one horizontal row.
 - Facing: right.

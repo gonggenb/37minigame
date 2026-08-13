@@ -70,6 +70,12 @@ namespace WuxiaRoguelite.EditorTools
         private const string StoneApeAttackPath = GeneratedEnemyRoot + "/StoneApe/spr_enemy_stone_ape_attack_right_8f_v01.png";
         private const string BambooPuppetIdlePath = GeneratedEnemyRoot + "/BambooPuppet/spr_enemy_bamboo_puppet_idle_right_8f_v01.png";
         private const string BambooPuppetAttackPath = GeneratedEnemyRoot + "/BambooPuppet/spr_enemy_bamboo_puppet_attack_right_8f_v01.png";
+        private const string ReedMantisIdlePath = GeneratedEnemyRoot + "/ReedMantis/spr_enemy_reed_mantis_idle_right_8f_v01.png";
+        private const string ReedMantisAttackPath = GeneratedEnemyRoot + "/ReedMantis/spr_enemy_reed_mantis_attack_right_8f_v01.png";
+        private const string BronzeToadIdlePath = GeneratedEnemyRoot + "/BronzeToad/spr_enemy_bronze_toad_idle_right_8f_v01.png";
+        private const string BronzeToadAttackPath = GeneratedEnemyRoot + "/BronzeToad/spr_enemy_bronze_toad_attack_right_8f_v01.png";
+        private const string CrimsonScorpionIdlePath = GeneratedEnemyRoot + "/CrimsonScorpion/spr_enemy_crimson_scorpion_idle_right_8f_v01.png";
+        private const string CrimsonScorpionAttackPath = GeneratedEnemyRoot + "/CrimsonScorpion/spr_enemy_crimson_scorpion_attack_right_8f_v01.png";
         private const bool GeneratedEnemyBattleFlip = true;
         // Legacy gameplay IDs keep their tuning and encounter identity, but their
         // presentation now resolves to the same generated wuxia monster family.
@@ -880,7 +886,7 @@ namespace WuxiaRoguelite.EditorTools
             AssetDatabase.SaveAssets();
             Debug.Log(
                 "Main map refined to 64 x 56 with layered 60-second routes, " +
-                "30 enemies, eight caves, six treasure chests, and distributed recovery/buff pickups.");
+                "36 enemies, eight caves, six treasure chests, and distributed recovery/buff pickups.");
         }
 
         [MenuItem("37 MiniGame/Validate Expanded Build Content")]
@@ -898,7 +904,7 @@ namespace WuxiaRoguelite.EditorTools
             if (PlayerEquipment.TreasureItemIds.Length + 3 != 15) failures.Add($"装备 {PlayerEquipment.TreasureItemIds.Length + 3}/15");
             if (RunContentCatalog.AllRelicIds.Length != 8) failures.Add($"遗物 {RunContentCatalog.AllRelicIds.Length}/8");
             if (RunContentCatalog.AllConsumableIds.Length != 6) failures.Add($"消耗品 {RunContentCatalog.AllConsumableIds.Length}/6");
-            if (normalEnemies != 22) failures.Add($"普通敌人 {normalEnemies}/22");
+            if (normalEnemies != 28) failures.Add($"普通敌人 {normalEnemies}/28");
             if (eliteEnemies != 8) failures.Add($"精英敌人 {eliteEnemies}/8");
             if (caves != 8) failures.Add($"洞穴 {caves}/8");
             if (iconCount < 70) failures.Add($"独立图标 {iconCount}/70");
@@ -912,7 +918,7 @@ namespace WuxiaRoguelite.EditorTools
 
             Debug.Log(
                 "Expanded build validation passed: 20 arts, 5 secrets, 15 equipment, " +
-                "8 relics, 6 consumables, 22 normal enemies, 8 elite enemies, 8 caves, 70 icons, " +
+                "8 relics, 6 consumables, 28 normal enemies, 8 elite enemies, 8 caves, 70 icons, " +
                 "and nine formal cave scene assets.");
         }
 
@@ -1325,6 +1331,26 @@ namespace WuxiaRoguelite.EditorTools
                 CreateEnemyVisualProfile("bamboo_puppet", bambooPuppetIdle, bambooPuppetAttack, ActorVisualScale.Medium, GeneratedEnemyBattleFlip)
             };
 
+            string[] newMonsterSheets =
+            {
+                ReedMantisIdlePath, ReedMantisAttackPath,
+                BronzeToadIdlePath, BronzeToadAttackPath,
+                CrimsonScorpionIdlePath, CrimsonScorpionAttackPath
+            };
+            if (newMonsterSheets.All(File.Exists))
+            {
+                Sprite fallbackSprite = GetOrCreatePrototypeSprite();
+                profiles.Add(CreateEnemyVisualProfile("reed_mantis",
+                    LoadFrames(ReedMantisIdlePath, fallbackSprite),
+                    LoadFrames(ReedMantisAttackPath, fallbackSprite), 1.02f, GeneratedEnemyBattleFlip));
+                profiles.Add(CreateEnemyVisualProfile("bronze_toad",
+                    LoadFrames(BronzeToadIdlePath, fallbackSprite),
+                    LoadFrames(BronzeToadAttackPath, fallbackSprite), 1.08f, GeneratedEnemyBattleFlip));
+                profiles.Add(CreateEnemyVisualProfile("crimson_scorpion",
+                    LoadFrames(CrimsonScorpionIdlePath, fallbackSprite),
+                    LoadFrames(CrimsonScorpionAttackPath, fallbackSprite), 1.04f, GeneratedEnemyBattleFlip));
+            }
+
             string[] requiredOrcSheets =
             {
                 OrcWarlordIdlePath, OrcWarlordAttackPath,
@@ -1666,6 +1692,9 @@ namespace WuxiaRoguelite.EditorTools
                 InkWolfIdlePath, InkWolfAttackPath,
                 StoneApeIdlePath, StoneApeAttackPath,
                 BambooPuppetIdlePath, BambooPuppetAttackPath,
+                ReedMantisIdlePath, ReedMantisAttackPath,
+                BronzeToadIdlePath, BronzeToadAttackPath,
+                CrimsonScorpionIdlePath, CrimsonScorpionAttackPath,
                 FoxDemonBossIdlePath, FoxDemonBossAttackPath,
                 OrcWarlordIdlePath, OrcWarlordAttackPath,
                 OrcCaveGuardianIdlePath, OrcCaveGuardianAttackPath
@@ -2140,7 +2169,19 @@ namespace WuxiaRoguelite.EditorTools
         private static void CreateRegionGroundPatch(
             string name, Transform parent, Vector3 position, Vector3 scale, Material material)
         {
-            GameObject patch = CreateCube(name, parent, position, scale, material);
+            // Region identity is a visual overlay, not terrain volume. A thin Cube
+            // intersects roads and stream banks and can expose diagonal faces or
+            // shadow seams. Keep one flat plane just above the base grass while all
+            // authored roads, river surfaces and bridgeheads remain above it.
+            GameObject patch = GameObject.CreatePrimitive(PrimitiveType.Plane);
+            patch.name = name;
+            patch.transform.SetParent(parent);
+            patch.transform.position = new Vector3(position.x, 0.0015f, position.z);
+            patch.transform.localScale = new Vector3(scale.x / 10f, 1f, scale.z / 10f);
+            Renderer renderer = patch.GetComponent<Renderer>();
+            renderer.sharedMaterial = material;
+            renderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+            renderer.receiveShadows = false;
             Collider collider = patch.GetComponent<Collider>();
             if (collider != null)
             {
@@ -3160,6 +3201,11 @@ namespace WuxiaRoguelite.EditorTools
                 return;
             }
 
+            Sprite fallbackSprite = GetOrCreatePrototypeSprite();
+            Sprite[] reedMantisIdle = LoadFrames(ReedMantisIdlePath, fallbackSprite);
+            Sprite[] bronzeToadIdle = LoadFrames(BronzeToadIdlePath, fallbackSprite);
+            Sprite[] crimsonScorpionIdle = LoadFrames(CrimsonScorpionIdlePath, fallbackSprite);
+
             Transform previousExpansion = mapRoot.transform.Find("Expanded Main Map Content");
             if (previousExpansion != null)
             {
@@ -3352,6 +3398,30 @@ namespace WuxiaRoguelite.EditorTools
                 EncounterType.EliteEnemy,
                 Stats("南岭铁僧", 220, 18, 8, 0.70f, "stone_ape", critChance: 0.04f),
                 50, 18, 1.3f);
+            GameObject westReedMantis = CreateEncounter("西道青芦刀螳", reedMantisIdle, reedMantisIdle, new Vector3(-16f, 0f, 0f),
+                EncounterType.NormalEnemy,
+                Stats("西道青芦刀螳", 54, 9, 1, 1.45f, "reed_mantis", critChance: 0.09f, dodgeChance: 0.12f),
+                17, 5, 1.12f);
+            GameObject northReedMantis = CreateEncounter("北坡青芦刀螳", reedMantisIdle, reedMantisIdle, new Vector3(-16f, 0f, 8f),
+                EncounterType.NormalEnemy,
+                Stats("北坡青芦刀螳", 62, 10, 2, 1.40f, "reed_mantis", critChance: 0.10f, dodgeChance: 0.10f),
+                20, 6, 1.12f);
+            GameObject ridgeBronzeToad = CreateEncounter("岭间铜甲石蟾", bronzeToadIdle, bronzeToadIdle, new Vector3(8f, 0f, 12f),
+                EncounterType.NormalEnemy,
+                Stats("岭间铜甲石蟾", 110, 11, 6, 0.68f, "bronze_toad"),
+                25, 8, 1.18f);
+            GameObject villageBronzeToad = CreateEncounter("东村铜甲石蟾", bronzeToadIdle, bronzeToadIdle, new Vector3(16f, 0f, 16f),
+                EncounterType.NormalEnemy,
+                Stats("东村铜甲石蟾", 118, 12, 7, 0.66f, "bronze_toad"),
+                28, 9, 1.18f);
+            GameObject southCrimsonScorpion = CreateEncounter("南坡赤砂毒蝎", crimsonScorpionIdle, crimsonScorpionIdle, new Vector3(-4f, 0f, -16f),
+                EncounterType.NormalEnemy,
+                Stats("南坡赤砂毒蝎", 70, 11, 3, 1.18f, "crimson_scorpion", critChance: 0.08f, dodgeChance: 0.05f, lifeSteal: 0.10f),
+                23, 8, 1.16f);
+            GameObject mineCrimsonScorpion = CreateEncounter("矿道赤砂毒蝎", crimsonScorpionIdle, crimsonScorpionIdle, new Vector3(16f, 0f, -8f),
+                EncounterType.NormalEnemy,
+                Stats("矿道赤砂毒蝎", 78, 12, 3, 1.16f, "crimson_scorpion", critChance: 0.09f, dodgeChance: 0.06f, lifeSteal: 0.12f),
+                26, 9, 1.16f);
             GameObject southCave = CreateCaveEncounter("岩壁密窟", new Vector3(19.2f, 0f, -14.8f),
                 Stats("岩窟守卫", 175, 16, 5, 0.82f, "stone_ape"), 42, 14, CaveContentType.Random);
             GameObject eastCloudCave = CreateCaveEncounter("东岭云窟", new Vector3(24f, 0f, 16.5f),
@@ -3398,6 +3468,8 @@ namespace WuxiaRoguelite.EditorTools
                 innerSwordsman, eastAmbush, westRatPack, northWanderer, southBlade,
                 eastFrontierElite, northFrontierElite, farEastShadow, farWestBlood,
                 farNorthPoisonElite, farSouthIronElite,
+                westReedMantis, northReedMantis, ridgeBronzeToad, villageBronzeToad,
+                southCrimsonScorpion, mineCrimsonScorpion,
                 southCave, eastCloudCave, northwestRuinCave, southwestHiddenCave, farWestRelicCave,
                 northTreasure, innerTreasure, westTreasure, southTreasure,
                 eastMysteryHerb, northSpeedHerb, southHealingHerb, eastDefenseHerb
