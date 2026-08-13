@@ -43,14 +43,21 @@ namespace WuxiaRoguelite.UI
         {
             get
             {
-                float scale = Scale;
-                Rect safe = Screen.safeArea;
-                return new Rect(
-                    safe.x / scale,
-                    (Screen.height - safe.yMax) / scale,
-                    safe.width / scale,
-                    safe.height / scale);
+                return CalculateSafeArea(Screen.safeArea, Screen.width, Screen.height);
             }
+        }
+
+        public static Rect CalculateSafeArea(
+            Rect safePixels,
+            float screenWidth,
+            float screenHeight)
+        {
+            float scale = CalculateScale(screenWidth, screenHeight);
+            return new Rect(
+                safePixels.x / scale,
+                (screenHeight - safePixels.yMax) / scale,
+                safePixels.width / scale,
+                safePixels.height / scale);
         }
 
         public static float CalculateScale(float screenWidth, float screenHeight)
@@ -190,6 +197,7 @@ namespace WuxiaRoguelite.UI
         private GUIStyle warningHeadingStyle;
         private GUIStyle dangerHeadingStyle;
         private GUIStyle timeSecondsStyle;
+        private GUIStyle timerCaptionStyle;
         private GUIStyle bossWarningStyle;
         private GUIStyle bossCountdownStyle;
         private GUIStyle bossIntroTitleStyle;
@@ -223,14 +231,14 @@ namespace WuxiaRoguelite.UI
         public static bool BlocksGameplayEscape =>
             IsSettingsOpen || Time.frameCount == settingsEscapeFrame;
 
-        private static readonly Color Ink = new Color(0.055f, 0.065f, 0.07f, 0.94f);
-        private static readonly Color Panel = new Color(0.09f, 0.105f, 0.105f, 0.97f);
-        private static readonly Color PanelLight = new Color(0.14f, 0.16f, 0.15f, 0.98f);
-        private static readonly Color Jade = new Color(0.27f, 0.68f, 0.53f, 1f);
-        private static readonly Color Gold = new Color(0.86f, 0.68f, 0.32f, 1f);
-        private static readonly Color Paper = new Color(0.92f, 0.88f, 0.74f, 1f);
-        private static readonly Color Muted = new Color(0.66f, 0.70f, 0.67f, 1f);
-        private static readonly Color Crimson = new Color(0.76f, 0.12f, 0.10f, 1f);
+        private static readonly Color Ink = WuxiaUiTheme.BackgroundInk;
+        private static readonly Color Panel = WuxiaUiTheme.SurfaceIron;
+        private static readonly Color PanelLight = WuxiaUiTheme.SurfaceRaised;
+        private static readonly Color Jade = WuxiaUiTheme.Jade;
+        private static readonly Color Gold = WuxiaUiTheme.Gold;
+        private static readonly Color Paper = WuxiaUiTheme.TextPrimary;
+        private static readonly Color Muted = WuxiaUiTheme.TextSecondary;
+        private static readonly Color Crimson = WuxiaUiTheme.Danger;
         private const float SkillReadyHighlightDuration = 0.72f;
         private const float HealthLossTrailDuration = 0.82f;
 
@@ -410,63 +418,32 @@ namespace WuxiaRoguelite.UI
             }
 
             titleStyle = LabelStyle(22, FontStyle.Bold, TextAnchor.MiddleLeft, Paper);
-            headingStyle = LabelStyle(16, FontStyle.Bold, TextAnchor.MiddleLeft, Color.white);
-            bodyStyle = LabelStyle(14, FontStyle.Normal, TextAnchor.MiddleLeft, Color.white);
+            headingStyle = LabelStyle(16, FontStyle.Bold, TextAnchor.MiddleLeft, Paper);
+            bodyStyle = LabelStyle(14, FontStyle.Normal, TextAnchor.MiddleLeft, Paper);
             mutedStyle = LabelStyle(12, FontStyle.Normal, TextAnchor.MiddleLeft, Muted);
-            centeredStyle = LabelStyle(14, FontStyle.Bold, TextAnchor.MiddleCenter, Color.white);
+            centeredStyle = LabelStyle(14, FontStyle.Bold, TextAnchor.MiddleCenter, Paper);
 
-            iconButtonStyle = RuntimeChineseFont.Apply(new GUIStyle(GUI.skin.button)
-            {
-                padding = new RectOffset(7, 7, 7, 7),
-                fixedWidth = 48f,
-                fixedHeight = 48f
-            });
-            tabStyle = RuntimeChineseFont.Apply(new GUIStyle(GUI.skin.button)
-            {
-                fontSize = 14,
-                fontStyle = FontStyle.Bold,
-                alignment = TextAnchor.MiddleCenter,
-                normal = { textColor = Muted }
-            });
-            activeTabStyle = new GUIStyle(tabStyle);
-            activeTabStyle.normal.textColor = Paper;
-            actionButtonStyle = RuntimeChineseFont.Apply(new GUIStyle(GUI.skin.button)
-            {
-                fontSize = 13,
-                fontStyle = FontStyle.Bold,
-                alignment = TextAnchor.MiddleCenter,
-                normal = { textColor = Color.white }
-            });
+            iconButtonStyle = WuxiaUiTheme.CreateButtonStyle(13, WuxiaButtonKind.Icon);
+            iconButtonStyle.fixedWidth = 48f;
+            iconButtonStyle.fixedHeight = 48f;
+            tabStyle = WuxiaUiTheme.CreateButtonStyle(14, WuxiaButtonKind.Tab);
+            activeTabStyle = WuxiaUiTheme.CreateButtonStyle(14, WuxiaButtonKind.Tab,
+                TextAnchor.MiddleCenter, true);
+            actionButtonStyle = WuxiaUiTheme.CreateButtonStyle(13, WuxiaButtonKind.Secondary);
             tooltipEffectStyle = LabelStyle(15, FontStyle.Bold, TextAnchor.UpperLeft,
                 new Color(1f, 0.80f, 0.35f));
             mainMenuTitleStyle = LabelStyle(38, FontStyle.Bold, TextAnchor.MiddleCenter,
                 new Color(0.97f, 0.91f, 0.72f));
             mainMenuSubtitleStyle = LabelStyle(15, FontStyle.Normal, TextAnchor.MiddleCenter,
                 new Color(0.84f, 0.84f, 0.78f));
-            mainMenuButtonStyle = RuntimeChineseFont.Apply(new GUIStyle(GUI.skin.button)
-            {
-                fontSize = 18,
-                fontStyle = FontStyle.Bold,
-                alignment = TextAnchor.MiddleCenter,
-                normal = { textColor = new Color(0.98f, 0.91f, 0.70f) },
-                hover = { textColor = Color.white },
-                active = { textColor = Color.white }
-            });
-            settingsToggleStyle = RuntimeChineseFont.Apply(new GUIStyle(GUI.skin.button)
-            {
-                fontSize = 15,
-                fontStyle = FontStyle.Bold,
-                alignment = TextAnchor.MiddleCenter,
-                normal = { textColor = Color.white },
-                hover = { textColor = Paper },
-                active = { textColor = Color.white }
-            });
+            mainMenuButtonStyle = WuxiaUiTheme.CreateButtonStyle(18, WuxiaButtonKind.Primary);
+            settingsToggleStyle = WuxiaUiTheme.CreateButtonStyle(15, WuxiaButtonKind.Secondary);
             warningHeadingStyle = LabelStyle(16, FontStyle.Bold, TextAnchor.MiddleLeft,
                 new Color(1f, 0.76f, 0.32f));
             dangerHeadingStyle = LabelStyle(16, FontStyle.Bold, TextAnchor.MiddleLeft,
                 new Color(1f, 0.30f, 0.20f));
-            timeSecondsStyle = LabelStyle(16, FontStyle.Bold, TextAnchor.MiddleRight,
-                new Color(1f, 0.86f, 0.46f));
+            timeSecondsStyle = LabelStyle(31, FontStyle.Bold, TextAnchor.MiddleCenter, Gold);
+            timerCaptionStyle = LabelStyle(10, FontStyle.Bold, TextAnchor.MiddleCenter, Muted);
             bossWarningStyle = LabelStyle(18, FontStyle.Bold, TextAnchor.MiddleCenter,
                 new Color(1f, 0.82f, 0.46f));
             bossCountdownStyle = LabelStyle(64, FontStyle.Bold, TextAnchor.MiddleCenter,
@@ -478,9 +455,9 @@ namespace WuxiaRoguelite.UI
             bossDialogueSpeakerStyle = LabelStyle(18, FontStyle.Bold, TextAnchor.MiddleLeft,
                 new Color(1f, 0.78f, 0.38f));
             bossDialogueBodyStyle = LabelStyle(17, FontStyle.Normal, TextAnchor.UpperLeft, Paper);
-            hudValueStyle = LabelStyle(12, FontStyle.Bold, TextAnchor.MiddleCenter, Color.white);
-            skillBadgeStyle = LabelStyle(9, FontStyle.Bold, TextAnchor.MiddleCenter, Color.white);
-            skillCooldownStyle = LabelStyle(12, FontStyle.Bold, TextAnchor.MiddleCenter, Color.white);
+            hudValueStyle = LabelStyle(12, FontStyle.Bold, TextAnchor.MiddleCenter, Paper);
+            skillBadgeStyle = LabelStyle(9, FontStyle.Bold, TextAnchor.MiddleCenter, Paper);
+            skillCooldownStyle = LabelStyle(12, FontStyle.Bold, TextAnchor.MiddleCenter, Paper);
             skillReadyStyle = LabelStyle(9, FontStyle.Bold, TextAnchor.MiddleCenter,
                 new Color(1f, 0.94f, 0.70f));
             runtimeSettingsIcon = CreateSettingsIcon(64);
@@ -665,23 +642,27 @@ namespace WuxiaRoguelite.UI
         {
             Rect safe = ResponsiveGui.SafeArea;
             bool portraitLayout = ResponsiveGui.IsPortrait;
+            bool timePaused = gameFlow.CurrentPhase == GamePhase.LevelUpPaused;
             float hudWidth = portraitLayout
-                ? Mathf.Min(360f, safe.width - 82f)
-                : Mathf.Min(330f, safe.width - 92f);
-            float portraitSize = portraitLayout ? 64f : 58f;
-            float portraitInset = portraitLayout ? 5f : 4f;
-            float topHeight = portraitLayout ? 72f : 66f;
-            float detailHeight = portraitLayout ? 28f : 26f;
-            float loadoutHeight = portraitLayout ? 54f : 52f;
-            Rect hud = new Rect(safe.x + 12f, safe.y + 12f, hudWidth,
+                ? Mathf.Min(324f, safe.width - 112f)
+                : Mathf.Min(318f, safe.width - 92f);
+            float portraitSize = portraitLayout ? 58f : 64f;
+            float portraitInset = 4f;
+            float topHeight = portraitLayout ? 60f : 66f;
+            float detailHeight = portraitLayout ? 24f : 26f;
+            float loadoutHeight = portraitLayout ? 44f : 50f;
+            float hudY = portraitLayout ? safe.y + 82f : safe.y + 12f;
+            Rect hud = new Rect(safe.x + 12f, hudY, hudWidth,
                 topHeight + 4f + detailHeight + 4f + loadoutHeight);
             float timeRatio = GetMainTimeRatio();
-            Color accent = GetMainTimeColor(timeRatio);
+            Color accent = timePaused ? WuxiaUiTheme.Paused : GetMainTimeColor(timeRatio);
+
+            DrawMainTimerWidget(safe, portraitLayout, timeRatio, timePaused, accent);
 
             Rect card = new Rect(
-                hud.x + portraitSize * 0.72f,
+                hud.x + portraitSize * 0.66f,
                 hud.y + 4f,
-                hud.width - portraitSize * 0.72f,
+                hud.width - portraitSize * 0.66f,
                 topHeight - 4f);
             DrawPanel(card, Ink, accent);
 
@@ -706,8 +687,8 @@ namespace WuxiaRoguelite.UI
                 GUI.DrawTexture(portrait, playerPortraitFrame, ScaleMode.ScaleToFit, true);
             }
 
-            float badgeInset = portraitLayout ? 12f : 10f;
-            float badgeHeight = 14f;
+            float badgeInset = 10f;
+            float badgeHeight = portraitLayout ? 13f : 14f;
             Rect levelBadge = new Rect(portrait.x + badgeInset, portrait.yMax - badgeHeight,
                 portrait.width - badgeInset * 2f, badgeHeight);
             FillRect(levelBadge, new Color(0.025f, 0.03f, 0.03f, 0.94f));
@@ -719,31 +700,15 @@ namespace WuxiaRoguelite.UI
                 ? "无名少侠"
                 : playerStats.baseStats.displayName;
             ResponsiveGui.DrawSingleLineLabel(
-                new Rect(contentX + 7f, hud.y + 4f, contentWidth - 70f, 18f),
+                new Rect(contentX + 7f, hud.y + 4f, contentWidth - 14f, 20f),
                 playerName, headingStyle, 10);
 
-            Rect timerChip = new Rect(hud.xMax - 64f, hud.y + 4f, 58f, 18f);
-            FillRect(timerChip, new Color(0.025f, 0.03f, 0.03f, 0.93f));
-            if (timeHudIcon != null)
-            {
-                GUI.DrawTexture(new Rect(timerChip.x + 2f, timerChip.y + 2f, 14f, 14f),
-                    timeHudIcon, ScaleMode.ScaleToFit, true);
-            }
-            timeSecondsStyle.normal.textColor = accent;
             ResponsiveGui.DrawSingleLineLabel(
-                new Rect(timerChip.x + 16f, timerChip.y, timerChip.width - 19f, timerChip.height),
-                $"{Mathf.CeilToInt(gameFlow.mainTimeRemaining):00}秒", timeSecondsStyle, 10);
-
-            ResponsiveGui.DrawSingleLineLabel(
-                new Rect(contentX + 7f, hud.y + 23f, contentWidth - 14f, 15f),
+                new Rect(contentX + 7f, hud.y + 26f, contentWidth - 14f, 15f),
                 $"气血  {playerStats.runtimeStats.currentHealth:0}/{playerStats.runtimeStats.maxHealth:0}",
                 hudValueStyle, 8);
-            Rect healthRect = new Rect(contentX + 7f, hud.y + 39f, contentWidth - 14f, 12f);
+            Rect healthRect = new Rect(contentX + 7f, hud.y + 43f, contentWidth - 14f, 13f);
             DrawHealthBar(healthRect, playerStats.runtimeStats.HealthRatio);
-
-            Rect timeTrack = new Rect(contentX + 7f,
-                hud.y + (portraitLayout ? 56f : 54f), contentWidth - 14f, 8f);
-            DrawMainTimeTrack(timeTrack, timeRatio, false);
 
             Rect detailRow = new Rect(hud.x, hud.y + topHeight + 4f, hud.width, detailHeight);
             DrawHudDetailRow(detailRow, portraitLayout, accent);
@@ -764,6 +729,41 @@ namespace WuxiaRoguelite.UI
                 gameFlow.statusMessage, bodyStyle, 10);
         }
 
+        private void DrawMainTimerWidget(
+            Rect safe,
+            bool portraitLayout,
+            float timeRatio,
+            bool paused,
+            Color accent)
+        {
+            float dialSize = portraitLayout ? 64f : 86f;
+            float top = safe.y + 4f;
+            Rect dial = new Rect(safe.center.x - dialSize * 0.5f, top, dialSize, dialSize);
+            WuxiaUiTheme.DrawTimerDial(dial, accent);
+
+            timeSecondsStyle.normal.textColor = accent;
+            ResponsiveGui.DrawSingleLineLabel(
+                new Rect(dial.x + 10f, dial.y + (portraitLayout ? 19f : 24f),
+                    dial.width - 20f, portraitLayout ? 31f : 38f),
+                Mathf.CeilToInt(gameFlow.mainTimeRemaining).ToString("00"), timeSecondsStyle,
+                portraitLayout ? 18 : 20);
+            timerCaptionStyle.normal.textColor = paused ? WuxiaUiTheme.Paused : Muted;
+            ResponsiveGui.DrawSingleLineLabel(
+                new Rect(dial.x + 8f, dial.y + (portraitLayout ? 7f : 10f),
+                    dial.width - 16f, 15f),
+                paused ? "主时间暂停" : "江湖时限", timerCaptionStyle, 8);
+            ResponsiveGui.DrawSingleLineLabel(
+                new Rect(dial.x + 8f, dial.yMax - (portraitLayout ? 19f : 25f),
+                    dial.width - 16f, 13f),
+                "秒", timerCaptionStyle, 8);
+
+            float trackWidth = portraitLayout ? 112f : 138f;
+            Rect track = new Rect(safe.center.x - trackWidth * 0.5f,
+                dial.yMax - (portraitLayout ? 3f : 4f), trackWidth,
+                portraitLayout ? 16f : 20f);
+            DrawMainTimeTrack(track, timeRatio, paused);
+        }
+
         private void DrawUnifiedCombatHud()
         {
             Rect safe = ResponsiveGui.SafeArea;
@@ -772,9 +772,9 @@ namespace WuxiaRoguelite.UI
                 ? Mathf.Max(218f, (safe.width - 44f) * 0.5f)
                 : Mathf.Min(286f, safe.width * 0.30f);
             float healthTop = portraitLayout
-                ? safe.y + 88f
+                ? safe.y + 68f
                 : safe.y + 89f;
-            float height = 112f;
+            float height = portraitLayout ? 96f : 112f;
             Rect hud = new Rect(safe.x + (portraitLayout ? 16f : Mathf.Clamp(ResponsiveGui.Width * 0.055f, 34f, 72f)),
                 healthTop, width, height);
             Color accent = gameFlow.CurrentPhase == GamePhase.BossBattle
@@ -797,13 +797,22 @@ namespace WuxiaRoguelite.UI
                 $"气血  {playerStats.runtimeStats.currentHealth:0} / {playerStats.runtimeStats.maxHealth:0}",
                 hudValueStyle, 8);
 
-            Rect loadout = new Rect(hud.x + 6f, hud.y + 48f, hud.width - 12f, hud.height - 54f);
+            Rect loadout = new Rect(hud.x + 6f, hud.y + (portraitLayout ? 45f : 48f),
+                hud.width - 12f, hud.height - (portraitLayout ? 51f : 54f));
             DrawLoadoutStrip(loadout, true);
         }
 
         private void DrawHudDetailRow(Rect rect, bool portraitLayout, Color accent)
         {
-            DrawPanel(rect, new Color(0.04f, 0.05f, 0.05f, 0.92f), accent);
+            if (portraitLayout)
+            {
+                WuxiaUiTheme.DrawCompactSurface(
+                    rect, new Color(0.03f, 0.04f, 0.04f, 0.88f), accent);
+            }
+            else
+            {
+                DrawPanel(rect, new Color(0.04f, 0.05f, 0.05f, 0.92f), accent);
+            }
             float inset = portraitLayout ? 5f : 4f;
             float gap = 4f;
             float contentWidth = rect.width - inset * 2f;
@@ -814,10 +823,10 @@ namespace WuxiaRoguelite.UI
             Rect copper = new Rect(cultivation.xMax + gap, cultivation.y,
                 copperWidth, cultivation.height);
 
-            DrawResourceChip(cultivation, cultivationHudIcon, "修为",
-                $"{playerStats.cultivation}/{playerStats.NextLevelRequirement}", Jade);
-            DrawResourceChip(copper, copperHudIcon, "铜钱",
-                playerStats.copper.ToString(), Gold);
+            DrawResourceChip(cultivation, cultivationHudIcon, portraitLayout ? "修" : "修为",
+                $"{playerStats.cultivation}/{playerStats.NextLevelRequirement}", Jade, portraitLayout);
+            DrawResourceChip(copper, copperHudIcon, portraitLayout ? "钱" : "铜钱",
+                playerStats.copper.ToString(), Gold, portraitLayout);
         }
 
         private void DrawResourceChip(
@@ -825,11 +834,20 @@ namespace WuxiaRoguelite.UI
             Texture2D icon,
             string label,
             string value,
-            Color accent)
+            Color accent,
+            bool compact)
         {
-            FillRect(rect, new Color(0.025f, 0.03f, 0.03f, 0.88f));
-            FillRect(new Rect(rect.x, rect.y, 2f, rect.height), accent);
-            float iconSize = Mathf.Min(22f, rect.height - 4f);
+            if (compact)
+            {
+                FillRect(rect, new Color(0.025f, 0.03f, 0.03f, 0.72f));
+                FillRect(new Rect(rect.x, rect.y + 3f, 2f, rect.height - 6f),
+                    new Color(accent.r, accent.g, accent.b, 0.82f));
+            }
+            else
+            {
+                WuxiaUiTheme.DrawSlot(rect, new Color(0.025f, 0.03f, 0.03f, 0.92f), accent);
+            }
+            float iconSize = Mathf.Min(compact ? 17f : 22f, rect.height - 4f);
             if (icon != null)
             {
                 GUI.DrawTexture(new Rect(rect.x + 3f, rect.y + (rect.height - iconSize) * 0.5f,
@@ -843,12 +861,24 @@ namespace WuxiaRoguelite.UI
         private void DrawLoadoutStrip(Rect rect, bool combatLayout)
         {
             playerStats.GetTimedBuffSnapshots(timedBuffBuffer);
-            FillRect(rect, new Color(0.018f, 0.024f, 0.025f, 0.94f));
-            DrawRectOutline(rect, new Color(1f, 1f, 1f, 0.10f), 1f);
+            bool compactPortrait = ResponsiveGui.IsPortrait;
+            if (compactPortrait)
+            {
+                WuxiaUiTheme.DrawCompactSurface(
+                    rect, new Color(0.018f, 0.024f, 0.025f, 0.88f),
+                    combatLayout ? Jade : Gold);
+            }
+            else
+            {
+                WuxiaUiTheme.DrawPanel(rect, new Color(0.018f, 0.024f, 0.025f, 0.94f),
+                    combatLayout ? Jade : Gold);
+            }
 
-            float headerHeight = combatLayout ? 12f : 13f;
+            float headerHeight = compactPortrait ? 0f : combatLayout ? 12f : 13f;
             float gap = 3f;
-            float slotSize = Mathf.Min(combatLayout ? 37f : 40f, rect.height - headerHeight - 4f);
+            float slotSize = Mathf.Min(
+                compactPortrait ? 36f : combatLayout ? 37f : 40f,
+                rect.height - headerHeight - (compactPortrait ? 8f : 4f));
             int buffCount = Mathf.Min(timedBuffBuffer.Count,
                 combatLayout && ResponsiveGui.IsPortrait ? 1 : 2);
             float buffWidth = buffCount > 0 ? buffCount * slotSize + Mathf.Max(0, buffCount - 1) * gap + 8f : 0f;
@@ -858,18 +888,21 @@ namespace WuxiaRoguelite.UI
             bool needsOverflow = learnedCount > capacity;
             int visibleSkills = Mathf.Min(learnedCount, needsOverflow ? Mathf.Max(0, capacity - 1) : capacity);
 
-            ResponsiveGui.DrawSingleLineLabel(
-                new Rect(rect.x + 6f, rect.y, skillWidth - 8f, headerHeight),
-                battleManager != null && battleManager.IsBattleActive ? "武学 · 自动运转" : "武学 · 流派与品类",
-                mutedStyle, 8);
-            if (buffCount > 0)
+            if (!compactPortrait)
             {
                 ResponsiveGui.DrawSingleLineLabel(
-                    new Rect(rect.xMax - buffWidth, rect.y, buffWidth - 2f, headerHeight),
-                    "限时增益", mutedStyle, 8);
+                    new Rect(rect.x + 6f, rect.y, skillWidth - 8f, headerHeight),
+                    battleManager != null && battleManager.IsBattleActive ? "武学 · 自动运转" : "武学 · 流派与品类",
+                    mutedStyle, 8);
+                if (buffCount > 0)
+                {
+                    ResponsiveGui.DrawSingleLineLabel(
+                        new Rect(rect.xMax - buffWidth, rect.y, buffWidth - 2f, headerHeight),
+                        "限时增益", mutedStyle, 8);
+                }
             }
 
-            float y = rect.y + headerHeight + 2f;
+            float y = rect.y + headerHeight + (compactPortrait ? 4f : 2f);
             float x = rect.x + 5f;
             Rect hoveredRect = default;
             string hoveredTitle = string.Empty;
@@ -882,8 +915,8 @@ namespace WuxiaRoguelite.UI
                 for (int i = 0; i < emptySlots; i++)
                 {
                     Rect slot = new Rect(x + i * (slotSize + gap), y, slotSize, slotSize);
-                    FillRect(slot, new Color(0.07f, 0.08f, 0.08f, 0.80f));
-                    DrawRectOutline(slot, new Color(0.38f, 0.40f, 0.39f, 0.55f), 1f);
+                    WuxiaUiTheme.DrawSlot(slot, new Color(0.07f, 0.08f, 0.08f, 0.80f),
+                        WuxiaUiTheme.TextDisabled);
                     ResponsiveGui.DrawSingleLineLabel(slot, i == 1 ? "待习" : "·", mutedStyle, 8);
                 }
             }
@@ -909,8 +942,7 @@ namespace WuxiaRoguelite.UI
                 {
                     int remaining = learnedCount - visibleSkills;
                     Rect overflow = new Rect(x + visibleSkills * (slotSize + gap), y, slotSize, slotSize);
-                    FillRect(overflow, new Color(0.08f, 0.09f, 0.085f, 0.96f));
-                    DrawRectOutline(overflow, new Color(Gold.r, Gold.g, Gold.b, 0.62f), 1f);
+                    WuxiaUiTheme.DrawSlot(overflow, new Color(0.08f, 0.09f, 0.085f, 0.96f), Gold);
                     ResponsiveGui.DrawSingleLineLabel(overflow, $"+{remaining}", centeredStyle, 10);
                     if (overflow.Contains(mouse))
                     {
@@ -969,9 +1001,8 @@ namespace WuxiaRoguelite.UI
                     2f);
             }
 
-            FillRect(rect, new Color(0.035f, 0.045f, 0.045f, 0.98f));
-            DrawRectOutline(rect, highlighted ? featureColor : new Color(featureColor.r, featureColor.g, featureColor.b, 0.72f),
-                highlighted ? 2f : 1f);
+            WuxiaUiTheme.DrawSlot(rect, new Color(0.035f, 0.045f, 0.045f, 0.98f),
+                featureColor, highlighted);
 
             Texture2D icon = FindMartialArtIcon(artId);
             if (icon != null)
@@ -1022,8 +1053,8 @@ namespace WuxiaRoguelite.UI
                 ? 0.5f + 0.5f * Mathf.Abs(Mathf.Sin(Time.unscaledTime * 9f))
                 : 0f;
             Color accent = new Color(0.28f + pulse * 0.22f, 0.78f, 0.59f, 1f);
-            FillRect(rect, new Color(0.025f, 0.045f, 0.04f, 0.98f));
-            DrawRectOutline(rect, accent, pulse > 0f ? 2f : 1f);
+            WuxiaUiTheme.DrawSlot(rect, new Color(0.025f, 0.045f, 0.04f, 0.98f),
+                accent, pulse > 0f);
 
             Texture2D icon = FindMartialArtIcon(buff.iconId);
             if (icon != null)
@@ -1313,7 +1344,7 @@ namespace WuxiaRoguelite.UI
                 cardWidth,
                 cardHeight);
             DrawPanel(identityCard, new Color(0.025f, 0.012f, 0.014f, 0.94f),
-                new Color(0.82f, 0.20f, 0.13f, 0.94f));
+                new Color(0.82f, 0.20f, 0.13f, 0.94f), WuxiaPanelKind.Boss);
             FillRect(
                 new Rect(identityCard.x + 8f, identityCard.y + 7f, identityCard.width - 16f, 2f),
                 new Color(0.94f, 0.62f, 0.20f, 0.82f));
@@ -1424,7 +1455,8 @@ namespace WuxiaRoguelite.UI
             DrawPanel(
                 dialoguePanel,
                 new Color(0.025f, 0.018f, 0.016f, 0.94f),
-                new Color(accent.r, accent.g, accent.b, 0.90f));
+                new Color(accent.r, accent.g, accent.b, 0.90f),
+                WuxiaPanelKind.Boss);
             FillRect(
                 new Rect(dialoguePanel.x + 8f, dialoguePanel.y + 10f, 4f, dialoguePanel.height - 20f),
                 new Color(accent.r, accent.g, accent.b, 0.90f));
@@ -1747,7 +1779,8 @@ namespace WuxiaRoguelite.UI
             FillRect(new Rect(0f, 0f, ResponsiveGui.Width, ResponsiveGui.Height),
                 new Color(0.02f, 0.025f, 0.025f, 0.72f));
             Rect panel = CenteredRect(660f, 340f);
-            DrawPanel(panel, new Color(0.09f, 0.105f, 0.105f, 1f), Gold);
+            DrawPanel(panel, new Color(0.09f, 0.105f, 0.105f, 1f), Gold,
+                WuxiaPanelKind.Paper);
             GUI.Label(new Rect(panel.x + 18f, panel.y + 12f, panel.width - 36f, 32f), "修为突破", titleStyle);
 
             float detailsWidth = Mathf.Clamp(panel.width * 0.39f, 210f, 244f);
@@ -1803,8 +1836,8 @@ namespace WuxiaRoguelite.UI
 
         private void DrawMartialArtTooltip(Rect rect, string artId)
         {
-            FillRect(rect, new Color(0.055f, 0.065f, 0.06f, 0.98f));
-            FillRect(new Rect(rect.x, rect.y, 3f, rect.height), Gold);
+            DrawPanel(rect, new Color(0.055f, 0.065f, 0.06f, 0.98f), Gold,
+                WuxiaPanelKind.Paper);
             MartialArtDefinition definition = MartialArtCatalog.Get(artId);
             if (definition == null)
             {
@@ -1955,7 +1988,9 @@ namespace WuxiaRoguelite.UI
         {
             FillRect(new Rect(0f, 0f, ResponsiveGui.Width, ResponsiveGui.Height), new Color(0.02f, 0.025f, 0.025f, 0.78f));
             Rect panel = CenteredRect(380f, 190f);
-            DrawPanel(panel, Panel, gameFlow.bossDefeated ? Jade : new Color(0.72f, 0.25f, 0.20f));
+            DrawPanel(panel, Panel,
+                gameFlow.bossDefeated ? Jade : new Color(0.72f, 0.25f, 0.20f),
+                WuxiaPanelKind.Boss);
             GUI.Label(new Rect(panel.x + 18f, panel.y + 12f, panel.width - 36f, 36f), gameFlow.bossDefeated ? "闯关功成" : "江湖路断", titleStyle);
             ResponsiveGui.DrawSingleLineLabel(
                 new Rect(panel.x + 18f, panel.y + 54f, panel.width - 36f, 24f),
@@ -1975,13 +2010,13 @@ namespace WuxiaRoguelite.UI
             Rect safe = ResponsiveGui.SafeArea;
             Rect panel = new Rect(safe.x + 14f, safe.y + 158f, 180f, 238f);
             DrawPanel(panel, Ink, new Color(0.55f, 0.55f, 0.55f));
-            if (GUI.Button(new Rect(panel.x + 8f, panel.y + 8f, panel.width - 16f, 26f), "重新开始")) gameFlow.StartRun();
-            if (GUI.Button(new Rect(panel.x + 8f, panel.y + 40f, panel.width - 16f, 26f), "增加修为")) gameFlow.AddDebugCultivation();
-            if (GUI.Button(new Rect(panel.x + 8f, panel.y + 72f, panel.width - 16f, 26f), "增加战力")) gameFlow.AddDebugPower();
-            if (GUI.Button(new Rect(panel.x + 8f, panel.y + 104f, panel.width - 16f, 26f), "进入决战")) gameFlow.ForceEnterBoss();
-            if (GUI.Button(new Rect(panel.x + 8f, panel.y + 136f, panel.width - 16f, 26f), "敌人洞穴")) gameFlow.DebugEnterCave(CaveContentType.Enemy);
-            if (GUI.Button(new Rect(panel.x + 8f, panel.y + 168f, panel.width - 16f, 26f), "商人洞穴")) gameFlow.DebugEnterCave(CaveContentType.Merchant);
-            if (GUI.Button(new Rect(panel.x + 8f, panel.y + 200f, panel.width - 16f, 26f), "宝箱洞穴")) gameFlow.DebugEnterCave(CaveContentType.Treasure);
+            if (GUI.Button(new Rect(panel.x + 8f, panel.y + 8f, panel.width - 16f, 26f), "重新开始", actionButtonStyle)) gameFlow.StartRun();
+            if (GUI.Button(new Rect(panel.x + 8f, panel.y + 40f, panel.width - 16f, 26f), "增加修为", actionButtonStyle)) gameFlow.AddDebugCultivation();
+            if (GUI.Button(new Rect(panel.x + 8f, panel.y + 72f, panel.width - 16f, 26f), "增加战力", actionButtonStyle)) gameFlow.AddDebugPower();
+            if (GUI.Button(new Rect(panel.x + 8f, panel.y + 104f, panel.width - 16f, 26f), "进入决战", actionButtonStyle)) gameFlow.ForceEnterBoss();
+            if (GUI.Button(new Rect(panel.x + 8f, panel.y + 136f, panel.width - 16f, 26f), "敌人洞穴", actionButtonStyle)) gameFlow.DebugEnterCave(CaveContentType.Enemy);
+            if (GUI.Button(new Rect(panel.x + 8f, panel.y + 168f, panel.width - 16f, 26f), "商人洞穴", actionButtonStyle)) gameFlow.DebugEnterCave(CaveContentType.Merchant);
+            if (GUI.Button(new Rect(panel.x + 8f, panel.y + 200f, panel.width - 16f, 26f), "宝箱洞穴", actionButtonStyle)) gameFlow.DebugEnterCave(CaveContentType.Treasure);
         }
 
         private float GetMainTimeRatio()
@@ -2060,18 +2095,21 @@ namespace WuxiaRoguelite.UI
 
         private static void DrawRectOutline(Rect rect, Color color, float thickness)
         {
-            thickness = Mathf.Max(1f, thickness);
-            FillRect(new Rect(rect.x, rect.y, rect.width, thickness), color);
-            FillRect(new Rect(rect.x, rect.yMax - thickness, rect.width, thickness), color);
-            FillRect(new Rect(rect.x, rect.y, thickness, rect.height), color);
-            FillRect(new Rect(rect.xMax - thickness, rect.y, thickness, rect.height), color);
+            WuxiaUiTheme.DrawOutline(rect, color, thickness);
         }
 
         private static void DrawPanel(Rect rect, Color background, Color accent)
         {
-            FillRect(rect, background);
-            FillRect(new Rect(rect.x, rect.y, 4f, rect.height), accent);
-            FillRect(new Rect(rect.x, rect.y, rect.width, 1f), new Color(1f, 1f, 1f, 0.12f));
+            WuxiaUiTheme.DrawPanel(rect, background, accent);
+        }
+
+        private static void DrawPanel(
+            Rect rect,
+            Color background,
+            Color accent,
+            WuxiaPanelKind kind)
+        {
+            WuxiaUiTheme.DrawPanel(rect, background, accent, kind);
         }
 
         private static GUIStyle LabelStyle(int size, FontStyle fontStyle, TextAnchor alignment, Color color)
@@ -2136,7 +2174,7 @@ namespace WuxiaRoguelite.UI
         {
             Texture2D texture = new Texture2D(size, size, TextureFormat.RGBA32, false)
             {
-                name = "RuntimeSettingsIcon",
+                name = "PLACEHOLDER_UI_RuntimeSettingsIcon",
                 filterMode = FilterMode.Bilinear,
                 wrapMode = TextureWrapMode.Clamp,
                 hideFlags = HideFlags.HideAndDontSave
@@ -2168,7 +2206,7 @@ namespace WuxiaRoguelite.UI
         {
             Texture2D texture = new Texture2D(size, size, TextureFormat.RGBA32, false)
             {
-                name = "RuntimeHomeIcon",
+                name = "PLACEHOLDER_UI_RuntimeHomeIcon",
                 filterMode = FilterMode.Bilinear,
                 wrapMode = TextureWrapMode.Clamp,
                 hideFlags = HideFlags.HideAndDontSave
@@ -2199,7 +2237,7 @@ namespace WuxiaRoguelite.UI
         {
             Texture2D texture = new Texture2D(size, size, TextureFormat.RGBA32, false)
             {
-                name = "RuntimePortraitBackdrop",
+                name = "PLACEHOLDER_UI_RuntimePortraitBackdrop",
                 filterMode = FilterMode.Bilinear,
                 wrapMode = TextureWrapMode.Clamp,
                 hideFlags = HideFlags.HideAndDontSave

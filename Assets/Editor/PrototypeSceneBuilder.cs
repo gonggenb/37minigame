@@ -26,15 +26,25 @@ namespace WuxiaRoguelite.EditorTools
     {
         private const string ScenePath = "Assets/Scenes/MainPrototype.unity";
         private const string SpritePath = "Assets/Art/Generated/prototype_square.png";
-        private const string GroundTexturePath = "Assets/Art/Generated/Environment/tex_mainmap_grass_albedo.png";
+        private const string GroundTexturePath = "Assets/Art/Generated/Environment/tex_env_mainmap_grass_albedo_1024_v02.png";
         private const string GroundMaterialPath = "Assets/Art/Generated/Environment/mat_mainmap_grass.mat";
         private const string SkyMaterialPath = "Assets/Art/Generated/Environment/mat_mainmap_sky.mat";
-        private const string RoadTexturePath = "Assets/Art/Generated/Environment/tex_mainmap_dirt_albedo.png";
+        private const string RoadTexturePath = "Assets/Art/Generated/Environment/tex_env_mainmap_dirt_albedo_1024_v02.png";
         private const string RoadMaterialPath = "Assets/Art/Generated/Environment/mat_mainmap_dirt.mat";
         private const string WorldSurfaceShaderName = "Wuxia Roguelite/Stylized World Surface";
+        private const string Hd2dEnvironmentRoot = "Assets/Art/Generated/Environment/HD2D";
+        private const string Hd2dBackdropPath = Hd2dEnvironmentRoot + "/tex_env_hd2d_mountain_backdrop_2048x1152_v01.png";
+        private const string Hd2dPanoramaPath = Hd2dEnvironmentRoot + "/tex_env_hd2d_mountain_panorama_2048x1024_v01.png";
+        private const string Hd2dPanoramaMaterialPath = Hd2dEnvironmentRoot + "/mat_env_hd2d_panorama_sky_v01.mat";
+        private const string Hd2dBambooPath = Hd2dEnvironmentRoot + "/spr_env_hd2d_bamboo_cluster_1024_v01.png";
+        private const string Hd2dPineRockPath = Hd2dEnvironmentRoot + "/spr_env_hd2d_pine_rock_1024_v01.png";
+        private const string Hd2dWaterTexturePath = Hd2dEnvironmentRoot + "/tex_env_hd2d_water_albedo_1024_v01.png";
+        private const string Hd2dWaterMaterialPath = Hd2dEnvironmentRoot + "/mat_env_hd2d_water_v01.mat";
+        private const string Hd2dMistPath = Hd2dEnvironmentRoot + "/spr_env_hd2d_mist_band_1024x256_v01.png";
+        private const string Hd2dLightBeamPath = Hd2dEnvironmentRoot + "/spr_env_hd2d_light_beam_256x512_v01.png";
+        private const string Hd2dWaterShaderName = "Wuxia Roguelite/HD2D Water Surface";
         private const string TinyRoot = "Assets/Art/ThirdParty/TinySwords";
         private const string CrimsonRoot = "Assets/Art/ThirdParty/CrimsonWarrior/Player";
-        private const string EnemyVarietyRoot = "Assets/Art/ThirdParty/CraftPixEnemyVariety/Enemies";
         private const string KayKitRoot = "Assets/Art/ThirdParty/KayKitMedieval/Models";
         private const string PlayerIdlePath = CrimsonRoot + "/CrimsonWarrior_Idle_Right.png";
         private const string PlayerRunPath = CrimsonRoot + "/CrimsonWarrior_Run_Right.png";
@@ -53,12 +63,6 @@ namespace WuxiaRoguelite.EditorTools
         private const string BlueIdlePath = TinyRoot + "/Units/BlueWarrior/Warrior_Idle.png";
         private const string BlueRunPath = TinyRoot + "/Units/BlueWarrior/Warrior_Run.png";
         private const string BlueAttackPath = TinyRoot + "/Units/BlueWarrior/Warrior_Attack1.png";
-        private const string RatRunPath = EnemyVarietyRoot + "/Rat_Run.png";
-        private const string RatAttackPath = EnemyVarietyRoot + "/Rat_Attack.png";
-        private const string RiderRunPath = EnemyVarietyRoot + "/Rider_Run.png";
-        private const string RiderAttackPath = EnemyVarietyRoot + "/Rider_Attack.png";
-        private const string BallistaFlyPath = EnemyVarietyRoot + "/Ballista_Fly.png";
-        private const string BallistaAttackPath = EnemyVarietyRoot + "/Ballista_Attack.png";
         private const string GeneratedEnemyRoot = "Assets/Art/Generated/Characters/Enemies";
         private const string InkWolfIdlePath = GeneratedEnemyRoot + "/InkWolf/spr_enemy_ink_wolf_idle_right_8f_v01.png";
         private const string InkWolfAttackPath = GeneratedEnemyRoot + "/InkWolf/spr_enemy_ink_wolf_attack_right_8f_v01.png";
@@ -66,6 +70,17 @@ namespace WuxiaRoguelite.EditorTools
         private const string StoneApeAttackPath = GeneratedEnemyRoot + "/StoneApe/spr_enemy_stone_ape_attack_right_8f_v01.png";
         private const string BambooPuppetIdlePath = GeneratedEnemyRoot + "/BambooPuppet/spr_enemy_bamboo_puppet_idle_right_8f_v01.png";
         private const string BambooPuppetAttackPath = GeneratedEnemyRoot + "/BambooPuppet/spr_enemy_bamboo_puppet_attack_right_8f_v01.png";
+        private const bool GeneratedEnemyBattleFlip = true;
+        // Legacy gameplay IDs keep their tuning and encounter identity, but their
+        // presentation now resolves to the same generated wuxia monster family.
+        // This prevents a scene refresh from mixing the bright CraftPix pack back
+        // into the darker 256 px / 160 PPU map cast.
+        private const string RatRunPath = InkWolfIdlePath;
+        private const string RatAttackPath = InkWolfAttackPath;
+        private const string RiderRunPath = BambooPuppetIdlePath;
+        private const string RiderAttackPath = BambooPuppetAttackPath;
+        private const string BallistaFlyPath = StoneApeIdlePath;
+        private const string BallistaAttackPath = StoneApeAttackPath;
         private const string GeneratedBossRoot = "Assets/Art/Generated/Characters/Bosses";
         private const string FoxDemonBossIdlePath = GeneratedBossRoot + "/FoxDemon/spr_boss_fox_demon_idle_right_8f_v01.png";
         private const string FoxDemonBossAttackPath = GeneratedBossRoot + "/FoxDemon/spr_boss_fox_demon_attack_right_8f_v01.png";
@@ -548,10 +563,198 @@ namespace WuxiaRoguelite.EditorTools
 
             groundRenderer.sharedMaterial = GetOrCreateMainMapGroundMaterial();
             EditorUtility.SetDirty(groundRenderer);
+
+            Material roadMaterial = GetOrCreateMainMapRoadMaterial();
+            string[] roadNames =
+            {
+                "Main Dirt Road",
+                "Cross Dirt Road",
+                "North Ridge Road",
+                "South Cave Road"
+            };
+
+            foreach (string roadName in roadNames)
+            {
+                GameObject roadObject = GameObject.Find(roadName);
+                Renderer roadRenderer = roadObject != null ? roadObject.GetComponent<Renderer>() : null;
+                if (roadRenderer == null)
+                {
+                    Debug.LogWarning($"Cannot refresh main map road material: {roadName} or its Renderer was not found.");
+                    continue;
+                }
+
+                roadRenderer.sharedMaterial = roadMaterial;
+                EditorUtility.SetDirty(roadRenderer);
+            }
+
             EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
             EditorSceneManager.SaveOpenScenes();
             AssetDatabase.SaveAssets();
-            Debug.Log("Formal tiled grass material applied to Walkable Ground.");
+            Debug.Log("Formal tiled grass and dirt materials applied to the main map ground.");
+        }
+
+        [MenuItem("37 MiniGame/Apply HD-2D Main World Art")]
+        public static void ApplyHd2dMainWorldArt()
+        {
+            if (EditorApplication.isPlaying)
+            {
+                Debug.LogError("Exit Play Mode before applying the HD-2D main-world art.");
+                return;
+            }
+
+            GameObject mapRoot = GameObject.Find("3D Prototype Map");
+            if (mapRoot == null)
+            {
+                Debug.LogError("Cannot apply HD-2D main-world art: 3D Prototype Map was not found.");
+                return;
+            }
+
+            AssetDatabase.Refresh();
+            ConfigureHd2dWorldArtAssets();
+
+            Transform previous = mapRoot.transform.Find("HD2D Main World Art");
+            if (previous != null)
+            {
+                UnityEngine.Object.DestroyImmediate(previous.gameObject);
+            }
+
+            GameObject hd2dRoot = new GameObject("HD2D Main World Art");
+            hd2dRoot.transform.SetParent(mapRoot.transform);
+
+            BuildHd2dBackdrop(hd2dRoot.transform);
+            BuildHd2dRegionDistricts(hd2dRoot.transform);
+            BuildHd2dStream(hd2dRoot.transform);
+            BuildHd2dScenicLayers(hd2dRoot.transform);
+            BuildHd2dAtmosphere(hd2dRoot.transform);
+            RelocateRiverConflicts();
+            ApplyHd2dWorldLighting(hd2dRoot.transform);
+
+            EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
+            EditorSceneManager.SaveOpenScenes();
+            AssetDatabase.SaveAssets();
+            Debug.Log("Original wuxia HD-2D main-world art applied: diorama depth, seamless mountain panorama, bridge-aligned roads, stream, scenic cutouts, mist, and warm landmark lights.");
+        }
+
+        [MenuItem("37 MiniGame/Validate Main World River Crossings")]
+        public static void ValidateMainWorldRiverCrossings()
+        {
+            List<string> failures = new List<string>();
+            Transform barrierRoot = GameObject.Find("River Collision Banks")?.transform;
+            BoxCollider[] barriers = barrierRoot != null
+                ? barrierRoot.GetComponentsInChildren<BoxCollider>()
+                : Array.Empty<BoxCollider>();
+            if (barriers.Length == 0)
+            {
+                failures.Add("river collision banks are missing");
+            }
+
+            for (int i = 0; i < MainMapRiverLayout.BridgeNames.Length; i++)
+            {
+                GameObject bridge = GameObject.Find(MainMapRiverLayout.BridgeNames[i]);
+                if (bridge == null)
+                {
+                    failures.Add($"missing bridge: {MainMapRiverLayout.BridgeNames[i]}");
+                }
+                else
+                {
+                    MainMapBridgeSurface surface = bridge.GetComponent<MainMapBridgeSurface>();
+                    int railCount = bridge.GetComponentsInChildren<BoxCollider>()
+                        .Count(collider => collider.gameObject.name.Contains("Bridge Rail Collider"));
+                    int deckPlankCount = bridge.GetComponentsInChildren<Renderer>()
+                        .Count(renderer => renderer.gameObject.name.Contains("Bridge Deck Plank"));
+                    if (surface == null)
+                    {
+                        failures.Add($"bridge walk surface is missing: {MainMapRiverLayout.BridgeNames[i]}");
+                    }
+                    if (railCount < 6)
+                    {
+                        failures.Add($"bridge side collision is incomplete: {MainMapRiverLayout.BridgeNames[i]}");
+                    }
+                    if (deckPlankCount < 13)
+                    {
+                        failures.Add($"Unity-generated bridge deck is incomplete: {MainMapRiverLayout.BridgeNames[i]}");
+                    }
+                }
+
+                Vector2 bridgePoint = MainMapRiverLayout.CenterLine[
+                    MainMapRiverLayout.BridgePointIndices[i]];
+                if (IsInsideAnyBarrier(new Vector3(bridgePoint.x, 0.55f, bridgePoint.y), barriers))
+                {
+                    failures.Add($"bridge gap is blocked: {MainMapRiverLayout.BridgeNames[i]}");
+                }
+            }
+
+            Material panoramaSky = RenderSettings.skybox;
+            Texture panoramaTexture = panoramaSky != null && panoramaSky.HasProperty("_MainTex")
+                ? panoramaSky.GetTexture("_MainTex")
+                : null;
+            if (panoramaTexture == null ||
+                AssetDatabase.GetAssetPath(panoramaTexture) != Hd2dPanoramaPath)
+            {
+                failures.Add("four-direction panorama sky is missing");
+            }
+
+            int[] blockedWaterSamples = { 1, 3, 4, 6, 7, 9 };
+            foreach (int sampleIndex in blockedWaterSamples)
+            {
+                Vector2 waterPoint = MainMapRiverLayout.CenterLine[sampleIndex];
+                if (!IsInsideAnyBarrier(new Vector3(waterPoint.x, 0.55f, waterPoint.y), barriers))
+                {
+                    failures.Add($"river sample is passable without a bridge: {sampleIndex}");
+                }
+            }
+
+            foreach (EncounterTrigger encounter in UnityEngine.Object.FindObjectsByType<EncounterTrigger>(
+                         FindObjectsInactive.Include, FindObjectsSortMode.None))
+            {
+                if (MainMapRiverLayout.IsInsideRiver(encounter.transform.position, 0.8f))
+                {
+                    failures.Add($"encounter overlaps river: {encounter.name}");
+                }
+            }
+
+            foreach (Renderer road in FindRoadRenderersCrossingRiverAwayFromBridges())
+            {
+                failures.Add($"road crosses river away from a bridge: {road.gameObject.name}");
+            }
+
+            Transform districtRoot = GameObject.Find("Five Main Map Districts")?.transform;
+            string[] districtPatches =
+            {
+                "Central Courier Ground",
+                "East Hamlet Ground",
+                "West Forest Ground",
+                "North Ridge Ground",
+                "South Mine Ground"
+            };
+            if (districtRoot == null)
+            {
+                failures.Add("five-region visual division is missing");
+            }
+            else
+            {
+                foreach (string patchName in districtPatches)
+                {
+                    if (districtRoot.Find(patchName) == null)
+                    {
+                        failures.Add($"region ground patch is missing: {patchName}");
+                    }
+                }
+
+                int districtGateCount = districtRoot.GetComponentsInChildren<MainMapRegionGuide>(true).Length;
+                if (districtGateCount < 4)
+                {
+                    failures.Add("regional stone-gate markers are incomplete");
+                }
+            }
+
+            if (failures.Count > 0)
+            {
+                Debug.LogError("Main-world river validation failed: " + string.Join(" · ", failures));
+                return;
+            }
+
+            Debug.Log("Main-world validation passed: water is blocked, three Unity-generated bridges have arch lift, open rails and side collision, five regions have ground identity and stone-gate markers, roads only cross at bridges, encounters are clear of the river, and the panorama sky is assigned.");
         }
 
         [MenuItem("37 MiniGame/Apply Unified Map Art Style")]
@@ -801,7 +1004,6 @@ namespace WuxiaRoguelite.EditorTools
         [MenuItem("37 MiniGame/Refresh Enemy Variety")]
         public static void RefreshEnemyVariety()
         {
-            ConfigureEnemyVarietyAssets();
             ConfigureGeneratedMonsterAssets();
             Sprite fallbackSprite = GetOrCreatePrototypeSprite();
             Sprite[] ratRun = LoadFrames(RatRunPath, fallbackSprite);
@@ -840,6 +1042,9 @@ namespace WuxiaRoguelite.EditorTools
             {
                 ApplyEncounterVisual(encounterName, encounterName, "stone_ape", stoneApeIdle, 1.25f);
             }
+
+            ApplyLegacyVisualFamilyAliases(
+                ratRun, riderRun, ballistaFly);
 
             BattleScreenController battleScreen = UnityEngine.Object.FindAnyObjectByType<BattleScreenController>();
             if (battleScreen != null)
@@ -1023,6 +1228,52 @@ namespace WuxiaRoguelite.EditorTools
 
             trigger.enemyStats.displayName = displayName;
             trigger.enemyStats.visualId = visualId;
+            ApplyEncounterFrames(trigger, frames, visualScale);
+        }
+
+        private static void ApplyLegacyVisualFamilyAliases(
+            Sprite[] lightFrames, Sprite[] mediumFrames, Sprite[] heavyFrames)
+        {
+            foreach (EncounterTrigger trigger in UnityEngine.Object.FindObjectsByType<EncounterTrigger>(
+                         FindObjectsInactive.Include, FindObjectsSortMode.None))
+            {
+                if (trigger == null || trigger.enemyStats == null)
+                {
+                    continue;
+                }
+
+                switch (trigger.enemyStats.visualId)
+                {
+                    case "rat":
+                        ApplyEncounterFrames(trigger, lightFrames, 1.15f);
+                        break;
+                    case "rider":
+                        ApplyEncounterFrames(trigger, mediumFrames, 1.15f);
+                        break;
+                    case "ballista":
+                        ApplyEncounterFrames(trigger, heavyFrames, 1.25f);
+                        break;
+                }
+            }
+        }
+
+        private static void ApplyEncounterFrames(
+            EncounterTrigger trigger, Sprite[] frames, float visualScale)
+        {
+            if (trigger == null || frames == null || frames.Length == 0)
+            {
+                return;
+            }
+
+            GameObject encounterObject = trigger.gameObject;
+            SpriteFrameAnimator animator = encounterObject.GetComponentInChildren<SpriteFrameAnimator>();
+            SpriteRenderer renderer = encounterObject.GetComponentInChildren<SpriteRenderer>();
+            if (animator == null || renderer == null)
+            {
+                Debug.LogWarning($"Cannot refresh enemy art: {encounterObject.name} is missing visual components.");
+                return;
+            }
+
             animator.idleFrames = frames;
             animator.moveFrames = frames;
             bool usesFootPivot = frames[0].pivot.y <= frames[0].rect.height * 0.2f;
@@ -1064,14 +1315,14 @@ namespace WuxiaRoguelite.EditorTools
         {
             List<BattleScreenController.EnemyVisualProfile> profiles = new List<BattleScreenController.EnemyVisualProfile>
             {
-                CreateEnemyVisualProfile("blue", inkWolfIdle, inkWolfAttack, ActorVisualScale.Medium, true),
-                CreateEnemyVisualProfile("purple", bambooPuppetIdle, bambooPuppetAttack, ActorVisualScale.Medium, true),
-                CreateEnemyVisualProfile("rat", ratRun, ratAttack, ActorVisualScale.Small),
-                CreateEnemyVisualProfile("rider", riderRun, riderAttack, ActorVisualScale.Medium),
-                CreateEnemyVisualProfile("ballista", ballistaFly, ballistaAttack, ActorVisualScale.Medium),
-                CreateEnemyVisualProfile("ink_wolf", inkWolfIdle, inkWolfAttack, ActorVisualScale.Medium, true),
-                CreateEnemyVisualProfile("stone_ape", stoneApeIdle, stoneApeAttack, 1.12f, true),
-                CreateEnemyVisualProfile("bamboo_puppet", bambooPuppetIdle, bambooPuppetAttack, ActorVisualScale.Medium, true)
+                CreateEnemyVisualProfile("blue", inkWolfIdle, inkWolfAttack, ActorVisualScale.Medium, GeneratedEnemyBattleFlip),
+                CreateEnemyVisualProfile("purple", bambooPuppetIdle, bambooPuppetAttack, ActorVisualScale.Medium, GeneratedEnemyBattleFlip),
+                CreateEnemyVisualProfile("rat", ratRun, ratAttack, ActorVisualScale.Small, GeneratedEnemyBattleFlip),
+                CreateEnemyVisualProfile("rider", riderRun, riderAttack, ActorVisualScale.Medium, GeneratedEnemyBattleFlip),
+                CreateEnemyVisualProfile("ballista", ballistaFly, ballistaAttack, ActorVisualScale.Medium, GeneratedEnemyBattleFlip),
+                CreateEnemyVisualProfile("ink_wolf", inkWolfIdle, inkWolfAttack, ActorVisualScale.Medium, GeneratedEnemyBattleFlip),
+                CreateEnemyVisualProfile("stone_ape", stoneApeIdle, stoneApeAttack, 1.12f, GeneratedEnemyBattleFlip),
+                CreateEnemyVisualProfile("bamboo_puppet", bambooPuppetIdle, bambooPuppetAttack, ActorVisualScale.Medium, GeneratedEnemyBattleFlip)
             };
 
             string[] requiredOrcSheets =
@@ -1222,7 +1473,6 @@ namespace WuxiaRoguelite.EditorTools
         private static void PrepareArtAssets()
         {
             ConfigurePlayerArtAssets();
-            ConfigureEnemyVarietyAssets();
             ConfigureGeneratedMonsterAssets();
             ConfigureBattleFeedbackAssets();
             ConfigureMovementVfxAsset();
@@ -1407,21 +1657,6 @@ namespace WuxiaRoguelite.EditorTools
             ConfigureSpriteSheet(PlayerIdlePath, 80, 80, 32f);
             ConfigureSpriteSheet(PlayerRunPath, 80, 80, 32f);
             ConfigureSpriteSheet(PlayerAttackPath, 80, 80, 32f);
-        }
-
-        private static void ConfigureEnemyVarietyAssets()
-        {
-            string[] sheets =
-            {
-                RatRunPath, RatAttackPath,
-                RiderRunPath, RiderAttackPath,
-                BallistaFlyPath, BallistaAttackPath
-            };
-
-            foreach (string path in sheets)
-            {
-                ConfigureSpriteSheet(path, 96, 96, 32f);
-            }
         }
 
         private static void ConfigureGeneratedMonsterAssets()
@@ -1752,6 +1987,1018 @@ namespace WuxiaRoguelite.EditorTools
             return material;
         }
 
+        private static void ConfigureHd2dWorldArtAssets()
+        {
+            ConfigureHd2dSpriteTexture(Hd2dBackdropPath, 32f, 2048);
+            ConfigureHd2dSpriteTexture(Hd2dBambooPath, 100f, 1024);
+            ConfigureHd2dSpriteTexture(Hd2dPineRockPath, 100f, 1024);
+            ConfigureHd2dSpriteTexture(Hd2dMistPath, 32f, 1024);
+            ConfigureHd2dSpriteTexture(Hd2dLightBeamPath, 64f, 512);
+
+            TextureImporter panoramaImporter = AssetImporter.GetAtPath(Hd2dPanoramaPath) as TextureImporter;
+            if (panoramaImporter != null)
+            {
+                panoramaImporter.textureType = TextureImporterType.Default;
+                panoramaImporter.npotScale = TextureImporterNPOTScale.None;
+                panoramaImporter.wrapMode = TextureWrapMode.Repeat;
+                panoramaImporter.filterMode = FilterMode.Bilinear;
+                panoramaImporter.mipmapEnabled = true;
+                panoramaImporter.sRGBTexture = true;
+                panoramaImporter.textureCompression = TextureImporterCompression.CompressedHQ;
+                panoramaImporter.maxTextureSize = 2048;
+                panoramaImporter.SaveAndReimport();
+            }
+
+            TextureImporter waterImporter = AssetImporter.GetAtPath(Hd2dWaterTexturePath) as TextureImporter;
+            if (waterImporter != null)
+            {
+                waterImporter.textureType = TextureImporterType.Default;
+                waterImporter.npotScale = TextureImporterNPOTScale.None;
+                waterImporter.wrapMode = TextureWrapMode.Repeat;
+                waterImporter.filterMode = FilterMode.Bilinear;
+                waterImporter.mipmapEnabled = true;
+                waterImporter.sRGBTexture = true;
+                waterImporter.textureCompression = TextureImporterCompression.CompressedHQ;
+                waterImporter.maxTextureSize = 1024;
+                waterImporter.SaveAndReimport();
+            }
+        }
+
+        private static void ConfigureHd2dSpriteTexture(string path, float pixelsPerUnit, int maxSize)
+        {
+            TextureImporter importer = AssetImporter.GetAtPath(path) as TextureImporter;
+            if (importer == null)
+            {
+                Debug.LogWarning($"Missing HD-2D world-art texture: {path}");
+                return;
+            }
+
+            importer.textureType = TextureImporterType.Sprite;
+            importer.spriteImportMode = SpriteImportMode.Single;
+            importer.spritePixelsPerUnit = pixelsPerUnit;
+            importer.npotScale = TextureImporterNPOTScale.None;
+            importer.wrapMode = TextureWrapMode.Clamp;
+            importer.filterMode = FilterMode.Bilinear;
+            importer.mipmapEnabled = false;
+            importer.alphaIsTransparency = true;
+            importer.textureCompression = TextureImporterCompression.CompressedHQ;
+            importer.maxTextureSize = maxSize;
+            importer.SaveAndReimport();
+        }
+
+        private static void BuildHd2dBackdrop(Transform parent)
+        {
+            Material ground = GetOrCreateMainMapGroundMaterial();
+
+            // Keep the playable 64 x 56 ground and its collision boundaries unchanged,
+            // but continue the painted terrain well beyond the camera's maximum follow
+            // offset. The overlap sits slightly below the real ground, so it cannot
+            // introduce z-fighting or become walkable while hiding the hard map cut.
+            GameObject boundarySkirt = GameObject.CreatePrimitive(PrimitiveType.Plane);
+            boundarySkirt.name = "Boundary Ground Skirt";
+            boundarySkirt.transform.SetParent(parent);
+            boundarySkirt.transform.position = new Vector3(0f, -0.055f, 0f);
+            boundarySkirt.transform.localScale = new Vector3(9f, 1f, 8.2f);
+            boundarySkirt.GetComponent<Renderer>().sharedMaterial = ground;
+            Collider boundarySkirtCollider = boundarySkirt.GetComponent<Collider>();
+            if (boundarySkirtCollider != null)
+            {
+                UnityEngine.Object.DestroyImmediate(boundarySkirtCollider);
+            }
+
+            CreateDecorativeTerrace("North Diorama Terrace", parent, new Vector3(0f, -0.32f, 29.8f), new Vector3(64f, 0.7f, 4.2f), ground);
+            CreateDecorativeTerrace("South Diorama Terrace", parent, new Vector3(0f, -0.38f, -29.8f), new Vector3(64f, 0.55f, 3.2f), ground);
+            BuildBoundaryForest(parent);
+        }
+
+        private static void BuildHd2dRegionDistricts(Transform parent)
+        {
+            GameObject regions = new GameObject("Five Main Map Districts");
+            regions.transform.SetParent(parent);
+
+            Material central = CreateDistrictSurfaceMaterial(
+                "District_Central_Earth", new Color(0.70f, 0.66f, 0.53f));
+            Material east = CreateDistrictSurfaceMaterial(
+                "District_East_Amber", new Color(0.72f, 0.68f, 0.48f));
+            Material west = CreateDistrictSurfaceMaterial(
+                "District_West_Jade", new Color(0.55f, 0.70f, 0.55f));
+            Material north = CreateDistrictSurfaceMaterial(
+                "District_North_Slate", new Color(0.59f, 0.67f, 0.66f));
+            Material south = CreateDistrictSurfaceMaterial(
+                "District_South_Ochre", new Color(0.70f, 0.57f, 0.43f));
+            Material stone = Material("District_Marker_Stone", new Color(0.43f, 0.42f, 0.35f));
+            Material eastInlay = Material("District_East_Inlay", new Color(0.62f, 0.48f, 0.19f));
+            Material westInlay = Material("District_West_Inlay", new Color(0.25f, 0.48f, 0.31f));
+            Material northInlay = Material("District_North_Inlay", new Color(0.35f, 0.49f, 0.54f));
+            Material southInlay = Material("District_South_Inlay", new Color(0.58f, 0.30f, 0.19f));
+
+            CreateRegionGroundPatch("Central Courier Ground", regions.transform,
+                new Vector3(0f, 0.008f, 1f), new Vector3(13f, 0.012f, 14f), central);
+            CreateRegionGroundPatch("East Hamlet Ground", regions.transform,
+                new Vector3(19f, 0.006f, 11f), new Vector3(21f, 0.009f, 18f), east);
+            CreateRegionGroundPatch("West Forest Ground", regions.transform,
+                new Vector3(-19f, 0.006f, -10.5f), new Vector3(21f, 0.009f, 19f), west);
+            CreateRegionGroundPatch("North Ridge Ground", regions.transform,
+                new Vector3(-1f, 0.006f, 18f), new Vector3(43f, 0.009f, 14f), north);
+            CreateRegionGroundPatch("South Mine Ground", regions.transform,
+                new Vector3(4f, 0.006f, -19f), new Vector3(45f, 0.009f, 12f), south);
+
+            CreateRegionGate("East Hamlet District Gate", regions.transform,
+                new Vector3(8.8f, 0f, 1f), 90f,
+                "东郊机关庄", "快剑 · 破甲", "中风险", WuxiaUiTheme.Gold, stone, eastInlay);
+            CreateRegionGate("West Forest District Gate", regions.transform,
+                new Vector3(-8.8f, 0f, 0.4f), 90f,
+                "西林毒泽", "毒掌 · 续航", "中风险", WuxiaUiTheme.Jade, stone, westInlay);
+            CreateRegionGate("North Ridge District Gate", regions.transform,
+                new Vector3(-1.2f, 0f, 9.4f), 0f,
+                "北岭关隘", "铁壁 · 防御", "中高风险", WuxiaUiTheme.Paused, stone, northInlay);
+            CreateRegionGate("South Mine District Gate", regions.transform,
+                new Vector3(1.4f, 0f, -9.4f), 0f,
+                "南矿山路", "装备 · 高收益", "中高风险", WuxiaUiTheme.Warning, stone, southInlay);
+        }
+
+        private static Material CreateDistrictSurfaceMaterial(string name, Color tint)
+        {
+            Shader shader = Shader.Find(WorldSurfaceShaderName) ?? Shader.Find("Standard");
+            Material material = new Material(shader) { name = name };
+            Texture2D texture = AssetDatabase.LoadAssetAtPath<Texture2D>(GroundTexturePath);
+            if (texture != null)
+            {
+                material.SetTexture("_MainTex", texture);
+            }
+            if (material.HasProperty("_Color"))
+            {
+                material.SetColor("_Color", tint);
+            }
+            if (material.HasProperty("_WorldTiling"))
+            {
+                material.SetFloat("_WorldTiling", 0.18f);
+            }
+            return material;
+        }
+
+        private static void CreateRegionGroundPatch(
+            string name, Transform parent, Vector3 position, Vector3 scale, Material material)
+        {
+            GameObject patch = CreateCube(name, parent, position, scale, material);
+            Collider collider = patch.GetComponent<Collider>();
+            if (collider != null)
+            {
+                UnityEngine.Object.DestroyImmediate(collider);
+            }
+        }
+
+        private static void CreateRegionGate(
+            string name,
+            Transform parent,
+            Vector3 position,
+            float yRotation,
+            string regionName,
+            string routeTheme,
+            string riskLabel,
+            Color accent,
+            Material stone,
+            Material inlay)
+        {
+            GameObject gate = new GameObject(name);
+            gate.transform.SetParent(parent);
+            gate.transform.position = position;
+            gate.transform.rotation = Quaternion.Euler(0f, yRotation, 0f);
+
+            CreateLocalCube("Left Stone Pillar", gate.transform,
+                new Vector3(-1.35f, 1.14f, 0f), new Vector3(0.36f, 2.28f, 0.46f), stone);
+            CreateLocalCube("Right Stone Pillar", gate.transform,
+                new Vector3(1.35f, 1.14f, 0f), new Vector3(0.36f, 2.28f, 0.46f), stone);
+            CreateLocalCube("Lintel", gate.transform,
+                new Vector3(0f, 2.23f, 0f), new Vector3(3.05f, 0.32f, 0.50f), stone);
+            GameObject colorInlay = CreateLocalCube("Regional Color Inlay", gate.transform,
+                new Vector3(0f, 2.24f, -0.27f), new Vector3(2.0f, 0.11f, 0.07f), inlay);
+            Collider inlayCollider = colorInlay.GetComponent<Collider>();
+            if (inlayCollider != null)
+            {
+                UnityEngine.Object.DestroyImmediate(inlayCollider);
+            }
+
+            MainMapRegionGuide guide = gate.AddComponent<MainMapRegionGuide>();
+            guide.regionName = regionName;
+            guide.routeTheme = routeTheme;
+            guide.riskLabel = riskLabel;
+            guide.accent = accent;
+            guide.worldHeight = 2.75f;
+            guide.detailDistance = 9f;
+            guide.maxVisibleDistance = 14f;
+        }
+
+        private static void BuildBoundaryForest(Transform parent)
+        {
+            GameObject forest = new GameObject("Boundary Forest Belt");
+            forest.transform.SetParent(parent);
+            Sprite bamboo = AssetDatabase.LoadAssetAtPath<Sprite>(Hd2dBambooPath);
+            Sprite pine = AssetDatabase.LoadAssetAtPath<Sprite>(Hd2dPineRockPath);
+
+            CreateBoundaryTreeLine(
+                forest.transform, "North Forest", bamboo, pine,
+                new Vector3(-31f, 0f, 29.6f), Vector3.right, 19, 3.45f, 0);
+            CreateBoundaryTreeLine(
+                forest.transform, "South Forest", bamboo, pine,
+                new Vector3(-31f, 0f, -29.6f), Vector3.right, 19, 3.45f, 1);
+            CreateBoundaryTreeLine(
+                forest.transform, "West Forest", bamboo, pine,
+                new Vector3(-33.5f, 0f, -27f), Vector3.forward, 17, 3.375f, 2);
+            CreateBoundaryTreeLine(
+                forest.transform, "East Forest", bamboo, pine,
+                new Vector3(33.5f, 0f, -27f), Vector3.forward, 17, 3.375f, 3);
+        }
+
+        private static void CreateBoundaryTreeLine(
+            Transform parent,
+            string lineName,
+            Sprite bamboo,
+            Sprite pine,
+            Vector3 start,
+            Vector3 stepDirection,
+            int count,
+            float spacing,
+            int variantOffset)
+        {
+            GameObject line = new GameObject(lineName);
+            line.transform.SetParent(parent);
+
+            for (int i = 0; i < count; i++)
+            {
+                bool usePine = (i + variantOffset) % 3 == 0;
+                Sprite sprite = usePine ? pine : bamboo;
+                float scale = usePine
+                    ? 0.5f + ((i + variantOffset) % 2) * 0.04f
+                    : 0.56f + ((i + variantOffset) % 3) * 0.035f;
+                Vector3 position = start + stepDirection * (i * spacing);
+                Color tint = Color.Lerp(
+                    new Color(0.72f, 0.79f, 0.68f, 0.96f),
+                    new Color(0.90f, 0.91f, 0.78f, 0.96f),
+                    ((i + variantOffset) % 4) / 3f);
+                CreateHd2dBillboard(
+                    $"{lineName} Grove {i + 1:00}",
+                    line.transform,
+                    sprite,
+                    position,
+                    scale,
+                    tint,
+                    1 + (i + variantOffset) % 2,
+                    (i + variantOffset) % 2 == 0);
+            }
+        }
+
+        private static void BuildHd2dStream(Transform parent)
+        {
+            GameObject streamRoot = new GameObject("Celadon Stream");
+            streamRoot.transform.SetParent(parent);
+            Material water = GetOrCreateHd2dWaterMaterial();
+            Material bank = GetOrCreateMainMapRoadMaterial();
+            Vector2[] centerLine = MainMapRiverLayout.CenterLine;
+            float[] halfWidths = MainMapRiverLayout.HalfWidths;
+            AlignRoadsWithRiverCrossings();
+            CreateStreamRibbon("Packed-Earth Stream Banks", streamRoot.transform, centerLine, halfWidths, 0.006f, 0.72f, bank);
+            CreateStreamRibbon("Winding Celadon Water", streamRoot.transform, centerLine, halfWidths, 0.018f, 0f, water);
+
+            BuildRiverBarriersAndBridges(streamRoot.transform, centerLine, halfWidths);
+
+            PlaceModel("detail_rocks_small", "West Stream Bank Stones A", streamRoot.transform, new Vector3(-25f, 0f, -4.4f), 1.25f, 20f);
+            PlaceModel("detail_rocks_small", "West Stream Bank Stones B", streamRoot.transform, new Vector3(-12.5f, 0f, -6.5f), 1.1f, 95f);
+            PlaceModel("detail_rocks", "Central Stream Bank Rocks", streamRoot.transform, new Vector3(6.8f, 0f, -5.1f), 1.55f, 55f);
+            PlaceModel("detail_rocks_small", "East Stream Bank Stones", streamRoot.transform, new Vector3(25.5f, 0f, -1.4f), 1.2f, 145f);
+        }
+
+        private static void BuildRiverBarriersAndBridges(
+            Transform streamRoot,
+            Vector2[] centerLine,
+            float[] halfWidths)
+        {
+            DestroySceneObjectIfPresent("Old Road Bridge");
+            DestroySceneObjectIfPresent("West Creek Bridge");
+
+            GameObject crossingRoot = new GameObject("Formal River Crossings");
+            crossingRoot.transform.SetParent(streamRoot);
+            for (int i = 0; i < MainMapRiverLayout.BridgePointIndices.Length; i++)
+            {
+                int pointIndex = MainMapRiverLayout.BridgePointIndices[i];
+                Vector2 previous = centerLine[Mathf.Max(0, pointIndex - 1)];
+                Vector2 next = centerLine[Mathf.Min(centerLine.Length - 1, pointIndex + 1)];
+                Vector2 tangent = (next - previous).normalized;
+                float tangentAngle = Mathf.Atan2(tangent.y, tangent.x) * Mathf.Rad2Deg;
+                Vector2 point = centerLine[pointIndex];
+                BuildFormalBridge(
+                    MainMapRiverLayout.BridgeNames[i],
+                    crossingRoot.transform,
+                    new Vector3(point.x, 0f, point.y),
+                    Mathf.Max(4.2f, halfWidths[pointIndex] * 2f + 1.2f),
+                    tangentAngle + 90f);
+            }
+
+            GameObject barrierRoot = new GameObject("River Collision Banks");
+            barrierRoot.transform.SetParent(streamRoot);
+            float[] cumulative = MainMapRiverLayout.GetCumulativeDistances();
+            float[] bridgeDistances = MainMapRiverLayout.GetBridgeDistances();
+
+            for (int segmentIndex = 0; segmentIndex < centerLine.Length - 1; segmentIndex++)
+            {
+                float segmentStart = cumulative[segmentIndex];
+                float segmentEnd = cumulative[segmentIndex + 1];
+                List<Vector2> intervals = new List<Vector2> { new Vector2(segmentStart, segmentEnd) };
+                foreach (float bridgeDistance in bridgeDistances)
+                {
+                    intervals = SubtractInterval(
+                        intervals,
+                        bridgeDistance - MainMapRiverLayout.BridgeGapHalfLength,
+                        bridgeDistance + MainMapRiverLayout.BridgeGapHalfLength);
+                }
+
+                Vector2 segment = centerLine[segmentIndex + 1] - centerLine[segmentIndex];
+                float segmentLength = segment.magnitude;
+                foreach (Vector2 interval in intervals)
+                {
+                    if (interval.y - interval.x < 0.05f)
+                    {
+                        continue;
+                    }
+
+                    float startT = Mathf.InverseLerp(segmentStart, segmentEnd, interval.x);
+                    float endT = Mathf.InverseLerp(segmentStart, segmentEnd, interval.y);
+                    Vector2 start = Vector2.Lerp(centerLine[segmentIndex], centerLine[segmentIndex + 1], startT);
+                    Vector2 end = Vector2.Lerp(centerLine[segmentIndex], centerLine[segmentIndex + 1], endT);
+                    float width = Mathf.Max(
+                        Mathf.Lerp(halfWidths[segmentIndex], halfWidths[segmentIndex + 1], startT),
+                        Mathf.Lerp(halfWidths[segmentIndex], halfWidths[segmentIndex + 1], endT));
+                    CreateRiverBarrierPiece(barrierRoot.transform, start, end, width);
+                }
+            }
+        }
+
+        private static void BuildFormalBridge(
+            string bridgeName,
+            Transform parent,
+            Vector3 position,
+            float bridgeLength,
+            float yRotation)
+        {
+            GameObject bridge = new GameObject(bridgeName);
+            bridge.transform.SetParent(parent);
+            bridge.transform.position = position;
+            // The generated bridge uses local Z as its crossing direction so the
+            // deck arch, player lift and rail colliders share one coordinate system.
+            bridge.transform.rotation = Quaternion.Euler(0f, 90f - yRotation, 0f);
+
+            MainMapBridgeSurface surface = bridge.AddComponent<MainMapBridgeSurface>();
+            surface.halfLength = bridgeLength * 0.5f;
+            surface.halfWidth = 0.82f;
+            surface.maximumVisualRise = 1.02f;
+
+            BuildProceduralBridgeVisual(bridge.transform, bridgeLength, surface.maximumVisualRise);
+
+            for (int side = -1; side <= 1; side += 2)
+            {
+                for (int segment = -1; segment <= 1; segment++)
+                {
+                    GameObject rail = new GameObject($"Bridge Rail Collider {side:+0;-0} {segment + 2}");
+                    rail.transform.SetParent(bridge.transform, false);
+                    rail.transform.localPosition = new Vector3(
+                        side * 0.88f,
+                        0.72f,
+                        segment * bridgeLength * 0.31f);
+                    BoxCollider collider = rail.AddComponent<BoxCollider>();
+                    collider.size = new Vector3(0.24f, 1.44f, bridgeLength * 0.38f);
+                }
+            }
+        }
+
+        private static void BuildProceduralBridgeVisual(
+            Transform bridge,
+            float bridgeLength,
+            float maximumRise)
+        {
+            Material wood = Material("Bridge_Warm_Wood", new Color(0.34f, 0.20f, 0.10f));
+            Material darkWood = Material("Bridge_Dark_Wood", new Color(0.18f, 0.11f, 0.065f));
+            Material stone = Material("Bridge_Abutment_Stone", new Color(0.40f, 0.39f, 0.33f));
+            float halfLength = bridgeLength * 0.5f;
+            const int plankCount = 13;
+            float plankDepth = bridgeLength / plankCount * 1.08f;
+
+            GameObject deck = new GameObject("Unity Generated Arched Deck");
+            deck.transform.SetParent(bridge, false);
+            for (int i = 0; i < plankCount; i++)
+            {
+                float t = i / (plankCount - 1f);
+                float z = Mathf.Lerp(-halfLength, halfLength, t);
+                float height = BridgeArchHeight(z, halfLength, maximumRise);
+                float slope = -2f * maximumRise * z / (halfLength * halfLength);
+                GameObject plank = CreateLocalCube(
+                    $"Bridge Deck Plank {i + 1:00}",
+                    deck.transform,
+                    new Vector3(0f, height - 0.065f, z),
+                    new Vector3(1.82f, 0.13f, plankDepth),
+                    i % 2 == 0 ? wood : darkWood);
+                plank.transform.localRotation = Quaternion.Euler(
+                    -Mathf.Atan(slope) * Mathf.Rad2Deg, 0f, 0f);
+                UnityEngine.Object.DestroyImmediate(plank.GetComponent<Collider>());
+            }
+
+            GameObject rails = new GameObject("Unity Generated Open Rails");
+            rails.transform.SetParent(bridge, false);
+            const int postCount = 7;
+            for (int side = -1; side <= 1; side += 2)
+            {
+                for (int i = 0; i < postCount; i++)
+                {
+                    float t = i / (postCount - 1f);
+                    float z = Mathf.Lerp(-halfLength, halfLength, t);
+                    float height = BridgeArchHeight(z, halfLength, maximumRise);
+                    GameObject post = CreateLocalCube(
+                        $"Bridge Rail Post {side:+0;-0} {i + 1:00}",
+                        rails.transform,
+                        new Vector3(side * 1.01f, height + 0.34f, z),
+                        new Vector3(0.13f, 0.76f, 0.13f),
+                        darkWood);
+                    UnityEngine.Object.DestroyImmediate(post.GetComponent<Collider>());
+
+                    if (i >= postCount - 1)
+                    {
+                        continue;
+                    }
+
+                    float nextT = (i + 1f) / (postCount - 1f);
+                    float nextZ = Mathf.Lerp(-halfLength, halfLength, nextT);
+                    float middleZ = (z + nextZ) * 0.5f;
+                    float middleHeight = BridgeArchHeight(middleZ, halfLength, maximumRise);
+                    float slope = -2f * maximumRise * middleZ / (halfLength * halfLength);
+                    GameObject handrail = CreateLocalCube(
+                        $"Bridge Handrail {side:+0;-0} {i + 1:00}",
+                        rails.transform,
+                        new Vector3(side * 1.01f, middleHeight + 0.70f, middleZ),
+                        new Vector3(0.12f, 0.12f, (nextZ - z) * 1.08f),
+                        darkWood);
+                    handrail.transform.localRotation = Quaternion.Euler(
+                        -Mathf.Atan(slope) * Mathf.Rad2Deg, 0f, 0f);
+                    UnityEngine.Object.DestroyImmediate(handrail.GetComponent<Collider>());
+                }
+            }
+
+            for (int end = -1; end <= 1; end += 2)
+            {
+                GameObject abutment = CreateLocalCube(
+                    end < 0 ? "Near Stone Bridgehead" : "Far Stone Bridgehead",
+                    bridge,
+                    new Vector3(0f, -0.08f, end * (halfLength + 0.18f)),
+                    new Vector3(2.45f, 0.24f, 0.62f),
+                    stone);
+                UnityEngine.Object.DestroyImmediate(abutment.GetComponent<Collider>());
+            }
+        }
+
+        private static float BridgeArchHeight(float localZ, float halfLength, float maximumRise)
+        {
+            float normalized = Mathf.Clamp01(Mathf.Abs(localZ) / halfLength);
+            return maximumRise * (1f - normalized * normalized);
+        }
+
+        private static void AlignRoadsWithRiverCrossings()
+        {
+            MoveRoadToX("West Frontier Trail", MainMapRiverLayout.CenterLine[2].x);
+            MoveRoadToX("East Frontier Trail", MainMapRiverLayout.CenterLine[8].x);
+
+            GameObject westForestRoad = GameObject.Find("West Forest Road");
+            if (westForestRoad != null)
+            {
+                westForestRoad.transform.position = new Vector3(-16f, 0.028f, -11f);
+                westForestRoad.transform.localScale = new Vector3(2.1f, 0.05f, 6f);
+                EditorUtility.SetDirty(westForestRoad.transform);
+            }
+
+            SplitOuterRingRoad(
+                "Far West Ring",
+                "Far West Ring South Bank",
+                -17.1f,
+                14.8f,
+                9.35f,
+                30.3f);
+            SplitOuterRingRoad(
+                "Far East Ring",
+                "Far East Ring South Bank",
+                -13.7f,
+                21.6f,
+                12.8f,
+                23.4f);
+        }
+
+        private static void MoveRoadToX(string objectName, float x)
+        {
+            GameObject road = GameObject.Find(objectName);
+            if (road == null)
+            {
+                return;
+            }
+
+            Vector3 position = road.transform.position;
+            position.x = x;
+            road.transform.position = position;
+            EditorUtility.SetDirty(road.transform);
+        }
+
+        private static void SplitOuterRingRoad(
+            string northRoadName,
+            string southRoadName,
+            float southCenterZ,
+            float southLength,
+            float northCenterZ,
+            float northLength)
+        {
+            GameObject northRoad = GameObject.Find(northRoadName);
+            if (northRoad == null)
+            {
+                return;
+            }
+
+            Renderer renderer = northRoad.GetComponent<Renderer>();
+            Material roadMaterial = renderer != null ? renderer.sharedMaterial : GetOrCreateMainMapRoadMaterial();
+            Vector3 originalPosition = northRoad.transform.position;
+            Vector3 originalScale = northRoad.transform.localScale;
+            northRoad.transform.position = new Vector3(originalPosition.x, originalPosition.y, northCenterZ);
+            northRoad.transform.localScale = new Vector3(originalScale.x, originalScale.y, northLength);
+            EditorUtility.SetDirty(northRoad.transform);
+
+            DestroySceneObjectIfPresent(southRoadName);
+            CreateCube(
+                southRoadName,
+                northRoad.transform.parent,
+                new Vector3(originalPosition.x, originalPosition.y, southCenterZ),
+                new Vector3(originalScale.x, originalScale.y, southLength),
+                roadMaterial);
+        }
+
+        private static IEnumerable<Renderer> FindRoadRenderersCrossingRiverAwayFromBridges()
+        {
+            float[] cumulative = MainMapRiverLayout.GetCumulativeDistances();
+            float[] bridgeDistances = MainMapRiverLayout.GetBridgeDistances();
+            return UnityEngine.Object.FindObjectsByType<Renderer>(
+                    FindObjectsInactive.Include, FindObjectsSortMode.None)
+                .Where(renderer => renderer != null && renderer.bounds.size.y < 0.2f)
+                .Where(renderer => IsRoadSurfaceName(renderer.gameObject.name))
+                .Where(renderer => RoadCrossesRiverAwayFromBridge(
+                    renderer.bounds, cumulative, bridgeDistances));
+        }
+
+        private static bool IsRoadSurfaceName(string objectName)
+        {
+            return objectName.Contains("Road") ||
+                   objectName.Contains("Trail") ||
+                   objectName.Contains("Route") ||
+                   objectName.Contains("Ring") ||
+                   objectName.Contains("Plaza Ground");
+        }
+
+        private static bool RoadCrossesRiverAwayFromBridge(
+            Bounds roadBounds,
+            float[] cumulative,
+            float[] bridgeDistances)
+        {
+            Vector2[] centerLine = MainMapRiverLayout.CenterLine;
+            for (int segmentIndex = 0; segmentIndex < centerLine.Length - 1; segmentIndex++)
+            {
+                for (int sampleIndex = 0; sampleIndex <= 24; sampleIndex++)
+                {
+                    float t = sampleIndex / 24f;
+                    Vector2 point = Vector2.Lerp(
+                        centerLine[segmentIndex], centerLine[segmentIndex + 1], t);
+                    if (point.x < roadBounds.min.x - 0.08f ||
+                        point.x > roadBounds.max.x + 0.08f ||
+                        point.y < roadBounds.min.z - 0.08f ||
+                        point.y > roadBounds.max.z + 0.08f)
+                    {
+                        continue;
+                    }
+
+                    float distance = Mathf.Lerp(
+                        cumulative[segmentIndex], cumulative[segmentIndex + 1], t);
+                    bool isAtBridge = bridgeDistances.Any(bridgeDistance =>
+                        Mathf.Abs(distance - bridgeDistance) <
+                        MainMapRiverLayout.BridgeGapHalfLength + 0.15f);
+                    if (!isAtBridge)
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        private static List<Vector2> SubtractInterval(List<Vector2> source, float cutStart, float cutEnd)
+        {
+            List<Vector2> result = new List<Vector2>();
+            foreach (Vector2 interval in source)
+            {
+                if (cutEnd <= interval.x || cutStart >= interval.y)
+                {
+                    result.Add(interval);
+                    continue;
+                }
+
+                if (cutStart > interval.x)
+                {
+                    result.Add(new Vector2(interval.x, Mathf.Min(cutStart, interval.y)));
+                }
+                if (cutEnd < interval.y)
+                {
+                    result.Add(new Vector2(Mathf.Max(cutEnd, interval.x), interval.y));
+                }
+            }
+            return result;
+        }
+
+        private static void CreateRiverBarrierPiece(Transform parent, Vector2 start, Vector2 end, float halfWidth)
+        {
+            Vector2 direction2D = end - start;
+            float length = direction2D.magnitude;
+            if (length <= 0.02f)
+            {
+                return;
+            }
+
+            GameObject barrier = new GameObject("Impassable River Section");
+            barrier.transform.SetParent(parent);
+            barrier.transform.position = new Vector3(
+                (start.x + end.x) * 0.5f,
+                0f,
+                (start.y + end.y) * 0.5f);
+            barrier.transform.rotation = Quaternion.LookRotation(
+                new Vector3(direction2D.x, 0f, direction2D.y).normalized,
+                Vector3.up);
+            BoxCollider collider = barrier.AddComponent<BoxCollider>();
+            collider.center = new Vector3(0f, 0.55f, 0f);
+            collider.size = new Vector3(
+                (halfWidth + MainMapRiverLayout.BarrierBankPadding) * 2f,
+                1.1f,
+                length + 0.12f);
+        }
+
+        private static void RelocateRiverConflicts()
+        {
+            foreach (EncounterTrigger encounter in UnityEngine.Object.FindObjectsByType<EncounterTrigger>(
+                         FindObjectsInactive.Include, FindObjectsSortMode.None))
+            {
+                if (!MainMapRiverLayout.IsInsideRiver(encounter.transform.position, 1.1f))
+                {
+                    continue;
+                }
+
+                encounter.transform.position = MainMapRiverLayout.GetNearestSafeBankPosition(
+                    encounter.transform.position,
+                    1.35f);
+                EditorUtility.SetDirty(encounter.transform);
+            }
+
+            string[] movableScenery =
+            {
+                "Tree B1",
+                "Tree A2",
+                "Rock Cluster",
+                "Tree C3",
+                "West Forest Tree C",
+                "West Forest Tree D"
+            };
+            foreach (string objectName in movableScenery)
+            {
+                GameObject scenery = GameObject.Find(objectName);
+                if (scenery == null || !MainMapRiverLayout.IsInsideRiver(scenery.transform.position, 0.65f))
+                {
+                    continue;
+                }
+
+                scenery.transform.position = MainMapRiverLayout.GetNearestSafeBankPosition(
+                    scenery.transform.position,
+                    1.15f);
+                EditorUtility.SetDirty(scenery.transform);
+            }
+
+            GameObject cave = GameObject.Find("断崖石窟");
+            GameObject caveModel = GameObject.Find("Cliff Cave Entrance");
+            if (cave != null && caveModel != null)
+            {
+                Vector3 modelPosition = cave.transform.position + new Vector3(-1.2f, 0f, -0.15f);
+                Bounds bounds = CalculateRendererBounds(caveModel);
+                caveModel.transform.position = modelPosition + Vector3.up * (modelPosition.y - bounds.min.y);
+                EditorUtility.SetDirty(caveModel.transform);
+            }
+        }
+
+        private static void DestroySceneObjectIfPresent(string objectName)
+        {
+            GameObject existing = GameObject.Find(objectName);
+            if (existing != null)
+            {
+                UnityEngine.Object.DestroyImmediate(existing);
+            }
+        }
+
+        private static bool IsInsideAnyBarrier(Vector3 point, IEnumerable<BoxCollider> barriers)
+        {
+            return barriers.Any(collider =>
+                collider != null &&
+                (collider.ClosestPoint(point) - point).sqrMagnitude < 0.0001f);
+        }
+
+        private static void BuildHd2dScenicLayers(Transform parent)
+        {
+            GameObject scenicRoot = new GameObject("Pixel Scenic Cutouts");
+            scenicRoot.transform.SetParent(parent);
+            Sprite bamboo = AssetDatabase.LoadAssetAtPath<Sprite>(Hd2dBambooPath);
+            Sprite pine = AssetDatabase.LoadAssetAtPath<Sprite>(Hd2dPineRockPath);
+
+            CreateHd2dBillboard("West Bamboo Grove", scenicRoot.transform, bamboo, new Vector3(-27.2f, 0f, -6f), 0.72f, new Color(0.83f, 0.88f, 0.78f, 0.92f), 2);
+            CreateHd2dBillboard("East Bamboo Grove", scenicRoot.transform, bamboo, new Vector3(27f, 0f, 11.5f), 0.58f, new Color(0.88f, 0.9f, 0.80f, 0.86f), 2);
+            CreateHd2dBillboard("Northwest Old Pine", scenicRoot.transform, pine, new Vector3(-24.2f, 0f, 24.8f), 0.9f, new Color(0.82f, 0.88f, 0.83f, 0.94f), 1);
+            CreateHd2dBillboard("Northeast Old Pine", scenicRoot.transform, pine, new Vector3(23.5f, 0f, 25.2f), 0.78f, new Color(0.86f, 0.9f, 0.84f, 0.90f), 1, true);
+
+            GameObject ridgeProps = new GameObject("Diorama Ridge Props");
+            ridgeProps.transform.SetParent(parent);
+            PlaceModel("detail_treeA", "North Ridge Silhouette Tree A", ridgeProps.transform, new Vector3(-15f, 0f, 28.8f), 2.8f, 25f);
+            PlaceModel("detail_treeB", "North Ridge Silhouette Tree B", ridgeProps.transform, new Vector3(-6f, 0f, 29.2f), 2.6f, -20f);
+            PlaceModel("detail_treeC", "North Ridge Silhouette Tree C", ridgeProps.transform, new Vector3(9f, 0f, 29f), 2.7f, 80f);
+            PlaceModel("detail_rocks", "North Ridge Silhouette Rocks A", ridgeProps.transform, new Vector3(-21f, 0f, 29.1f), 2.2f, 40f);
+            PlaceModel("detail_rocks", "North Ridge Silhouette Rocks B", ridgeProps.transform, new Vector3(18f, 0f, 29.2f), 2.4f, 110f);
+        }
+
+        private static void BuildHd2dAtmosphere(Transform parent)
+        {
+            GameObject atmosphere = new GameObject("Atmosphere Layers");
+            atmosphere.transform.SetParent(parent);
+            Sprite mist = AssetDatabase.LoadAssetAtPath<Sprite>(Hd2dMistPath);
+            Sprite beam = AssetDatabase.LoadAssetAtPath<Sprite>(Hd2dLightBeamPath);
+
+            GameObject boundaryMist = new GameObject("Boundary Mist Ring");
+            boundaryMist.transform.SetParent(atmosphere.transform);
+
+            // The mist now overlaps the forest belt instead of sitting far beyond it.
+            // Trees establish a readable physical boundary; the mist breaks up their
+            // repeated silhouettes and blends the belt into the panorama.
+            CreateHd2dBillboard("North Boundary Mist", boundaryMist.transform, mist, new Vector3(0f, 3.2f, 31.5f), 2.4f, new Color(0.78f, 0.86f, 0.84f, 0.42f), -100, false, true);
+            CreateHd2dBillboard("South Boundary Mist", boundaryMist.transform, mist, new Vector3(0f, 3.0f, -31.5f), 2.4f, new Color(0.76f, 0.84f, 0.82f, 0.40f), -100, true, true);
+            CreateHd2dBillboard("West Boundary Mist", boundaryMist.transform, mist, new Vector3(-35.5f, 3.1f, 0f), 2.2f, new Color(0.76f, 0.84f, 0.81f, 0.38f), -100, false, true);
+            CreateHd2dBillboard("East Boundary Mist", boundaryMist.transform, mist, new Vector3(35.5f, 3.1f, 0f), 2.2f, new Color(0.78f, 0.86f, 0.83f, 0.38f), -100, true, true);
+
+            CreateHd2dBillboard("Far Mist Band", atmosphere.transform, mist, new Vector3(0f, 2.4f, 35f), 2.35f, new Color(0.83f, 0.9f, 0.88f, 0.24f), -80, false, true);
+            CreateHd2dBillboard("West Mist Band", atmosphere.transform, mist, new Vector3(-22f, 1.2f, 18f), 1.45f, new Color(0.78f, 0.86f, 0.84f, 0.16f), 0, false, true);
+            CreateHd2dBillboard("East Mist Band", atmosphere.transform, mist, new Vector3(22f, 1.5f, 22f), 1.35f, new Color(0.80f, 0.88f, 0.86f, 0.14f), 0, true, true);
+
+            CreateHd2dBillboard("North Gate Light Shaft", atmosphere.transform, beam, new Vector3(0f, 0f, 18.5f), 1.75f, new Color(1f, 0.86f, 0.56f, 0.34f), 3);
+            CreateHd2dBillboard("East Hamlet Light Shaft", atmosphere.transform, beam, new Vector3(18f, 0f, 12f), 1.5f, new Color(1f, 0.78f, 0.45f, 0.26f), 3, true);
+        }
+
+        private static void ApplyHd2dWorldLighting(Transform parent)
+        {
+            ApplyUnifiedWorldLighting();
+            Material panoramaSky = GetOrCreateHd2dPanoramaSkyMaterial();
+            if (panoramaSky != null)
+            {
+                RenderSettings.skybox = panoramaSky;
+                DynamicGI.UpdateEnvironment();
+            }
+
+            Light sun = UnityEngine.Object.FindObjectsByType<Light>(FindObjectsSortMode.None)
+                .FirstOrDefault(candidate => candidate.type == LightType.Directional);
+            if (sun != null)
+            {
+                sun.color = new Color(1f, 0.86f, 0.68f, 1f);
+                sun.intensity = 1.22f;
+                sun.transform.rotation = Quaternion.Euler(48f, -38f, 0f);
+                sun.shadowStrength = 0.72f;
+                EditorUtility.SetDirty(sun);
+            }
+
+            RenderSettings.ambientSkyColor = new Color(0.42f, 0.52f, 0.56f, 1f);
+            RenderSettings.ambientEquatorColor = new Color(0.28f, 0.34f, 0.31f, 1f);
+            RenderSettings.ambientGroundColor = new Color(0.12f, 0.10f, 0.075f, 1f);
+            RenderSettings.fogColor = new Color(0.55f, 0.62f, 0.60f, 1f);
+            RenderSettings.fogStartDistance = 20f;
+            RenderSettings.fogEndDistance = 58f;
+
+            CreateWarmLandmarkLight("North Gate Warm Light", parent, new Vector3(0f, 3.2f, 13.5f), 1.35f, 8f);
+            CreateWarmLandmarkLight("East Hamlet Warm Light", parent, new Vector3(18f, 2.8f, 7.5f), 1.15f, 7f);
+            CreateWarmLandmarkLight("West Caravan Warm Light", parent, new Vector3(-18.5f, 2.5f, -15f), 0.95f, 6.5f);
+
+            Camera camera = Camera.main ?? UnityEngine.Object.FindAnyObjectByType<Camera>();
+            if (camera != null)
+            {
+                camera.clearFlags = panoramaSky != null
+                    ? CameraClearFlags.Skybox
+                    : CameraClearFlags.SolidColor;
+                camera.farClipPlane = Mathf.Max(camera.farClipPlane, 140f);
+                camera.allowHDR = true;
+                camera.backgroundColor = new Color(0.62f, 0.69f, 0.67f, 1f);
+                CameraFollow follow = camera.GetComponent<CameraFollow>();
+                if (follow != null)
+                {
+                    follow.offset = new Vector3(6.8f, 5.9f, -12.2f);
+                    follow.portraitOffset = new Vector3(8.6f, 8.1f, -16.2f);
+                    follow.lookAtHeight = 0.72f;
+                    follow.landscapeFieldOfView = 38f;
+                    follow.portraitFieldOfView = 44f;
+                    EditorUtility.SetDirty(follow);
+                }
+                EditorUtility.SetDirty(camera);
+            }
+        }
+
+        private static Material GetOrCreateHd2dPanoramaSkyMaterial()
+        {
+            Shader shader = Shader.Find("Skybox/Panoramic");
+            if (shader == null)
+            {
+                Debug.LogWarning("Cannot find the built-in Skybox/Panoramic shader.");
+                return null;
+            }
+
+            Texture2D panorama = AssetDatabase.LoadAssetAtPath<Texture2D>(Hd2dPanoramaPath);
+            if (panorama == null)
+            {
+                Debug.LogWarning($"Missing HD-2D panorama texture: {Hd2dPanoramaPath}");
+                return null;
+            }
+
+            Material material = AssetDatabase.LoadAssetAtPath<Material>(Hd2dPanoramaMaterialPath);
+            if (material == null)
+            {
+                material = new Material(shader) { name = "HD2D_MountainPanoramaSky" };
+                AssetDatabase.CreateAsset(material, Hd2dPanoramaMaterialPath);
+            }
+            else if (material.shader != shader)
+            {
+                material.shader = shader;
+            }
+
+            material.SetTexture("_MainTex", panorama);
+            material.SetColor("_Tint", new Color(0.72f, 0.78f, 0.76f, 1f));
+            material.SetFloat("_Exposure", 0.55f);
+            material.SetFloat("_Rotation", 0f);
+            material.SetFloat("_Mapping", 1f);
+            material.SetFloat("_ImageType", 0f);
+            material.SetFloat("_MirrorOnBack", 0f);
+            EditorUtility.SetDirty(material);
+            return material;
+        }
+
+        private static Material GetOrCreateHd2dWaterMaterial()
+        {
+            Shader shader = Shader.Find(Hd2dWaterShaderName) ?? Shader.Find("Standard");
+            Material material = AssetDatabase.LoadAssetAtPath<Material>(Hd2dWaterMaterialPath);
+            if (material == null)
+            {
+                material = new Material(shader) { name = "HD2D_CeladonWater" };
+                AssetDatabase.CreateAsset(material, Hd2dWaterMaterialPath);
+            }
+            else if (material.shader != shader)
+            {
+                material.shader = shader;
+            }
+
+            Texture2D texture = AssetDatabase.LoadAssetAtPath<Texture2D>(Hd2dWaterTexturePath);
+            material.SetTexture("_MainTex", texture);
+            material.SetColor("_Color", new Color(0.68f, 0.80f, 0.79f, 0.86f));
+            if (material.HasProperty("_WorldTiling")) material.SetFloat("_WorldTiling", 0.14f);
+            if (material.HasProperty("_FlowSpeed")) material.SetFloat("_FlowSpeed", 0.025f);
+            if (material.HasProperty("_Alpha")) material.SetFloat("_Alpha", 0.88f);
+            EditorUtility.SetDirty(material);
+            return material;
+        }
+
+        private static GameObject CreateHd2dBillboard(
+            string name,
+            Transform parent,
+            Sprite sprite,
+            Vector3 position,
+            float scale,
+            Color color,
+            int sortingOrder,
+            bool flipX = false,
+            bool centerPivot = false)
+        {
+            GameObject billboard = new GameObject(name);
+            billboard.transform.SetParent(parent);
+            billboard.transform.position = position;
+            billboard.transform.localScale = Vector3.one * scale;
+            SpriteRenderer renderer = billboard.AddComponent<SpriteRenderer>();
+            renderer.sprite = sprite;
+            renderer.color = color;
+            renderer.flipX = flipX;
+            renderer.sortingOrder = sortingOrder;
+            renderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+            renderer.receiveShadows = false;
+            billboard.AddComponent<BillboardSprite>();
+
+            if (sprite != null && !centerPivot)
+            {
+                billboard.transform.position += Vector3.up * sprite.bounds.extents.y * scale;
+            }
+
+            Camera camera = Camera.main ?? UnityEngine.Object.FindAnyObjectByType<Camera>();
+            if (camera != null)
+            {
+                Vector3 direction = billboard.transform.position - camera.transform.position;
+                if (direction.sqrMagnitude > 0.001f)
+                {
+                    billboard.transform.rotation = Quaternion.LookRotation(direction.normalized, Vector3.up);
+                }
+            }
+            return billboard;
+        }
+
+        private static void CreateDecorativeTerrace(string name, Transform parent, Vector3 position, Vector3 scale, Material material)
+        {
+            GameObject terrace = CreateCube(name, parent, position, scale, material);
+            Collider collider = terrace.GetComponent<Collider>();
+            if (collider != null) UnityEngine.Object.DestroyImmediate(collider);
+        }
+
+        private static void CreateStreamSegment(string name, Transform parent, Vector3 position, Vector3 scale, float rotation, Material material)
+        {
+            GameObject segment = CreateCube(name, parent, position, scale, material);
+            segment.transform.rotation = Quaternion.Euler(0f, rotation, 0f);
+            Collider collider = segment.GetComponent<Collider>();
+            if (collider != null) UnityEngine.Object.DestroyImmediate(collider);
+        }
+
+        private static void CreateStreamRibbon(
+            string name,
+            Transform parent,
+            Vector2[] centerLine,
+            float[] halfWidths,
+            float height,
+            float widthPadding,
+            Material material)
+        {
+            if (centerLine == null || halfWidths == null || centerLine.Length < 2 || centerLine.Length != halfWidths.Length)
+            {
+                Debug.LogError($"Cannot build stream ribbon {name}: invalid center line or widths.");
+                return;
+            }
+
+            int pointCount = centerLine.Length;
+            Vector3[] vertices = new Vector3[pointCount * 2];
+            Vector2[] uvs = new Vector2[vertices.Length];
+            int[] triangles = new int[(pointCount - 1) * 6];
+            float distance = 0f;
+
+            for (int i = 0; i < pointCount; i++)
+            {
+                Vector2 previous = centerLine[Mathf.Max(0, i - 1)];
+                Vector2 next = centerLine[Mathf.Min(pointCount - 1, i + 1)];
+                Vector2 tangent = (next - previous).normalized;
+                Vector2 normal = new Vector2(-tangent.y, tangent.x);
+                float width = halfWidths[i] + widthPadding;
+                if (i > 0) distance += Vector2.Distance(centerLine[i - 1], centerLine[i]);
+
+                Vector2 left = centerLine[i] + normal * width;
+                Vector2 right = centerLine[i] - normal * width;
+                vertices[i * 2] = new Vector3(left.x, height, left.y);
+                vertices[i * 2 + 1] = new Vector3(right.x, height, right.y);
+                uvs[i * 2] = new Vector2(0f, distance * 0.15f);
+                uvs[i * 2 + 1] = new Vector2(1f, distance * 0.15f);
+
+                if (i >= pointCount - 1) continue;
+                int triangle = i * 6;
+                int vertex = i * 2;
+                triangles[triangle] = vertex;
+                triangles[triangle + 1] = vertex + 2;
+                triangles[triangle + 2] = vertex + 1;
+                triangles[triangle + 3] = vertex + 1;
+                triangles[triangle + 4] = vertex + 2;
+                triangles[triangle + 5] = vertex + 3;
+            }
+
+            Mesh mesh = new Mesh { name = name + " Mesh" };
+            mesh.vertices = vertices;
+            mesh.uv = uvs;
+            mesh.triangles = triangles;
+            mesh.RecalculateNormals();
+            mesh.RecalculateBounds();
+
+            GameObject ribbon = new GameObject(name);
+            ribbon.transform.SetParent(parent);
+            ribbon.AddComponent<MeshFilter>().sharedMesh = mesh;
+            ribbon.AddComponent<MeshRenderer>().sharedMaterial = material;
+        }
+
+        private static void CreateWarmLandmarkLight(string name, Transform parent, Vector3 position, float intensity, float range)
+        {
+            GameObject lightObject = new GameObject(name);
+            lightObject.transform.SetParent(parent);
+            lightObject.transform.position = position;
+            Light light = lightObject.AddComponent<Light>();
+            light.type = LightType.Point;
+            light.color = new Color(1f, 0.64f, 0.30f, 1f);
+            light.intensity = intensity;
+            light.range = range;
+            light.shadows = LightShadows.None;
+        }
+
         private static Material GetOrCreateWorldSurfaceMaterial(
             string texturePath,
             string materialPath,
@@ -1890,7 +3137,7 @@ namespace WuxiaRoguelite.EditorTools
             PlaceModel("detail_treeC", "Tree C1", scenery.transform, new Vector3(7.6f, 0f, 5.2f), 2f, 30f);
             PlaceModel("detail_treeA", "Tree A2", scenery.transform, new Vector3(8f, 0f, -2.5f), 2.2f, 145f);
             PlaceModel("detail_treeB", "Tree B2", scenery.transform, new Vector3(-3.7f, 0f, 7.7f), 2f, 90f);
-            PlaceModel("detail_treeC", "Tree C2", scenery.transform, new Vector3(4f, 0f, -7.7f), 2.15f, -45f);
+            PlaceModel("detail_treeC", "Tree C2", scenery.transform, new Vector3(7.5f, 0f, -8.6f), 2.15f, -45f);
             PlaceModel("detail_rocks", "Rock Cluster", scenery.transform, new Vector3(4.1f, 0f, -5.5f), 1.8f, 10f);
             PlaceModel("detail_rocks_small", "Small Rock Cluster", scenery.transform, new Vector3(-3.2f, 0f, 1.7f), 1.25f, 60f);
             PlaceModel("detail_treeA", "Tree A3", scenery.transform, new Vector3(-13f, 0f, -10f), 2.2f, 65f);
@@ -1950,6 +3197,8 @@ namespace WuxiaRoguelite.EditorTools
             CreateCube("Far West Ring", roads.transform, new Vector3(-29f, 0.029f, 0f), new Vector3(2.05f, 0.05f, 49f), path);
             CreateCube("Far North Route", roads.transform, new Vector3(0f, 0.029f, 25.5f), new Vector3(58f, 0.05f, 2.05f), path);
             CreateCube("Far South Route", roads.transform, new Vector3(0f, 0.029f, -25.5f), new Vector3(58f, 0.05f, 2.05f), path);
+
+            CreateFormalMainMapWayfinding(expansion.transform, path);
 
             GameObject scenery = new GameObject("Expanded KayKit Scenery");
             scenery.transform.SetParent(expansion.transform);
@@ -2159,6 +3408,80 @@ namespace WuxiaRoguelite.EditorTools
             }
         }
 
+        private static void CreateFormalMainMapWayfinding(Transform parent, Material roadMaterial)
+        {
+            GameObject wayfinding = new GameObject("Formal Main Map Wayfinding");
+            wayfinding.transform.SetParent(parent);
+
+            GameObject plaza = new GameObject("Central Courier Plaza");
+            plaza.transform.SetParent(wayfinding.transform);
+            CreateCube("Courier Plaza Ground", plaza.transform,
+                new Vector3(0f, 0.034f, 0f), new Vector3(8.2f, 0.055f, 7.2f), roadMaterial);
+
+            Material wood = Material("Wayfinding_DarkWood", new Color(0.20f, 0.13f, 0.08f));
+            Material brass = Material("Wayfinding_Brass", new Color(0.54f, 0.38f, 0.17f));
+            CreateCube("Plaza North Edge", plaza.transform,
+                new Vector3(0f, 0.07f, 3.5f), new Vector3(8.4f, 0.08f, 0.12f), brass);
+            CreateCube("Plaza South Edge", plaza.transform,
+                new Vector3(0f, 0.07f, -3.5f), new Vector3(8.4f, 0.08f, 0.12f), brass);
+
+            CreateRouteSignpost(
+                "East Route Sign", wayfinding.transform, new Vector3(7.2f, 0f, 1.1f), 90f,
+                "东郊机关庄", "快剑 · 破甲", "中风险", WuxiaUiTheme.Gold, wood, brass);
+            CreateRouteSignpost(
+                "West Route Sign", wayfinding.transform, new Vector3(-7.2f, 0f, -0.8f), 90f,
+                "西林毒泽", "毒掌 · 续航", "中风险", WuxiaUiTheme.Jade, wood, brass);
+            CreateRouteSignpost(
+                "North Route Sign", wayfinding.transform, new Vector3(-1.2f, 0f, 7.2f), 0f,
+                "北岭关隘", "铁壁 · 防御", "中高风险", WuxiaUiTheme.Paused, wood, brass);
+            CreateRouteSignpost(
+                "South Route Sign", wayfinding.transform, new Vector3(1.4f, 0f, -7.2f), 0f,
+                "南矿山路", "装备 · 高收益", "中高风险", WuxiaUiTheme.Warning, wood, brass);
+
+            PlaceModel("detail_rocks_small", "Plaza Boundary Stones NE", plaza.transform,
+                new Vector3(4.4f, 0f, 3.8f), 1.05f, 25f);
+            PlaceModel("detail_rocks_small", "Plaza Boundary Stones SW", plaza.transform,
+                new Vector3(-4.4f, 0f, -3.8f), 1.05f, 205f);
+        }
+
+        private static void CreateRouteSignpost(
+            string objectName,
+            Transform parent,
+            Vector3 position,
+            float yRotation,
+            string regionName,
+            string routeTheme,
+            string riskLabel,
+            Color accent,
+            Material wood,
+            Material brass)
+        {
+            GameObject signpost = new GameObject(objectName);
+            signpost.transform.SetParent(parent);
+            signpost.transform.position = position;
+            signpost.transform.rotation = Quaternion.Euler(0f, yRotation, 0f);
+
+            GameObject post = CreateCube("Post", signpost.transform,
+                position + Vector3.up * 0.72f, new Vector3(0.14f, 1.45f, 0.14f), wood);
+            GameObject board = CreateCube("Direction Board", signpost.transform,
+                position + Vector3.up * 1.25f, new Vector3(1.55f, 0.42f, 0.16f), wood);
+            GameObject inlay = CreateCube("Board Inlay", signpost.transform,
+                position + Vector3.up * 1.25f + signpost.transform.forward * 0.09f,
+                new Vector3(1.24f, 0.08f, 0.04f), brass);
+            post.transform.rotation = signpost.transform.rotation;
+            board.transform.rotation = signpost.transform.rotation;
+            inlay.transform.rotation = signpost.transform.rotation;
+
+            MainMapRegionGuide marker = signpost.AddComponent<MainMapRegionGuide>();
+            marker.regionName = regionName;
+            marker.routeTheme = routeTheme;
+            marker.riskLabel = riskLabel;
+            marker.accent = accent;
+            marker.worldHeight = 2.05f;
+            marker.detailDistance = 10f;
+            marker.maxVisibleDistance = 16f;
+        }
+
         private static void ResizeMapObject(Transform root, string objectName, Vector3 position, Vector3 scale)
         {
             Transform target = root.Find(objectName);
@@ -2248,6 +3571,22 @@ namespace WuxiaRoguelite.EditorTools
             cube.transform.SetParent(parent);
             cube.transform.position = position;
             cube.transform.localScale = scale;
+            cube.GetComponent<Renderer>().sharedMaterial = material;
+            return cube;
+        }
+
+        private static GameObject CreateLocalCube(
+            string name,
+            Transform parent,
+            Vector3 localPosition,
+            Vector3 localScale,
+            Material material)
+        {
+            GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            cube.name = name;
+            cube.transform.SetParent(parent, false);
+            cube.transform.localPosition = localPosition;
+            cube.transform.localScale = localScale;
             cube.GetComponent<Renderer>().sharedMaterial = material;
             return cube;
         }

@@ -90,7 +90,7 @@ namespace WuxiaRoguelite.GameFlow
                     1 => "妖气一路延至此处……九尾妖姬，现身。",
                     2 => "想见我？先从这些傀儡手里活下来。六十息后，我在血月古刹等你。",
                     3 => "六十息足够。斩妖、寻洞、练功——我会亲自到你面前。",
-                    _ => "主香点燃后，只有六十息准备。碰怪会自动交锋且主香不停；进入隐藏洞穴时主香暂停。寻找武学，赶往血月古刹。"
+                    _ => "主香点燃后，只有六十息准备。碰怪会自动交锋且主香不停；进入隐藏洞穴时主香暂停。中央驿路的四方路牌会提示区域收益与风险。"
                 };
             }
         }
@@ -184,6 +184,7 @@ namespace WuxiaRoguelite.GameFlow
         private string pendingEnemyName;
         private int pendingEnemyLevel;
         private EncounterType pendingEnemyType;
+        private bool isOpeningMartialArtChoice;
 
         private void Awake()
         {
@@ -285,6 +286,7 @@ namespace WuxiaRoguelite.GameFlow
             pendingEnemyName = string.Empty;
             pendingEnemyLevel = 0;
             pendingEnemyType = EncounterType.NormalEnemy;
+            isOpeningMartialArtChoice = false;
             currentChoices.Clear();
             martialArtRerollsRemaining = 1;
             phaseBeforeLevelUp = GamePhase.MainMapRunning;
@@ -321,6 +323,7 @@ namespace WuxiaRoguelite.GameFlow
             pendingEnemyName = string.Empty;
             pendingEnemyLevel = 0;
             pendingEnemyType = EncounterType.NormalEnemy;
+            isOpeningMartialArtChoice = false;
             currentChoices.Clear();
             martialArtRerollsRemaining = 1;
             phaseBeforeLevelUp = GamePhase.MainMapRunning;
@@ -417,7 +420,11 @@ namespace WuxiaRoguelite.GameFlow
             string art = currentChoices[index];
             int rank = playerStats.ApplyMartialArt(art);
             currentChoices.Clear();
-            statusMessage = $"{art} 修至第 {rank} 重，继续探索。";
+            bool wasOpeningChoice = isOpeningMartialArtChoice;
+            isOpeningMartialArtChoice = false;
+            statusMessage = wasOpeningChoice
+                ? $"{art} 修至第 {rank} 重。{GetOpeningRouteHint(art)}"
+                : $"{art} 修至第 {rank} 重，继续探索。";
 
             if (mainTimeRemaining <= 0f && phaseBeforeLevelUp == GamePhase.MainMapRunning)
             {
@@ -504,6 +511,7 @@ namespace WuxiaRoguelite.GameFlow
 
             ClearOpeningIntro();
             phaseBeforeLevelUp = GamePhase.MainMapRunning;
+            isOpeningMartialArtChoice = true;
             GenerateMartialArtChoices();
             SetPhase(GamePhase.LevelUpPaused);
             statusMessage = "选择本局起手流派；确认后主地图六十息倒计时开始。";
@@ -1011,6 +1019,17 @@ namespace WuxiaRoguelite.GameFlow
         private void ClearOpeningIntro()
         {
             OpeningDialogueIndex = 0;
+        }
+
+        private static string GetOpeningRouteHint(string martialArt)
+        {
+            return martialArt switch
+            {
+                "剑气诀" => "可循东侧路牌前往机关庄，先试高防目标。",
+                "毒砂掌" => "可循西侧路牌前往毒泽，先试高气血目标。",
+                "铁布衫" => "可循北侧路牌前往关隘，先试高频攻击目标。",
+                _ => "观察四方路牌，按收益与风险选择第一条路线。"
+            };
         }
 
         private void OnDisable()

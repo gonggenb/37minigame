@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+    <title>{{{ PRODUCT_NAME }}}</title>
+    <style>
+      :root { color-scheme: dark; }
+      html, body {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        overflow: hidden;
+        background: #0e0c09;
+      }
+      #unity-container {
+        position: fixed;
+        top: env(safe-area-inset-top, 0px);
+        right: env(safe-area-inset-right, 0px);
+        bottom: env(safe-area-inset-bottom, 0px);
+        left: env(safe-area-inset-left, 0px);
+        background: #0e0c09;
+      }
+      #unity-canvas {
+        display: block;
+        width: 100%;
+        height: 100%;
+        background: {{{ BACKGROUND_FILENAME ? 'url(\'Build/' + BACKGROUND_FILENAME.replace(/'/g, '%27') + '\') center / cover' : BACKGROUND_COLOR }}};
+        outline: none;
+      }
+      #unity-loading {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        width: min(58vw, 320px);
+        height: 4px;
+        transform: translate(-50%, -50%);
+        border: 1px solid #8d7040;
+        background: #17130f;
+      }
+      #unity-progress {
+        width: 0;
+        height: 100%;
+        background: #c5a15d;
+      }
+      #unity-warning {
+        position: absolute;
+        z-index: 2;
+        top: 0;
+        left: 0;
+        right: 0;
+        text-align: center;
+      }
+    </style>
+#if SHOW_DIAGNOSTICS
+    <link rel="stylesheet" href="<<<TemplateData/diagnostics.css>>>">
+    <script src="<<<TemplateData/diagnostics.js>>>"></script>
+#endif
+  </head>
+  <body>
+    <main id="unity-container">
+      <canvas id="unity-canvas" width={{{ WIDTH }}} height={{{ HEIGHT }}} tabindex="-1"></canvas>
+      <div id="unity-loading"><div id="unity-progress"></div></div>
+      <div id="unity-warning"></div>
+    </main>
+    <script src="Build/{{{ LOADER_FILENAME }}}"></script>
+    <script>
+      const canvas = document.querySelector("#unity-canvas");
+      const loading = document.querySelector("#unity-loading");
+      const progress = document.querySelector("#unity-progress");
+      const warning = document.querySelector("#unity-warning");
+
+      function showBanner(message, type) {
+        const row = document.createElement("div");
+        row.textContent = message;
+        row.style.cssText = "padding:8px;color:#f3e7c9;background:" +
+          (type === "error" ? "#6d211b" : "#5a4725");
+        warning.appendChild(row);
+        if (type !== "error") setTimeout(() => row.remove(), 5000);
+      }
+
+      createUnityInstance(canvas, {
+        arguments: [],
+        dataUrl: "Build/{{{ DATA_FILENAME }}}",
+        frameworkUrl: "Build/{{{ FRAMEWORK_FILENAME }}}",
+#if USE_WASM
+        codeUrl: "Build/{{{ CODE_FILENAME }}}",
+#endif
+#if SYMBOLS_FILENAME
+        symbolsUrl: "Build/{{{ SYMBOLS_FILENAME }}}",
+#endif
+        streamingAssetsUrl: "StreamingAssets",
+        companyName: {{{ JSON.stringify(COMPANY_NAME) }}},
+        productName: {{{ JSON.stringify(PRODUCT_NAME) }}},
+        productVersion: {{{ JSON.stringify(PRODUCT_VERSION) }}},
+        showBanner,
+      }, value => {
+        progress.style.width = (value * 100) + "%";
+      }).then(() => {
+        loading.remove();
+      }).catch(message => {
+        loading.remove();
+        showBanner(message, "error");
+      });
+    </script>
+  </body>
+</html>

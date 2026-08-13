@@ -4,11 +4,11 @@
 
 本文件是项目美术资源的生产与验收入口，统一角色帧动画、武学图标、道具图标、环境资源的规格和状态定义。
 
-美术总方向以 [2.5D 武侠绘本美术规范](art_style_guide.md) 为准：
+美术总方向以 [原创武侠 HD-2D 美术规范](art_style_guide.md) 为准：
 
 - 角色：清晰、克制的像素武侠动画。
 - 图标：剪影明确的手绘武侠图形，使用宣纸、墨线、朱红、暗金和玉色作为视觉语言。
-- 场景：低多边形、哑光手绘材质。
+- 场景：3D 微缩地形、哑光手绘材质与分层 2D 像素风景切片。
 - 玩法信息永远比装饰细节更醒目。
 
 ## 2. 一套尺寸规则
@@ -298,6 +298,8 @@ Briefed -> SeedApproved -> Generated -> Normalized -> Imported -> InEngineQA -> 
 | --- | ---: | --- | --- |
 | 核心武学 | 6 | `Assets/Art/Generated/Icons/Skills/` | `InEngineQA` |
 | 局内装备 | 5 | `Assets/Art/Generated/Icons/Equipment/` | `InEngineQA` |
+| 主地图地面（草地 / 土路） | 2 | `Assets/Art/Generated/Environment/` | `InEngineQA` |
+| 主世界 HD-2D（远景 / 竹林 / 松石 / 水面 / 雾 / 光束） | 6 | `Assets/Art/Generated/Environment/HD2D/` | `InEngineQA` |
 | 主地图 HUD（头像框 / 时间 / 铜钱 / 修为） | 4 | `Assets/Art/Generated/Icons/HUD/`、`Assets/Art/Generated/UI/MainHUD/` | `InEngineQA` |
 | 九尾妖姬 Boss（Idle / Attack） | 2 | `Assets/Art/Generated/Characters/Bosses/FoxDemon/` | `InEngineQA` |
 
@@ -309,6 +311,15 @@ Briefed -> SeedApproved -> Generated -> Normalized -> Imported -> InEngineQA -> 
 - 图标切分与安全区归一化使用 `Tools/ArtPipeline/normalize_icon_sheet.py`。
 - 武学三选一卡显示 `64 px` 级图标；悬停时显示类型、当前实际属性效果和说明。
 - 装备背包与穿戴栏按装备稳定 ID 查找图标，稀有度颜色仍由 UI 独立绘制。
+
+主地图地面 v02 的完整提示词保存在 `ArtSource/Raw/Environment/prompts_mainmap_ground_v02.md`，
+原图经 `Tools/ArtPipeline/normalize_mainmap_ground.py` 归一化并生成 2×2 平铺预览，再交付到
+`Assets/Art/Generated/Environment/`。草地与土路继续使用世界坐标平铺材质，避免地图平面缩放时拉伸。
+
+主世界 HD-2D v01 的提示词保存在 `ArtSource/Raw/Environment/HD2D/prompts_hd2d_main_world_v01.md`。
+原图经 `Tools/ArtPipeline/prepare_hd2d_world_art.py` 处理为远景、透明景观切片、无缝水面与程序化气氛层，
+再交付到 `Assets/Art/Generated/Environment/HD2D/`。Unity 中必须以真实前中后景、微缩地形与灯光重组，
+不得把生成图直接当作铺满屏幕的静态效果图。
 
 ## 9. Unity 验收门槛
 

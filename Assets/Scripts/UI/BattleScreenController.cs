@@ -158,8 +158,8 @@ namespace WuxiaRoguelite.UI
             DrawHeader(width);
 
             float sidePadding = portrait ? safe.x + 16f : Mathf.Clamp(width * 0.055f, 34f, 72f);
-            float healthTop = safe.y + (portrait ? 88f : 89f);
-            float healthHeight = portrait ? 74f : 72f;
+            float healthTop = safe.y + (portrait ? 68f : 89f);
+            float healthHeight = portrait ? 64f : 72f;
             float healthWidth = portrait
                 ? (safe.width - 44f) * 0.5f
                 : Mathf.Min(284f, width * 0.30f);
@@ -171,11 +171,11 @@ namespace WuxiaRoguelite.UI
             // has a clear target readout without duplicating the player's health.
             DrawEnemyHealthPanel(enemyHealthRect, battleManager.currentEnemy,
                 enemyDamageAmount, enemyDamageStartedAt);
-            float duelTop = portrait ? healthTop + 116f : healthTop;
-            float duelHeight = portrait ? 42f : 52f;
+            float duelTop = portrait ? healthTop + 100f : healthTop;
+            float duelHeight = portrait ? 34f : 52f;
             DrawDuelFocus(width, duelTop, duelHeight);
 
-            float messageHeight = portrait ? 76f : 50f;
+            float messageHeight = portrait ? 54f : 50f;
             Rect messageRect = portrait
                 ? new Rect(safe.x + 10f, safe.yMax - messageHeight - 10f, safe.width - 20f, messageHeight)
                 : new Rect(width * 0.07f, height - messageHeight - 10f, width * 0.86f, messageHeight);
@@ -187,10 +187,27 @@ namespace WuxiaRoguelite.UI
             Rect stageRect = new Rect(0f, stageTop, width, stageHeight);
 
             float baseActorSize = portrait
-                ? Mathf.Clamp(Mathf.Min(width * 0.31f, stageHeight * 0.58f), 112f, 190f)
+                ? Mathf.Clamp(Mathf.Min(width * 0.28f, stageHeight * 0.54f), 104f, 164f)
                 : Mathf.Clamp(Mathf.Min(width * 0.25f, stageHeight * 0.94f), 120f, 290f);
             float actorSize = baseActorSize * battleActorScale;
-            float baseY = stageBottom - 6f;
+            EnemyVisualProfile enemyVisual = SelectEnemyVisualProfile();
+            Sprite[] currentEnemyIdleFrames = SelectEnemyFrames(enemyVisual, false);
+            Sprite[] currentEnemyAttackFrames = SelectEnemyFrames(enemyVisual, true);
+            float playerActorSize = actorSize * playerSpriteScale;
+            float enemySpriteScale = gameFlow.CurrentPhase == GamePhase.BossBattle
+                ? bossSpriteScale
+                : enemyVisual != null ? enemyVisual.scale : ActorVisualScale.Medium;
+            float enemyBaseSize = gameFlow.CurrentPhase == GamePhase.BossBattle
+                ? baseActorSize * Mathf.Min(battleActorScale, 1.06f)
+                : actorSize;
+            float enemyActorSize = enemyBaseSize * enemySpriteScale;
+            float tallestActorSize = Mathf.Max(playerActorSize, enemyActorSize);
+            float baseY = portrait
+                ? Mathf.Clamp(
+                    safe.center.y + tallestActorSize * 0.5f,
+                    stageTop + tallestActorSize,
+                    messageRect.y - 24f)
+                : stageBottom - 6f;
             float attackDuration = 0.32f / battleManager.BattleSpeedMultiplier;
             float actionProgress = Mathf.Clamp01((Time.unscaledTime - attackStartedAt) / attackDuration);
             float lunge = Mathf.Sin(actionProgress * Mathf.PI) * Mathf.Min(54f, width * 0.05f);
@@ -198,8 +215,8 @@ namespace WuxiaRoguelite.UI
                 ? Mathf.Sin(actionProgress * 70f) * 7f
                 : 0f;
 
-            float playerX = width * (portrait ? 0.22f : 0.30f) - actorSize * 0.5f;
-            float enemyX = width * (portrait ? 0.78f : 0.70f) - actorSize * 0.5f;
+            float playerX = width * (portrait ? 0.25f : 0.30f) - actorSize * 0.5f;
+            float enemyX = width * (portrait ? 0.75f : 0.70f) - actorSize * 0.5f;
             if (actionProgress < 1f)
             {
                 playerX += lunge;
@@ -216,17 +233,6 @@ namespace WuxiaRoguelite.UI
 
             bool playerAttacking = actionProgress < 1f;
             bool enemyAttacking = actionProgress < 1f;
-            EnemyVisualProfile enemyVisual = SelectEnemyVisualProfile();
-            Sprite[] currentEnemyIdleFrames = SelectEnemyFrames(enemyVisual, false);
-            Sprite[] currentEnemyAttackFrames = SelectEnemyFrames(enemyVisual, true);
-            float playerActorSize = actorSize * playerSpriteScale;
-            float enemySpriteScale = gameFlow.CurrentPhase == GamePhase.BossBattle
-                ? bossSpriteScale
-                : enemyVisual != null ? enemyVisual.scale : ActorVisualScale.Medium;
-            float enemyBaseSize = gameFlow.CurrentPhase == GamePhase.BossBattle
-                ? baseActorSize * Mathf.Min(battleActorScale, 1.06f)
-                : actorSize;
-            float enemyActorSize = enemyBaseSize * enemySpriteScale;
             Rect playerRect = new Rect(playerX + (actorSize - playerActorSize) * 0.5f,
                 baseY - playerActorSize, playerActorSize, playerActorSize);
             Rect enemyRect = new Rect(enemyX + (actorSize - enemyActorSize) * 0.5f,
@@ -284,15 +290,8 @@ namespace WuxiaRoguelite.UI
             dialogueBodyStyle.clipping = TextClipping.Clip;
             dialogueHintStyle = CreateStyle(11, FontStyle.Normal, TextAnchor.MiddleLeft,
                 new Color(0.68f, 0.72f, 0.72f));
-            dialogueButtonStyle = RuntimeChineseFont.Apply(new GUIStyle(GUI.skin.button)
-            {
-                fontSize = 16,
-                fontStyle = FontStyle.Bold,
-                alignment = TextAnchor.MiddleCenter,
-                normal = { textColor = Color.white },
-                hover = { textColor = new Color(1f, 0.90f, 0.58f) },
-                active = { textColor = new Color(1f, 0.82f, 0.36f) }
-            });
+            dialogueButtonStyle = WuxiaUiTheme.CreateButtonStyle(
+                16, WuxiaButtonKind.Primary);
         }
 
         private void DrawOpeningIntro()
@@ -325,8 +324,9 @@ namespace WuxiaRoguelite.UI
                 safe.y + 12f,
                 titleWidth,
                 portrait ? 86f : 76f);
-            FillRect(titlePanel, new Color(0.025f, 0.018f, 0.025f, 0.80f));
-            FillRect(new Rect(titlePanel.x, titlePanel.y, titlePanel.width, 2f), Gold);
+            WuxiaUiTheme.DrawPanel(titlePanel,
+                new Color(0.025f, 0.018f, 0.025f, 0.80f), Gold,
+                WuxiaPanelKind.Paper);
             GUI.Label(new Rect(titlePanel.x, titlePanel.y + 5f, titlePanel.width, 20f),
                 "江湖序章", dialogueKickerStyle);
             GUI.Label(new Rect(titlePanel.x, titlePanel.y + 25f, titlePanel.width, 42f),
@@ -340,8 +340,9 @@ namespace WuxiaRoguelite.UI
                 panelHeight);
             DrawOpeningPortraits(width, height, safe, dialoguePanel, portrait);
 
-            FillRect(dialoguePanel, new Color(0.018f, 0.022f, 0.025f, 0.94f));
-            FillRect(new Rect(dialoguePanel.x, dialoguePanel.y, dialoguePanel.width, 3f), Gold);
+            WuxiaUiTheme.DrawPanel(dialoguePanel,
+                new Color(0.018f, 0.022f, 0.025f, 0.94f), Gold,
+                WuxiaPanelKind.Paper);
             FillRect(new Rect(dialoguePanel.x + 18f, dialoguePanel.y + 39f,
                 dialoguePanel.width - 36f, 1f), new Color(Gold.r, Gold.g, Gold.b, 0.38f));
 
@@ -619,14 +620,15 @@ namespace WuxiaRoguelite.UI
         private void DrawHeader(float width)
         {
             Rect safe = ResponsiveGui.SafeArea;
+            bool portrait = ResponsiveGui.IsPortrait;
             BossApproachStage approachStage = gameFlow.CurrentBossApproachStage;
-            float headerWidth = ResponsiveGui.IsPortrait
-                ? Mathf.Max(260f, safe.width - 92f)
+            float headerWidth = portrait
+                ? Mathf.Max(260f, safe.width - 86f)
                 : Mathf.Min(480f, width * 0.50f);
-            float headerX = ResponsiveGui.IsPortrait
+            float headerX = portrait
                 ? safe.x + 14f
                 : (width - headerWidth) * 0.5f;
-            Rect headerRect = new Rect(headerX, safe.y + 7f, headerWidth, 74f);
+            Rect headerRect = new Rect(headerX, safe.y + 7f, headerWidth, portrait ? 56f : 74f);
             Color headerAccent = approachStage == BossApproachStage.FinalCountdown ||
                                  approachStage == BossApproachStage.Arrived
                 ? new Color(0.94f, 0.18f, 0.11f)
@@ -634,7 +636,19 @@ namespace WuxiaRoguelite.UI
                   approachStage == BossApproachStage.Omen
                     ? new Color(0.95f, 0.55f, 0.18f)
                     : Gold;
-            FillRect(headerRect, new Color(0.02f, 0.03f, 0.04f, 0.70f));
+            if (portrait)
+            {
+                WuxiaUiTheme.DrawCompactSurface(
+                    headerRect, new Color(0.02f, 0.03f, 0.04f, 0.76f), headerAccent);
+            }
+            else
+            {
+                WuxiaUiTheme.DrawPanel(headerRect,
+                    new Color(0.02f, 0.03f, 0.04f, 0.70f), headerAccent,
+                    gameFlow.CurrentPhase == GamePhase.BossBattle
+                        ? WuxiaPanelKind.Boss
+                        : WuxiaPanelKind.Combat);
+            }
             FillRect(new Rect(headerRect.x, headerRect.y, headerRect.width, 2f), headerAccent);
             FillRect(new Rect(headerRect.x + headerRect.width * 0.18f, headerRect.yMax - 1f,
                 headerRect.width * 0.64f, 1f),
@@ -645,6 +659,46 @@ namespace WuxiaRoguelite.UI
                 : gameFlow.CurrentPhase == GamePhase.CaveRunning
                     ? "秘境 · 自动战斗"
                     : "遭遇 · 自动战斗";
+
+            if (portrait)
+            {
+                ResponsiveGui.DrawSingleLineLabel(
+                    new Rect(headerRect.x + 10f, headerRect.y + 2f,
+                        headerRect.width * 0.52f, 24f),
+                    title, titleStyle, 11);
+
+                if (gameFlow.CurrentPhase == GamePhase.BossBattle)
+                {
+                    ResponsiveGui.DrawSingleLineLabel(
+                        new Rect(headerRect.x + headerRect.width * 0.49f, headerRect.y + 3f,
+                            headerRect.width * 0.48f, 22f),
+                        $"独立 {gameFlow.bossBattleTime:0.0} 秒", timerStyle, 9);
+                    ResponsiveGui.DrawSingleLineLabel(
+                        new Rect(headerRect.x + 10f, headerRect.y + 28f,
+                            headerRect.width - 20f, 18f),
+                        "主时间停止 · 自动交锋", captionStyle, 8);
+                    return;
+                }
+
+                bool compactPaused = gameFlow.CurrentPhase == GamePhase.CaveRunning;
+                float compactRatio = Mathf.Clamp01(
+                    gameFlow.mainTimeRemaining / Mathf.Max(0.01f, gameFlow.mainTimeLimit));
+                string compactTimer = compactPaused
+                    ? "主香暂停"
+                    : approachStage == BossApproachStage.Arrived
+                        ? "香尽 · 战后决战"
+                        : $"余 {Mathf.CeilToInt(gameFlow.mainTimeRemaining)} 息";
+                ResponsiveGui.DrawSingleLineLabel(
+                    new Rect(headerRect.x + headerRect.width * 0.55f, headerRect.y + 3f,
+                        headerRect.width * 0.42f, 22f),
+                    compactTimer, timerStyle, 9);
+                DrawMainTimeTrack(
+                    new Rect(headerRect.x + 12f, headerRect.y + 31f,
+                        headerRect.width - 24f, 16f),
+                    compactRatio, compactPaused);
+                return;
+            }
+
             ResponsiveGui.DrawSingleLineLabel(
                 new Rect(headerRect.x, headerRect.y + 3f, headerRect.width, 27f),
                 title, titleStyle, 13);
@@ -883,24 +937,27 @@ namespace WuxiaRoguelite.UI
             }
 
             bool boss = gameFlow.CurrentPhase == GamePhase.BossBattle;
+            bool compact = ResponsiveGui.IsPortrait || rect.height <= 66f;
             Color accent = boss ? new Color(0.92f, 0.50f, 0.18f) : EnemyColor;
-            FillRect(rect, new Color(0.035f, 0.025f, 0.025f, 0.92f));
-            FillRect(new Rect(rect.xMax - 3f, rect.y, 3f, rect.height), accent);
-            FillRect(new Rect(rect.x, rect.y, rect.width, 2f),
-                new Color(accent.r, accent.g, accent.b, 0.72f));
+            WuxiaUiTheme.DrawPanel(rect,
+                new Color(0.035f, 0.025f, 0.025f, 0.92f), accent,
+                boss ? WuxiaPanelKind.Boss : WuxiaPanelKind.Combat);
 
-            Rect threatBadge = new Rect(rect.x + 8f, rect.y + 5f, boss ? 42f : 28f, 17f);
+            Rect threatBadge = new Rect(rect.x + 8f, rect.y + (compact ? 4f : 5f),
+                boss ? (compact ? 36f : 42f) : (compact ? 24f : 28f), compact ? 15f : 17f);
             FillRect(threatBadge, new Color(accent.r, accent.g, accent.b, 0.88f));
             ResponsiveGui.DrawSingleLineLabel(threatBadge, boss ? "强敌" : "敌", captionStyle, 8);
 
             float levelWidth = Mathf.Min(68f, rect.width * 0.24f);
-            Rect displayNameRect = new Rect(threatBadge.xMax + 6f, rect.y + 3f,
-                rect.width - threatBadge.width - levelWidth - 28f, 21f);
-            Rect levelRect = new Rect(rect.xMax - levelWidth - 8f, rect.y + 3f, levelWidth, 21f);
+            Rect displayNameRect = new Rect(threatBadge.xMax + 6f, rect.y + (compact ? 2f : 3f),
+                rect.width - threatBadge.width - levelWidth - 28f, compact ? 19f : 21f);
+            Rect levelRect = new Rect(rect.xMax - levelWidth - 8f, rect.y + (compact ? 2f : 3f),
+                levelWidth, compact ? 19f : 21f);
             ResponsiveGui.DrawSingleLineLabel(displayNameRect, stats.displayName, leftNameStyle, 9);
             ResponsiveGui.DrawSingleLineLabel(levelRect, $"等级 {stats.DisplayLevel}", rightNameStyle, 8);
 
-            Rect bar = new Rect(rect.x + 9f, rect.y + 27f, rect.width - 21f, 18f);
+            Rect bar = new Rect(rect.x + 9f, rect.y + (compact ? 23f : 27f),
+                rect.width - 21f, compact ? 16f : 18f);
             FillRect(bar, Ink);
             float innerWidth = bar.width - 4f;
             float currentRatio = stats.HealthRatio;
@@ -943,6 +1000,13 @@ namespace WuxiaRoguelite.UI
             string effectText = battleManager.EnemyPoisonStacks > 0 || battleManager.EnemyArmorBreak > 0f
                 ? $"毒 {battleManager.EnemyPoisonStacks} · 破甲 {battleManager.EnemyArmorBreak:0.0}"
                 : "状态正常";
+            if (compact)
+            {
+                ResponsiveGui.DrawSingleLineLabel(
+                    new Rect(rect.x + 10f, rect.y + 41f, rect.width - 20f, 15f),
+                    effectText, detailStyle, 7);
+                return;
+            }
             ResponsiveGui.DrawSingleLineLabel(
                 new Rect(rect.x + 10f, rect.y + 48f, rect.width * 0.45f, 17f),
                 statText, detailStyle, 7);
@@ -953,14 +1017,35 @@ namespace WuxiaRoguelite.UI
 
         private void DrawDuelFocus(float width, float top, float height)
         {
-            float focusWidth = ResponsiveGui.IsPortrait
+            bool portrait = ResponsiveGui.IsPortrait;
+            float focusWidth = portrait
                 ? Mathf.Min(210f, ResponsiveGui.SafeArea.width - 32f)
                 : 132f;
             Rect focusRect = new Rect((width - focusWidth) * 0.5f, top + 3f,
-                focusWidth, Mathf.Max(36f, height - 6f));
-            FillRect(focusRect, new Color(0.025f, 0.03f, 0.035f, 0.82f));
-            FillRect(new Rect(focusRect.x, focusRect.y, focusRect.width, 2f), Gold);
+                focusWidth, portrait ? 28f : Mathf.Max(36f, height - 6f));
+            if (portrait)
+            {
+                WuxiaUiTheme.DrawCompactSurface(
+                    focusRect, new Color(0.025f, 0.03f, 0.035f, 0.78f), Gold);
+            }
+            else
+            {
+                WuxiaUiTheme.DrawPanel(focusRect,
+                    new Color(0.025f, 0.03f, 0.035f, 0.82f), Gold,
+                    WuxiaPanelKind.Combat);
+            }
             int exchange = Mathf.Max(1, battleManager.AttackSequence);
+            if (portrait)
+            {
+                string state = battleManager.LastAttackWasCritical ? "暴击" :
+                    battleManager.LastAttackWasDodged ? "闪避" : "演武";
+                ResponsiveGui.DrawSingleLineLabel(
+                    new Rect(focusRect.x + 6f, focusRect.y + 2f,
+                        focusRect.width - 12f, focusRect.height - 4f),
+                    $"第 {exchange} 招 · {battleManager.BattleElapsed:0.0} 秒 · {state}",
+                    detailStyle, 8);
+                return;
+            }
             ResponsiveGui.DrawSingleLineLabel(
                 new Rect(focusRect.x, focusRect.y + 4f, focusRect.width, 19f),
                 $"第 {exchange} 招 · {battleManager.BattleElapsed:0.0} 秒", detailStyle, 8);
@@ -1076,17 +1161,27 @@ namespace WuxiaRoguelite.UI
 
         private void DrawCombatMessage(Rect stageRect, Rect messageRect, float actionProgress)
         {
-            FillRect(messageRect, new Color(0.015f, 0.02f, 0.025f, 0.84f));
-            FillRect(new Rect(messageRect.x, messageRect.y, messageRect.width, 2f), Gold);
+            bool portrait = ResponsiveGui.IsPortrait;
+            if (portrait)
+            {
+                WuxiaUiTheme.DrawCompactSurface(
+                    messageRect, new Color(0.015f, 0.02f, 0.025f, 0.82f), Gold);
+            }
+            else
+            {
+                WuxiaUiTheme.DrawPanel(messageRect,
+                    new Color(0.015f, 0.02f, 0.025f, 0.84f), Gold,
+                    WuxiaPanelKind.Combat);
+            }
 
             string effectSummary =
                 $"护盾 {battleManager.PlayerShield:0}  ·  毒 {battleManager.EnemyPoisonStacks} 层  ·  破甲 {battleManager.EnemyArmorBreak:0.0}";
-            if (ResponsiveGui.IsPortrait)
+            if (portrait)
             {
-                Rect logRect = new Rect(messageRect.x + 10f, messageRect.y + 5f,
-                    messageRect.width - 20f, 38f);
-                Rect effectRect = new Rect(messageRect.x + 10f, messageRect.y + 46f,
-                    messageRect.width - 20f, 21f);
+                Rect logRect = new Rect(messageRect.x + 10f, messageRect.y + 3f,
+                    messageRect.width - 20f, 27f);
+                Rect effectRect = new Rect(messageRect.x + 10f, messageRect.y + 31f,
+                    messageRect.width - 20f, 18f);
                 ResponsiveGui.DrawSingleLineLabel(logRect, battleManager.battleLog, centerStyle, 8);
                 FillRect(new Rect(effectRect.x, effectRect.y - 2f, effectRect.width, 1f),
                     new Color(1f, 1f, 1f, 0.12f));

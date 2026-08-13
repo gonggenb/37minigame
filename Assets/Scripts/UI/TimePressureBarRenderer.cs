@@ -8,10 +8,10 @@ namespace WuxiaRoguelite.UI
         private static Texture2D frameTexture;
 
         private static readonly Color Empty = new Color(0.025f, 0.022f, 0.02f, 0.96f);
-        private static readonly Color LastTwenty = new Color(0.88f, 0.12f, 0.075f, 0.98f);
-        private static readonly Color MiddleTwenty = new Color(0.86f, 0.57f, 0.16f, 0.98f);
-        private static readonly Color FirstTwenty = new Color(0.24f, 0.62f, 0.43f, 0.98f);
-        private static readonly Color Paused = new Color(0.31f, 0.67f, 0.82f, 0.98f);
+        private static readonly Color LastTwenty = WuxiaUiTheme.Danger;
+        private static readonly Color MiddleTwenty = WuxiaUiTheme.Warning;
+        private static readonly Color FirstTwenty = WuxiaUiTheme.InkGreen;
+        private static readonly Color Paused = WuxiaUiTheme.Paused;
 
         public static void Draw(Rect rect, float ratio, bool paused)
         {

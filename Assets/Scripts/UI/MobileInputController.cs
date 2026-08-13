@@ -1,5 +1,6 @@
 using UnityEngine;
 using WuxiaRoguelite.Battle;
+using WuxiaRoguelite.Cave;
 using WuxiaRoguelite.GameFlow;
 
 namespace WuxiaRoguelite.UI
@@ -28,6 +29,17 @@ namespace WuxiaRoguelite.UI
 
         private static void ApplyOrientation(bool portrait, bool save)
         {
+#if UNITY_WEBGL && !UNITY_EDITOR
+            // Browser layout follows the responsive canvas. Calling Screen.orientation
+            // on desktop WebGL invokes screen.orientation.lock(), which is unavailable
+            // in common desktop browsers and produces a rejected promise.
+            if (save)
+            {
+                PlayerPrefs.SetInt(OrientationPreference, portrait ? 1 : 0);
+                PlayerPrefs.Save();
+            }
+            return;
+#else
             Screen.autorotateToPortrait = false;
             Screen.autorotateToPortraitUpsideDown = false;
             Screen.autorotateToLandscapeLeft = false;
@@ -43,6 +55,7 @@ namespace WuxiaRoguelite.UI
 
             PlayerPrefs.SetInt(OrientationPreference, portrait ? 1 : 0);
             PlayerPrefs.Save();
+#endif
         }
     }
 
@@ -61,7 +74,7 @@ namespace WuxiaRoguelite.UI
         public bool showInEditor = true;
         [Tooltip("Shows the joystick in touch-capable WebGL and desktop builds.")]
         public bool showOnDesktop = true;
-        [Range(52f, 84f)] public float joystickRadius = 68f;
+        [Range(52f, 84f)] public float joystickRadius = 60f;
         [Header("Portrait Swipe")]
         [Range(4f, 32f)] public float portraitSwipeDeadZone = 12f;
         [Range(48f, 160f)] public float portraitSwipeFullSpeedDistance = 96f;
@@ -76,12 +89,14 @@ namespace WuxiaRoguelite.UI
         private float radiusScreen;
         private Texture2D baseTexture;
         private Texture2D knobTexture;
+        private CaveRoomController caveRoom;
         private bool? appliedPortraitLayout;
 
         private bool ShouldShow =>
             gameFlow != null &&
             !PrototypeHUDController.IsSettingsOpen &&
             !gameFlow.IsCharacterMenuPaused &&
+            (caveRoom == null || !caveRoom.IsModalUiOpen) &&
             (gameFlow.CurrentPhase == GamePhase.MainMapRunning ||
              gameFlow.CurrentPhase == GamePhase.CaveRunning) &&
             (battleManager == null || !battleManager.IsBattleActive) &&
@@ -100,10 +115,21 @@ namespace WuxiaRoguelite.UI
                 battleManager = FindAnyObjectByType<BattleManager>();
             }
 
-            baseTexture = CreateCircleTexture(128, new Color(0.07f, 0.09f, 0.085f, 0.48f),
-                new Color(0.86f, 0.68f, 0.32f, 0.82f), 0.78f);
-            knobTexture = CreateCircleTexture(96, new Color(0.27f, 0.68f, 0.53f, 0.88f),
-                new Color(0.92f, 0.88f, 0.74f, 0.92f), 0.82f);
+            if (caveRoom == null)
+            {
+                caveRoom = FindAnyObjectByType<CaveRoomController>();
+            }
+
+            baseTexture = CreateCircleTexture(128,
+                new Color(WuxiaUiTheme.BackgroundInk.r, WuxiaUiTheme.BackgroundInk.g,
+                    WuxiaUiTheme.BackgroundInk.b, 0.62f),
+                new Color(WuxiaUiTheme.Brass.r, WuxiaUiTheme.Brass.g, WuxiaUiTheme.Brass.b, 0.78f),
+                0.82f);
+            knobTexture = CreateCircleTexture(96,
+                new Color(WuxiaUiTheme.Jade.r, WuxiaUiTheme.Jade.g, WuxiaUiTheme.Jade.b, 0.82f),
+                new Color(WuxiaUiTheme.TextPrimary.r, WuxiaUiTheme.TextPrimary.g,
+                    WuxiaUiTheme.TextPrimary.b, 0.76f),
+                0.84f);
         }
 
         private void OnDisable()

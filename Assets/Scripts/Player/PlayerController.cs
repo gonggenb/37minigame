@@ -1,4 +1,5 @@
 using UnityEngine;
+using WuxiaRoguelite.Map;
 using WuxiaRoguelite.UI;
 
 namespace WuxiaRoguelite.Player
@@ -18,6 +19,8 @@ namespace WuxiaRoguelite.Player
         private Vector2 moveInput;
         private bool canMove;
         private Vector3 spawnPosition;
+        private Vector3 visualBaseLocalPosition;
+        private float visualBridgeLift;
         private bool? appliedPortraitLayout;
 
         public bool IsMoving => canMove && moveInput.sqrMagnitude > 0.01f;
@@ -45,6 +48,11 @@ namespace WuxiaRoguelite.Player
                 visualRoot = visualRenderer != null ? visualRenderer.transform : null;
             }
 
+            if (visualRoot != null)
+            {
+                visualBaseLocalPosition = visualRoot.localPosition;
+            }
+
             ApplyResponsiveVisualScale(true);
         }
 
@@ -56,6 +64,9 @@ namespace WuxiaRoguelite.Player
                 body.position = spawnPosition;
                 body.linearVelocity = Vector3.zero;
             }
+
+            visualBridgeLift = 0f;
+            ApplyBridgeVisualLift();
         }
 
         private void Update()
@@ -85,6 +96,21 @@ namespace WuxiaRoguelite.Player
             Vector3 nextPosition = body.position + movement;
             nextPosition.y = groundY;
             body.MovePosition(nextPosition);
+
+            float targetLift = MainMapBridgeSurface.GetVisualLift(nextPosition);
+            visualBridgeLift = Mathf.MoveTowards(
+                visualBridgeLift,
+                targetLift,
+                Time.fixedDeltaTime * 3.8f);
+            ApplyBridgeVisualLift();
+        }
+
+        private void ApplyBridgeVisualLift()
+        {
+            if (visualRoot != null)
+            {
+                visualRoot.localPosition = visualBaseLocalPosition + Vector3.up * visualBridgeLift;
+            }
         }
 
         private Vector3 GetMovementDirection()

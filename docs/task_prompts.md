@@ -135,6 +135,7 @@ Debug features must not break normal gameplay.
 
 ```text
 Read AGENTS.md first.
+Read docs/UI_STYLE_GUIDE.md.
 
 This task focuses only on UI readability and validation.
 
@@ -159,6 +160,7 @@ Do not change gameplay rules unless required by a UI bug.
 ```text
 Read AGENTS.md first.
 Read docs/art_style_guide.md and docs/art_production_pipeline.md.
+Read docs/UI_STYLE_GUIDE.md when producing icons or other UI assets.
 
 This task only produces [角色动画 / 武学图标 / 道具图标 / 场景资源].
 

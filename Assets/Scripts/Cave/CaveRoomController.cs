@@ -54,6 +54,7 @@ namespace WuxiaRoguelite.Cave
         [Min(0f)] public float treasureWeight = 30f;
 
         public bool IsRoomActive { get; private set; }
+        public bool IsModalUiOpen => merchantOpen;
         public CaveContentType CurrentContent { get; private set; }
         public bool CanUseExitAction =>
             IsRoomActive &&
@@ -384,10 +385,19 @@ namespace WuxiaRoguelite.Cave
         {
             float width = ResponsiveGui.Width;
             float height = ResponsiveGui.Height;
+            Rect safe = ResponsiveGui.SafeArea;
             FillRect(new Rect(0f, 0f, width, height), CaveBlack);
-            ResponsiveGui.DrawSingleLineLabel(new Rect(0f, 7f, width, 32f),
+            Rect caveHeader = new Rect(
+                safe.x + 14f,
+                safe.y + 7f,
+                Mathf.Min(480f, safe.width - 28f),
+                52f);
+            WuxiaUiTheme.DrawPanel(caveHeader,
+                new Color(0.025f, 0.03f, 0.035f, 0.90f), WuxiaUiTheme.Paused,
+                WuxiaPanelKind.Paper);
+            ResponsiveGui.DrawSingleLineLabel(new Rect(caveHeader.x, caveHeader.y + 2f, caveHeader.width, 28f),
                 "隐窟 · " + ContentName(), titleStyle, 16);
-            ResponsiveGui.DrawSingleLineLabel(new Rect(0f, 37f, width, 22f),
+            ResponsiveGui.DrawSingleLineLabel(new Rect(caveHeader.x, caveHeader.y + 28f, caveHeader.width, 19f),
                 $"主地图倒数已暂停  {gameFlow.mainTimeRemaining:0.0} 秒", hintStyle, 10);
 
             Rect room = new Rect(14f, 66f, width - 28f, height - 80f);
@@ -428,7 +438,6 @@ namespace WuxiaRoguelite.Cave
             float preferredMessageWidth =
                 ResponsiveGui.PreferredSingleLineWidth(roomMessage, bodyStyle, 30f);
             float messageWidth = Mathf.Clamp(preferredMessageWidth, width * 0.58f, width - 28f);
-            Rect safe = ResponsiveGui.SafeArea;
             float messageX = (width - messageWidth) * 0.5f;
             float messageY = height - 112f;
             if (ResponsiveGui.IsPortrait)
@@ -444,8 +453,9 @@ namespace WuxiaRoguelite.Cave
             }
 
             Rect message = new Rect(messageX, messageY, messageWidth, 34f);
-            FillRect(message, new Color(0f, 0f, 0f, 0.82f));
-            FillRect(new Rect(message.x, message.y, message.width, 2f), Gold);
+            WuxiaUiTheme.DrawPanel(message,
+                new Color(0f, 0f, 0f, 0.82f), WuxiaUiTheme.Paused,
+                WuxiaPanelKind.Default);
             ResponsiveGui.DrawSingleLineLabel(
                 new Rect(message.x + 12f, message.y + 2f, message.width - 24f, message.height - 4f),
                 roomMessage, bodyStyle, 9);
@@ -601,8 +611,9 @@ namespace WuxiaRoguelite.Cave
             float panelHeight = Mathf.Min(510f, ResponsiveGui.Height - 24f);
             Rect panel = new Rect((ResponsiveGui.Width - panelWidth) * 0.5f,
                 (ResponsiveGui.Height - panelHeight) * 0.5f, panelWidth, panelHeight);
-            FillRect(panel, new Color(0.075f, 0.085f, 0.08f, 1f));
-            FillRect(new Rect(panel.x, panel.y, 4f, panel.height), Gold);
+            WuxiaUiTheme.DrawPanel(panel,
+                new Color(0.075f, 0.085f, 0.08f, 1f), Gold,
+                WuxiaPanelKind.Paper);
             ResponsiveGui.DrawSingleLineLabel(
                 new Rect(panel.x + 18f, panel.y + 8f, panel.width - 260f, 30f),
                 "云游商人 · 固定货架", headingStyle, 12);
@@ -662,14 +673,17 @@ namespace WuxiaRoguelite.Cave
 
         private void DrawMerchantCard(Rect card, MerchantOffer offer)
         {
-            FillRect(card, offer.sold
-                ? new Color(0.09f, 0.10f, 0.095f, 1f)
-                : new Color(0.13f, 0.145f, 0.135f, 1f));
             Color accent = offer.discounted ? new Color(0.92f, 0.47f, 0.24f) : Gold;
-            FillRect(new Rect(card.x, card.y, card.width, 3f), accent);
+            WuxiaUiTheme.DrawPanel(card,
+                offer.sold
+                    ? new Color(0.09f, 0.10f, 0.095f, 1f)
+                    : new Color(0.13f, 0.145f, 0.135f, 1f),
+                accent,
+                WuxiaPanelKind.Default);
             Texture2D icon = LoadContentIcon(offer.iconId);
             Rect iconRect = new Rect(card.x + 8f, card.y + 10f, 48f, 48f);
-            FillRect(iconRect, new Color(0.035f, 0.04f, 0.04f, 0.95f));
+            WuxiaUiTheme.DrawSlot(iconRect,
+                new Color(0.035f, 0.04f, 0.04f, 0.95f), accent);
             if (icon != null)
             {
                 GUI.DrawTexture(new Rect(iconRect.x + 3f, iconRect.y + 3f, 42f, 42f),
@@ -1045,13 +1059,8 @@ namespace WuxiaRoguelite.Cave
             bodyStyle = Style(14, FontStyle.Normal, TextAnchor.MiddleCenter, Color.white);
             centeredStyle = Style(13, FontStyle.Bold, TextAnchor.MiddleCenter, Color.white);
             hintStyle = Style(14, FontStyle.Bold, TextAnchor.MiddleCenter, new Color(0.92f, 0.79f, 0.48f));
-            buttonStyle = RuntimeChineseFont.Apply(new GUIStyle(GUI.skin.button)
-            {
-                fontSize = 13,
-                fontStyle = FontStyle.Bold,
-                alignment = TextAnchor.MiddleCenter,
-                normal = { textColor = Color.white }
-            });
+            buttonStyle = WuxiaUiTheme.CreateButtonStyle(
+                13, WuxiaButtonKind.Secondary);
         }
 
         private static GUIStyle Style(int size, FontStyle fontStyle, TextAnchor alignment, Color color)
