@@ -60,8 +60,12 @@ namespace WuxiaRoguelite.GameFlow
         public bool IsBossTransitionPending { get; private set; }
         public bool IsBossIntroActive { get; private set; }
         public bool IsOpeningIntroActive => CurrentPhase == GamePhase.OpeningIntro;
+        public bool IsLevelSelectionOpen { get; private set; }
+        public bool IsTutorialNoticeActive { get; private set; }
+        public bool IsTutorialLevel => LevelSequence.IsTutorialScene;
+        public bool IsLevelTwoUnlocked => LevelSequence.TutorialCompleted;
         public int OpeningDialogueIndex { get; private set; }
-        public int OpeningDialogueCount => 5;
+        public int OpeningDialogueCount => launchTutorialAfterOpeningIntro ? 4 : 5;
         public string OpeningPlayerName =>
             playerStats != null && playerStats.runtimeStats != null
                 ? playerStats.runtimeStats.displayName
@@ -185,6 +189,9 @@ namespace WuxiaRoguelite.GameFlow
         private int pendingEnemyLevel;
         private EncounterType pendingEnemyType;
         private bool isOpeningMartialArtChoice;
+        private bool launchTutorialAfterOpeningIntro;
+        private bool tutorialTransitionPending;
+        private float tutorialNoticeOpenedAt;
 
         private void Awake()
         {
@@ -207,7 +214,23 @@ namespace WuxiaRoguelite.GameFlow
             pendingBoss = null;
             ClearOpeningIntro();
             SetPhase(GamePhase.Ready);
-            statusMessage = "按开始进入江湖";
+            if (!IsTutorialLevel && LevelSequence.ConsumeLevelTwoAutoStartRequest())
+            {
+                BeginLevelTwoAfterTransition();
+                return;
+            }
+
+            if (IsTutorialLevel)
+            {
+                IsTutorialNoticeActive = true;
+                tutorialNoticeOpenedAt = Time.unscaledTime;
+                statusMessage = "教学关卡已就绪：点击提示后，六十息开始。";
+            }
+            else
+            {
+                statusMessage = "按开始进入江湖";
+            }
+
         }
 
         private void Update()
@@ -223,6 +246,20 @@ namespace WuxiaRoguelite.GameFlow
                 if (mainTimeRemaining <= 0f)
                 {
                     mainTimeRemaining = 0f;
+                    if (IsTutorialLevel)
+                    {
+                        if (CurrentPhase == GamePhase.NormalBattleRunning)
+                        {
+                            tutorialTransitionPending = true;
+                            statusMessage = "教学六十息已尽：完成当前交锋后进入关卡2。";
+                        }
+                        else
+                        {
+                            CompleteTutorial();
+                        }
+                        return;
+                    }
+
                     if (CurrentPhase == GamePhase.NormalBattleRunning)
                     {
                         MarkBossTransitionPending();
@@ -278,6 +315,9 @@ namespace WuxiaRoguelite.GameFlow
             bossDefeated = false;
             IsBossTransitionPending = false;
             IsBossIntroActive = false;
+            IsLevelSelectionOpen = false;
+            IsTutorialNoticeActive = false;
+            tutorialTransitionPending = false;
             BossIntroTimeRemaining = 0f;
             pendingBoss = null;
             ClearOpeningIntro();
@@ -293,8 +333,83 @@ namespace WuxiaRoguelite.GameFlow
             BeginOpeningIntro();
         }
 
+        public void OpenLevelSelection()
+        {
+            if (IsTutorialLevel)
+            {
+                LevelSequence.LoadLevelSelection();
+                return;
+            }
+
+            IsLevelSelectionOpen = true;
+            SetPhase(GamePhase.Ready);
+            statusMessage = "选择要进入的关卡。";
+        }
+
+        public void CloseLevelSelection()
+        {
+            IsLevelSelectionOpen = false;
+            statusMessage = "按开始进入江湖";
+        }
+
+        public void SelectTutorialLevel()
+        {
+            if (IsTutorialLevel)
+            {
+                return;
+            }
+
+            IsLevelSelectionOpen = false;
+            launchTutorialAfterOpeningIntro = true;
+            StartRun();
+        }
+
+        public void SelectLevelTwo()
+        {
+            if (!IsLevelTwoUnlocked)
+            {
+                statusMessage = "先完成关卡1·初入江湖。";
+                return;
+            }
+
+            IsLevelSelectionOpen = false;
+            LevelSequence.LoadLevelTwoFromSelection();
+        }
+
+        public void DismissTutorialNotice()
+        {
+            if (!IsTutorialLevel || !IsTutorialNoticeActive ||
+                Time.unscaledTime - tutorialNoticeOpenedAt < 0.25f)
+            {
+                return;
+            }
+
+            IsTutorialNoticeActive = false;
+            mainTimeRemaining = mainTimeLimit;
+            tutorialTransitionPending = false;
+            SetPhase(GamePhase.MainMapRunning);
+            statusMessage = "教学开始：六十息内自由探索。";
+        }
+
+        public void SkipTutorialLevel()
+        {
+            if (!IsTutorialLevel)
+            {
+                return;
+            }
+
+            TransitionFromTutorialToLevelTwo(skipped: true);
+        }
+
         public void ReturnToMainMenu()
         {
+            if (IsTutorialLevel)
+            {
+                Time.timeScale = 1f;
+                LevelSequence.LoadLevelSelection();
+                return;
+            }
+
             if (battleManager != null)
             {
                 battleManager.CancelBattle();
@@ -314,6 +429,10 @@ namespace WuxiaRoguelite.GameFlow
             bossBattleTime = 0f;
             bossDefeated = false;
             IsBossTransitionPending = false;
+            IsLevelSelectionOpen = false;
+            IsTutorialNoticeActive = false;
+            launchTutorialAfterOpeningIntro = false;
+            tutorialTransitionPending = false;
             IsBossIntroActive = false;
             BossIntroTimeRemaining = 0f;
             pendingBoss = null;
@@ -428,6 +547,12 @@ namespace WuxiaRoguelite.GameFlow
 
             if (mainTimeRemaining <= 0f && phaseBeforeLevelUp == GamePhase.MainMapRunning)
             {
+                if (IsTutorialLevel)
+                {
+                    CompleteTutorial();
+                    return;
+                }
+
                 BeginBossBattle();
                 return;
             }
@@ -439,6 +564,12 @@ namespace WuxiaRoguelite.GameFlow
         {
             if (CurrentPhase == GamePhase.Result)
             {
+                return;
+            }
+
+            if (IsTutorialLevel)
+            {
+                CompleteTutorial();
                 return;
             }
 
@@ -509,6 +640,14 @@ namespace WuxiaRoguelite.GameFlow
                 return;
             }
 
+            if (launchTutorialAfterOpeningIntro)
+            {
+                launchTutorialAfterOpeningIntro = false;
+                ClearOpeningIntro();
+                LevelSequence.LoadTutorial();
+                return;
+            }
+
             ClearOpeningIntro();
             phaseBeforeLevelUp = GamePhase.MainMapRunning;
             isOpeningMartialArtChoice = true;
@@ -568,6 +707,12 @@ namespace WuxiaRoguelite.GameFlow
                 statusMessage = leveledUp
                     ? $"{rewardSummary}；修为突破，请选择武学。"
                     : rewardSummary;
+                return;
+            }
+
+            if (IsTutorialLevel && (tutorialTransitionPending || mainTimeRemaining <= 0f))
+            {
+                CompleteTutorial();
                 return;
             }
 
@@ -705,6 +850,12 @@ namespace WuxiaRoguelite.GameFlow
 
         private void BeginBossBattle()
         {
+            if (IsTutorialLevel)
+            {
+                CompleteTutorial();
+                return;
+            }
+
             if (CurrentPhase == GamePhase.BossBattle || CurrentPhase == GamePhase.Result)
             {
                 return;
@@ -1019,6 +1170,61 @@ namespace WuxiaRoguelite.GameFlow
         private void ClearOpeningIntro()
         {
             OpeningDialogueIndex = 0;
+        }
+
+        private void BeginLevelTwoAfterTransition()
+        {
+            if (battleManager != null)
+            {
+                battleManager.CancelBattle();
+            }
+
+            caveRoom?.ResetRoom();
+            playerStats?.ResetRun();
+            playerController?.ResetToSpawn();
+            cameraFollow?.ResetVision();
+            foreach (EncounterTrigger encounter in FindObjectsByType<EncounterTrigger>(FindObjectsInactive.Include))
+            {
+                encounter.ResetEncounter(rerollCaveContent: true);
+            }
+
+            mainTimeRemaining = mainTimeLimit;
+            bossBattleTime = 0f;
+            bossDefeated = false;
+            IsBossTransitionPending = false;
+            IsLevelSelectionOpen = false;
+            IsTutorialNoticeActive = false;
+            tutorialTransitionPending = false;
+            launchTutorialAfterOpeningIntro = false;
+            currentChoices.Clear();
+            martialArtRerollsRemaining = 1;
+            phaseBeforeLevelUp = GamePhase.MainMapRunning;
+            isOpeningMartialArtChoice = true;
+            GenerateMartialArtChoices();
+            SetPhase(GamePhase.LevelUpPaused);
+            statusMessage = "关卡2·驿路风云：选择起手流派后，六十息开始。";
+        }
+
+        private void CompleteTutorial()
+        {
+            if (!IsTutorialLevel)
+            {
+                return;
+            }
+
+            TransitionFromTutorialToLevelTwo(skipped: false);
+        }
+
+        private void TransitionFromTutorialToLevelTwo(bool skipped)
+        {
+            tutorialTransitionPending = false;
+            IsTutorialNoticeActive = false;
+            playerController?.SetMovementEnabled(false);
+            Time.timeScale = 1f;
+            statusMessage = skipped
+                ? "已跳过关卡1，正在进入关卡2·驿路风云……"
+                : "教学完成，正在进入关卡2·驿路风云……";
+            LevelSequence.CompleteTutorialAndLoadLevelTwo();
         }
 
         private static string GetOpeningRouteHint(string martialArt)

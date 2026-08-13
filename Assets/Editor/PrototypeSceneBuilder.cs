@@ -141,7 +141,12 @@ namespace WuxiaRoguelite.EditorTools
         private const string MainHudCultivationIconPath = MainHudIconRoot + "/ico_hud_cultivation_v01_128.png";
         private const string GoldPath = TinyRoot + "/World/Gold_Resource.png";
         private const string TreasureChestPath = "Assets/Art/Generated/World/spr_treasure_chest_closed_v01.png";
-        private const string HerbPath = TinyRoot + "/World/Bush.png";
+        private const string GeneratedHerbRoot = "Assets/Art/Generated/World/Herbs";
+        private const string HealingHerbPath = GeneratedHerbRoot + "/spr_herb_healing_v01.png";
+        private const string AttackHerbPath = GeneratedHerbRoot + "/spr_herb_attack_v01.png";
+        private const string DefenseHerbPath = GeneratedHerbRoot + "/spr_herb_defense_v01.png";
+        private const string MoveSpeedHerbPath = GeneratedHerbRoot + "/spr_herb_move_speed_v01.png";
+        private const string MysteryHerbPath = GeneratedHerbRoot + "/spr_herb_mystery_v01.png";
         private const string StatusIconPath = TinyRoot + "/UI/Avatars_01.png";
         private const string EquipmentIconPath = TinyRoot + "/UI/Icon_05.png";
         private const string HealthBarBasePath = TinyRoot + "/UI/BigBar_Base.png";
@@ -200,7 +205,7 @@ namespace WuxiaRoguelite.EditorTools
             Sprite[] bambooPuppetAttack = LoadFrames(BambooPuppetAttackPath, fallbackSprite);
             Sprite[] combatImpactFrames = LoadFrames(CombatImpactVfxPath, fallbackSprite);
             Sprite treasureChestSprite = LoadSingleSprite(TreasureChestPath, fallbackSprite);
-            Sprite[] herbFrames = LoadFrames(HerbPath, fallbackSprite);
+            Sprite[] healingHerbFrames = LoadHerbFrames(HealingHerbPath, fallbackSprite);
 
             Scene scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
 
@@ -385,13 +390,20 @@ namespace WuxiaRoguelite.EditorTools
 
             CreateEncounter("东市宝箱", new[] { treasureChestSprite }, null, new Vector3(10.5f, 0f, 7.5f), EncounterType.Treasure, Stats("宝箱", 1, 0, 0, 1f), 15, 8, 0.9f);
             CreateEncounter("西路宝箱", new[] { treasureChestSprite }, null, new Vector3(-12f, 0f, 1.5f), EncounterType.Treasure, Stats("宝箱", 1, 0, 0, 1f), 12, 6, 0.9f);
-            CreateEncounter("南桥药草", herbFrames, null, new Vector3(0f, 0f, -10f), EncounterType.Herb, Stats("药草", 1, 0, 0, 1f), 0, 0, 0.85f);
-            CreateEncounter("北门药草", herbFrames, null, new Vector3(1.5f, 0f, 10f), EncounterType.Herb, Stats("药草", 1, 0, 0, 1f), 0, 0, 0.85f);
+            CreateEncounter("南桥药草", healingHerbFrames, null, new Vector3(0f, 0f, -10f), EncounterType.Herb, Stats("止血草", 1, 0, 0, 1f), 0, 0, 0.85f);
+            GameObject northAttackHerb = CreateEncounter("北门药草", LoadHerbFrames(AttackHerbPath, fallbackSprite), null,
+                new Vector3(1.5f, 0f, 10f), EncounterType.Herb, Stats("赤阳草", 1, 0, 0, 1f), 0, 0, 0.85f);
+            EncounterTrigger northAttackTrigger = northAttackHerb.GetComponent<EncounterTrigger>();
+            northAttackTrigger.herbEffect = HerbEffectType.Attack;
+            northAttackTrigger.herbBuffValue = 1.5f;
 
             ApplyMainMapExpansion(
                 enemyIdle, enemyRun, eliteIdle, eliteRun, blueIdle, blueRun, caveIdle, caveRun,
                 ratRun, riderRun, ballistaFly,
-                inkWolfIdle, stoneApeIdle, bambooPuppetIdle, treasureChestSprite, herbFrames);
+                inkWolfIdle, stoneApeIdle, bambooPuppetIdle, treasureChestSprite,
+                healingHerbFrames, LoadHerbFrames(DefenseHerbPath, fallbackSprite),
+                LoadHerbFrames(MoveSpeedHerbPath, fallbackSprite),
+                LoadHerbFrames(MysteryHerbPath, fallbackSprite));
             ValidateEquipmentModel();
             EditorSceneManager.SaveScene(scene, ScenePath);
             EditorBuildSettings.scenes = new[] { new EditorBuildSettingsScene(ScenePath, true) };
@@ -864,12 +876,15 @@ namespace WuxiaRoguelite.EditorTools
             Sprite[] bambooPuppetIdle = LoadFrames(BambooPuppetIdlePath, fallbackSprite);
             Sprite[] bambooPuppetAttack = LoadFrames(BambooPuppetAttackPath, fallbackSprite);
             Sprite treasureChestSprite = LoadSingleSprite(TreasureChestPath, fallbackSprite);
-            Sprite[] herbFrames = LoadFrames(HerbPath, fallbackSprite);
+            Sprite[] healingHerbFrames = LoadHerbFrames(HealingHerbPath, fallbackSprite);
 
             ApplyMainMapExpansion(
                 enemyIdle, enemyRun, eliteIdle, eliteRun, blueIdle, blueRun, caveIdle, caveRun,
                 ratRun, riderRun, ballistaFly,
-                inkWolfIdle, stoneApeIdle, bambooPuppetIdle, treasureChestSprite, herbFrames);
+                inkWolfIdle, stoneApeIdle, bambooPuppetIdle, treasureChestSprite,
+                healingHerbFrames, LoadHerbFrames(DefenseHerbPath, fallbackSprite),
+                LoadHerbFrames(MoveSpeedHerbPath, fallbackSprite),
+                LoadHerbFrames(MysteryHerbPath, fallbackSprite));
 
             BattleScreenController battleScreen = UnityEngine.Object.FindAnyObjectByType<BattleScreenController>();
             if (battleScreen != null)
@@ -887,6 +902,191 @@ namespace WuxiaRoguelite.EditorTools
             Debug.Log(
                 "Main map refined to 64 x 56 with layered 60-second routes, " +
                 "36 enemies, eight caves, six treasure chests, and distributed recovery/buff pickups.");
+        }
+
+        [MenuItem("37 MiniGame/Build Tutorial Level")]
+        public static void BuildTutorialLevel()
+        {
+            if (EditorApplication.isPlaying)
+            {
+                Debug.LogError("Exit Play Mode before building the tutorial level.");
+                return;
+            }
+
+            const string tutorialPath = "Assets/Scenes/TutorialLevel.unity";
+            EditorSceneManager.SaveOpenScenes();
+            if (File.Exists(tutorialPath))
+            {
+                File.Copy(ScenePath, tutorialPath, true);
+                AssetDatabase.ImportAsset(tutorialPath, ImportAssetOptions.ForceSynchronousImport);
+            }
+            else if (!AssetDatabase.CopyAsset(ScenePath, tutorialPath))
+            {
+                Debug.LogError("Could not copy MainPrototype into TutorialLevel.");
+                return;
+            }
+
+            AssetDatabase.Refresh();
+            Scene tutorialScene = EditorSceneManager.OpenScene(tutorialPath, OpenSceneMode.Single);
+            HashSet<string> tutorialEncounterNames = new HashSet<string>
+            {
+                "南桥药草",
+                "隐市岩洞",
+                "西路宝箱",
+                "山贼喽啰"
+            };
+
+            foreach (EncounterTrigger encounter in UnityEngine.Object.FindObjectsByType<EncounterTrigger>(
+                         FindObjectsInactive.Include, FindObjectsSortMode.None))
+            {
+                bool keep = tutorialEncounterNames.Contains(encounter.name);
+                encounter.gameObject.SetActive(keep);
+                if (!keep)
+                {
+                    continue;
+                }
+
+                encounter.ResetEncounter(rerollCaveContent: true);
+                switch (encounter.name)
+                {
+                    case "南桥药草":
+                        encounter.transform.position = new Vector3(0f, 0f, -6f);
+                        encounter.herbEffect = HerbEffectType.Heal;
+                        encounter.healRatio = 0.35f;
+                        break;
+                    case "隐市岩洞":
+                        encounter.transform.position = new Vector3(6f, 0f, 0f);
+                        encounter.caveContent = CaveContentType.Treasure;
+                        break;
+                    case "西路宝箱":
+                        encounter.transform.position = new Vector3(-6f, 0f, 0f);
+                        break;
+                    case "山贼喽啰":
+                        encounter.transform.position = new Vector3(0f, 0f, 6f);
+                        encounter.enemyStats.maxHealth = 24f;
+                        encounter.enemyStats.currentHealth = 24f;
+                        encounter.enemyStats.attack = 3f;
+                        encounter.enemyStats.defense = 0f;
+                        encounter.enemyStats.attackSpeed = 0.75f;
+                        encounter.cultivationReward = 8;
+                        encounter.copperReward = 2;
+                        break;
+                }
+
+                EditorUtility.SetDirty(encounter);
+                EditorUtility.SetDirty(encounter.transform);
+            }
+
+            GameObject mapRoot = GameObject.Find("3D Prototype Map");
+            if (mapRoot != null)
+            {
+                // TutorialLevel is copied from the full main map, so every piece of
+                // inherited geometry must be explicitly reconciled with its compact
+                // 18 x 18 play area. Keeping the 53/61 metre roads or the main-map
+                // scenery makes them spill far beyond the tutorial boundary.
+                SetChildActive(mapRoot.transform, "Expanded Main Map Content", false);
+                SetChildActive(mapRoot.transform, "HD2D Main World Art", false);
+                SetChildActive(mapRoot.transform, "KayKit Medieval Scenery", false);
+                ResizeMapObject(mapRoot.transform, "Walkable Ground", Vector3.zero, new Vector3(1.8f, 1f, 1.8f));
+                ResizeMapObject(mapRoot.transform, "Main Dirt Road", new Vector3(0f, 0.03f, 0f), new Vector3(2.4f, 0.05f, 13.5f));
+                ResizeMapObject(mapRoot.transform, "Cross Dirt Road", new Vector3(0f, 0.031f, 0f), new Vector3(13.5f, 0.05f, 2.4f));
+                SetChildActive(mapRoot.transform, "North Ridge Road", false);
+                SetChildActive(mapRoot.transform, "South Cave Road", false);
+                ResizeMapObject(mapRoot.transform, "North Boundary", new Vector3(0f, 0.55f, 8.5f), new Vector3(18f, 1.1f, 0.45f));
+                ResizeMapObject(mapRoot.transform, "South Boundary", new Vector3(0f, 0.55f, -8.5f), new Vector3(18f, 1.1f, 0.45f));
+                ResizeMapObject(mapRoot.transform, "West Boundary", new Vector3(-8.5f, 0.55f, 0f), new Vector3(0.45f, 1.1f, 18f));
+                ResizeMapObject(mapRoot.transform, "East Boundary", new Vector3(8.5f, 0.55f, 0f), new Vector3(0.45f, 1.1f, 18f));
+                CreateTutorialCompactScenery(mapRoot.transform);
+            }
+
+            EditorSceneManager.MarkSceneDirty(tutorialScene);
+            EditorSceneManager.SaveScene(tutorialScene);
+            EditorBuildSettings.scenes = new[]
+            {
+                new EditorBuildSettingsScene(ScenePath, true),
+                new EditorBuildSettingsScene(tutorialPath, true)
+            };
+            AssetDatabase.SaveAssets();
+            EditorSceneManager.OpenScene(ScenePath, OpenSceneMode.Single);
+            Debug.Log("Tutorial level built: four interactive targets, one-click 60-second notice, and automatic Level 2 hand-off.");
+        }
+
+        [MenuItem("37 MiniGame/Refresh Herb Art")]
+        public static void RefreshHerbArt()
+        {
+            if (EditorApplication.isPlaying)
+            {
+                Debug.LogError("Exit Play Mode before refreshing herb art.");
+                return;
+            }
+
+            ConfigureHerbAssets();
+            Sprite fallbackSprite = GetOrCreatePrototypeSprite();
+            int refreshed = 0;
+            foreach (EncounterTrigger encounter in UnityEngine.Object.FindObjectsByType<EncounterTrigger>(
+                         FindObjectsInactive.Include, FindObjectsSortMode.None))
+            {
+                if (encounter.encounterType != EncounterType.Herb &&
+                    encounter.encounterType != EncounterType.MysteryHerb)
+                {
+                    continue;
+                }
+
+                string path = GetHerbSpritePath(encounter);
+                Sprite[] frames = LoadHerbFrames(path, fallbackSprite);
+                SpriteFrameAnimator animator = encounter.GetComponentInChildren<SpriteFrameAnimator>(true);
+                SpriteRenderer renderer = encounter.GetComponentInChildren<SpriteRenderer>(true);
+                if (animator != null)
+                {
+                    animator.idleFrames = frames;
+                    animator.moveFrames = frames;
+                    EditorUtility.SetDirty(animator);
+                }
+
+                if (renderer != null)
+                {
+                    renderer.sprite = frames[0];
+                    EditorUtility.SetDirty(renderer);
+                }
+
+                EditorUtility.SetDirty(encounter);
+                refreshed++;
+            }
+
+            EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
+            EditorSceneManager.SaveOpenScenes();
+            AssetDatabase.SaveAssets();
+            Debug.Log($"Refreshed {refreshed} herb pickups with distinct effect-specific world sprites.");
+        }
+
+        private static void SetChildActive(Transform parent, string childName, bool active)
+        {
+            Transform child = parent != null ? parent.Find(childName) : null;
+            if (child != null)
+            {
+                child.gameObject.SetActive(active);
+            }
+        }
+
+        private static void CreateTutorialCompactScenery(Transform mapRoot)
+        {
+            Transform previous = mapRoot.Find("Tutorial Compact Scenery");
+            if (previous != null)
+            {
+                UnityEngine.Object.DestroyImmediate(previous.gameObject);
+            }
+
+            GameObject scenery = new GameObject("Tutorial Compact Scenery");
+            scenery.transform.SetParent(mapRoot);
+
+            // Each landmark stays inside the compact boundary and sits behind its
+            // related interaction, leaving all four approach lanes unobstructed.
+            PlaceModel("mine", "East Cave Landmark", scenery.transform, new Vector3(7.25f, 0f, 0f), 2.1f, -90f);
+            PlaceModel("wall_gate", "North Training Gate", scenery.transform, new Vector3(0f, 0f, 7.45f), 3.1f, 0f);
+            PlaceModel("detail_rocks_small", "Northwest Corner Stones", scenery.transform, new Vector3(-6.9f, 0f, 6.9f), 1.25f, 25f);
+            PlaceModel("detail_rocks_small", "Northeast Corner Stones", scenery.transform, new Vector3(6.9f, 0f, 6.9f), 1.25f, 110f);
+            PlaceModel("detail_rocks_small", "Southwest Corner Stones", scenery.transform, new Vector3(-6.9f, 0f, -6.9f), 1.25f, 205f);
+            PlaceModel("detail_rocks_small", "Southeast Corner Stones", scenery.transform, new Vector3(6.9f, 0f, -6.9f), 1.25f, 290f);
         }
 
         [MenuItem("37 MiniGame/Validate Expanded Build Content")]
@@ -1521,7 +1721,7 @@ namespace WuxiaRoguelite.EditorTools
 
             ConfigureSingleSprite(GoldPath, 64f);
             ConfigureSingleSprite(TreasureChestPath, 512f);
-            ConfigureSpriteSheet(HerbPath, 128, 128, 64f);
+            ConfigureHerbAssets();
             ConfigureUiTexture(StatusIconPath);
             ConfigureUiTexture(EquipmentIconPath);
             ConfigureUiTexture(HealthBarBasePath);
@@ -1929,6 +2129,39 @@ namespace WuxiaRoguelite.EditorTools
         private static Sprite LoadSingleSprite(string path, Sprite fallback)
         {
             return AssetDatabase.LoadAssetAtPath<Sprite>(path) ?? fallback;
+        }
+
+        private static Sprite[] LoadHerbFrames(string path, Sprite fallback)
+        {
+            return new[] { LoadSingleSprite(path, fallback) };
+        }
+
+        private static void ConfigureHerbAssets()
+        {
+            foreach (string path in new[]
+                     {
+                         HealingHerbPath, AttackHerbPath, DefenseHerbPath,
+                         MoveSpeedHerbPath, MysteryHerbPath
+                     })
+            {
+                ConfigureSingleSprite(path, 160f);
+            }
+        }
+
+        private static string GetHerbSpritePath(EncounterTrigger encounter)
+        {
+            if (encounter.encounterType == EncounterType.MysteryHerb)
+            {
+                return MysteryHerbPath;
+            }
+
+            return encounter.herbEffect switch
+            {
+                HerbEffectType.Attack => AttackHerbPath,
+                HerbEffectType.Defense => DefenseHerbPath,
+                HerbEffectType.MoveSpeed => MoveSpeedHerbPath,
+                _ => HealingHerbPath
+            };
         }
 
         private static void CreateMapGeometry()
@@ -3193,7 +3426,8 @@ namespace WuxiaRoguelite.EditorTools
             Sprite[] blueIdle, Sprite[] blueRun, Sprite[] purpleIdle, Sprite[] purpleRun,
             Sprite[] ratRun, Sprite[] riderRun, Sprite[] ballistaFly,
             Sprite[] inkWolfIdle, Sprite[] stoneApeIdle, Sprite[] bambooPuppetIdle,
-            Sprite treasureChestSprite, Sprite[] herbFrames)
+            Sprite treasureChestSprite, Sprite[] healingHerbFrames,
+            Sprite[] defenseHerbFrames, Sprite[] moveSpeedHerbFrames, Sprite[] mysteryHerbFrames)
         {
             GameObject mapRoot = GameObject.Find("3D Prototype Map");
             if (mapRoot == null)
@@ -3440,22 +3674,22 @@ namespace WuxiaRoguelite.EditorTools
                 EncounterType.Treasure, Stats("宝箱", 1, 0, 0, 1f), 20, 11, 0.9f);
             GameObject southTreasure = CreateEncounter("南陲宝箱", new[] { treasureChestSprite }, null, new Vector3(6f, 0f, -20f),
                 EncounterType.Treasure, Stats("宝箱", 1, 0, 0, 1f), 20, 11, 0.9f);
-            GameObject eastMysteryHerb = CreateEncounter("东郊无名奇草", herbFrames, null, new Vector3(19.5f, 0f, 1.8f),
+            GameObject eastMysteryHerb = CreateEncounter("东郊无名奇草", mysteryHerbFrames, null, new Vector3(19.5f, 0f, 1.8f),
                 EncounterType.MysteryHerb, Stats("无名奇草", 1, 0, 0, 1f), 0, 0, 0.85f);
             EncounterTrigger eastMysteryTrigger = eastMysteryHerb.GetComponent<EncounterTrigger>();
             eastMysteryTrigger.mysteryCultivationReward = 45;
             eastMysteryTrigger.mysteryPoisonChance = 0.25f;
             eastMysteryTrigger.mysteryDebuffChance = 0.25f;
             eastMysteryTrigger.mysteryHealthLossRatio = 0.25f;
-            GameObject northSpeedHerb = CreateEncounter("北坡轻身草", herbFrames, null, new Vector3(-7f, 0f, 11.8f),
+            GameObject northSpeedHerb = CreateEncounter("北坡轻身草", moveSpeedHerbFrames, null, new Vector3(-7f, 0f, 11.8f),
                 EncounterType.Herb, Stats("轻身草", 1, 0, 0, 1f), 0, 0, 0.85f);
             EncounterTrigger northSpeedTrigger = northSpeedHerb.GetComponent<EncounterTrigger>();
             northSpeedTrigger.herbEffect = HerbEffectType.MoveSpeed;
             northSpeedTrigger.herbBuffValue = 0.12f;
-            GameObject southHealingHerb = CreateEncounter("南岭止血草", herbFrames, null, new Vector3(14f, 0f, -12f),
+            GameObject southHealingHerb = CreateEncounter("南岭止血草", healingHerbFrames, null, new Vector3(14f, 0f, -12f),
                 EncounterType.Herb, Stats("止血草", 1, 0, 0, 1f), 0, 0, 0.85f);
             southHealingHerb.GetComponent<EncounterTrigger>().healRatio = 0.4f;
-            GameObject eastDefenseHerb = CreateEncounter("东村铁骨草", herbFrames, null, new Vector3(21f, 0f, 10.5f),
+            GameObject eastDefenseHerb = CreateEncounter("东村铁骨草", defenseHerbFrames, null, new Vector3(21f, 0f, 10.5f),
                 EncounterType.Herb, Stats("铁骨草", 1, 0, 0, 1f), 0, 0, 0.85f);
             EncounterTrigger eastDefenseTrigger = eastDefenseHerb.GetComponent<EncounterTrigger>();
             eastDefenseTrigger.herbEffect = HerbEffectType.Defense;

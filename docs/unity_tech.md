@@ -69,11 +69,18 @@ Assets/
 
 ## 4. 场景建议
 
-初期建议至少有一个主测试场景：
+当前有两个可运行场景：
 
 ```text
+Assets/Scenes/TutorialLevel.unity
 Assets/Scenes/MainPrototype.unity
 ```
+
+`TutorialLevel` 是关卡1教学，`MainPrototype` 是关卡2正式主地图；两者均加入 Build Settings。
+跨场景的教学解锁与自动衔接由 `LevelSequence` 管理，场景内战斗、洞穴与计时仍由
+`GameFlowController` 管理。
+关卡2自动启动请求由新场景中的 `GameFlowController.Start()` 在初始化完成后消费，避免
+`sceneLoaded` 早于 `Start()` 执行而使关卡2状态再次被重置为首页。
 
 该场景用于验证最小核心闭环：
 
@@ -203,4 +210,3 @@ Debug 功能不得破坏正式玩法逻辑。
 3. 最终 Boss 战不受 60 秒限制，独立计算 Boss 战时间。
 
 这三条是硬规则。
-

@@ -302,6 +302,11 @@ Briefed -> SeedApproved -> Generated -> Normalized -> Imported -> InEngineQA -> 
 | 主世界 HD-2D（远景 / 竹林 / 松石 / 水面 / 雾 / 光束） | 6 | `Assets/Art/Generated/Environment/HD2D/` | `InEngineQA` |
 | 主地图 HUD（头像框 / 时间 / 铜钱 / 修为） | 4 | `Assets/Art/Generated/Icons/HUD/`、`Assets/Art/Generated/UI/MainHUD/` | `InEngineQA` |
 | 九尾妖姬 Boss（Idle / Attack） | 2 | `Assets/Art/Generated/Characters/Bosses/FoxDemon/` | `InEngineQA` |
+| 主地图药草（回复 / 强攻 / 防御 / 移速 / 奇草） | 5 | `Assets/Art/Generated/World/Herbs/` | `InEngineQA` |
+
+主地图药草使用五套独立的 256 × 256 透明世界 Sprite，不再共用第三方灌木图。回复草以红果白花、
+强攻草以朱红刃形花穗、铁骨草以蓝灰厚叶、轻身草以青白卷叶、无名奇草以紫黑异形叶区分；
+运行时保持 Point 过滤、160 PPU、底部统一落点，并在 64 px 级画面尺寸下以轮廓而非仅靠颜色辨识。
 
 后续商店、五流派武学、跨派秘传、奇物、丹药与洞穴 icon 的批次、稳定 ID 和使用尺寸见
 [深度构筑、云游商店与图标计划](build_shop_icon_plan.md)。所有商品必须有独立 icon，

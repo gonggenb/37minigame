@@ -193,6 +193,8 @@ namespace WuxiaRoguelite.UI
         private GUIStyle mainMenuTitleStyle;
         private GUIStyle mainMenuSubtitleStyle;
         private GUIStyle mainMenuButtonStyle;
+        private GUIStyle tutorialNoticeStyle;
+        private GUIStyle levelCardTitleStyle;
         private GUIStyle settingsToggleStyle;
         private GUIStyle warningHeadingStyle;
         private GUIStyle dangerHeadingStyle;
@@ -210,6 +212,7 @@ namespace WuxiaRoguelite.UI
         private GUIStyle skillReadyStyle;
         private Texture2D runtimeSettingsIcon;
         private Texture2D runtimeHomeIcon;
+        private Texture2D runtimeSkipTutorialIcon;
         private Texture2D runtimePortraitBackdrop;
         private BattleScreenController battleScreen;
         private readonly System.Collections.Generic.List<PlayerStats.TimedBuffSnapshot> timedBuffBuffer =
@@ -318,6 +321,11 @@ namespace WuxiaRoguelite.UI
                 Destroy(runtimeHomeIcon);
             }
 
+            if (runtimeSkipTutorialIcon != null)
+            {
+                Destroy(runtimeSkipTutorialIcon);
+            }
+
             if (runtimePortraitBackdrop != null)
             {
                 Destroy(runtimePortraitBackdrop);
@@ -345,21 +353,37 @@ namespace WuxiaRoguelite.UI
                     return;
                 }
 
+                if (gameFlow.IsTutorialNoticeActive)
+                {
+                    DrawTutorialNotice();
+                    return;
+                }
+
                 if (gameFlow.IsOpeningIntroActive)
                 {
+                    DrawTutorialSkipButton();
                     return;
                 }
 
                 if (battleManager != null && battleManager.IsBattleActive)
                 {
                     DrawUnifiedCombatHud();
+                    DrawTutorialSkipButton();
                     DrawSettingsButton();
                     return;
                 }
 
                 if (gameFlow.CurrentPhase == GamePhase.Ready)
                 {
-                    DrawMainMenu();
+                    if (gameFlow.IsLevelSelectionOpen)
+                    {
+                        DrawLevelSelection();
+                    }
+                    else
+                    {
+                        DrawMainMenu();
+                    }
+                    DrawTutorialSkipButton();
                     DrawSettingsButton();
                     return;
                 }
@@ -367,6 +391,7 @@ namespace WuxiaRoguelite.UI
                 if (gameFlow.IsBossIntroActive)
                 {
                     DrawBossIntroOverlay();
+                    DrawTutorialSkipButton();
                     return;
                 }
 
@@ -402,6 +427,7 @@ namespace WuxiaRoguelite.UI
                     DrawDebugControls();
                 }
 
+                DrawTutorialSkipButton();
                 DrawSettingsButton();
             }
             finally
@@ -437,6 +463,9 @@ namespace WuxiaRoguelite.UI
             mainMenuSubtitleStyle = LabelStyle(15, FontStyle.Normal, TextAnchor.MiddleCenter,
                 new Color(0.84f, 0.84f, 0.78f));
             mainMenuButtonStyle = WuxiaUiTheme.CreateButtonStyle(18, WuxiaButtonKind.Primary);
+            tutorialNoticeStyle = LabelStyle(46, FontStyle.Bold, TextAnchor.MiddleCenter,
+                new Color(0.97f, 0.91f, 0.72f));
+            levelCardTitleStyle = LabelStyle(21, FontStyle.Bold, TextAnchor.MiddleCenter, Paper);
             settingsToggleStyle = WuxiaUiTheme.CreateButtonStyle(15, WuxiaButtonKind.Secondary);
             warningHeadingStyle = LabelStyle(16, FontStyle.Bold, TextAnchor.MiddleLeft,
                 new Color(1f, 0.76f, 0.32f));
@@ -462,6 +491,7 @@ namespace WuxiaRoguelite.UI
                 new Color(1f, 0.94f, 0.70f));
             runtimeSettingsIcon = CreateSettingsIcon(64);
             runtimeHomeIcon = CreateHomeIcon(64);
+            runtimeSkipTutorialIcon = CreateSkipTutorialIcon(64);
             runtimePortraitBackdrop = CreateCircleTexture(64,
                 new Color(0.045f, 0.055f, 0.052f, 0.96f));
         }
@@ -592,6 +622,33 @@ namespace WuxiaRoguelite.UI
             }
         }
 
+        private void DrawTutorialSkipButton()
+        {
+            if (!gameFlow.IsTutorialLevel)
+            {
+                return;
+            }
+
+            Rect buttonRect = GetTutorialSkipButtonRect();
+            if (GUI.Button(buttonRect,
+                    new GUIContent(runtimeSkipTutorialIcon, "跳过关卡1，直接进入关卡2"),
+                    iconButtonStyle))
+            {
+                gameFlow.SkipTutorialLevel();
+                return;
+            }
+
+            ResponsiveGui.DrawSingleLineLabel(
+                new Rect(buttonRect.x - 6f, buttonRect.yMax + 1f, buttonRect.width + 12f, 18f),
+                "跳过", mutedStyle, 9);
+        }
+
+        private static Rect GetTutorialSkipButtonRect()
+        {
+            Rect safe = ResponsiveGui.SafeArea;
+            return new Rect(safe.xMax - 58f, safe.y + 68f, 48f, 48f);
+        }
+
         private void DrawMainMenu()
         {
             Rect screen = new Rect(0f, 0f, ResponsiveGui.Width, ResponsiveGui.Height);
@@ -628,14 +685,92 @@ namespace WuxiaRoguelite.UI
                 new Color(Gold.r, Gold.g, Gold.b, 0.65f));
 
             Rect startButton = new Rect(panel.center.x - 94f, panel.yMax - 86f, 188f, 46f);
-            if (GUI.Button(startButton, "踏入江湖", mainMenuButtonStyle))
+            if (GUI.Button(startButton, "选择关卡", mainMenuButtonStyle))
             {
-                gameFlow.StartRun();
+                gameFlow.OpenLevelSelection();
             }
 
             ResponsiveGui.DrawSingleLineLabel(
                 new Rect(panel.x + 24f, panel.yMax - 34f, panel.width - 48f, 20f),
                 "移动探索 · 碰怪自动战斗 · 寻找洞穴与宝箱", mainMenuSubtitleStyle, 10);
+        }
+
+        private void DrawLevelSelection()
+        {
+            Rect screen = new Rect(0f, 0f, ResponsiveGui.Width, ResponsiveGui.Height);
+            if (mainMenuBackground != null)
+            {
+                GUI.DrawTexture(screen, mainMenuBackground, ScaleMode.ScaleAndCrop, true);
+            }
+            else
+            {
+                FillRect(screen, new Color(0.08f, 0.10f, 0.10f));
+            }
+            FillRect(screen, new Color(0.025f, 0.035f, 0.035f, 0.52f));
+
+            Rect safe = ResponsiveGui.SafeArea;
+            float width = Mathf.Min(720f, safe.width - 28f);
+            float height = Mathf.Min(360f, safe.height - 28f);
+            Rect panel = new Rect(safe.center.x - width * 0.5f, safe.center.y - height * 0.5f, width, height);
+            DrawPanel(panel, new Color(0.045f, 0.055f, 0.052f, 0.93f), Gold);
+            GUI.Label(new Rect(panel.x + 24f, panel.y + 16f, panel.width - 48f, 42f), "选择关卡", mainMenuTitleStyle);
+
+            float gap = 14f;
+            float cardWidth = (panel.width - 52f - gap) * 0.5f;
+            Rect tutorialCard = new Rect(panel.x + 26f, panel.y + 74f, cardWidth, 194f);
+            Rect levelTwoCard = new Rect(tutorialCard.xMax + gap, tutorialCard.y, cardWidth, tutorialCard.height);
+            DrawPanel(tutorialCard, Ink, Jade);
+            DrawPanel(levelTwoCard, Ink, gameFlow.IsLevelTwoUnlocked ? Gold : WuxiaUiTheme.TextDisabled);
+
+            GUI.Label(new Rect(tutorialCard.x + 12f, tutorialCard.y + 14f, tutorialCard.width - 24f, 34f),
+                "关卡1 · 初入江湖", levelCardTitleStyle);
+            GUI.Label(new Rect(tutorialCard.x + 22f, tutorialCard.y + 54f, tutorialCard.width - 44f, 62f),
+                "四方各有一种可互动目标\n六十息，自由探索", centeredStyle);
+            if (GUI.Button(new Rect(tutorialCard.x + 22f, tutorialCard.yMax - 52f, tutorialCard.width - 44f, 36f),
+                    gameFlow.IsLevelTwoUnlocked ? "重温教学" : "开始教学", mainMenuButtonStyle))
+            {
+                gameFlow.SelectTutorialLevel();
+            }
+
+            GUI.Label(new Rect(levelTwoCard.x + 12f, levelTwoCard.y + 14f, levelTwoCard.width - 24f, 34f),
+                "关卡2 · 驿路风云", levelCardTitleStyle);
+            GUI.Label(new Rect(levelTwoCard.x + 22f, levelTwoCard.y + 54f, levelTwoCard.width - 44f, 62f),
+                gameFlow.IsLevelTwoUnlocked ? "完整地图与构筑路线\n最终迎战九尾妖姬" : "完成关卡1后解锁",
+                centeredStyle);
+            GUI.enabled = gameFlow.IsLevelTwoUnlocked;
+            if (GUI.Button(new Rect(levelTwoCard.x + 22f, levelTwoCard.yMax - 52f, levelTwoCard.width - 44f, 36f),
+                    gameFlow.IsLevelTwoUnlocked ? "进入关卡2" : "尚未解锁", mainMenuButtonStyle))
+            {
+                gameFlow.SelectLevelTwo();
+            }
+            GUI.enabled = true;
+
+            if (GUI.Button(new Rect(panel.x + 24f, panel.yMax - 48f, 112f, 30f), "返回", actionButtonStyle))
+            {
+                gameFlow.CloseLevelSelection();
+            }
+        }
+
+        private void DrawTutorialNotice()
+        {
+            Rect screen = new Rect(0f, 0f, ResponsiveGui.Width, ResponsiveGui.Height);
+            FillRect(screen, new Color(0.02f, 0.025f, 0.025f, 0.78f));
+            Rect safe = ResponsiveGui.SafeArea;
+            float width = Mathf.Min(560f, safe.width - 32f);
+            float height = Mathf.Min(210f, safe.height - 32f);
+            Rect card = new Rect(safe.center.x - width * 0.5f, safe.center.y - height * 0.5f, width, height);
+            DrawPanel(card, new Color(0.10f, 0.085f, 0.065f, 0.98f), Gold);
+            GUI.Label(new Rect(card.x + 24f, card.y + 42f, card.width - 48f, 76f),
+                "你只有60秒!", tutorialNoticeStyle);
+
+            DrawTutorialSkipButton();
+
+            if (Event.current.type == EventType.MouseDown && Event.current.button == 0 &&
+                !GetTutorialSkipButtonRect().Contains(Event.current.mousePosition))
+            {
+                gameFlow.DismissTutorialNotice();
+                Event.current.Use();
+            }
         }
 
         private void DrawCompactHud()
@@ -2225,6 +2360,42 @@ namespace WuxiaRoguelite.UI
                     bool body = Mathf.Abs(point.x) <= 0.50f && point.y >= -0.62f && point.y <= 0.10f;
                     bool door = Mathf.Abs(point.x) <= 0.14f && point.y >= -0.62f && point.y <= -0.20f;
                     pixels[y * size + x] = (roof || body) && !door ? homeColor : Color.clear;
+                }
+            }
+
+            texture.SetPixels(pixels);
+            texture.Apply(false, true);
+            return texture;
+        }
+
+        private static Texture2D CreateSkipTutorialIcon(int size)
+        {
+            Texture2D texture = new Texture2D(size, size, TextureFormat.RGBA32, false)
+            {
+                name = "PLACEHOLDER_UI_RuntimeSkipTutorialIcon",
+                filterMode = FilterMode.Bilinear,
+                wrapMode = TextureWrapMode.Clamp,
+                hideFlags = HideFlags.HideAndDontSave
+            };
+            Color[] pixels = new Color[size * size];
+            Vector2 center = Vector2.one * (size - 1) * 0.5f;
+            float radius = size * 0.5f;
+            Color skipColor = new Color(0.92f, 0.79f, 0.48f, 1f);
+            for (int y = 0; y < size; y++)
+            {
+                for (int x = 0; x < size; x++)
+                {
+                    Vector2 point = (new Vector2(x, y) - center) / radius;
+                    bool firstChevron = point.x >= -0.66f && point.x <= 0.05f &&
+                                          Mathf.Abs(point.y) <= 0.50f - Mathf.Abs(point.x + 0.30f) * 0.36f &&
+                                          Mathf.Abs(point.y) >= Mathf.Max(0f, Mathf.Abs(point.x + 0.30f) * 0.62f - 0.08f);
+                    bool secondChevron = point.x >= -0.05f && point.x <= 0.66f &&
+                                           Mathf.Abs(point.y) <= 0.50f - Mathf.Abs(point.x - 0.30f) * 0.36f &&
+                                           Mathf.Abs(point.y) >= Mathf.Max(0f, Mathf.Abs(point.x - 0.30f) * 0.62f - 0.08f);
+                    bool endBar = point.x >= 0.62f && point.x <= 0.75f && Mathf.Abs(point.y) <= 0.52f;
+                    pixels[y * size + x] = firstChevron || secondChevron || endBar
+                        ? skipColor
+                        : Color.clear;
                 }
             }
 
