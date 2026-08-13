@@ -999,6 +999,13 @@ namespace WuxiaRoguelite.EditorTools
                 CreateTutorialCompactScenery(mapRoot.transform);
             }
 
+            GameFlowController tutorialFlow = UnityEngine.Object.FindAnyObjectByType<GameFlowController>();
+            if (tutorialFlow != null)
+            {
+                tutorialFlow.mainTimeLimit = LevelSequence.TutorialTimeLimitSeconds;
+                EditorUtility.SetDirty(tutorialFlow);
+            }
+
             EditorSceneManager.MarkSceneDirty(tutorialScene);
             EditorSceneManager.SaveScene(tutorialScene);
             EditorBuildSettings.scenes = new[]
@@ -1008,7 +1015,7 @@ namespace WuxiaRoguelite.EditorTools
             };
             AssetDatabase.SaveAssets();
             EditorSceneManager.OpenScene(ScenePath, OpenSceneMode.Single);
-            Debug.Log("Tutorial level built: four interactive targets, one-click 60-second notice, and automatic Level 2 hand-off.");
+            Debug.Log("Tutorial level built: four interactive targets, one-click 30-second notice, and automatic Level 2 hand-off.");
         }
 
         [MenuItem("37 MiniGame/Refresh Herb Art")]

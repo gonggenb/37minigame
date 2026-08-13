@@ -12,14 +12,32 @@ namespace WuxiaRoguelite.GameFlow
     {
         public const string TutorialSceneName = "TutorialLevel";
         public const string LevelTwoSceneName = "MainPrototype";
+        public const float TutorialTimeLimitSeconds = 30f;
         private const string TutorialCompletedKey = "WuxiaRoguelite.TutorialCompleted.v1";
         private const string AutoStartLevelTwoKey = "WuxiaRoguelite.AutoStartLevelTwo.v1";
+        private const string LevelTwoDifficultyNoticeShownKey =
+            "WuxiaRoguelite.LevelTwoDifficultyNoticeShown.v2";
 
         public static bool IsTutorialScene =>
             SceneManager.GetActiveScene().name == TutorialSceneName;
 
         public static bool TutorialCompleted =>
             PlayerPrefs.GetInt(TutorialCompletedKey, 0) == 1;
+
+        public static bool ShouldShowLevelTwoDifficultyNotice =>
+            TutorialCompleted && PlayerPrefs.GetInt(LevelTwoDifficultyNoticeShownKey, 0) != 1;
+
+        public static void MarkTutorialCompleted()
+        {
+            PlayerPrefs.SetInt(TutorialCompletedKey, 1);
+            PlayerPrefs.Save();
+        }
+
+        public static void MarkLevelTwoDifficultyNoticeShown()
+        {
+            PlayerPrefs.SetInt(LevelTwoDifficultyNoticeShownKey, 1);
+            PlayerPrefs.Save();
+        }
 
         public static void LoadTutorial()
         {
@@ -30,8 +48,7 @@ namespace WuxiaRoguelite.GameFlow
 
         public static void CompleteTutorialAndLoadLevelTwo()
         {
-            PlayerPrefs.SetInt(TutorialCompletedKey, 1);
-            PlayerPrefs.Save();
+            MarkTutorialCompleted();
             PlayerPrefs.SetInt(AutoStartLevelTwoKey, 1);
             PlayerPrefs.Save();
             SceneManager.LoadScene(LevelTwoSceneName);

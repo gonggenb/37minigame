@@ -62,8 +62,14 @@ namespace WuxiaRoguelite.GameFlow
         public bool IsOpeningIntroActive => CurrentPhase == GamePhase.OpeningIntro;
         public bool IsLevelSelectionOpen { get; private set; }
         public bool IsTutorialNoticeActive { get; private set; }
+        public bool IsLevelTwoDifficultyNoticeActive { get; private set; }
+        public bool IsTutorialCompletionSummary { get; private set; }
         public bool IsTutorialLevel => LevelSequence.IsTutorialScene;
         public bool IsLevelTwoUnlocked => LevelSequence.TutorialCompleted;
+        public bool CanContinueToNextLevel =>
+            CurrentPhase == GamePhase.Result && IsTutorialCompletionSummary;
+        public string CurrentLevelDisplayName =>
+            IsTutorialLevel ? "关卡1 · 初入江湖" : "关卡2 · 驿路风云";
         public int OpeningDialogueIndex { get; private set; }
         public int OpeningDialogueCount => launchTutorialAfterOpeningIntro ? 4 : 5;
         public string OpeningPlayerName =>
@@ -192,6 +198,7 @@ namespace WuxiaRoguelite.GameFlow
         private bool launchTutorialAfterOpeningIntro;
         private bool tutorialTransitionPending;
         private float tutorialNoticeOpenedAt;
+        private float levelTwoDifficultyNoticeOpenedAt;
 
         private void Awake()
         {
@@ -200,6 +207,11 @@ namespace WuxiaRoguelite.GameFlow
 
         private void Start()
         {
+            if (IsTutorialLevel)
+            {
+                mainTimeLimit = LevelSequence.TutorialTimeLimitSeconds;
+            }
+
             cameraFollow = cameraFollow == null ? FindFirstObjectByType<CameraFollow>() : cameraFollow;
             if (battleManager != null)
             {
@@ -224,7 +236,7 @@ namespace WuxiaRoguelite.GameFlow
             {
                 IsTutorialNoticeActive = true;
                 tutorialNoticeOpenedAt = Time.unscaledTime;
-                statusMessage = "教学关卡已就绪：点击提示后，六十息开始。";
+                statusMessage = "教学关卡已就绪：点击提示后，三十息开始。";
             }
             else
             {
@@ -251,7 +263,7 @@ namespace WuxiaRoguelite.GameFlow
                         if (CurrentPhase == GamePhase.NormalBattleRunning)
                         {
                             tutorialTransitionPending = true;
-                            statusMessage = "教学六十息已尽：完成当前交锋后进入关卡2。";
+                            statusMessage = "教学三十息已尽：完成当前交锋后进入关卡2。";
                         }
                         else
                         {
@@ -317,6 +329,8 @@ namespace WuxiaRoguelite.GameFlow
             IsBossIntroActive = false;
             IsLevelSelectionOpen = false;
             IsTutorialNoticeActive = false;
+            IsLevelTwoDifficultyNoticeActive = false;
+            IsTutorialCompletionSummary = false;
             tutorialTransitionPending = false;
             BossIntroTimeRemaining = 0f;
             pendingBoss = null;
@@ -388,7 +402,20 @@ namespace WuxiaRoguelite.GameFlow
             mainTimeRemaining = mainTimeLimit;
             tutorialTransitionPending = false;
             SetPhase(GamePhase.MainMapRunning);
-            statusMessage = "教学开始：六十息内自由探索。";
+            statusMessage = "教学开始：三十息内自由探索。";
+        }
+
+        public void DismissLevelTwoDifficultyNotice()
+        {
+            if (!IsLevelTwoDifficultyNoticeActive ||
+                Time.unscaledTime - levelTwoDifficultyNoticeOpenedAt < 0.25f)
+            {
+                return;
+            }
+
+            IsLevelTwoDifficultyNoticeActive = false;
+            LevelSequence.MarkLevelTwoDifficultyNoticeShown();
+            BeginLevelTwoOpeningChoice();
         }
 
         public void SkipTutorialLevel()
@@ -399,6 +426,16 @@ namespace WuxiaRoguelite.GameFlow
             }
 
             TransitionFromTutorialToLevelTwo(skipped: true);
+        }
+
+        public void ContinueToNextLevel()
+        {
+            if (!CanContinueToNextLevel)
+            {
+                return;
+            }
+
+            TransitionFromTutorialToLevelTwo(skipped: false);
         }
 
         public void ReturnToMainMenu()
@@ -431,6 +468,8 @@ namespace WuxiaRoguelite.GameFlow
             IsBossTransitionPending = false;
             IsLevelSelectionOpen = false;
             IsTutorialNoticeActive = false;
+            IsLevelTwoDifficultyNoticeActive = false;
+            IsTutorialCompletionSummary = false;
             launchTutorialAfterOpeningIntro = false;
             tutorialTransitionPending = false;
             IsBossIntroActive = false;
@@ -1135,6 +1174,7 @@ namespace WuxiaRoguelite.GameFlow
             }
 
             caveRoom?.ResetRoom();
+            IsTutorialCompletionSummary = false;
             bossDefeated = victory;
             SetPhase(GamePhase.Result);
             statusMessage = reason;
@@ -1194,11 +1234,27 @@ namespace WuxiaRoguelite.GameFlow
             IsBossTransitionPending = false;
             IsLevelSelectionOpen = false;
             IsTutorialNoticeActive = false;
+            IsLevelTwoDifficultyNoticeActive = false;
+            IsTutorialCompletionSummary = false;
             tutorialTransitionPending = false;
             launchTutorialAfterOpeningIntro = false;
             currentChoices.Clear();
             martialArtRerollsRemaining = 1;
             phaseBeforeLevelUp = GamePhase.MainMapRunning;
+            if (LevelSequence.ShouldShowLevelTwoDifficultyNotice)
+            {
+                IsLevelTwoDifficultyNoticeActive = true;
+                levelTwoDifficultyNoticeOpenedAt = Time.unscaledTime;
+                SetPhase(GamePhase.Ready);
+                statusMessage = "关卡2已载入：确认难度提示后开始。";
+                return;
+            }
+
+            BeginLevelTwoOpeningChoice();
+        }
+
+        private void BeginLevelTwoOpeningChoice()
+        {
             isOpeningMartialArtChoice = true;
             GenerateMartialArtChoices();
             SetPhase(GamePhase.LevelUpPaused);
@@ -1212,13 +1268,26 @@ namespace WuxiaRoguelite.GameFlow
                 return;
             }
 
-            TransitionFromTutorialToLevelTwo(skipped: false);
+            tutorialTransitionPending = false;
+            IsTutorialNoticeActive = false;
+            IsLevelTwoDifficultyNoticeActive = false;
+            IsTutorialCompletionSummary = true;
+            IsBossTransitionPending = false;
+            battleManager?.CancelBattle();
+            caveRoom?.ResetRoom();
+            playerController?.SetMovementEnabled(false);
+            LevelSequence.MarkTutorialCompleted();
+            bossDefeated = true;
+            SetPhase(GamePhase.Result);
+            statusMessage = "三十息教学完成，已解锁关卡2。";
         }
 
         private void TransitionFromTutorialToLevelTwo(bool skipped)
         {
             tutorialTransitionPending = false;
             IsTutorialNoticeActive = false;
+            IsLevelTwoDifficultyNoticeActive = false;
+            IsTutorialCompletionSummary = false;
             playerController?.SetMovementEnabled(false);
             Time.timeScale = 1f;
             statusMessage = skipped

@@ -20112,7 +20112,7 @@ MonoBehaviour:
   battleManager: {fileID: 755778986}
   caveRoom: {fileID: 755778983}
   cameraFollow: {fileID: 0}
-  mainTimeLimit: 60
+  mainTimeLimit: 30
   mainTimeRemaining: 0
   bossBattleTime: 0
   normalVictoryMoveSpeedBonusRatio: 0.25

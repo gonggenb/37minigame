@@ -261,7 +261,8 @@ namespace WuxiaRoguelite.UI
             UpdateHealthFeedback();
 
             if (gameFlow != null &&
-                (gameFlow.IsBossIntroActive || gameFlow.IsOpeningIntroActive))
+                (gameFlow.IsLevelTwoDifficultyNoticeActive ||
+                 gameFlow.IsBossIntroActive || gameFlow.IsOpeningIntroActive))
             {
                 return;
             }
@@ -347,6 +348,12 @@ namespace WuxiaRoguelite.UI
             Matrix4x4 originalGuiMatrix = ResponsiveGui.ApplyScale(guiScale);
             try
             {
+                if (gameFlow.IsLevelTwoDifficultyNoticeActive)
+                {
+                    DrawLevelTwoDifficultyNotice();
+                    return;
+                }
+
                 if (settingsOpen)
                 {
                     DrawSettingsPanel();
@@ -413,13 +420,15 @@ namespace WuxiaRoguelite.UI
                     }
                 }
 
+                if (gameFlow.CurrentPhase == GamePhase.Result)
+                {
+                    DrawResultPanel();
+                    return;
+                }
+
                 if (gameFlow.CurrentPhase == GamePhase.LevelUpPaused)
                 {
                     DrawLevelUpPanel();
-                }
-                else if (gameFlow.CurrentPhase == GamePhase.Result)
-                {
-                    DrawResultPanel();
                 }
 
                 if (debugVisible && !characterPanelOpen)
@@ -753,6 +762,16 @@ namespace WuxiaRoguelite.UI
 
         private void DrawTutorialNotice()
         {
+            DrawCenteredClickNotice("你只有30秒!", gameFlow.DismissTutorialNotice, true);
+        }
+
+        private void DrawLevelTwoDifficultyNotice()
+        {
+            DrawCenteredClickNotice("难度飙升！！！", gameFlow.DismissLevelTwoDifficultyNotice, false);
+        }
+
+        private void DrawCenteredClickNotice(string message, Action dismissAction, bool showTutorialSkip)
+        {
             Rect screen = new Rect(0f, 0f, ResponsiveGui.Width, ResponsiveGui.Height);
             FillRect(screen, new Color(0.02f, 0.025f, 0.025f, 0.78f));
             Rect safe = ResponsiveGui.SafeArea;
@@ -761,14 +780,17 @@ namespace WuxiaRoguelite.UI
             Rect card = new Rect(safe.center.x - width * 0.5f, safe.center.y - height * 0.5f, width, height);
             DrawPanel(card, new Color(0.10f, 0.085f, 0.065f, 0.98f), Gold);
             GUI.Label(new Rect(card.x + 24f, card.y + 42f, card.width - 48f, 76f),
-                "你只有60秒!", tutorialNoticeStyle);
+                message, tutorialNoticeStyle);
 
-            DrawTutorialSkipButton();
+            if (showTutorialSkip)
+            {
+                DrawTutorialSkipButton();
+            }
 
             if (Event.current.type == EventType.MouseDown && Event.current.button == 0 &&
-                !GetTutorialSkipButtonRect().Contains(Event.current.mousePosition))
+                (!showTutorialSkip || !GetTutorialSkipButtonRect().Contains(Event.current.mousePosition)))
             {
-                gameFlow.DismissTutorialNotice();
+                dismissAction?.Invoke();
                 Event.current.Use();
             }
         }
@@ -2122,22 +2144,57 @@ namespace WuxiaRoguelite.UI
         private void DrawResultPanel()
         {
             FillRect(new Rect(0f, 0f, ResponsiveGui.Width, ResponsiveGui.Height), new Color(0.02f, 0.025f, 0.025f, 0.78f));
-            Rect panel = CenteredRect(380f, 190f);
+            Rect safe = ResponsiveGui.SafeArea;
+            float width = Mathf.Min(460f, safe.width - 32f);
+            float height = Mathf.Min(280f, safe.height - 32f);
+            Rect panel = new Rect(
+                safe.center.x - width * 0.5f,
+                safe.center.y - height * 0.5f,
+                width,
+                height);
+            bool cleared = gameFlow.IsTutorialCompletionSummary || gameFlow.bossDefeated;
             DrawPanel(panel, Panel,
-                gameFlow.bossDefeated ? Jade : new Color(0.72f, 0.25f, 0.20f),
+                cleared ? Jade : new Color(0.72f, 0.25f, 0.20f),
                 WuxiaPanelKind.Boss);
-            GUI.Label(new Rect(panel.x + 18f, panel.y + 12f, panel.width - 36f, 36f), gameFlow.bossDefeated ? "闯关功成" : "江湖路断", titleStyle);
+            GUI.Label(
+                new Rect(panel.x + 24f, panel.y + 16f, panel.width - 48f, 36f),
+                gameFlow.IsTutorialCompletionSummary ? "教学完成" : gameFlow.bossDefeated ? "闯关功成" : "江湖路断",
+                titleStyle);
             ResponsiveGui.DrawSingleLineLabel(
-                new Rect(panel.x + 18f, panel.y + 54f, panel.width - 36f, 24f),
+                new Rect(panel.x + 24f, panel.y + 58f, panel.width - 48f, 24f),
+                gameFlow.CurrentLevelDisplayName, headingStyle, 11);
+            ResponsiveGui.DrawSingleLineLabel(
+                new Rect(panel.x + 24f, panel.y + 90f, panel.width - 48f, 24f),
                 gameFlow.statusMessage, bodyStyle, 9);
             ResponsiveGui.DrawSingleLineLabel(
-                new Rect(panel.x + 18f, panel.y + 82f, panel.width - 36f, 22f),
+                new Rect(panel.x + 24f, panel.y + 122f, panel.width - 48f, 22f),
                 $"等级 {playerStats.level}  ·  击杀 {playerStats.killCount}  ·  洞穴 {playerStats.caveEntries}",
                 mutedStyle, 9);
-            if (GUI.Button(new Rect(panel.x + 18f, panel.yMax - 52f, panel.width - 36f, 36f), "再入江湖", actionButtonStyle))
+            string buildSummary = playerStats.learnedMartialArts.Count > 0
+                ? string.Join(" · ", playerStats.learnedMartialArts.Take(3))
+                : "尚未习得武学";
+            ResponsiveGui.DrawSingleLineLabel(
+                new Rect(panel.x + 24f, panel.y + 152f, panel.width - 48f, 22f),
+                $"本关武学：{buildSummary}", mutedStyle, 9);
+
+            float buttonGap = 12f;
+            float buttonWidth = (panel.width - 48f - buttonGap) * 0.5f;
+            Rect homeButton = new Rect(panel.x + 24f, panel.yMax - 64f, buttonWidth, 44f);
+            Rect nextButton = new Rect(homeButton.xMax + buttonGap, homeButton.y, buttonWidth, 44f);
+            if (GUI.Button(homeButton, "返回主页", actionButtonStyle))
             {
-                gameFlow.StartRun();
+                gameFlow.ReturnToMainMenu();
             }
+
+            GUI.enabled = gameFlow.CanContinueToNextLevel;
+            if (GUI.Button(
+                    nextButton,
+                    gameFlow.CanContinueToNextLevel ? "下一关" : "下一关尚未开放",
+                    mainMenuButtonStyle))
+            {
+                gameFlow.ContinueToNextLevel();
+            }
+            GUI.enabled = true;
         }
 
         private void DrawDebugControls()
