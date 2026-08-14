@@ -47,6 +47,11 @@ namespace WuxiaRoguelite.UI
         [Min(320f)] public float referenceWidth = ResponsiveGui.ReferenceWidth;
         [Tooltip("战斗 UI 的设计基准高度。实际窗口会在不裁切 UI 的前提下等比缩放。")]
         [Min(180f)] public float referenceHeight = ResponsiveGui.ReferenceHeight;
+        [Header("战斗视觉节奏")]
+        [Tooltip("只延长攻击动画的视觉呈现，不改变 BattleManager 的攻击间隔或战斗计时。")]
+        [Range(0.32f, 0.65f)] public float attackVisualDuration = 0.46f;
+        [Tooltip("仅暴击或闪避时使用的屏幕抖动时长。")]
+        [Range(0.12f, 0.35f)] public float exceptionalScreenShakeDuration = 0.24f;
 
         private GUIStyle titleStyle;
         private GUIStyle leftNameStyle;
@@ -91,7 +96,6 @@ namespace WuxiaRoguelite.UI
 
         private const float DamageDisplayDuration = 0.72f;
         private const float HealthFlashDuration = 0.34f;
-        private const float ScreenShakeDuration = 0.18f;
         private const float ImpactMarkerDuration = 0.28f;
 
         private static readonly Color Backdrop = new Color(0.055f, 0.075f, 0.09f, 1f);
@@ -208,10 +212,14 @@ namespace WuxiaRoguelite.UI
                     stageTop + tallestActorSize,
                     messageRect.y - 24f)
                 : stageBottom - 6f;
-            float attackDuration = 0.32f / battleManager.BattleSpeedMultiplier;
+            // Visual pacing is intentionally independent from BattleManager's attack cadence.
+            // A new resolved attack can replace the current pose, but never delays damage or timers.
+            float attackDuration = Mathf.Max(0.01f, attackVisualDuration);
             float actionProgress = Mathf.Clamp01((Time.unscaledTime - attackStartedAt) / attackDuration);
             float lunge = Mathf.Sin(actionProgress * Mathf.PI) * Mathf.Min(54f, width * 0.05f);
-            float shake = actionProgress > 0.38f && actionProgress < 0.78f
+            bool shouldShakeTarget = battleManager.LastAttackWasCritical ||
+                                     battleManager.LastAttackWasDodged;
+            float shake = shouldShakeTarget && actionProgress > 0.38f && actionProgress < 0.78f
                 ? Mathf.Sin(actionProgress * 70f) * 7f
                 : 0f;
 
@@ -474,19 +482,25 @@ namespace WuxiaRoguelite.UI
 
         private Vector2 CalculateScreenShake()
         {
-            float age = Time.unscaledTime - hitFeedbackStartedAt;
-            if (age < 0f || age >= ScreenShakeDuration)
+            if (!hitFeedbackWasCritical && !hitFeedbackWasDodged)
             {
                 return Vector2.zero;
             }
 
-            float strength = hitFeedbackWasDodged ? 1.6f : hitFeedbackWasCritical ? 11f : 5.5f;
+            float age = Time.unscaledTime - hitFeedbackStartedAt;
+            float shakeDuration = Mathf.Max(0.01f, exceptionalScreenShakeDuration);
+            if (age < 0f || age >= shakeDuration)
+            {
+                return Vector2.zero;
+            }
+
+            float strength = hitFeedbackWasCritical ? 11f : 1.6f;
             if (hitFeedbackTargetedPlayer)
             {
                 strength *= 1.12f;
             }
 
-            float envelope = 1f - age / ScreenShakeDuration;
+            float envelope = 1f - age / shakeDuration;
             float phase = age * 92f + observedAttackSequence * 1.71f;
             return new Vector2(Mathf.Sin(phase), Mathf.Cos(phase * 1.19f)) * strength * envelope;
         }
