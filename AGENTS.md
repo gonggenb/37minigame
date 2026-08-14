@@ -65,6 +65,8 @@ Codex 不得擅自：
 - Boss 名、关卡名等唯一专名必须集中在 `GameTextCatalog` 或等价文案目录中维护，不得在多个运行时界面重复硬编码。
 - 新增或修改运行时中文文案后，必须执行 Unity 菜单 `37 MiniGame/Validate Chinese Fonts`；缺字时先运行
   `Tools/update_chinese_font_subset.py` 更新常规体与粗体，再继续构建。
+- 字体子集只能由上述工具使用其锁定的静态 Noto Sans CJK SC 源字体生成；不得改回可变字体实例，也不得只替换
+  TTF 而不让工具同步 Unity `.meta` 中的内部字体名与 SHA-256 指纹。
 - 任何平台构建都不得绕过中文字体校验；字体资源缺失、未勾选 `Include Font Data` 或缺少运行时字形时必须停止构建。
 - 新增 IMGUI 界面时，每个承载文字的 `GUIStyle` 必须通过 `RuntimeChineseFont.Apply`，并在 `OnGUI` 开始时调用
   `RuntimeChineseFont.PrepareSkin()`。

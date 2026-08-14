@@ -9,13 +9,13 @@ TrueTypeFontImporter:
   characterPadding: 1
   includeFontData: 1
   fontNames:
-  - Noto Sans SC
+  - Wuxia Sans SC
   fallbackFontReferences: []
   customCharacters: 
   fontRenderingMode: 0
   ascentCalculationMode: 1
   useLegacyBoundsCalculation: 0
   shouldRoundAdvanceValue: 1
-  userData: 
+  userData: wuxia-font-sha256=47db78a3e09c556dae30419285445cd5c9474f7a28835ae551b43a4f000135c9
   assetBundleName: 
   assetBundleVariant: 

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
 using UnityEditor;
@@ -15,6 +16,7 @@ namespace WuxiaRoguelite.Editor
     /// subsets, and stop the build before a missing glyph can become garbled text.
     /// WebGL has no operating-system fallback, while the other targets must not
     /// silently depend on a machine-specific fallback either.
+    /// Font fingerprints also prevent Unity from serving a stale native import.
     /// </summary>
     [InitializeOnLoad]
     public sealed class WebGLChineseFontBuildValidator : IPreprocessBuildWithReport
@@ -100,7 +102,7 @@ namespace WuxiaRoguelite.Editor
                 {
                     Debug.Log(
                         $"中文字体校验通过：检查 {requiredCharacters.Count} 个非 ASCII 字形。" +
-                        "Noto Sans SC 常规体与粗体均已覆盖；运行时文本完整性检查通过。");
+                        "Wuxia Sans SC 常规体与粗体均已覆盖；运行时文本完整性检查通过。");
                 }
 
                 return;
@@ -160,7 +162,26 @@ namespace WuxiaRoguelite.Editor
                     $"WebGL 构建已停止：字体 {path} 必须启用 Include Font Data。");
             }
 
+            string expectedFingerprint = BuildFontFingerprint(path);
+            if (!string.Equals(importer.userData, expectedFingerprint, StringComparison.Ordinal))
+            {
+                throw new BuildFailedException(
+                    $"构建已停止：字体 {path} 的 Unity 导入指纹已过期。" +
+                    "请运行 Tools/update_chinese_font_subset.py，或重新导入字体后再构建。");
+            }
+
             return font;
+        }
+
+        private static string BuildFontFingerprint(string path)
+        {
+            using (FileStream stream = File.OpenRead(path))
+            using (SHA256 sha256 = SHA256.Create())
+            {
+                byte[] hash = sha256.ComputeHash(stream);
+                return "wuxia-font-sha256=" +
+                       BitConverter.ToString(hash).Replace("-", string.Empty).ToLowerInvariant();
+            }
         }
 
         private static List<string> FindRuntimeTextIssues()
