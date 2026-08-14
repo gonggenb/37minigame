@@ -20118,7 +20118,7 @@ MonoBehaviour:
   normalVictoryMoveSpeedBonusRatio: 0.25
   normalVictoryMoveSpeedBonusDuration: 2.5
   bossStats:
-    displayName: "\u4E5D\u5C3E\u5996\u59EC"
+    displayName: "\u4E5D\u5C3E\u5996\u72D0"
     visualId: fox_demon_boss
     level: 0
     maxHealth: 550

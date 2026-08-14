@@ -35,8 +35,8 @@ namespace WuxiaRoguelite.GameFlow
         [Header("Boss")]
         public CombatantStats bossStats = new CombatantStats
         {
-            displayName = "九尾妖姬",
-            visualId = "fox_demon_boss",
+            displayName = GameTextCatalog.FinalBossName,
+            visualId = GameTextCatalog.FinalBossVisualId,
             maxHealth = 550f,
             currentHealth = 550f,
             attack = 18f,
@@ -76,6 +76,12 @@ namespace WuxiaRoguelite.GameFlow
             playerStats != null && playerStats.runtimeStats != null
                 ? playerStats.runtimeStats.displayName
                 : "无名少侠";
+        private string FinalBossDisplayName =>
+            bossStats != null && !string.IsNullOrWhiteSpace(bossStats.displayName)
+                ? bossStats.displayName
+                : GameTextCatalog.FinalBossName;
+        private string OpeningPreparationDurationText =>
+            launchTutorialAfterOpeningIntro ? "三十息" : "六十息";
         public string CurrentOpeningSpeaker
         {
             get
@@ -84,7 +90,7 @@ namespace WuxiaRoguelite.GameFlow
                 {
                     0 => "旁白",
                     1 => OpeningPlayerName,
-                    2 => bossStats.displayName,
+                    2 => FinalBossDisplayName,
                     3 => OpeningPlayerName,
                     _ => "出发提示"
                 };
@@ -96,11 +102,11 @@ namespace WuxiaRoguelite.GameFlow
             {
                 return OpeningDialogueIndex switch
                 {
-                    0 => "暮色压下青崖，村道尽头狐火明灭。山中妖物受九尾妖姬驱使，正截断你的去路。",
-                    1 => "妖气一路延至此处……九尾妖姬，现身。",
-                    2 => "想见我？先从这些傀儡手里活下来。六十息后，我在血月古刹等你。",
-                    3 => "六十息足够。斩妖、寻洞、练功——我会亲自到你面前。",
-                    _ => "主香点燃后，只有六十息准备。碰怪会自动交锋且主香不停；进入隐藏洞穴时主香暂停。中央驿路的四方路牌会提示区域收益与风险。"
+                    0 => $"暮色压下青崖，村道尽头狐火明灭。山中妖物受{FinalBossDisplayName}驱使，正截断你的去路。",
+                    1 => $"妖气一路延至此处……{FinalBossDisplayName}，现身。",
+                    2 => $"想见我？先从这些傀儡手里活下来。{OpeningPreparationDurationText}后，我在血月古刹等你。",
+                    3 => $"{OpeningPreparationDurationText}足够。斩妖、寻洞、练功——我会亲自到你面前。",
+                    _ => $"主香点燃后，只有{OpeningPreparationDurationText}准备。碰怪会自动交锋且主香不停；进入隐藏洞穴时主香暂停。中央驿路的四方路牌会提示区域收益与风险。"
                 };
             }
         }
@@ -203,6 +209,10 @@ namespace WuxiaRoguelite.GameFlow
         private void Awake()
         {
             Instance = this;
+            if (bossStats != null && bossStats.visualId == GameTextCatalog.FinalBossVisualId)
+            {
+                bossStats.displayName = GameTextCatalog.FinalBossName;
+            }
         }
 
         private void Start()
@@ -263,7 +273,7 @@ namespace WuxiaRoguelite.GameFlow
                         if (CurrentPhase == GamePhase.NormalBattleRunning)
                         {
                             tutorialTransitionPending = true;
-                            statusMessage = "教学三十息已尽：完成当前交锋后进入关卡2。";
+                            statusMessage = "教学三十息已尽：完成当前交锋后进入教学总结。";
                         }
                         else
                         {
@@ -414,8 +424,8 @@ namespace WuxiaRoguelite.GameFlow
             }
 
             IsLevelTwoDifficultyNoticeActive = false;
-            LevelSequence.MarkLevelTwoDifficultyNoticeShown();
-            BeginLevelTwoOpeningChoice();
+            statusMessage = "正在进入关卡2·驿路风云……";
+            LevelSequence.CompleteTutorialAndLoadLevelTwo();
         }
 
         public void SkipTutorialLevel()
@@ -1241,15 +1251,6 @@ namespace WuxiaRoguelite.GameFlow
             currentChoices.Clear();
             martialArtRerollsRemaining = 1;
             phaseBeforeLevelUp = GamePhase.MainMapRunning;
-            if (LevelSequence.ShouldShowLevelTwoDifficultyNotice)
-            {
-                IsLevelTwoDifficultyNoticeActive = true;
-                levelTwoDifficultyNoticeOpenedAt = Time.unscaledTime;
-                SetPhase(GamePhase.Ready);
-                statusMessage = "关卡2已载入：确认难度提示后开始。";
-                return;
-            }
-
             BeginLevelTwoOpeningChoice();
         }
 
@@ -1286,14 +1287,17 @@ namespace WuxiaRoguelite.GameFlow
         {
             tutorialTransitionPending = false;
             IsTutorialNoticeActive = false;
-            IsLevelTwoDifficultyNoticeActive = false;
+            IsLevelTwoDifficultyNoticeActive = true;
             IsTutorialCompletionSummary = false;
-            playerController?.SetMovementEnabled(false);
+            levelTwoDifficultyNoticeOpenedAt = Time.unscaledTime;
+            battleManager?.CancelBattle();
+            caveRoom?.ResetRoom();
             Time.timeScale = 1f;
+            SetPhase(GamePhase.Ready);
+            LevelSequence.MarkTutorialCompleted();
             statusMessage = skipped
-                ? "已跳过关卡1，正在进入关卡2·驿路风云……"
-                : "教学完成，正在进入关卡2·驿路风云……";
-            LevelSequence.CompleteTutorialAndLoadLevelTwo();
+                ? "已跳过关卡1：确认难度提示后进入关卡2。"
+                : "教学完成：确认难度提示后进入关卡2。";
         }
 
         private static string GetOpeningRouteHint(string martialArt)

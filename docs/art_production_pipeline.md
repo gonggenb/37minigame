@@ -301,7 +301,7 @@ Briefed -> SeedApproved -> Generated -> Normalized -> Imported -> InEngineQA -> 
 | 主地图地面（草地 / 土路） | 2 | `Assets/Art/Generated/Environment/` | `InEngineQA` |
 | 主世界 HD-2D（远景 / 竹林 / 松石 / 水面 / 雾 / 光束） | 6 | `Assets/Art/Generated/Environment/HD2D/` | `InEngineQA` |
 | 主地图 HUD（头像框 / 时间 / 铜钱 / 修为） | 4 | `Assets/Art/Generated/Icons/HUD/`、`Assets/Art/Generated/UI/MainHUD/` | `InEngineQA` |
-| 九尾妖姬 Boss（Idle / Attack） | 2 | `Assets/Art/Generated/Characters/Bosses/FoxDemon/` | `InEngineQA` |
+| 九尾妖狐 Boss（Idle / Attack） | 2 | `Assets/Art/Generated/Characters/Bosses/FoxDemon/` | `InEngineQA` |
 | 主地图药草（回复 / 强攻 / 防御 / 移速 / 奇草） | 5 | `Assets/Art/Generated/World/Herbs/` | `InEngineQA` |
 
 主地图药草使用五套独立的 256 × 256 透明世界 Sprite，不再共用第三方灌木图。回复草以红果白花、

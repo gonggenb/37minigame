@@ -7,6 +7,7 @@ using WuxiaRoguelite.Cave;
 using WuxiaRoguelite.GameFlow;
 using WuxiaRoguelite.MartialArts;
 using WuxiaRoguelite.Player;
+using WuxiaRoguelite.Runtime;
 
 namespace WuxiaRoguelite.UI
 {
@@ -640,7 +641,7 @@ namespace WuxiaRoguelite.UI
 
             Rect buttonRect = GetTutorialSkipButtonRect();
             if (GUI.Button(buttonRect,
-                    new GUIContent(runtimeSkipTutorialIcon, "跳过关卡1，直接进入关卡2"),
+                    new GUIContent(runtimeSkipTutorialIcon, "跳过关卡1，确认难度提示后进入关卡2"),
                     iconButtonStyle))
             {
                 gameFlow.SkipTutorialLevel();
@@ -734,7 +735,7 @@ namespace WuxiaRoguelite.UI
             GUI.Label(new Rect(tutorialCard.x + 12f, tutorialCard.y + 14f, tutorialCard.width - 24f, 34f),
                 "关卡1 · 初入江湖", levelCardTitleStyle);
             GUI.Label(new Rect(tutorialCard.x + 22f, tutorialCard.y + 54f, tutorialCard.width - 44f, 62f),
-                "四方各有一种可互动目标\n六十息，自由探索", centeredStyle);
+                "东南西北各有一处互动目标\n三十息，自由探索", centeredStyle);
             if (GUI.Button(new Rect(tutorialCard.x + 22f, tutorialCard.yMax - 52f, tutorialCard.width - 44f, 36f),
                     gameFlow.IsLevelTwoUnlocked ? "重温教学" : "开始教学", mainMenuButtonStyle))
             {
@@ -744,7 +745,9 @@ namespace WuxiaRoguelite.UI
             GUI.Label(new Rect(levelTwoCard.x + 12f, levelTwoCard.y + 14f, levelTwoCard.width - 24f, 34f),
                 "关卡2 · 驿路风云", levelCardTitleStyle);
             GUI.Label(new Rect(levelTwoCard.x + 22f, levelTwoCard.y + 54f, levelTwoCard.width - 44f, 62f),
-                gameFlow.IsLevelTwoUnlocked ? "完整地图与构筑路线\n最终迎战九尾妖姬" : "完成关卡1后解锁",
+                gameFlow.IsLevelTwoUnlocked
+                    ? $"完整地图与构筑路线\n最终迎战{GameTextCatalog.FinalBossName}"
+                    : "完成关卡1后解锁",
                 centeredStyle);
             GUI.enabled = gameFlow.IsLevelTwoUnlocked;
             if (GUI.Button(new Rect(levelTwoCard.x + 22f, levelTwoCard.yMax - 52f, levelTwoCard.width - 44f, 36f),

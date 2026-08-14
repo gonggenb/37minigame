@@ -112,22 +112,22 @@ namespace WuxiaRoguelite.UI
                     switch (encounter.herbEffect)
                     {
                         case HerbEffectType.Attack:
-                            title = "✦ 赤阳草";
+                            title = "◆ 赤阳草";
                             detail = "本局攻击提升";
                             accent = new Color(1f, 0.48f, 0.28f);
                             return;
                         case HerbEffectType.Defense:
-                            title = "✦ 铁骨草";
+                            title = "◆ 铁骨草";
                             detail = "本局防御提升";
                             accent = new Color(0.78f, 0.72f, 0.55f);
                             return;
                         case HerbEffectType.MoveSpeed:
-                            title = "✦ 轻身草";
+                            title = "◆ 轻身草";
                             detail = "本局移速提升";
                             accent = new Color(0.42f, 0.82f, 0.84f);
                             return;
                         default:
-                            title = "✦ 止血草";
+                            title = "◆ 止血草";
                             detail = "恢复部分气血";
                             accent = new Color(0.42f, 0.86f, 0.52f);
                             return;

@@ -778,7 +778,9 @@ namespace WuxiaRoguelite.UI
                     new Color(0.95f, 0.15f, 0.08f, 0.85f));
                 ResponsiveGui.DrawSingleLineLabel(
                     new Rect(banner.x + 16f, banner.y + 9f, banner.width - 32f, 40f),
-                    "妖姬已至",
+                    gameFlow.bossStats != null
+                        ? $"{gameFlow.bossStats.displayName}已至"
+                        : "终局强敌已至",
                     bossWarningStyle,
                     15);
                 ResponsiveGui.DrawSingleLineLabel(

@@ -59,6 +59,16 @@ Codex 不得擅自：
 - 需要拖入哪些 Prefab、UI、Audio 或配置引用。
 - 如何进入 Play Mode 验证。
 
+### 中文字体防乱码规则
+
+- 所有运行时中文 UI 必须使用项目随包字体和 `RuntimeChineseFont`，不得依赖操作系统字体兜底。
+- Boss 名、关卡名等唯一专名必须集中在 `GameTextCatalog` 或等价文案目录中维护，不得在多个运行时界面重复硬编码。
+- 新增或修改运行时中文文案后，必须执行 Unity 菜单 `37 MiniGame/Validate Chinese Fonts`；缺字时先运行
+  `Tools/update_chinese_font_subset.py` 更新常规体与粗体，再继续构建。
+- 任何平台构建都不得绕过中文字体校验；字体资源缺失、未勾选 `Include Font Data` 或缺少运行时字形时必须停止构建。
+- 新增 IMGUI 界面时，每个承载文字的 `GUIStyle` 必须通过 `RuntimeChineseFont.Apply`，并在 `OnGUI` 开始时调用
+  `RuntimeChineseFont.PrepareSkin()`。
+
 ## 5. 当前开发优先级
 
 优先级从高到低：

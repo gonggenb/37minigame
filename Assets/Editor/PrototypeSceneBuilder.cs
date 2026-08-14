@@ -1396,8 +1396,8 @@ namespace WuxiaRoguelite.EditorTools
             GameFlowController gameFlow = UnityEngine.Object.FindAnyObjectByType<GameFlowController>();
             if (gameFlow != null && gameFlow.bossStats != null)
             {
-                gameFlow.bossStats.displayName = "九尾妖姬";
-                gameFlow.bossStats.visualId = "fox_demon_boss";
+                gameFlow.bossStats.displayName = GameTextCatalog.FinalBossName;
+                gameFlow.bossStats.visualId = GameTextCatalog.FinalBossVisualId;
                 EditorUtility.SetDirty(gameFlow);
             }
 
