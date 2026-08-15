@@ -47,8 +47,6 @@ namespace WuxiaRoguelite.Audio
         [Min(0.05f)] public float timeWarningDuckReleaseSeconds = 0.85f;
         [Min(0.01f)] public float overlayFadeInSeconds = 0.15f;
         [Min(0.01f)] public float overlayFadeOutSeconds = 0.25f;
-        [Range(0.05f, 0.95f)] public float bossMomentumHealthRatio = 0.72f;
-        [Range(0.05f, 0.95f)] public float bossEnrageHealthRatio = 0.35f;
 
         public string ActiveMusicState { get; private set; } = "Ready";
         public bool MusicEnabled { get; private set; } = true;
@@ -386,15 +384,14 @@ namespace WuxiaRoguelite.Audio
                 return;
             }
 
-            float healthRatio = battleManager.currentEnemy.HealthRatio;
-            if (healthRatio <= bossEnrageHealthRatio && bossEnrageStem != null)
+            if (battleManager.CurrentBossPhase == BossBattlePhase.BloodFrenzy && bossEnrageStem != null)
             {
                 SetOverlay(bossEnrageStem, true);
                 ActiveMusicState = "BossClimax";
                 return;
             }
 
-            if (healthRatio <= bossMomentumHealthRatio && bossMomentumStem != null)
+            if (battleManager.CurrentBossPhase == BossBattlePhase.DemonArmor && bossMomentumStem != null)
             {
                 SetOverlay(bossMomentumStem, true);
                 ActiveMusicState = "BossMomentum";

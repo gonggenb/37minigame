@@ -29840,8 +29840,6 @@ MonoBehaviour:
   timeWarningDuckReleaseSeconds: 0.85
   overlayFadeInSeconds: 0.15
   overlayFadeOutSeconds: 0.25
-  bossMomentumHealthRatio: 0.72
-  bossEnrageHealthRatio: 0.35
 --- !u!82 &1108178755
 AudioSource:
   m_ObjectHideFlags: 0

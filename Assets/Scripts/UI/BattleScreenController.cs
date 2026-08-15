@@ -93,6 +93,9 @@ namespace WuxiaRoguelite.UI
         private Texture2D activeBattleBackground;
         private int lastNormalBackgroundIndex = -1;
         private bool introBackgroundPrepared;
+        private Texture2D bossFoxfireIcon;
+        private Texture2D bossArmorIcon;
+        private Texture2D bossFrenzyIcon;
 
         private const float DamageDisplayDuration = 0.72f;
         private const float HealthFlashDuration = 0.34f;
@@ -175,6 +178,14 @@ namespace WuxiaRoguelite.UI
             // has a clear target readout without duplicating the player's health.
             DrawEnemyHealthPanel(enemyHealthRect, battleManager.currentEnemy,
                 enemyDamageAmount, enemyDamageStartedAt);
+            if (battleManager.IsBossBattle)
+            {
+                DrawBossSkillStrip(new Rect(
+                    enemyHealthRect.x,
+                    enemyHealthRect.yMax + 4f,
+                    enemyHealthRect.width,
+                    portrait ? 29f : 34f));
+            }
             float duelTop = portrait ? healthTop + 100f : healthTop;
             float duelHeight = portrait ? 34f : 52f;
             DrawDuelFocus(width, duelTop, duelHeight);
@@ -247,13 +258,19 @@ namespace WuxiaRoguelite.UI
                 baseY - enemyActorSize, enemyActorSize, enemyActorSize);
             DrawFighter(playerRect, PlayerColor, "侠", false,
                 playerAttacking ? playerAttackFrames : playerIdleFrames, playerAttacking, actionProgress);
+            if (battleManager.IsBossBattle)
+            {
+                DrawBossAura(enemyRect);
+            }
             DrawFighter(enemyRect, EnemyColor, "敌", enemyVisual != null ? enemyVisual.flipHorizontally : true,
-                enemyAttacking ? currentEnemyAttackFrames : currentEnemyIdleFrames, enemyAttacking, actionProgress);
+                enemyAttacking ? currentEnemyAttackFrames : currentEnemyIdleFrames, enemyAttacking, actionProgress,
+                GetBossSpriteTint());
             DrawImpactMarker(playerRect, playerDamageAmount, playerDamageStartedAt, playerDamageWasCritical, true);
             DrawImpactMarker(enemyRect, enemyDamageAmount, enemyDamageStartedAt, enemyDamageWasCritical, false);
             DrawDamagePopup(playerRect, playerDamageAmount, playerDamageStartedAt, playerDamageWasCritical, true);
             DrawDamagePopup(enemyRect, enemyDamageAmount, enemyDamageStartedAt, enemyDamageWasCritical, false);
             DrawCombatMessage(stageRect, messageRect, actionProgress);
+            DrawBossSkillBanner(stageRect);
             DrawBossApproachOverlay(width, height);
             DrawPlayerHitOverlay(width, height);
             GUI.matrix = originalGuiMatrix;
@@ -690,7 +707,7 @@ namespace WuxiaRoguelite.UI
                     ResponsiveGui.DrawSingleLineLabel(
                         new Rect(headerRect.x + 10f, headerRect.y + 28f,
                             headerRect.width - 20f, 18f),
-                        "主时间停止 · 自动交锋", captionStyle, 8);
+                        $"{GetBossPhaseOrdinal()} · {battleManager.CurrentBossPhaseName}", captionStyle, 8);
                     return;
                 }
 
@@ -724,7 +741,7 @@ namespace WuxiaRoguelite.UI
                     $"决战独立计时  {gameFlow.bossBattleTime:0.0} 秒", timerStyle, 9);
                 ResponsiveGui.DrawSingleLineLabel(
                     new Rect(headerRect.x, headerRect.y + 51f, headerRect.width, 15f),
-                    "主时间停止 · 自动交锋", captionStyle, 8);
+                    $"主时间停止 · {GetBossPhaseOrdinal()} · {battleManager.CurrentBossPhaseName}", captionStyle, 8);
                 return;
             }
 
@@ -818,21 +835,25 @@ namespace WuxiaRoguelite.UI
             GUI.Label(countdown, seconds.ToString(), bossCountdownStyle);
         }
 
-        private void DrawFighter(Rect rect, Color color, string mark, bool facesLeft, Sprite[] frames, bool attacking, float actionProgress)
+        private void DrawFighter(Rect rect, Color color, string mark, bool facesLeft, Sprite[] frames,
+            bool attacking, float actionProgress, Color? spriteTint = null)
         {
             FillRect(new Rect(rect.x + rect.width * 0.14f, rect.yMax + 4f, rect.width * 0.72f, 8f), new Color(0f, 0f, 0f, 0.42f));
 
             Sprite frame = GetFrame(frames, attacking, actionProgress);
             if (frame != null)
             {
+                Color spriteColorPrevious = GUI.color;
+                GUI.color = spriteTint ?? Color.white;
                 DrawSprite(rect, frame, facesLeft);
+                GUI.color = spriteColorPrevious;
                 return;
             }
 
-            Color previous = GUI.color;
+            Color textureColorPrevious = GUI.color;
             GUI.color = color;
             GUI.DrawTexture(rect, actorTexture != null ? actorTexture : Texture2D.whiteTexture, ScaleMode.StretchToFill, true);
-            GUI.color = previous;
+            GUI.color = textureColorPrevious;
             GUI.Label(rect, mark, actorMarkStyle);
         }
 
@@ -1013,9 +1034,17 @@ namespace WuxiaRoguelite.UI
                 $"气血 {stats.currentHealth:0} / {stats.maxHealth:0}", centerStyle, 8);
 
             string statText = $"攻 {stats.attack:0} · 防 {stats.defense:0.#}";
-            string effectText = battleManager.EnemyPoisonStacks > 0 || battleManager.EnemyArmorBreak > 0f
-                ? $"毒 {battleManager.EnemyPoisonStacks} · 破甲 {battleManager.EnemyArmorBreak:0.0}"
-                : "状态正常";
+            string effectText;
+            if (boss && battleManager.BossWard > 0f)
+            {
+                effectText = $"妖甲 {battleManager.BossWard:0} · 毒 {battleManager.EnemyPoisonStacks} · 破甲 {battleManager.EnemyArmorBreak:0.0}";
+            }
+            else
+            {
+                effectText = battleManager.EnemyPoisonStacks > 0 || battleManager.EnemyArmorBreak > 0f
+                    ? $"毒 {battleManager.EnemyPoisonStacks} · 破甲 {battleManager.EnemyArmorBreak:0.0}"
+                    : boss ? battleManager.CurrentBossPhaseName : "状态正常";
+            }
             if (compact)
             {
                 ResponsiveGui.DrawSingleLineLabel(
@@ -1191,7 +1220,9 @@ namespace WuxiaRoguelite.UI
             }
 
             string effectSummary =
-                $"护盾 {battleManager.PlayerShield:0}  ·  毒 {battleManager.EnemyPoisonStacks} 层  ·  破甲 {battleManager.EnemyArmorBreak:0.0}";
+                battleManager.IsBossBattle
+                    ? $"侠盾 {battleManager.PlayerShield:0} · 妖甲 {battleManager.BossWard:0} · 毒 {battleManager.EnemyPoisonStacks} · 破甲 {battleManager.EnemyArmorBreak:0.0}"
+                    : $"护盾 {battleManager.PlayerShield:0}  ·  毒 {battleManager.EnemyPoisonStacks} 层  ·  破甲 {battleManager.EnemyArmorBreak:0.0}";
             if (portrait)
             {
                 Rect logRect = new Rect(messageRect.x + 10f, messageRect.y + 3f,
@@ -1252,6 +1283,174 @@ namespace WuxiaRoguelite.UI
             }
 
             return "六十息倒数 · 分秒必争";
+        }
+
+        private void DrawBossSkillStrip(Rect rect)
+        {
+            EnsureBossSkillIcons();
+            WuxiaUiTheme.DrawCompactSurface(rect,
+                new Color(0.025f, 0.018f, 0.022f, 0.88f),
+                battleManager.CurrentBossPhase == BossBattlePhase.BloodFrenzy
+                    ? new Color(0.84f, 0.22f, 0.16f)
+                    : Gold);
+
+            float gap = 3f;
+            float slotWidth = (rect.width - gap * 4f) / 3f;
+            DrawBossSkillSlot(new Rect(rect.x + gap, rect.y + 2f, slotWidth, rect.height - 4f),
+                bossFoxfireIcon, "狐火", BossBattlePhase.Foxfire, true);
+            DrawBossSkillSlot(new Rect(rect.x + gap * 2f + slotWidth, rect.y + 2f, slotWidth, rect.height - 4f),
+                bossArmorIcon, "妖甲", BossBattlePhase.DemonArmor,
+                (int)battleManager.CurrentBossPhase >= (int)BossBattlePhase.DemonArmor);
+            DrawBossSkillSlot(new Rect(rect.x + gap * 3f + slotWidth * 2f, rect.y + 2f, slotWidth, rect.height - 4f),
+                bossFrenzyIcon, "狂暴", BossBattlePhase.BloodFrenzy,
+                (int)battleManager.CurrentBossPhase >= (int)BossBattlePhase.BloodFrenzy);
+        }
+
+        private void DrawBossSkillSlot(Rect rect, Texture2D icon, string label,
+            BossBattlePhase phase, bool unlocked)
+        {
+            bool active = battleManager.CurrentBossPhase == phase;
+            Color accent = phase == BossBattlePhase.BloodFrenzy
+                ? new Color(0.90f, 0.27f, 0.18f)
+                : phase == BossBattlePhase.DemonArmor
+                    ? new Color(0.80f, 0.66f, 0.34f)
+                    : new Color(0.78f, 0.32f, 0.24f);
+            FillRect(rect, new Color(accent.r * 0.22f, accent.g * 0.22f, accent.b * 0.22f,
+                active ? 0.96f : 0.58f));
+            if (active)
+            {
+                FillRect(new Rect(rect.x, rect.y, 2f, rect.height), accent);
+            }
+
+            float iconSize = Mathf.Min(rect.height - 4f, 28f);
+            Rect iconRect = new Rect(rect.x + 3f, rect.center.y - iconSize * 0.5f, iconSize, iconSize);
+            if (icon != null)
+            {
+                Color previous = GUI.color;
+                GUI.color = unlocked ? Color.white : new Color(0.42f, 0.42f, 0.42f, 0.60f);
+                GUI.DrawTexture(iconRect, icon, ScaleMode.ScaleToFit, true);
+                GUI.color = previous;
+            }
+            else
+            {
+                ResponsiveGui.DrawSingleLineLabel(iconRect, label.Substring(0, 1), captionStyle, 8);
+            }
+
+            ResponsiveGui.DrawSingleLineLabel(
+                new Rect(iconRect.xMax + 2f, rect.y, rect.xMax - iconRect.xMax - 4f, rect.height),
+                unlocked ? label : "未显", active ? detailStyle : captionStyle, 7);
+        }
+
+        private void DrawBossAura(Rect rect)
+        {
+            if (!battleManager.IsBossBattle)
+            {
+                return;
+            }
+
+            Color aura = battleManager.CurrentBossPhase switch
+            {
+                BossBattlePhase.BloodFrenzy => new Color(0.92f, 0.12f, 0.08f, 0.16f),
+                BossBattlePhase.DemonArmor => new Color(0.86f, 0.62f, 0.20f, 0.13f),
+                _ => new Color(0.72f, 0.20f, 0.16f, 0.09f)
+            };
+            float pulse = 0.7f + Mathf.Sin(Time.unscaledTime * 5f) * 0.3f;
+            for (int i = 0; i < 3; i++)
+            {
+                float inset = 8f + i * 8f;
+                FillRect(new Rect(rect.x - inset, rect.y - inset,
+                    rect.width + inset * 2f, rect.height + inset * 2f),
+                    new Color(aura.r, aura.g, aura.b, aura.a * pulse * (1f - i * 0.25f)));
+            }
+        }
+
+        private Color GetBossSpriteTint()
+        {
+            if (!battleManager.IsBossBattle)
+            {
+                return Color.white;
+            }
+
+            return battleManager.CurrentBossPhase switch
+            {
+                BossBattlePhase.BloodFrenzy => new Color(1f, 0.66f, 0.62f, 1f),
+                BossBattlePhase.DemonArmor => new Color(1f, 0.88f, 0.68f, 1f),
+                _ => Color.white
+            };
+        }
+
+        private void DrawBossSkillBanner(Rect stageRect)
+        {
+            if (!battleManager.IsBossBattle || battleManager.LastBossSkill == BossSkillId.None)
+            {
+                return;
+            }
+
+            float age = Time.unscaledTime - battleManager.LastBossSkillTriggeredAt;
+            if (age < 0f || age > 1.15f)
+            {
+                return;
+            }
+
+            EnsureBossSkillIcons();
+            float alpha = age < 0.18f ? age / 0.18f : 1f - Mathf.Clamp01((age - 0.82f) / 0.33f);
+            float width = Mathf.Min(300f, ResponsiveGui.SafeArea.width - 36f);
+            Rect panel = new Rect(stageRect.center.x - width * 0.5f,
+                stageRect.y + 8f, width, 52f);
+            Color previous = GUI.color;
+            GUI.color = new Color(1f, 1f, 1f, alpha);
+            WuxiaUiTheme.DrawPanel(panel, new Color(0.04f, 0.018f, 0.02f, 0.94f),
+                battleManager.LastBossSkill == BossSkillId.BloodFrenzy
+                    ? new Color(0.92f, 0.24f, 0.16f)
+                    : Gold,
+                WuxiaPanelKind.Boss);
+            Texture2D icon = GetBossSkillIcon(battleManager.LastBossSkill);
+            if (icon != null)
+            {
+                GUI.DrawTexture(new Rect(panel.x + 8f, panel.y + 6f, 40f, 40f), icon,
+                    ScaleMode.ScaleToFit, true);
+            }
+            ResponsiveGui.DrawSingleLineLabel(
+                new Rect(panel.x + 54f, panel.y + 4f, panel.width - 62f, 24f),
+                battleManager.LastBossSkillName, bossWarningStyle, 10);
+            ResponsiveGui.DrawSingleLineLabel(
+                new Rect(panel.x + 54f, panel.y + 27f, panel.width - 62f, 18f),
+                battleManager.LastBossSkill == BossSkillId.FoxfireBarrage
+                    ? "三道狐火 · 可闪避 · 防御逐段生效"
+                    : battleManager.LastBossSkill == BossSkillId.DemonArmor
+                        ? "固定妖甲 · 所有伤害均可击破"
+                        : "攻势加快 · 狐火间隔缩短",
+                captionStyle, 8);
+            GUI.color = previous;
+        }
+
+        private string GetBossPhaseOrdinal()
+        {
+            return battleManager.CurrentBossPhase switch
+            {
+                BossBattlePhase.Foxfire => "第一相",
+                BossBattlePhase.DemonArmor => "第二相",
+                BossBattlePhase.BloodFrenzy => "第三相",
+                _ => "决战"
+            };
+        }
+
+        private void EnsureBossSkillIcons()
+        {
+            bossFoxfireIcon ??= Resources.Load<Texture2D>("Icons/boss_foxfire_barrage");
+            bossArmorIcon ??= Resources.Load<Texture2D>("Icons/boss_demon_armor");
+            bossFrenzyIcon ??= Resources.Load<Texture2D>("Icons/boss_blood_frenzy");
+        }
+
+        private Texture2D GetBossSkillIcon(BossSkillId skill)
+        {
+            return skill switch
+            {
+                BossSkillId.FoxfireBarrage => bossFoxfireIcon,
+                BossSkillId.DemonArmor => bossArmorIcon,
+                BossSkillId.BloodFrenzy => bossFrenzyIcon,
+                _ => null
+            };
         }
 
         private static void DrawMainTimeTrack(Rect rect, float ratio, bool paused)

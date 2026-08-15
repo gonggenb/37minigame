@@ -947,7 +947,7 @@ namespace WuxiaRoguelite.GameFlow
             pendingBoss = null;
             boss.ResetHealth();
             statusMessage = "气血已恢复，最终决战开始：不再消耗主地图六十息。";
-            battleManager.BeginBattle(boss, OnBossBattleFinished);
+            battleManager.BeginBossBattle(boss, OnBossBattleFinished);
         }
 
         private void OnBossBattleFinished(bool playerWon)

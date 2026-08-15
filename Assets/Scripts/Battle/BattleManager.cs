@@ -32,9 +32,36 @@ namespace WuxiaRoguelite.Battle
         public float PlayerAttackCooldownDuration { get; private set; }
         public float EnemyAttackCooldownRemaining { get; private set; }
         public float EnemyAttackCooldownDuration { get; private set; }
+        public bool IsBossBattle { get; private set; }
+        public BossBattlePhase CurrentBossPhase { get; private set; }
+        public BossSkillId LastBossSkill { get; private set; }
+        public int BossSkillSequence { get; private set; }
+        public float LastBossSkillTriggeredAt { get; private set; } = -100f;
+        public float BossWard { get; private set; }
+        public float BossWardMax { get; private set; }
+        public float BossSkillCooldownRemaining { get; private set; }
+        public float BossSkillCooldownDuration { get; private set; }
+
+        public string CurrentBossPhaseName => CurrentBossPhase switch
+        {
+            BossBattlePhase.Foxfire => GameTextCatalog.FinalBossPhaseOneName,
+            BossBattlePhase.DemonArmor => GameTextCatalog.FinalBossPhaseTwoName,
+            BossBattlePhase.BloodFrenzy => GameTextCatalog.FinalBossPhaseThreeName,
+            _ => string.Empty
+        };
+
+        public string LastBossSkillName => LastBossSkill switch
+        {
+            BossSkillId.FoxfireBarrage => GameTextCatalog.FinalBossFoxfireSkillName,
+            BossSkillId.DemonArmor => GameTextCatalog.FinalBossPhaseTwoName,
+            BossSkillId.BloodFrenzy => GameTextCatalog.FinalBossPhaseThreeName,
+            _ => string.Empty
+        };
 
         private Coroutine battleRoutine;
         private float poisonTickCooldown;
+        private float bossBaseAttack;
+        private float bossBaseAttackSpeed;
         private readonly Dictionary<string, float> martialArtLastActivationTimes =
             new Dictionary<string, float>();
 
@@ -56,8 +83,45 @@ namespace WuxiaRoguelite.Battle
 
         public void BeginBattle(CombatantStats enemy, Action<bool> onComplete)
         {
+            BeginBattleInternal(enemy, onComplete, false);
+        }
+
+        public void BeginBossBattle(CombatantStats enemy, Action<bool> onComplete)
+        {
+            BeginBattleInternal(enemy, onComplete, true);
+        }
+
+        public void DebugSetBossHealthRatio(float healthRatio)
+        {
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+            if (!IsBattleActive || !IsBossBattle || currentEnemy == null || currentEnemy.IsDead)
+            {
+                return;
+            }
+
+            currentEnemy.currentHealth = Mathf.Clamp(
+                currentEnemy.maxHealth * Mathf.Clamp01(healthRatio),
+                1f,
+                currentEnemy.maxHealth);
+            UpdateBossPhase();
+#endif
+        }
+
+        private void BeginBattleInternal(CombatantStats enemy, Action<bool> onComplete, bool isBossBattle)
+        {
             CancelBattle();
             currentEnemy = enemy;
+            IsBossBattle = isBossBattle;
+            CurrentBossPhase = isBossBattle ? BossBattlePhase.Foxfire : BossBattlePhase.None;
+            bossBaseAttack = enemy != null ? enemy.attack : 0f;
+            bossBaseAttackSpeed = enemy != null ? enemy.attackSpeed : 0f;
+            BossWard = 0f;
+            BossWardMax = 0f;
+            BossSkillCooldownDuration = isBossBattle ? BossV2Tuning.OpeningFoxfireDelay : 0f;
+            BossSkillCooldownRemaining = BossSkillCooldownDuration;
+            LastBossSkill = BossSkillId.None;
+            BossSkillSequence = 0;
+            LastBossSkillTriggeredAt = -100f;
             IsBattleActive = true;
             BattleElapsed = 0f;
             AttackSequence = 0;
@@ -99,6 +163,17 @@ namespace WuxiaRoguelite.Battle
             PlayerAttackCooldownDuration = 0f;
             EnemyAttackCooldownRemaining = 0f;
             EnemyAttackCooldownDuration = 0f;
+            IsBossBattle = false;
+            CurrentBossPhase = BossBattlePhase.None;
+            LastBossSkill = BossSkillId.None;
+            BossSkillSequence = 0;
+            LastBossSkillTriggeredAt = -100f;
+            BossWard = 0f;
+            BossWardMax = 0f;
+            BossSkillCooldownRemaining = 0f;
+            BossSkillCooldownDuration = 0f;
+            bossBaseAttack = 0f;
+            bossBaseAttackSpeed = 0f;
             martialArtLastActivationTimes.Clear();
         }
 
@@ -117,6 +192,11 @@ namespace WuxiaRoguelite.Battle
                 PlayerAttackCooldownRemaining -= combatDeltaTime;
                 EnemyAttackCooldownRemaining -= combatDeltaTime;
                 poisonTickCooldown -= combatDeltaTime;
+                if (IsBossBattle)
+                {
+                    UpdateBossPhase();
+                    BossSkillCooldownRemaining -= combatDeltaTime;
+                }
 
                 if (PlayerAttackCooldownRemaining <= 0f)
                 {
@@ -137,6 +217,15 @@ namespace WuxiaRoguelite.Battle
                     DoAttack(currentEnemy, playerStats.runtimeStats);
                     EnemyAttackCooldownDuration = 1f / Mathf.Max(0.1f, currentEnemy.attackSpeed);
                     EnemyAttackCooldownRemaining = EnemyAttackCooldownDuration;
+                }
+
+                if (IsBossBattle && currentEnemy != null && !currentEnemy.IsDead &&
+                    playerStats.runtimeStats != null && !playerStats.runtimeStats.IsDead &&
+                    BossSkillCooldownRemaining <= 0f)
+                {
+                    CastFoxfireBarrage();
+                    BossSkillCooldownDuration = GetFoxfireCooldown();
+                    BossSkillCooldownRemaining = BossSkillCooldownDuration;
                 }
 
                 yield return null;
@@ -254,7 +343,14 @@ namespace WuxiaRoguelite.Battle
                 damage = AbsorbWithShield(damage);
             }
 
-            defender.TakeDamage(damage);
+            if (isPlayerAttack && ReferenceEquals(defender, currentEnemy))
+            {
+                ApplyDamageToCurrentEnemy(damage);
+            }
+            else
+            {
+                defender.TakeDamage(damage);
+            }
             float totalDamage = damage;
             string[] effects = new string[8];
             int effectCount = 0;
@@ -462,7 +558,7 @@ namespace WuxiaRoguelite.Battle
             }
 
             float damage = attacker.attack * ratio;
-            defender.TakeDamage(damage);
+            ApplyDamageToCurrentEnemy(damage);
             int temperedPoisonRank = playerStats.GetSecretRank("青锋淬毒");
             if (temperedPoisonRank > 0 && currentEnemy != null)
             {
@@ -488,7 +584,7 @@ namespace WuxiaRoguelite.Battle
             }
 
             float damage = attacker.attack * (0.70f + rank * 0.20f);
-            defender.TakeDamage(damage);
+            ApplyDamageToCurrentEnemy(damage);
             RegisterMartialArtActivation("无影连环剑");
             return damage;
         }
@@ -503,7 +599,7 @@ namespace WuxiaRoguelite.Battle
 
             float ratio = 0.45f + rank * 0.20f;
             float damage = Mathf.Max(1f, playerStats.runtimeStats.defense * ratio);
-            attacker.TakeDamage(damage);
+            ApplyDamageToCurrentEnemy(damage);
             RegisterMartialArtActivation("反震诀");
             return damage;
         }
@@ -524,7 +620,7 @@ namespace WuxiaRoguelite.Battle
                 EnemyArmorBreak = Mathf.Min(currentEnemy.defense, EnemyArmorBreak + poisonMistRank * 0.45f);
                 RegisterMartialArtActivation("化功毒雾");
             }
-            currentEnemy.TakeDamage(damage);
+            ApplyDamageToCurrentEnemy(damage);
 
             int lifeDrainRank = playerStats.GetMartialArtRank("吸星诀");
             if (lifeDrainRank > 0)
@@ -553,6 +649,163 @@ namespace WuxiaRoguelite.Battle
                 RegisterMartialArtActivation("吸星诀");
             }
             battleLog = $"{currentEnemy.displayName} 毒发，受到 {damage:0} 伤害";
+        }
+
+        private void UpdateBossPhase()
+        {
+            if (!IsBossBattle || currentEnemy == null || currentEnemy.IsDead)
+            {
+                return;
+            }
+
+            float healthRatio = currentEnemy.HealthRatio;
+            if (healthRatio <= BossV2Tuning.PhaseTwoHealthRatio &&
+                CurrentBossPhase == BossBattlePhase.Foxfire)
+            {
+                CurrentBossPhase = BossBattlePhase.DemonArmor;
+                BossWardMax = currentEnemy.maxHealth * BossV2Tuning.DemonArmorMaxHealthRatio;
+                BossWard = BossWardMax;
+                TriggerBossSkill(BossSkillId.DemonArmor,
+                    $"{currentEnemy.displayName}凝成妖甲：全伤害均可破甲");
+                return;
+            }
+
+            if (healthRatio <= BossV2Tuning.PhaseThreeHealthRatio &&
+                CurrentBossPhase != BossBattlePhase.BloodFrenzy)
+            {
+                CurrentBossPhase = BossBattlePhase.BloodFrenzy;
+                currentEnemy.attack = bossBaseAttack * BossV2Tuning.BloodFrenzyAttackMultiplier;
+                currentEnemy.attackSpeed = bossBaseAttackSpeed * BossV2Tuning.BloodFrenzyAttackSpeedMultiplier;
+                EnemyAttackCooldownRemaining = Mathf.Min(
+                    EnemyAttackCooldownRemaining,
+                    1f / Mathf.Max(0.1f, currentEnemy.attackSpeed));
+                TriggerBossSkill(BossSkillId.BloodFrenzy,
+                    $"{currentEnemy.displayName}踏入残血狂暴：攻势与狐火加快");
+            }
+        }
+
+        private void CastFoxfireBarrage()
+        {
+            CombatantStats player = playerStats.runtimeStats;
+            if (currentEnemy == null || player == null || player.IsDead)
+            {
+                return;
+            }
+
+            LastAttackWasPlayer = false;
+            LastAttackWasCritical = false;
+            LastAttackWasDodged = false;
+            LastDamage = 0f;
+            LastTriggeredEffect = string.Empty;
+            AttackSequence += 1;
+
+            int landedHits = 0;
+            int dodgedHits = 0;
+            float totalDamage = 0f;
+            for (int i = 0;
+                 i < BossV2Tuning.FoxfireHitCount && !player.IsDead && !currentEnemy.IsDead;
+                 i++)
+            {
+                EnemyAttackAttempts += 1;
+                int shadowRank = playerStats.GetMartialArtRank("无相残影");
+                int shadowInterval = shadowRank <= 0 ? int.MaxValue : 7 - shadowRank;
+                bool forcedShadowDodge = shadowInterval < int.MaxValue &&
+                                         EnemyAttackAttempts % shadowInterval == 0;
+                int lightnessRank = playerStats.GetMartialArtRank("踏雪无痕");
+                float foxfireDodgeChance = Mathf.Clamp01(
+                    player.dodgeChance +
+                    lightnessRank * BossV2Tuning.FoxfireLightnessDodgeBonusPerRank);
+                if (forcedShadowDodge || UnityEngine.Random.value < foxfireDodgeChance)
+                {
+                    dodgedHits += 1;
+                    HealPlayerOnDodge();
+                    if (forcedShadowDodge)
+                    {
+                        RegisterMartialArtActivation("无相残影");
+                    }
+                    continue;
+                }
+
+                float damage = Mathf.Max(1f,
+                    currentEnemy.attack * BossV2Tuning.FoxfireAttackRatioPerHit -
+                    player.defense * BossV2Tuning.FoxfireDefenseRatioPerHit);
+                damage *= GetPlayerIncomingDamageMultiplier(player);
+                damage = AbsorbWithShield(damage);
+                player.TakeDamage(damage);
+                totalDamage += damage;
+                landedHits += 1;
+                if (damage > 0f)
+                {
+                    ApplyRetaliation(currentEnemy);
+                }
+            }
+
+            LastAttackWasDodged = landedHits == 0 && dodgedHits > 0;
+            LastDamage = totalDamage;
+            LastTriggeredEffect = $"{GameTextCatalog.FinalBossFoxfireSkillName} {landedHits}中{dodgedHits}避";
+            TriggerBossSkill(BossSkillId.FoxfireBarrage,
+                landedHits > 0
+                    ? $"{currentEnemy.displayName}施展狐火连击，造成 {totalDamage:0} 伤害"
+                    : $"{currentEnemy.displayName}施展狐火连击，尽数被闪开");
+        }
+
+        private float GetFoxfireCooldown()
+        {
+            return CurrentBossPhase switch
+            {
+                BossBattlePhase.BloodFrenzy => BossV2Tuning.PhaseThreeFoxfireCooldown,
+                BossBattlePhase.DemonArmor => BossV2Tuning.PhaseTwoFoxfireCooldown,
+                _ => BossV2Tuning.PhaseOneFoxfireCooldown
+            };
+        }
+
+        private void TriggerBossSkill(BossSkillId skill, string log)
+        {
+            LastBossSkill = skill;
+            BossSkillSequence += 1;
+            LastBossSkillTriggeredAt = Time.unscaledTime;
+            battleLog = log;
+        }
+
+        private float GetPlayerIncomingDamageMultiplier(CombatantStats defender)
+        {
+            float reduction = playerStats.GetMartialArtRank("不动明王身") * 0.06f + 0.02f;
+            if (playerStats.GetMartialArtRank("不动明王身") <= 0)
+            {
+                reduction = 0f;
+            }
+
+            int bloodArmorRank = playerStats.GetSecretRank("血铸金身");
+            if (bloodArmorRank > 0 && defender.currentHealth <= defender.maxHealth * 0.5f)
+            {
+                reduction += bloodArmorRank * 0.06f;
+            }
+
+            return 1f - Mathf.Clamp(reduction, 0f, 0.65f);
+        }
+
+        private float ApplyDamageToCurrentEnemy(float damage)
+        {
+            if (currentEnemy == null || damage <= 0f)
+            {
+                return 0f;
+            }
+
+            float remaining = damage;
+            if (IsBossBattle && BossWard > 0f)
+            {
+                float absorbed = Mathf.Min(BossWard, remaining);
+                BossWard -= absorbed;
+                remaining -= absorbed;
+            }
+
+            float healthBefore = currentEnemy.currentHealth;
+            if (remaining > 0f)
+            {
+                currentEnemy.TakeDamage(remaining);
+            }
+
+            return damage - remaining + (healthBefore - currentEnemy.currentHealth);
         }
 
         private void RegisterMartialArtActivation(string artId)

@@ -2203,7 +2203,10 @@ namespace WuxiaRoguelite.UI
         private void DrawDebugControls()
         {
             Rect safe = ResponsiveGui.SafeArea;
-            Rect panel = new Rect(safe.x + 14f, safe.y + 158f, 180f, 238f);
+            bool bossActive = gameFlow.CurrentPhase == GamePhase.BossBattle &&
+                              gameFlow.battleManager != null &&
+                              gameFlow.battleManager.IsBattleActive;
+            Rect panel = new Rect(safe.x + 14f, safe.y + 158f, 180f, bossActive ? 302f : 238f);
             DrawPanel(panel, Ink, new Color(0.55f, 0.55f, 0.55f));
             if (GUI.Button(new Rect(panel.x + 8f, panel.y + 8f, panel.width - 16f, 26f), "重新开始", actionButtonStyle)) gameFlow.StartRun();
             if (GUI.Button(new Rect(panel.x + 8f, panel.y + 40f, panel.width - 16f, 26f), "增加修为", actionButtonStyle)) gameFlow.AddDebugCultivation();
@@ -2212,6 +2215,14 @@ namespace WuxiaRoguelite.UI
             if (GUI.Button(new Rect(panel.x + 8f, panel.y + 136f, panel.width - 16f, 26f), "敌人洞穴", actionButtonStyle)) gameFlow.DebugEnterCave(CaveContentType.Enemy);
             if (GUI.Button(new Rect(panel.x + 8f, panel.y + 168f, panel.width - 16f, 26f), "商人洞穴", actionButtonStyle)) gameFlow.DebugEnterCave(CaveContentType.Merchant);
             if (GUI.Button(new Rect(panel.x + 8f, panel.y + 200f, panel.width - 16f, 26f), "宝箱洞穴", actionButtonStyle)) gameFlow.DebugEnterCave(CaveContentType.Treasure);
+            if (bossActive && GUI.Button(new Rect(panel.x + 8f, panel.y + 232f, panel.width - 16f, 26f), "Boss 至 70%", actionButtonStyle))
+            {
+                gameFlow.battleManager.DebugSetBossHealthRatio(BossV2Tuning.PhaseTwoHealthRatio);
+            }
+            if (bossActive && GUI.Button(new Rect(panel.x + 8f, panel.y + 264f, panel.width - 16f, 26f), "Boss 至 35%", actionButtonStyle))
+            {
+                gameFlow.battleManager.DebugSetBossHealthRatio(BossV2Tuning.PhaseThreeHealthRatio);
+            }
         }
 
         private float GetMainTimeRatio()
