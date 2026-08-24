@@ -36,6 +36,8 @@ namespace WuxiaRoguelite.UI
         public Sprite[] caveIdleFrames;
         public Sprite[] caveAttackFrames;
         public Sprite[] impactEffectFrames;
+        public Sprite[] swordQiEffectFrames;
+        public Sprite[] poisonEffectFrames;
         public EnemyVisualProfile[] enemyVisualProfiles;
         [Min(0.5f)] public float playerSpriteScale = ActorVisualScale.Medium;
         [Min(0.5f)] public float bossSpriteScale = ActorVisualScale.Large;
@@ -89,6 +91,9 @@ namespace WuxiaRoguelite.UI
         private bool hitFeedbackWasCritical;
         private bool hitFeedbackWasDodged;
         private bool hitFeedbackTargetedPlayer;
+        private BattleVfxCue activeVfxCues;
+        private BattleVfxCue debugPreviewVfxCues;
+        private float debugPreviewVfxUntil = -10f;
         private CombatantStats backgroundTrackedEnemy;
         private Texture2D activeBattleBackground;
         private int lastNormalBackgroundIndex = -1;
@@ -256,6 +261,7 @@ namespace WuxiaRoguelite.UI
                 baseY - playerActorSize, playerActorSize, playerActorSize);
             Rect enemyRect = new Rect(enemyX + (actorSize - enemyActorSize) * 0.5f,
                 baseY - enemyActorSize, enemyActorSize, enemyActorSize);
+            DrawPersistentBattleAuras(playerRect, enemyRect);
             DrawFighter(playerRect, PlayerColor, "侠", false,
                 playerAttacking ? playerAttackFrames : playerIdleFrames, playerAttacking, actionProgress);
             if (battleManager.IsBossBattle)
@@ -264,7 +270,9 @@ namespace WuxiaRoguelite.UI
             }
             DrawFighter(enemyRect, EnemyColor, "敌", enemyVisual != null ? enemyVisual.flipHorizontally : true,
                 enemyAttacking ? currentEnemyAttackFrames : currentEnemyIdleFrames, enemyAttacking, actionProgress,
-                GetBossSpriteTint());
+                GetEnemySpriteTint());
+            DrawBattleSkillVfx(playerRect, enemyRect,
+                enemyVisual != null ? enemyVisual.flipHorizontally : true);
             DrawImpactMarker(playerRect, playerDamageAmount, playerDamageStartedAt, playerDamageWasCritical, true);
             DrawImpactMarker(enemyRect, enemyDamageAmount, enemyDamageStartedAt, enemyDamageWasCritical, false);
             DrawDamagePopup(playerRect, playerDamageAmount, playerDamageStartedAt, playerDamageWasCritical, true);
@@ -491,6 +499,7 @@ namespace WuxiaRoguelite.UI
 
             observedAttackSequence = battleManager.AttackSequence;
             attackStartedAt = Time.unscaledTime;
+            activeVfxCues = battleManager.LastVfxCues;
             hitFeedbackStartedAt = Time.unscaledTime;
             hitFeedbackWasCritical = battleManager.LastAttackWasCritical;
             hitFeedbackWasDodged = battleManager.LastAttackWasDodged;
@@ -1168,6 +1177,216 @@ namespace WuxiaRoguelite.UI
                 new Color(1f, 1f, 1f, alpha * 0.88f));
         }
 
+        private void DrawPersistentBattleAuras(Rect playerRect, Rect enemyRect)
+        {
+            if (battleManager.EnemyPoisonStacks > 0 && poisonEffectFrames != null &&
+                poisonEffectFrames.Length > 0)
+            {
+                int frameIndex = Mathf.FloorToInt(Time.unscaledTime * 7f) % poisonEffectFrames.Length;
+                float pulse = 0.16f + Mathf.Abs(Mathf.Sin(Time.unscaledTime * 3.2f)) * 0.10f;
+                float size = enemyRect.width * 1.08f;
+                Rect auraRect = new Rect(enemyRect.center.x - size * 0.5f,
+                    enemyRect.center.y - size * 0.5f, size, size);
+                DrawEffectSprite(auraRect, poisonEffectFrames[frameIndex],
+                    new Color(1f, 1f, 1f, pulse));
+            }
+
+            if (battleManager.PlayerShield > 0f)
+            {
+                float pulse = 0.32f + Mathf.Abs(Mathf.Sin(Time.unscaledTime * 4f)) * 0.18f;
+                float inset = playerRect.width * 0.06f;
+                DrawOutline(new Rect(playerRect.x - inset, playerRect.y - inset,
+                        playerRect.width + inset * 2f, playerRect.height + inset * 2f),
+                    new Color(0.96f, 0.78f, 0.30f, pulse), 3f);
+            }
+
+            bool bloodAura = playerStats.runtimeStats.HealthRatio <= 0.5f &&
+                             (playerStats.GetMartialArtRank("血战八方") > 0 ||
+                              playerStats.GetMartialArtRank("修罗血域") > 0 ||
+                              playerStats.GetSecretRank("血铸金身") > 0);
+            if (bloodAura && impactEffectFrames != null && impactEffectFrames.Length > 0)
+            {
+                float pulse = 0.10f + Mathf.Abs(Mathf.Sin(Time.unscaledTime * 5f)) * 0.09f;
+                float size = playerRect.width * 1.15f;
+                DrawEffectSprite(new Rect(playerRect.center.x - size * 0.5f,
+                        playerRect.center.y - size * 0.5f, size, size),
+                    impactEffectFrames[0], new Color(0.90f, 0.12f, 0.08f, pulse));
+            }
+        }
+
+        private void DrawBattleSkillVfx(Rect playerRect, Rect enemyRect, bool enemyFacesLeft)
+        {
+            bool debugPreview = Time.unscaledTime < debugPreviewVfxUntil;
+            float age = debugPreview
+                ? Mathf.Repeat(Time.unscaledTime, 0.48f)
+                : Time.unscaledTime - attackStartedAt;
+            if (age < 0f || age > 0.82f || DisplayVfxCues == BattleVfxCue.None)
+            {
+                return;
+            }
+
+            if (HasCue(BattleVfxCue.Dodge))
+            {
+                Rect target = battleManager.LastAttackWasPlayer ? enemyRect : playerRect;
+                Sprite[] frames = battleManager.LastAttackWasPlayer ? SelectEnemyFrames(SelectEnemyVisualProfile(), false) : playerIdleFrames;
+                Sprite ghost = GetFrame(frames, false, 0f);
+                if (ghost != null)
+                {
+                    float alpha = 1f - Mathf.Clamp01(age / 0.42f);
+                    Color previous = GUI.color;
+                    GUI.color = HasCue(BattleVfxCue.ShadowDodge)
+                        ? new Color(0.46f, 0.90f, 1f, alpha * 0.38f)
+                        : new Color(0.82f, 0.90f, 0.94f, alpha * 0.24f);
+                    float direction = battleManager.LastAttackWasPlayer ? 1f : -1f;
+                    DrawSprite(OffsetRect(target, direction * target.width * 0.20f, 0f), ghost,
+                        battleManager.LastAttackWasPlayer && enemyFacesLeft);
+                    GUI.color = previous;
+                }
+            }
+
+            if (HasCue(BattleVfxCue.SwordQi) && swordQiEffectFrames != null &&
+                swordQiEffectFrames.Length > 0)
+            {
+                float progress = Mathf.Clamp01(age / 0.54f);
+                Vector2 center = Vector2.Lerp(
+                    new Vector2(playerRect.center.x, playerRect.center.y),
+                    new Vector2(enemyRect.center.x, enemyRect.center.y),
+                    Mathf.SmoothStep(0.08f, 0.92f, progress));
+                float width = Mathf.Max(playerRect.width, enemyRect.width) * 1.18f;
+                DrawEffectSprite(new Rect(center.x - width * 0.5f, center.y - width * 0.36f,
+                        width, width * 0.72f),
+                    EffectFrame(swordQiEffectFrames, progress),
+                    new Color(1f, 1f, 1f, 1f - Mathf.Clamp01((progress - 0.70f) / 0.30f)));
+            }
+
+            if (HasCue(BattleVfxCue.SwiftCombo))
+            {
+                DrawBurst(enemyRect, swordQiEffectFrames, age, 0.62f,
+                    new Color(0.74f, 0.94f, 1f, 0.90f), 1.12f, -0.18f);
+                DrawBurst(enemyRect, swordQiEffectFrames, age - 0.08f, 0.54f,
+                    new Color(1f, 0.86f, 0.38f, 0.78f), 0.90f, 0.16f);
+            }
+
+            if (HasCue(BattleVfxCue.PoisonApplied) || HasCue(BattleVfxCue.PoisonTick))
+            {
+                float scale = HasCue(BattleVfxCue.PoisonMist) ? 1.28f : 0.92f;
+                DrawBurst(enemyRect, poisonEffectFrames, age, 0.66f, Color.white, scale, 0f);
+            }
+
+            if (HasCue(BattleVfxCue.ArmorBreak))
+            {
+                DrawBurst(enemyRect, impactEffectFrames, age, 0.38f,
+                    new Color(0.94f, 0.72f, 0.30f, 0.86f), 0.72f, 0.08f);
+            }
+
+            if (HasCue(BattleVfxCue.ShieldImpact))
+            {
+                DrawBurst(playerRect, impactEffectFrames, age, 0.46f,
+                    new Color(0.98f, 0.82f, 0.34f, 0.82f), 1.06f, 0f);
+            }
+
+            if (HasCue(BattleVfxCue.Retaliation))
+            {
+                DrawBurst(enemyRect, impactEffectFrames, age, 0.44f,
+                    new Color(0.82f, 0.92f, 1f, 0.88f), 0.82f, -0.12f);
+            }
+
+            if (HasCue(BattleVfxCue.Heal))
+            {
+                DrawBurst(playerRect, impactEffectFrames, age, 0.58f,
+                    new Color(0.38f, 1f, 0.64f, 0.72f), 0.62f, -0.22f);
+            }
+
+            if (HasCue(BattleVfxCue.OpeningStrike))
+            {
+                DrawBurst(enemyRect, impactEffectFrames, age, 0.42f,
+                    new Color(1f, 0.88f, 0.42f, 0.92f), 1.00f, -0.18f);
+            }
+
+            if (HasCue(BattleVfxCue.BloodPower) || HasCue(BattleVfxCue.BloodBurst))
+            {
+                DrawBurst(enemyRect, impactEffectFrames, age, 0.52f,
+                    new Color(1f, 0.16f, 0.10f, 0.84f),
+                    HasCue(BattleVfxCue.BloodBurst) ? 1.12f : 0.78f, 0f);
+            }
+
+            if (HasCue(BattleVfxCue.Foxfire))
+            {
+                float progress = Mathf.Clamp01(age / 0.62f);
+                for (int index = 0; index < 3; index++)
+                {
+                    float staggered = Mathf.Clamp01(progress * 1.35f - index * 0.12f);
+                    Vector2 center = Vector2.Lerp(enemyRect.center, playerRect.center,
+                        Mathf.SmoothStep(0f, 1f, staggered));
+                    float size = playerRect.width * (0.34f + index * 0.04f);
+                    DrawEffectSprite(new Rect(center.x - size * 0.5f,
+                            center.y - size * 0.5f + (index - 1) * size * 0.34f, size, size),
+                        EffectFrame(impactEffectFrames, staggered),
+                        new Color(1f, 0.34f, 0.12f, 1f - staggered * 0.62f));
+                }
+            }
+        }
+
+        private bool HasCue(BattleVfxCue cue)
+        {
+            return (DisplayVfxCues & cue) != 0;
+        }
+
+        private BattleVfxCue DisplayVfxCues => Time.unscaledTime < debugPreviewVfxUntil
+            ? debugPreviewVfxCues
+            : activeVfxCues;
+
+        public void DebugPreviewVfx(BattleVfxCue cues, float duration = 3f)
+        {
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+            debugPreviewVfxCues = cues;
+            debugPreviewVfxUntil = Time.unscaledTime + Mathf.Max(0.1f, duration);
+#endif
+        }
+
+        private static Sprite EffectFrame(Sprite[] frames, float progress)
+        {
+            if (frames == null || frames.Length == 0)
+            {
+                return null;
+            }
+
+            int index = Mathf.Min(Mathf.FloorToInt(Mathf.Clamp01(progress) * frames.Length),
+                frames.Length - 1);
+            return frames[index];
+        }
+
+        private static void DrawBurst(Rect target, Sprite[] frames, float age, float duration,
+            Color tint, float scale, float verticalOffsetRatio)
+        {
+            if (age < 0f || age >= duration || frames == null || frames.Length == 0)
+            {
+                return;
+            }
+
+            float progress = age / duration;
+            float size = target.width * scale;
+            Rect rect = new Rect(target.center.x - size * 0.5f,
+                target.center.y - size * 0.5f + target.height * verticalOffsetRatio, size, size);
+            DrawEffectSprite(rect, EffectFrame(frames, progress),
+                new Color(tint.r, tint.g, tint.b, tint.a * (1f - progress * 0.72f)));
+        }
+
+        private static Rect OffsetRect(Rect rect, float x, float y)
+        {
+            rect.x += x;
+            rect.y += y;
+            return rect;
+        }
+
+        private static void DrawOutline(Rect rect, Color color, float thickness)
+        {
+            FillRect(new Rect(rect.x, rect.y, rect.width, thickness), color);
+            FillRect(new Rect(rect.x, rect.yMax - thickness, rect.width, thickness), color);
+            FillRect(new Rect(rect.x, rect.y + thickness, thickness, rect.height - thickness * 2f), color);
+            FillRect(new Rect(rect.xMax - thickness, rect.y + thickness, thickness, rect.height - thickness * 2f), color);
+        }
+
         private static void DrawEffectSprite(Rect rect, Sprite sprite, Color tint)
         {
             if (sprite == null)
@@ -1377,6 +1596,26 @@ namespace WuxiaRoguelite.UI
                 BossBattlePhase.DemonArmor => new Color(1f, 0.88f, 0.68f, 1f),
                 _ => Color.white
             };
+        }
+
+        private Color GetEnemySpriteTint()
+        {
+            Color tint = GetBossSpriteTint();
+            if (battleManager.EnemyPoisonStacks <= 0)
+            {
+                return tint;
+            }
+
+            float pulse = 0.5f + Mathf.Sin(Time.unscaledTime * 4.2f) * 0.5f;
+            Color poisonTint = Color.Lerp(
+                new Color(0.66f, 1f, 0.54f, 1f),
+                new Color(0.88f, 0.58f, 1f, 1f),
+                pulse);
+            return new Color(
+                tint.r * poisonTint.r,
+                tint.g * poisonTint.g,
+                tint.b * poisonTint.b,
+                tint.a);
         }
 
         private void DrawBossSkillBanner(Rect stageRect)

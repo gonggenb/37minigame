@@ -66,6 +66,22 @@ Unity 图标导入设置：
 | UI 九宫格边框 | 64 × 64 px 或 128 × 128 px |
 | 地表无缝贴图 | 1024 × 1024 px |
 
+### 2.4 战斗特效
+
+| 项目 | 统一规格 |
+| --- | --- |
+| 单帧画布 | 256 × 256 px |
+| 标准图集 | 横向 6 帧，1536 × 256 px |
+| 播放速度 | 12 FPS；瞬时效果不循环 |
+| Pivot | `(0.5, 0.5)` |
+| Pixels Per Unit | 256 |
+| Unity Filter | Point |
+| Mip Maps / Compression | Off / None |
+| Wrap Mode | Clamp |
+
+持续状态不重复播放高亮爆炸：中毒使用紫绿角色染色与低透明毒雾循环，护盾使用低频金色护体环，
+低血构筑使用克制的暗红气场。颜色必须同时搭配不同轮廓，不能只靠色相区分状态。
+
 ## 3. 图标视觉语言
 
 ### 3.1 武学图标
@@ -304,6 +320,7 @@ Briefed -> SeedApproved -> Generated -> Normalized -> Imported -> InEngineQA -> 
 | 九尾妖狐 Boss（Idle / Attack） | 2 | `Assets/Art/Generated/Characters/Bosses/FoxDemon/` | `InEngineQA` |
 | Boss V2 技能图标（狐火 / 妖甲 / 狂暴） | 3 | `Assets/Resources/Icons/boss_*.png` | `Imported` |
 | 主地图药草（回复 / 强攻 / 防御 / 移速 / 奇草） | 5 | `Assets/Art/Generated/World/Herbs/` | `InEngineQA` |
+| 战斗 VFX（通用命中 / 剑气 / 毒雾） | 3 | `Assets/Art/Generated/Effects/` | `InEngineQA` |
 
 主地图药草使用五套独立的 256 × 256 透明世界 Sprite，不再共用第三方灌木图。回复草以红果白花、
 强攻草以朱红刃形花穗、铁骨草以蓝灰厚叶、轻身草以青白卷叶、无名奇草以紫黑异形叶区分；

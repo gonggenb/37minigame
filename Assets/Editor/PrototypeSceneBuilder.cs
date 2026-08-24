@@ -32,6 +32,13 @@ namespace WuxiaRoguelite.EditorTools
         private const string RoadTexturePath = "Assets/Art/Generated/Environment/tex_env_mainmap_dirt_albedo_1024_v02.png";
         private const string RoadMaterialPath = "Assets/Art/Generated/Environment/mat_mainmap_dirt.mat";
         private const string WorldSurfaceShaderName = "Wuxia Roguelite/Stylized World Surface";
+        private const string StylizedPropShaderName = "Wuxia Roguelite/Stylized Prop Surface";
+        private const string StylizedScenicSpriteShaderName = "Wuxia Roguelite/Stylized Scenic Sprite";
+        private const string ActorGroundShadowShaderName = "Wuxia Roguelite/Actor Ground Shadow";
+        private const string EnvironmentMaterialRoot = "Assets/Art/Generated/Environment/Materials";
+        private const string PropMaterialRoot = EnvironmentMaterialRoot + "/Props";
+        private const string ScenicSpriteMaterialPath = EnvironmentMaterialRoot + "/mat_hd2d_scenic_sprite.mat";
+        private const string ActorGroundShadowMaterialPath = EnvironmentMaterialRoot + "/mat_actor_ground_shadow.mat";
         private const string Hd2dEnvironmentRoot = "Assets/Art/Generated/Environment/HD2D";
         private const string Hd2dBackdropPath = Hd2dEnvironmentRoot + "/tex_env_hd2d_mountain_backdrop_2048x1152_v01.png";
         private const string Hd2dPanoramaPath = Hd2dEnvironmentRoot + "/tex_env_hd2d_mountain_panorama_2048x1024_v01.png";
@@ -97,6 +104,8 @@ namespace WuxiaRoguelite.EditorTools
         private const float BossBattleVisualScale = 1.62f;
         private const float CaveBattleVisualScale = 1.48f;
         private const string CombatImpactVfxPath = "Assets/Art/Generated/Effects/spr_vfx_wuxia_impact_6f_v01.png";
+        private const string SwordQiVfxPath = "Assets/Art/Generated/Effects/spr_vfx_sword_qi_6f_v01.png";
+        private const string PoisonMistVfxPath = "Assets/Art/Generated/Effects/spr_vfx_poison_mist_6f_v01.png";
         private const string SpeedBoostVfxPath =
             "Assets/Art/Generated/Effects/tex_vfx_speed_boost_wisp_v01.png";
         private const string CombatAudioRoot = "Assets/Audio/Generated/Combat";
@@ -204,18 +213,20 @@ namespace WuxiaRoguelite.EditorTools
             Sprite[] bambooPuppetIdle = LoadFrames(BambooPuppetIdlePath, fallbackSprite);
             Sprite[] bambooPuppetAttack = LoadFrames(BambooPuppetAttackPath, fallbackSprite);
             Sprite[] combatImpactFrames = LoadFrames(CombatImpactVfxPath, fallbackSprite);
+            Sprite[] swordQiEffectFrames = LoadFrames(SwordQiVfxPath, fallbackSprite);
+            Sprite[] poisonEffectFrames = LoadFrames(PoisonMistVfxPath, fallbackSprite);
             Sprite treasureChestSprite = LoadSingleSprite(TreasureChestPath, fallbackSprite);
             Sprite[] healingHerbFrames = LoadHerbFrames(HealingHerbPath, fallbackSprite);
 
             Scene scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
 
             Camera camera = new GameObject("Main Camera").AddComponent<Camera>();
-            Vector3 cameraOffset = new Vector3(6f, 7.2f, -10.5f);
-            Vector3 cameraLookTarget = Vector3.up * 0.85f;
+            Vector3 cameraOffset = new Vector3(7.8f, 7.2f, -14f);
+            Vector3 cameraLookTarget = Vector3.up * 0.72f;
             camera.transform.position = cameraOffset;
             camera.transform.rotation = Quaternion.LookRotation(cameraLookTarget - cameraOffset, Vector3.up);
             camera.orthographic = false;
-            camera.fieldOfView = 40f;
+            camera.fieldOfView = 34f;
             camera.nearClipPlane = 0.1f;
             camera.farClipPlane = 100f;
             camera.backgroundColor = new Color(0.08f, 0.1f, 0.12f);
@@ -316,10 +327,10 @@ namespace WuxiaRoguelite.EditorTools
             CameraFollow follow = camera.gameObject.AddComponent<CameraFollow>();
             follow.target = player.transform;
             follow.offset = cameraOffset;
-            follow.portraitOffset = new Vector3(7.8f, 9.5f, -14f);
-            follow.lookAtHeight = 0.85f;
-            follow.landscapeFieldOfView = 40f;
-            follow.portraitFieldOfView = 46f;
+            follow.portraitOffset = new Vector3(9.4f, 10.2f, -18f);
+            follow.lookAtHeight = 0.72f;
+            follow.landscapeFieldOfView = 34f;
+            follow.portraitFieldOfView = 40f;
 
             gameFlow.playerStats = playerStats;
             gameFlow.playerController = playerController;
@@ -353,6 +364,8 @@ namespace WuxiaRoguelite.EditorTools
             battleScreen.caveIdleFrames = stoneApeIdle;
             battleScreen.caveAttackFrames = stoneApeAttack;
             battleScreen.impactEffectFrames = combatImpactFrames;
+            battleScreen.swordQiEffectFrames = swordQiEffectFrames;
+            battleScreen.poisonEffectFrames = poisonEffectFrames;
             battleScreen.bossSpriteScale = BossBattleVisualScale;
             battleScreen.enemyVisualProfiles = CreateEnemyVisualProfiles(
                 ratRun, ratAttack, riderRun, riderAttack, ballistaFly, ballistaAttack,
@@ -498,6 +511,8 @@ namespace WuxiaRoguelite.EditorTools
             }
 
             battleScreen.impactEffectFrames = LoadFrames(CombatImpactVfxPath, fallbackSprite);
+            battleScreen.swordQiEffectFrames = LoadFrames(SwordQiVfxPath, fallbackSprite);
+            battleScreen.poisonEffectFrames = LoadFrames(PoisonMistVfxPath, fallbackSprite);
             BindCombatAudio(feedbackAudio);
             EditorUtility.SetDirty(battleScreen);
             EditorUtility.SetDirty(feedbackAudio);
@@ -620,6 +635,7 @@ namespace WuxiaRoguelite.EditorTools
                 return;
             }
 
+            EnsureFolders();
             GameObject mapRoot = GameObject.Find("3D Prototype Map");
             if (mapRoot == null)
             {
@@ -646,11 +662,45 @@ namespace WuxiaRoguelite.EditorTools
             BuildHd2dAtmosphere(hd2dRoot.transform);
             RelocateRiverConflicts();
             ApplyHd2dWorldLighting(hd2dRoot.transform);
+            ApplyHd2dCohesionPassInternal(mapRoot.transform);
 
             EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
             EditorSceneManager.SaveOpenScenes();
             AssetDatabase.SaveAssets();
             Debug.Log("Original wuxia HD-2D main-world art applied: diorama depth, seamless mountain panorama, bridge-aligned roads, stream, scenic cutouts, mist, and warm landmark lights.");
+        }
+
+        [MenuItem("37 MiniGame/Apply HD-2D Cohesion Pass")]
+        public static void ApplyHd2dCohesionPass()
+        {
+            if (EditorApplication.isPlaying)
+            {
+                Debug.LogError("Exit Play Mode before applying the HD-2D cohesion pass.");
+                return;
+            }
+
+            GameObject mapRoot = GameObject.Find("3D Prototype Map");
+            if (mapRoot == null)
+            {
+                Debug.LogError("Cannot apply the HD-2D cohesion pass: 3D Prototype Map was not found.");
+                return;
+            }
+
+            EnsureFolders();
+            AssetDatabase.Refresh();
+            ApplyHd2dCohesionPassInternal(mapRoot.transform);
+            EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
+            EditorSceneManager.SaveOpenScenes();
+            AssetDatabase.SaveAssets();
+            Debug.Log("HD-2D cohesion pass applied: matte prop materials, softened scenic sprites, contact shadows, stable billboards, and responsive landscape/portrait camera composition.");
+        }
+
+        private static void ApplyHd2dCohesionPassInternal(Transform mapRoot)
+        {
+            ApplyStylizedMapMaterials(mapRoot);
+            ConfigureActorGroundShadows(GetOrCreateActorGroundShadowMaterial());
+            ConfigureScenicSpriteMaterials(mapRoot, GetOrCreateScenicSpriteMaterial());
+            ConfigureResponsiveHd2dCamera();
         }
 
         [MenuItem("37 MiniGame/Validate Main World River Crossings")]
@@ -1658,6 +1708,8 @@ namespace WuxiaRoguelite.EditorTools
             CreateFolderIfMissing("Assets/Art/Generated", "Environment");
             CreateFolderIfMissing("Assets/Art/Generated", "Backgrounds");
             CreateFolderIfMissing("Assets/Art/Generated/Environment", "Shaders");
+            CreateFolderIfMissing("Assets/Art/Generated/Environment", "Materials");
+            CreateFolderIfMissing(EnvironmentMaterialRoot, "Props");
             CreateFolderIfMissing("Assets", "Audio");
             CreateFolderIfMissing("Assets/Audio", "Generated");
             CreateFolderIfMissing("Assets/Audio/Generated", "Combat");
@@ -1738,6 +1790,8 @@ namespace WuxiaRoguelite.EditorTools
         private static void ConfigureBattleFeedbackAssets()
         {
             ConfigureSpriteSheet(CombatImpactVfxPath, 256, 256, 256f);
+            ConfigureSpriteSheet(SwordQiVfxPath, 256, 256, 256f);
+            ConfigureSpriteSheet(PoisonMistVfxPath, 256, 256, 256f);
             foreach (string path in new[]
                      {
                          CombatSwingSfxPath, CombatImpactSfxPath,
@@ -3048,9 +3102,9 @@ namespace WuxiaRoguelite.EditorTools
             if (sun != null)
             {
                 sun.color = new Color(1f, 0.86f, 0.68f, 1f);
-                sun.intensity = 1.22f;
+                sun.intensity = 1.08f;
                 sun.transform.rotation = Quaternion.Euler(48f, -38f, 0f);
-                sun.shadowStrength = 0.72f;
+                sun.shadowStrength = 0.58f;
                 EditorUtility.SetDirty(sun);
             }
 
@@ -3077,11 +3131,11 @@ namespace WuxiaRoguelite.EditorTools
                 CameraFollow follow = camera.GetComponent<CameraFollow>();
                 if (follow != null)
                 {
-                    follow.offset = new Vector3(6.8f, 5.9f, -12.2f);
-                    follow.portraitOffset = new Vector3(8.6f, 8.1f, -16.2f);
+                    follow.offset = new Vector3(7.8f, 7.2f, -14f);
+                    follow.portraitOffset = new Vector3(9.4f, 10.2f, -18f);
                     follow.lookAtHeight = 0.72f;
-                    follow.landscapeFieldOfView = 38f;
-                    follow.portraitFieldOfView = 44f;
+                    follow.landscapeFieldOfView = 34f;
+                    follow.portraitFieldOfView = 40f;
                     EditorUtility.SetDirty(follow);
                 }
                 EditorUtility.SetDirty(camera);
@@ -3172,7 +3226,8 @@ namespace WuxiaRoguelite.EditorTools
             renderer.sortingOrder = sortingOrder;
             renderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
             renderer.receiveShadows = false;
-            billboard.AddComponent<BillboardSprite>();
+            BillboardSprite billboardController = billboard.AddComponent<BillboardSprite>();
+            billboardController.alignment = BillboardAlignment.CameraPlane;
 
             if (sprite != null && !centerPivot)
             {
@@ -3182,11 +3237,7 @@ namespace WuxiaRoguelite.EditorTools
             Camera camera = Camera.main ?? UnityEngine.Object.FindAnyObjectByType<Camera>();
             if (camera != null)
             {
-                Vector3 direction = billboard.transform.position - camera.transform.position;
-                if (direction.sqrMagnitude > 0.001f)
-                {
-                    billboard.transform.rotation = Quaternion.LookRotation(direction.normalized, Vector3.up);
-                }
+                billboard.transform.rotation = camera.transform.rotation;
             }
             return billboard;
         }
@@ -3278,6 +3329,301 @@ namespace WuxiaRoguelite.EditorTools
             light.intensity = intensity;
             light.range = range;
             light.shadows = LightShadows.None;
+        }
+
+        private static Material GetOrCreateActorGroundShadowMaterial()
+        {
+            Shader shader = Shader.Find(ActorGroundShadowShaderName);
+            if (shader == null)
+            {
+                Debug.LogError($"Cannot find actor ground-shadow shader: {ActorGroundShadowShaderName}");
+                return null;
+            }
+
+            Material material = AssetDatabase.LoadAssetAtPath<Material>(ActorGroundShadowMaterialPath);
+            if (material == null)
+            {
+                material = new Material(shader) { name = "HD2D_ActorGroundShadow" };
+                AssetDatabase.CreateAsset(material, ActorGroundShadowMaterialPath);
+            }
+            else if (material.shader != shader)
+            {
+                material.shader = shader;
+            }
+
+            material.SetColor("_Color", new Color(0.08f, 0.12f, 0.10f, 0.34f));
+            EditorUtility.SetDirty(material);
+            return material;
+        }
+
+        private static Material GetOrCreateScenicSpriteMaterial()
+        {
+            Shader shader = Shader.Find(StylizedScenicSpriteShaderName);
+            if (shader == null)
+            {
+                Debug.LogError($"Cannot find scenic sprite shader: {StylizedScenicSpriteShaderName}");
+                return null;
+            }
+
+            Material material = AssetDatabase.LoadAssetAtPath<Material>(ScenicSpriteMaterialPath);
+            if (material == null)
+            {
+                material = new Material(shader) { name = "HD2D_SoftScenicSprite" };
+                AssetDatabase.CreateAsset(material, ScenicSpriteMaterialPath);
+            }
+            else if (material.shader != shader)
+            {
+                material.shader = shader;
+            }
+
+            material.SetColor("_Color", Color.white);
+            material.SetFloat("_Saturation", 0.72f);
+            material.SetFloat("_Contrast", 0.82f);
+            EditorUtility.SetDirty(material);
+            return material;
+        }
+
+        private static void ApplyStylizedMapMaterials(Transform mapRoot, bool logResult = true)
+        {
+            int updatedRendererCount = 0;
+            foreach (MeshRenderer renderer in mapRoot.GetComponentsInChildren<MeshRenderer>(true))
+            {
+                Material[] materials = renderer.sharedMaterials;
+                bool changed = false;
+                for (int i = 0; i < materials.Length; i++)
+                {
+                    Material stylized = GetOrCreateStylizedPropMaterial(materials[i]);
+                    if (stylized == null || stylized == materials[i])
+                    {
+                        continue;
+                    }
+
+                    materials[i] = stylized;
+                    changed = true;
+                }
+
+                if (!changed)
+                {
+                    continue;
+                }
+
+                renderer.sharedMaterials = materials;
+                renderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.On;
+                renderer.receiveShadows = true;
+                EditorUtility.SetDirty(renderer);
+                updatedRendererCount++;
+            }
+
+            if (logResult)
+            {
+                Debug.Log($"Applied matte HD-2D prop materials to {updatedRendererCount} mesh renderers.");
+            }
+        }
+
+        private static Material GetOrCreateStylizedPropMaterial(Material source)
+        {
+            if (source == null || source.shader == null)
+            {
+                return source;
+            }
+
+            string sourceShaderName = source.shader.name;
+            if (sourceShaderName == StylizedPropShaderName ||
+                sourceShaderName == WorldSurfaceShaderName ||
+                sourceShaderName == Hd2dWaterShaderName ||
+                sourceShaderName == ActorGroundShadowShaderName ||
+                sourceShaderName.StartsWith("Skybox/", StringComparison.Ordinal))
+            {
+                return source;
+            }
+
+            Shader shader = Shader.Find(StylizedPropShaderName);
+            if (shader == null)
+            {
+                Debug.LogError($"Cannot find stylized prop shader: {StylizedPropShaderName}");
+                return source;
+            }
+
+            string sourcePath = AssetDatabase.GetAssetPath(source);
+            string sourceAssetName = string.IsNullOrEmpty(sourcePath)
+                ? "generated"
+                : Path.GetFileNameWithoutExtension(sourcePath);
+            string safeName = SanitizeAssetName($"{sourceAssetName}_{source.name}");
+            string materialPath = $"{PropMaterialRoot}/{safeName}.mat";
+            Material material = AssetDatabase.LoadAssetAtPath<Material>(materialPath);
+            if (material == null)
+            {
+                material = new Material(shader) { name = $"HD2D_{safeName}" };
+                AssetDatabase.CreateAsset(material, materialPath);
+            }
+            else if (material.shader != shader)
+            {
+                material.shader = shader;
+            }
+
+            Texture texture = source.HasProperty("_MainTex")
+                ? source.GetTexture("_MainTex")
+                : source.HasProperty("_BaseMap") ? source.GetTexture("_BaseMap") : null;
+            Color color = source.HasProperty("_Color")
+                ? source.GetColor("_Color")
+                : source.HasProperty("_BaseColor") ? source.GetColor("_BaseColor") : Color.white;
+            color.a = 1f;
+            material.SetTexture("_MainTex", texture);
+            material.SetColor("_Color", color);
+            material.SetFloat("_Saturation", 0.72f);
+            material.SetFloat("_Contrast", 0.88f);
+            if (source.HasProperty("_MainTex"))
+            {
+                material.SetTextureScale("_MainTex", source.GetTextureScale("_MainTex"));
+                material.SetTextureOffset("_MainTex", source.GetTextureOffset("_MainTex"));
+            }
+            EditorUtility.SetDirty(material);
+            return material;
+        }
+
+        private static string SanitizeAssetName(string value)
+        {
+            char[] characters = value
+                .Select(character => char.IsLetterOrDigit(character) || character == '_' || character == '-'
+                    ? character
+                    : '_')
+                .ToArray();
+            string result = new string(characters).Trim('_');
+            return string.IsNullOrEmpty(result) ? "material" : result;
+        }
+
+        private static void ConfigureActorGroundShadows(Material shadowMaterial)
+        {
+            if (shadowMaterial == null)
+            {
+                return;
+            }
+
+            int actorCount = 0;
+            foreach (SpriteFrameAnimator animator in UnityEngine.Object.FindObjectsByType<SpriteFrameAnimator>(
+                         FindObjectsInactive.Include, FindObjectsSortMode.None))
+            {
+                Transform actorTransform = animator.transform.parent;
+                if (actorTransform == null)
+                {
+                    continue;
+                }
+
+                BillboardSprite billboard = animator.GetComponent<BillboardSprite>();
+                if (billboard != null)
+                {
+                    billboard.alignment = BillboardAlignment.CameraPlane;
+                    EditorUtility.SetDirty(billboard);
+                }
+
+                ActorGroundShadow shadow = actorTransform.GetComponent<ActorGroundShadow>();
+                if (shadow == null)
+                {
+                    shadow = actorTransform.gameObject.AddComponent<ActorGroundShadow>();
+                }
+
+                shadow.visualRoot = animator.transform;
+                shadow.shadowMaterial = shadowMaterial;
+                shadow.baseSize = actorTransform.name == "Player"
+                    ? new Vector2(0.58f, 0.25f)
+                    : new Vector2(0.52f, 0.23f);
+                shadow.opacity = actorTransform.name == "Player" ? 0.38f : 0.32f;
+                EditorUtility.SetDirty(shadow);
+                actorCount++;
+            }
+
+            Debug.Log($"Configured camera-plane billboards and contact shadows for {actorCount} map actors.");
+        }
+
+        private static void ConfigureScenicSpriteMaterials(Transform mapRoot, Material scenicMaterial)
+        {
+            if (scenicMaterial == null)
+            {
+                return;
+            }
+
+            Transform hd2dRoot = mapRoot.Find("HD2D Main World Art");
+            if (hd2dRoot == null)
+            {
+                return;
+            }
+
+            int spriteCount = 0;
+            foreach (SpriteRenderer renderer in hd2dRoot.GetComponentsInChildren<SpriteRenderer>(true))
+            {
+                if (!HasAncestorNamed(renderer.transform, "Boundary Forest Belt", hd2dRoot) &&
+                    !HasAncestorNamed(renderer.transform, "Pixel Scenic Cutouts", hd2dRoot))
+                {
+                    continue;
+                }
+
+                renderer.sharedMaterial = scenicMaterial;
+                Color color = renderer.color;
+                color.a = Mathf.Min(color.a, 0.86f);
+                renderer.color = color;
+                BillboardSprite billboard = renderer.GetComponent<BillboardSprite>();
+                if (billboard != null)
+                {
+                    billboard.alignment = BillboardAlignment.CameraPlane;
+                    EditorUtility.SetDirty(billboard);
+                }
+                EditorUtility.SetDirty(renderer);
+                spriteCount++;
+            }
+
+            Debug.Log($"Applied low-contrast scenic treatment to {spriteCount} HD-2D sprite cutouts.");
+        }
+
+        private static bool HasAncestorNamed(Transform target, string ancestorName, Transform stopAt)
+        {
+            Transform current = target;
+            while (current != null && current != stopAt)
+            {
+                if (current.name == ancestorName)
+                {
+                    return true;
+                }
+                current = current.parent;
+            }
+            return false;
+        }
+
+        private static void ConfigureResponsiveHd2dCamera()
+        {
+            Camera camera = Camera.main ?? UnityEngine.Object.FindAnyObjectByType<Camera>();
+            if (camera == null)
+            {
+                return;
+            }
+
+            CameraFollow follow = camera.GetComponent<CameraFollow>();
+            if (follow == null)
+            {
+                return;
+            }
+
+            follow.offset = new Vector3(7.8f, 7.2f, -14f);
+            follow.portraitOffset = new Vector3(9.4f, 10.2f, -18f);
+            follow.lookAtHeight = 0.72f;
+            follow.landscapeFieldOfView = 34f;
+            follow.portraitFieldOfView = 40f;
+            camera.fieldOfView = follow.landscapeFieldOfView;
+
+            if (follow.target != null)
+            {
+                float previewVisionScale = Mathf.Clamp(
+                    follow.initialVisionScale,
+                    0.4f,
+                    follow.maximumVisionScale);
+                camera.transform.position = follow.target.position + follow.offset * previewVisionScale;
+                Vector3 lookTarget = follow.target.position + Vector3.up * follow.lookAtHeight;
+                camera.transform.rotation = Quaternion.LookRotation(
+                    lookTarget - camera.transform.position,
+                    Vector3.up);
+            }
+
+            EditorUtility.SetDirty(camera);
+            EditorUtility.SetDirty(follow);
         }
 
         private static Material GetOrCreateWorldSurfaceMaterial(
@@ -3841,6 +4187,7 @@ namespace WuxiaRoguelite.EditorTools
 
             bounds = CalculateRendererBounds(instance);
             instance.transform.position += Vector3.up * (position.y - bounds.min.y);
+            ApplyStylizedMapMaterials(instance.transform, false);
             return instance;
         }
 
@@ -3863,7 +4210,7 @@ namespace WuxiaRoguelite.EditorTools
 
         private static Material Material(string name, Color color)
         {
-            Shader shader = Shader.Find("Universal Render Pipeline/Lit");
+            Shader shader = Shader.Find(StylizedPropShaderName);
             if (shader == null)
             {
                 shader = Shader.Find("Standard");
@@ -3874,6 +4221,8 @@ namespace WuxiaRoguelite.EditorTools
                 name = name,
                 color = color
             };
+            if (material.HasProperty("_Saturation")) material.SetFloat("_Saturation", 0.72f);
+            if (material.HasProperty("_Contrast")) material.SetFloat("_Contrast", 0.88f);
             return material;
         }
 
@@ -3926,11 +4275,20 @@ namespace WuxiaRoguelite.EditorTools
             renderer.sprite = firstFrame;
             renderer.color = Color.white;
             renderer.sortingOrder = 10;
-            visual.AddComponent<BillboardSprite>();
+            BillboardSprite billboard = visual.AddComponent<BillboardSprite>();
+            billboard.alignment = BillboardAlignment.CameraPlane;
             SpriteFrameAnimator animator = visual.AddComponent<SpriteFrameAnimator>();
             animator.idleFrames = idleFrames;
             animator.moveFrames = moveFrames;
             animator.framesPerSecond = 10f;
+
+            ActorGroundShadow shadow = actor.AddComponent<ActorGroundShadow>();
+            shadow.visualRoot = visual.transform;
+            shadow.shadowMaterial = GetOrCreateActorGroundShadowMaterial();
+            shadow.baseSize = name == "Player"
+                ? new Vector2(0.58f, 0.25f)
+                : new Vector2(0.52f, 0.23f);
+            shadow.opacity = name == "Player" ? 0.38f : 0.32f;
 
             return actor;
         }

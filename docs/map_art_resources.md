@@ -15,12 +15,13 @@
 - `Tools/ArtPipeline/prepare_hd2d_world_art.py` 负责统一尺寸、透明裁切、水面无缝化、雾带与光束生成，并输出水面 2×2 平铺预览。
 - `Assets/Art/Generated/Environment/Shaders/HD2DWaterSurface.shader` 提供低反射、双层缓慢流动的青瓷色水面。
 - `37 MiniGame > Apply HD-2D Main World Art` 会重建 `HD2D Main World Art` 场景根节点，生成弯曲河道与土岸、远景地台、像素景观切片、雾层、地标暖光，并调整主地图镜头至更低的斜俯视角。
+- `37 MiniGame > Apply HD-2D Cohesion Pass` 可单独重应用融合优化：统一 3D 场景哑光材质、2D 风景切片空气透视材质、角色镜头朝向、贴地接触阴影以及横竖屏响应式镜头。
 - 河面现在是不可通行地形：沿水面生成低成本分段 `BoxCollider`，只在西林、中央驿路和东郊三座 KayKit 桥梁处留出通行缺口；桥面不抬高玩家的固定移动平面。
 - `MainMapRiverLayout` 统一保存河道中心线、宽度和桥点。场景应用时自动迁出压在水面的怪物、洞穴、拾取物与指定景观资产；`37 MiniGame > Validate Main World River Crossings` 可检查桥、阻挡段与遭遇物安全距离。
 - 西、中央、东三条过河主路已对齐对应桥位；远东与远西外圈道路在河岸处分段，西林支路在河前收口，不再出现路面穿过不可通行水域的错误引导。
 - 山河远景由北侧单张切片升级为水平无缝的 `2048 × 1024` 全景天空盒，四面共享同一套低对比远山与雾色，不再在东西边缘露出竖直贴图墙。
 - 远景地台与气氛装饰仍不带 Collider，不改变原有地图外边界和遭遇触发器。
-- 横屏 Unity Game 视图已完成构图与可读性检查；当前状态为 `InEngineQA`，仍需在目标机型完成横竖屏连续试玩后进入 `Approved`。
+- 横屏 `960 × 540` 与竖屏 `540 × 960` Unity Game 视图已完成构图、角色接地和路线可读性检查；WebGL Development Build、中文字体与 4 组 UI Safe Area 校验通过。当前状态为 `InEngineQA`，仍需在目标机型完成横竖屏连续试玩后进入 `Approved`。
 
 ## 主地图地面 v02
 
