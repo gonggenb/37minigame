@@ -44,7 +44,7 @@ namespace WuxiaRoguelite.Player
                 effectSummary: "每 3 次命中追加 35% 攻击剑气"));
             AddItem(Item("light_scale", "轻鳞衣", EquipmentSlot.Armor,
                 EquipmentRarity.Fine, defense: 2f, health: 18f,
-                openingShield: 10f, effectSummary: "每场战斗获得 10 点护盾"));
+                openingShield: 10f, effectSummary: "每场战斗获得 10,000 点护盾"));
             AddItem(Item("practice_bracer", "练功护腕", EquipmentSlot.Accessory,
                 EquipmentRarity.Common, speed: 0.08f,
                 criticalCooldownMultiplier: 0.70f,
@@ -316,7 +316,7 @@ namespace WuxiaRoguelite.Player
 
             treasurePool.Add(Item("black_iron_ring", "玄铁戒", EquipmentSlot.Accessory,
                 EquipmentRarity.Rare, attack: 2f, crit: 0.04f,
-                armorBreakPerHit: 0.35f, effectSummary: "命中破甲 0.35"));
+                armorBreakPerHit: 0.35f, effectSummary: "命中破甲 350"));
             treasurePool.Add(Item("wanderer_cloak", "游侠披风", EquipmentSlot.Armor,
                 EquipmentRarity.Rare, health: 12f, dodge: 0.04f,
                 dodgeHealRatio: 0.03f, effectSummary: "闪避时恢复 3% 气血"));
@@ -328,10 +328,10 @@ namespace WuxiaRoguelite.Player
                 criticalCooldownMultiplier: 0.82f, effectSummary: "暴击后下次攻击间隔缩短 18%"));
             treasurePool.Add(Item("bone_rot_gloves", "腐骨手套", EquipmentSlot.Accessory,
                 EquipmentRarity.Rare, attack: 2f, armorBreakPerHit: 0.55f,
-                effectSummary: "命中破甲 0.55"));
+                effectSummary: "命中破甲 550"));
             treasurePool.Add(Item("black_tortoise_armor", "玄武甲", EquipmentSlot.Armor,
                 EquipmentRarity.Rare, defense: 4f, health: 28f, openingShield: 16f,
-                effectSummary: "每场战斗获得 16 点护盾"));
+                effectSummary: "每场战斗获得 16,000 点护盾"));
             treasurePool.Add(Item("nightwalker_cloak", "夜行披风", EquipmentSlot.Armor,
                 EquipmentRarity.Rare, health: 14f, dodge: 0.07f, dodgeHealRatio: 0.02f,
                 effectSummary: "闪避时恢复 2% 气血"));
@@ -343,7 +343,7 @@ namespace WuxiaRoguelite.Player
                 effectSummary: "命中额外施加 2 层毒"));
             treasurePool.Add(Item("mountain_bracer", "镇岳护腕", EquipmentSlot.Accessory,
                 EquipmentRarity.Rare, defense: 2f, openingShield: 12f,
-                effectSummary: "开战护盾 +12"));
+                effectSummary: "开战护盾 +12,000"));
             treasurePool.Add(Item("swallow_boots", "飞燕靴", EquipmentSlot.Armor,
                 EquipmentRarity.Rare, speed: 0.10f, dodge: 0.06f,
                 effectSummary: "攻速与闪避同步提升"));

@@ -23,10 +23,17 @@ namespace WuxiaRoguelite.Battle
         public bool LastAttackWasDodged { get; private set; }
         public float LastDamage { get; private set; }
         public string LastTriggeredEffect { get; private set; } = string.Empty;
+        public string LastSkillVfxName { get; private set; } = string.Empty;
         public BattleVfxCue LastVfxCues { get; private set; }
         public int PlayerSuccessfulHits { get; private set; }
         public int EnemyAttackAttempts { get; private set; }
         public int EnemyPoisonStacks { get; private set; }
+        public int EnemyPoisonMaxStacks => playerStats == null
+            ? 8
+            : 8 + playerStats.GetMartialArtRank("百毒心经") * 4 +
+              playerStats.GetMartialArtRank("化功毒雾") * 3;
+        public int LastPoisonStackDelta { get; private set; }
+        public float LastPoisonDamage { get; private set; }
         public float EnemyArmorBreak { get; private set; }
         public float PlayerShield { get; private set; }
         public float PlayerAttackCooldownRemaining { get; private set; }
@@ -130,10 +137,13 @@ namespace WuxiaRoguelite.Battle
             LastAttackWasCritical = false;
             LastAttackWasDodged = false;
             LastTriggeredEffect = string.Empty;
+            LastSkillVfxName = string.Empty;
             LastVfxCues = BattleVfxCue.None;
             PlayerSuccessfulHits = 0;
             EnemyAttackAttempts = 0;
             EnemyPoisonStacks = 0;
+            LastPoisonStackDelta = 0;
+            LastPoisonDamage = 0f;
             EnemyArmorBreak = 0f;
             poisonTickCooldown = 1f;
             martialArtLastActivationTimes.Clear();
@@ -143,7 +153,7 @@ namespace WuxiaRoguelite.Battle
                 RegisterMartialArtActivation("金钟罩");
             }
             battleLog = PlayerShield > 0f
-                ? $"遭遇 {currentEnemy.displayName}，护盾 +{PlayerShield:0}"
+                ? $"遭遇 {currentEnemy.displayName}，护盾 {CombatNumberDisplay.FormatSigned(PlayerShield)}"
                 : $"遭遇 {currentEnemy.displayName}";
             battleRoutine = StartCoroutine(RunBattle(onComplete));
         }
@@ -160,7 +170,10 @@ namespace WuxiaRoguelite.Battle
             currentEnemy = null;
             PlayerShield = 0f;
             EnemyPoisonStacks = 0;
+            LastPoisonStackDelta = 0;
+            LastPoisonDamage = 0f;
             EnemyArmorBreak = 0f;
+            LastSkillVfxName = string.Empty;
             LastVfxCues = BattleVfxCue.None;
             PlayerAttackCooldownRemaining = 0f;
             PlayerAttackCooldownDuration = 0f;
@@ -251,6 +264,9 @@ namespace WuxiaRoguelite.Battle
             LastAttackWasDodged = false;
             LastDamage = 0f;
             LastTriggeredEffect = string.Empty;
+            LastSkillVfxName = string.Empty;
+            LastPoisonStackDelta = 0;
+            LastPoisonDamage = 0f;
             LastVfxCues = BattleVfxCue.None;
             AttackSequence += 1;
 
@@ -274,6 +290,7 @@ namespace WuxiaRoguelite.Battle
                     {
                         LastVfxCues |= BattleVfxCue.ShadowDodge;
                         RegisterMartialArtActivation("无相残影");
+                        FeatureSkillVfx("无相残影");
                         LastTriggeredEffect = string.IsNullOrEmpty(LastTriggeredEffect)
                             ? "无相残影"
                             : LastTriggeredEffect + " · 无相残影";
@@ -302,6 +319,7 @@ namespace WuxiaRoguelite.Battle
                     attackPower *= 1f + 0.20f + openingRank * 0.25f;
                     LastVfxCues |= BattleVfxCue.OpeningStrike;
                     RegisterMartialArtActivation("惊鸿一式");
+                    FeatureSkillVfx("惊鸿一式");
                 }
 
                 int bloodBattleRank = playerStats.GetMartialArtRank("血战八方");
@@ -310,6 +328,7 @@ namespace WuxiaRoguelite.Battle
                     attackPower *= 1f + 0.06f + bloodBattleRank * 0.12f;
                     LastVfxCues |= BattleVfxCue.BloodPower;
                     RegisterMartialArtActivation("血战八方");
+                    FeatureSkillVfx("血战八方");
                 }
             }
 
@@ -369,7 +388,7 @@ namespace WuxiaRoguelite.Battle
             if (shieldAbsorbed > 0f)
             {
                 LastVfxCues |= BattleVfxCue.ShieldImpact;
-                effects[effectCount++] = $"护盾抵消 {shieldAbsorbed:0}";
+                effects[effectCount++] = $"护盾抵消 {CombatNumberDisplay.Format(shieldAbsorbed)}";
             }
 
             if (isPlayerAttack)
@@ -381,14 +400,14 @@ namespace WuxiaRoguelite.Battle
                 if (swordQiDamage > 0f)
                 {
                     totalDamage += swordQiDamage;
-                    effects[effectCount++] = $"剑气 {swordQiDamage:0}";
+                    effects[effectCount++] = $"剑气 {CombatNumberDisplay.Format(swordQiDamage)}";
                 }
                 float comboDamage = ApplySwiftCapstone(attacker, defender);
                 if (comboDamage > 0f)
                 {
                     triggeredSwiftCapstone = true;
                     totalDamage += comboDamage;
-                    effects[effectCount++] = $"连环剑 {comboDamage:0}";
+                    effects[effectCount++] = $"连环剑 {CombatNumberDisplay.Format(comboDamage)}";
                 }
             }
             else if (damage > 0f)
@@ -396,7 +415,7 @@ namespace WuxiaRoguelite.Battle
                 float reflectedDamage = ApplyRetaliation(attacker);
                 if (reflectedDamage > 0f)
                 {
-                    effects[effectCount++] = $"反震 {reflectedDamage:0}";
+                    effects[effectCount++] = $"反震 {CombatNumberDisplay.Format(reflectedDamage)}";
                 }
             }
 
@@ -418,11 +437,12 @@ namespace WuxiaRoguelite.Battle
             {
                 LastVfxCues |= BattleVfxCue.BloodBurst;
                 RegisterMartialArtActivation("修罗血域");
+                FeatureSkillVfx("修罗血域");
             }
 
             string attackText = isCrit
-                ? $"{attacker.displayName} 暴击造成 {totalDamage:0} 伤害"
-                : $"{attacker.displayName} 造成 {totalDamage:0} 伤害";
+                ? $"{attacker.displayName} 暴击造成 {CombatNumberDisplay.Format(totalDamage)} 伤害"
+                : $"{attacker.displayName} 造成 {CombatNumberDisplay.Format(totalDamage)} 伤害";
             battleLog = string.IsNullOrEmpty(LastTriggeredEffect)
                 ? attackText
                 : $"{attackText}（{LastTriggeredEffect}）";
@@ -483,7 +503,7 @@ namespace WuxiaRoguelite.Battle
                 float heal = playerStats.runtimeStats.maxHealth * healRatio;
                 playerStats.runtimeStats.Heal(heal);
                 LastVfxCues |= BattleVfxCue.Heal;
-                LastTriggeredEffect = $"闪避回血 {heal:0}";
+                LastTriggeredEffect = $"闪避回血 {CombatNumberDisplay.Format(heal)}";
             }
 
             int bellShadowRank = playerStats.GetSecretRank("虚实金钟");
@@ -493,8 +513,8 @@ namespace WuxiaRoguelite.Battle
                 PlayerShield += shieldGain;
                 LastVfxCues |= BattleVfxCue.ShieldImpact;
                 LastTriggeredEffect = string.IsNullOrEmpty(LastTriggeredEffect)
-                    ? $"虚实金钟 +{shieldGain:0}盾"
-                    : LastTriggeredEffect + $" · 虚实金钟 +{shieldGain:0}盾";
+                    ? $"虚实金钟 {CombatNumberDisplay.FormatSigned(shieldGain)}盾"
+                    : LastTriggeredEffect + $" · 虚实金钟 {CombatNumberDisplay.FormatSigned(shieldGain)}盾";
             }
 
             int pursuitRank = playerStats.GetSecretRank("无影追风");
@@ -523,10 +543,11 @@ namespace WuxiaRoguelite.Battle
 
             EnemyArmorBreak = Mathf.Min(currentEnemy.defense, EnemyArmorBreak + amount);
             LastVfxCues |= BattleVfxCue.ArmorBreak;
-            effects[effectCount++] = $"破甲 {EnemyArmorBreak:0.0}";
+            effects[effectCount++] = $"破甲 {CombatNumberDisplay.Format(EnemyArmorBreak)}";
             if (rank > 0)
             {
                 RegisterMartialArtActivation("破甲掌");
+                FeatureSkillVfx("破甲掌");
             }
         }
 
@@ -543,14 +564,19 @@ namespace WuxiaRoguelite.Battle
                 return;
             }
 
-            int poisonHeartRank = playerStats.GetMartialArtRank("百毒心经");
-            int maxStacks = 8 + poisonHeartRank * 4 + playerStats.GetMartialArtRank("化功毒雾") * 3;
-            EnemyPoisonStacks = Mathf.Min(maxStacks, EnemyPoisonStacks + stacks);
+            int stacksBefore = EnemyPoisonStacks;
+            EnemyPoisonStacks = Mathf.Min(EnemyPoisonMaxStacks, EnemyPoisonStacks + stacks);
+            LastPoisonStackDelta += EnemyPoisonStacks - stacksBefore;
             LastVfxCues |= BattleVfxCue.PoisonApplied;
             effects[effectCount++] = $"毒 {EnemyPoisonStacks}";
             if (playerStats.GetMartialArtRank("毒砂掌") > 0)
             {
                 RegisterMartialArtActivation("毒砂掌");
+                FeatureSkillVfx("毒砂掌");
+            }
+            else
+            {
+                FeatureSkillVfx("淬毒");
             }
         }
 
@@ -565,6 +591,7 @@ namespace WuxiaRoguelite.Battle
                 {
                     ratio += 0.4f + rank * 0.2f;
                     RegisterMartialArtActivation("剑气诀");
+                    FeatureSkillVfx("剑气诀");
                 }
             }
 
@@ -584,10 +611,13 @@ namespace WuxiaRoguelite.Battle
             int temperedPoisonRank = playerStats.GetSecretRank("青锋淬毒");
             if (temperedPoisonRank > 0 && currentEnemy != null)
             {
-                int maxStacks = 8 + playerStats.GetMartialArtRank("百毒心经") * 4 +
-                                playerStats.GetMartialArtRank("化功毒雾") * 3;
-                EnemyPoisonStacks = Mathf.Min(maxStacks, EnemyPoisonStacks + temperedPoisonRank);
+                int stacksBefore = EnemyPoisonStacks;
+                EnemyPoisonStacks = Mathf.Min(
+                    EnemyPoisonMaxStacks,
+                    EnemyPoisonStacks + temperedPoisonRank);
+                LastPoisonStackDelta += EnemyPoisonStacks - stacksBefore;
                 LastVfxCues |= BattleVfxCue.PoisonApplied;
+                FeatureSkillVfx("青锋淬毒");
             }
             return damage;
         }
@@ -610,6 +640,7 @@ namespace WuxiaRoguelite.Battle
             ApplyDamageToCurrentEnemy(damage);
             LastVfxCues |= BattleVfxCue.SwiftCombo;
             RegisterMartialArtActivation("无影连环剑");
+            FeatureSkillVfx("无影连环剑");
             return damage;
         }
 
@@ -626,6 +657,7 @@ namespace WuxiaRoguelite.Battle
             ApplyDamageToCurrentEnemy(damage);
             LastVfxCues |= BattleVfxCue.Retaliation;
             RegisterMartialArtActivation("反震诀");
+            FeatureSkillVfx("反震诀");
             return damage;
         }
 
@@ -638,6 +670,9 @@ namespace WuxiaRoguelite.Battle
 
             int poisonHeartRank = playerStats.GetMartialArtRank("百毒心经");
             LastVfxCues = BattleVfxCue.PoisonTick;
+            LastSkillVfxName = string.Empty;
+            LastPoisonStackDelta = 0;
+            LastPoisonDamage = 0f;
             float damage = EnemyPoisonStacks * (0.55f + poisonHeartRank * 0.25f);
             int poisonMistRank = playerStats.GetMartialArtRank("化功毒雾");
             if (poisonMistRank > 0)
@@ -646,6 +681,7 @@ namespace WuxiaRoguelite.Battle
                 damage *= 1f + 0.05f + poisonMistRank * 0.15f;
                 EnemyArmorBreak = Mathf.Min(currentEnemy.defense, EnemyArmorBreak + poisonMistRank * 0.45f);
                 RegisterMartialArtActivation("化功毒雾");
+                FeatureSkillVfx("化功毒雾");
             }
             ApplyDamageToCurrentEnemy(damage);
 
@@ -669,9 +705,14 @@ namespace WuxiaRoguelite.Battle
             LastAttackWasCritical = false;
             LastAttackWasDodged = false;
             LastDamage = damage;
+            LastPoisonDamage = damage;
             LastTriggeredEffect = $"毒发 {EnemyPoisonStacks} 层";
             AttackSequence += 1;
             RegisterMartialArtActivation("毒砂掌");
+            if (string.IsNullOrEmpty(LastSkillVfxName))
+            {
+                FeatureSkillVfx("毒发");
+            }
             if (poisonHeartRank > 0)
             {
                 RegisterMartialArtActivation("百毒心经");
@@ -680,7 +721,7 @@ namespace WuxiaRoguelite.Battle
             {
                 RegisterMartialArtActivation("吸星诀");
             }
-            battleLog = $"{currentEnemy.displayName} 毒发，受到 {damage:0} 伤害";
+            battleLog = $"{currentEnemy.displayName} 毒发，受到 {CombatNumberDisplay.Format(damage)} 伤害";
         }
 
         private void UpdateBossPhase()
@@ -729,6 +770,9 @@ namespace WuxiaRoguelite.Battle
             LastAttackWasDodged = false;
             LastDamage = 0f;
             LastTriggeredEffect = string.Empty;
+            LastSkillVfxName = GameTextCatalog.FinalBossFoxfireSkillName;
+            LastPoisonStackDelta = 0;
+            LastPoisonDamage = 0f;
             LastVfxCues = BattleVfxCue.Foxfire;
             AttackSequence += 1;
 
@@ -778,7 +822,7 @@ namespace WuxiaRoguelite.Battle
             LastTriggeredEffect = $"{GameTextCatalog.FinalBossFoxfireSkillName} {landedHits}中{dodgedHits}避";
             TriggerBossSkill(BossSkillId.FoxfireBarrage,
                 landedHits > 0
-                    ? $"{currentEnemy.displayName}施展狐火连击，造成 {totalDamage:0} 伤害"
+                    ? $"{currentEnemy.displayName}施展狐火连击，造成 {CombatNumberDisplay.Format(totalDamage)} 伤害"
                     : $"{currentEnemy.displayName}施展狐火连击，尽数被闪开");
         }
 
@@ -846,6 +890,14 @@ namespace WuxiaRoguelite.Battle
             if (!string.IsNullOrEmpty(artId))
             {
                 martialArtLastActivationTimes[artId] = Time.unscaledTime;
+            }
+        }
+
+        private void FeatureSkillVfx(string skillName)
+        {
+            if (!string.IsNullOrEmpty(skillName))
+            {
+                LastSkillVfxName = skillName;
             }
         }
 

@@ -865,7 +865,7 @@ namespace WuxiaRoguelite.UI
 
             ResponsiveGui.DrawSingleLineLabel(
                 new Rect(contentX + 7f, hud.y + 26f, contentWidth - 14f, 15f),
-                $"气血  {playerStats.runtimeStats.currentHealth:0}/{playerStats.runtimeStats.maxHealth:0}",
+                $"气血  {CombatNumberDisplay.Format(playerStats.runtimeStats.currentHealth)}/{CombatNumberDisplay.Format(playerStats.runtimeStats.maxHealth)}",
                 hudValueStyle, 8);
             Rect healthRect = new Rect(contentX + 7f, hud.y + 43f, contentWidth - 14f, 13f);
             DrawHealthBar(healthRect, playerStats.runtimeStats.HealthRatio);
@@ -954,7 +954,7 @@ namespace WuxiaRoguelite.UI
             Rect health = new Rect(hud.x + 10f, hud.y + 23f, hud.width - 20f, 19f);
             DrawHealthBar(health, playerStats.runtimeStats.HealthRatio);
             ResponsiveGui.DrawSingleLineLabel(health,
-                $"气血  {playerStats.runtimeStats.currentHealth:0} / {playerStats.runtimeStats.maxHealth:0}",
+                $"气血  {CombatNumberDisplay.Format(playerStats.runtimeStats.currentHealth)} / {CombatNumberDisplay.Format(playerStats.runtimeStats.maxHealth)}",
                 hudValueStyle, 8);
 
             Rect loadout = new Rect(hud.x + 6f, hud.y + (portraitLayout ? 45f : 48f),
@@ -1796,8 +1796,8 @@ namespace WuxiaRoguelite.UI
                 bodyStyle, 9);
 
             float y = rect.y + 72f;
-            DrawStatRow(new Rect(rect.x, y, rect.width, 27f), "气血", $"{playerStats.runtimeStats.currentHealth:0}/{playerStats.runtimeStats.maxHealth:0}", "攻击", playerStats.runtimeStats.attack.ToString("0"));
-            DrawStatRow(new Rect(rect.x, y + 31f, rect.width, 27f), "防御", playerStats.runtimeStats.defense.ToString("0"), "攻速", playerStats.runtimeStats.attackSpeed.ToString("0.00"));
+            DrawStatRow(new Rect(rect.x, y, rect.width, 27f), "气血", $"{CombatNumberDisplay.Format(playerStats.runtimeStats.currentHealth)}/{CombatNumberDisplay.Format(playerStats.runtimeStats.maxHealth)}", "攻击", CombatNumberDisplay.Format(playerStats.runtimeStats.attack));
+            DrawStatRow(new Rect(rect.x, y + 31f, rect.width, 27f), "防御", CombatNumberDisplay.Format(playerStats.runtimeStats.defense), "攻速", playerStats.runtimeStats.attackSpeed.ToString("0.00"));
             DrawStatRow(new Rect(rect.x, y + 62f, rect.width, 27f), "暴击", $"{playerStats.runtimeStats.critChance * 100f:0.#}%", "闪避", $"{playerStats.runtimeStats.dodgeChance * 100f:0.#}%");
             DrawStatRow(new Rect(rect.x, y + 93f, rect.width, 27f), "吸血", $"{playerStats.runtimeStats.lifeSteal * 100f:0.#}%", "移速", playerStats.CurrentMoveSpeed.ToString("0.0"));
 

@@ -59,7 +59,7 @@ namespace WuxiaRoguelite.Player
                 { "meditation_mat", new RunRelicDefinition("meditation_mat", "悟道蒲团", "立即获得 12 修为", "relic_meditation_mat") },
                 { "broken_sword_tassel", new RunRelicDefinition("broken_sword_tassel", "断剑穗", "攻速 +0.08", "relic_broken_sword_tassel") },
                 { "toad_jade", new RunRelicDefinition("toad_jade", "毒蟾玉", "吸血 +3%", "relic_toad_jade") },
-                { "mountain_bell", new RunRelicDefinition("mountain_bell", "镇岳铃", "防御 +1.5", "relic_mountain_bell") },
+                { "mountain_bell", new RunRelicDefinition("mountain_bell", "镇岳铃", "防御 +1,500", "relic_mountain_bell") },
                 { "shadow_jade", new RunRelicDefinition("shadow_jade", "影纹玉佩", "闪避 +4%", "relic_shadow_jade") },
                 { "blood_marrow_pearl", new RunRelicDefinition("blood_marrow_pearl", "血髓珠", "最大气血 +12%", "relic_blood_marrow_pearl") }
             };
@@ -68,7 +68,7 @@ namespace WuxiaRoguelite.Player
             new Dictionary<string, RunConsumableDefinition>
             {
                 { "healing_salve", new RunConsumableDefinition("healing_salve", "金疮药", "恢复 45% 最大气血", "consumable_healing_salve") },
-                { "tiger_bone_pill", new RunConsumableDefinition("tiger_bone_pill", "虎骨丸", "本局防御 +1.5", "consumable_tiger_bone_pill") },
+                { "tiger_bone_pill", new RunConsumableDefinition("tiger_bone_pill", "虎骨丸", "本局防御 +1,500", "consumable_tiger_bone_pill") },
                 { "lightness_powder", new RunConsumableDefinition("lightness_powder", "轻灵散", "本局移动速度 +12%", "consumable_lightness_powder") },
                 { "red_sun_pill", new RunConsumableDefinition("red_sun_pill", "赤阳丹", "本局攻击 +12%", "consumable_red_sun_pill") },
                 { "foundation_pill", new RunConsumableDefinition("foundation_pill", "培元丹", "最大气血 +10%", "consumable_foundation_pill") },

@@ -979,7 +979,7 @@ namespace WuxiaRoguelite.GameFlow
                     break;
                 case HerbEffectType.Defense:
                     playerStats.ApplyDefenseBuff(encounter.herbBuffValue);
-                    statusMessage = $"服下铁骨草：本局防御 +{encounter.herbBuffValue:0.#}。";
+                    statusMessage = $"服下铁骨草：本局防御 {CombatNumberDisplay.FormatSigned(encounter.herbBuffValue)}。";
                     break;
                 case HerbEffectType.MoveSpeed:
                     playerStats.ApplyMoveSpeedBuff(encounter.herbBuffValue);
@@ -990,7 +990,7 @@ namespace WuxiaRoguelite.GameFlow
                     float beforeHealth = playerStats.runtimeStats.currentHealth;
                     playerStats.HealPercent(encounter.healRatio);
                     float healed = playerStats.runtimeStats.currentHealth - beforeHealth;
-                    statusMessage = $"采到止血草：气血恢复 {healed:0}。";
+                    statusMessage = $"采到止血草：气血恢复 {CombatNumberDisplay.Format(healed)}。";
                     break;
             }
         }

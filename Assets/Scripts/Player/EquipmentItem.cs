@@ -1,4 +1,5 @@
 using System;
+using WuxiaRoguelite.Runtime;
 
 namespace WuxiaRoguelite.Player
 {
@@ -43,12 +44,12 @@ namespace WuxiaRoguelite.Player
             get
             {
                 string summary = string.Empty;
-                AppendBonus(ref summary, "攻击", attackBonus, false);
-                AppendBonus(ref summary, "防御", defenseBonus, false);
-                AppendBonus(ref summary, "气血", maxHealthBonus, false);
-                AppendBonus(ref summary, "攻速", attackSpeedBonus, true);
-                AppendBonus(ref summary, "暴击", critChanceBonus * 100f, true, "%");
-                AppendBonus(ref summary, "闪避", dodgeChanceBonus * 100f, true, "%");
+                AppendBonus(ref summary, "攻击", attackBonus, false, true);
+                AppendBonus(ref summary, "防御", defenseBonus, false, true);
+                AppendBonus(ref summary, "气血", maxHealthBonus, false, true);
+                AppendBonus(ref summary, "攻速", attackSpeedBonus, true, false);
+                AppendBonus(ref summary, "暴击", critChanceBonus * 100f, true, false, "%");
+                AppendBonus(ref summary, "闪避", dodgeChanceBonus * 100f, true, false, "%");
                 if (!string.IsNullOrEmpty(effectSummary))
                 {
                     if (!string.IsNullOrEmpty(summary))
@@ -68,7 +69,8 @@ namespace WuxiaRoguelite.Player
             return (EquipmentItem)MemberwiseClone();
         }
 
-        private static void AppendBonus(ref string summary, string label, float value, bool decimalValue, string suffix = "")
+        private static void AppendBonus(ref string summary, string label, float value,
+            bool decimalValue, bool combatValue, string suffix = "")
         {
             if (Math.Abs(value) < 0.001f)
             {
@@ -80,9 +82,10 @@ namespace WuxiaRoguelite.Player
                 summary += "  ";
             }
 
-            summary += decimalValue
-                ? $"{label} +{value:0.#}{suffix}"
-                : $"{label} +{value:0}{suffix}";
+            string displayedValue = combatValue
+                ? CombatNumberDisplay.Format(value)
+                : decimalValue ? value.ToString("0.#") : value.ToString("0");
+            summary += $"{label} +{displayedValue}{suffix}";
         }
     }
 }

@@ -67,6 +67,11 @@ namespace WuxiaRoguelite.UI
         private GUIStyle damageShadowStyle;
         private GUIStyle criticalDamageStyle;
         private GUIStyle criticalDamageShadowStyle;
+        private GUIStyle poisonValueStyle;
+        private GUIStyle poisonValueShadowStyle;
+        private GUIStyle poisonCaptionStyle;
+        private GUIStyle skillCalloutStyle;
+        private GUIStyle skillCalloutCaptionStyle;
         private GUIStyle bossWarningStyle;
         private GUIStyle bossCountdownStyle;
         private GUIStyle dialogueKickerStyle;
@@ -92,6 +97,10 @@ namespace WuxiaRoguelite.UI
         private bool hitFeedbackWasDodged;
         private bool hitFeedbackTargetedPlayer;
         private BattleVfxCue activeVfxCues;
+        private string activeSkillVfxName = string.Empty;
+        private int activePoisonStackDelta;
+        private int activePoisonStacks;
+        private float activePoisonDamage;
         private BattleVfxCue debugPreviewVfxCues;
         private float debugPreviewVfxUntil = -10f;
         private CombatantStats backgroundTrackedEnemy;
@@ -105,6 +114,8 @@ namespace WuxiaRoguelite.UI
         private const float DamageDisplayDuration = 0.72f;
         private const float HealthFlashDuration = 0.34f;
         private const float ImpactMarkerDuration = 0.28f;
+        private const float PoisonPopupDuration = 0.96f;
+        private const float SkillCalloutDuration = 0.72f;
 
         private static readonly Color Backdrop = new Color(0.055f, 0.075f, 0.09f, 1f);
         private static readonly Color DistantMountain = new Color(0.11f, 0.19f, 0.20f, 1f);
@@ -113,6 +124,8 @@ namespace WuxiaRoguelite.UI
         private static readonly Color PlayerColor = new Color(0.18f, 0.68f, 0.88f, 1f);
         private static readonly Color EnemyColor = new Color(0.82f, 0.22f, 0.17f, 1f);
         private static readonly Color Gold = new Color(0.82f, 0.66f, 0.32f, 1f);
+        private static readonly Color Poison = new Color(0.43f, 0.78f, 0.34f, 1f);
+        private static readonly Color PoisonDark = new Color(0.10f, 0.20f, 0.11f, 0.94f);
         private static readonly Color Panel = new Color(0.025f, 0.035f, 0.045f, 0.78f);
 
         private void Update()
@@ -273,10 +286,16 @@ namespace WuxiaRoguelite.UI
                 GetEnemySpriteTint());
             DrawBattleSkillVfx(playerRect, enemyRect,
                 enemyVisual != null ? enemyVisual.flipHorizontally : true);
+            DrawSkillCallout(playerRect, enemyRect);
             DrawImpactMarker(playerRect, playerDamageAmount, playerDamageStartedAt, playerDamageWasCritical, true);
             DrawImpactMarker(enemyRect, enemyDamageAmount, enemyDamageStartedAt, enemyDamageWasCritical, false);
             DrawDamagePopup(playerRect, playerDamageAmount, playerDamageStartedAt, playerDamageWasCritical, true);
-            DrawDamagePopup(enemyRect, enemyDamageAmount, enemyDamageStartedAt, enemyDamageWasCritical, false);
+            if ((activeVfxCues & BattleVfxCue.PoisonTick) == 0)
+            {
+                DrawDamagePopup(enemyRect, enemyDamageAmount, enemyDamageStartedAt, enemyDamageWasCritical, false);
+            }
+            DrawPoisonPopup(enemyRect);
+            DrawPoisonStatusBadge(enemyRect);
             DrawCombatMessage(stageRect, messageRect, actionProgress);
             DrawBossSkillBanner(stageRect);
             DrawBossApproachOverlay(width, height);
@@ -308,6 +327,19 @@ namespace WuxiaRoguelite.UI
             damageShadowStyle = CreateStyle(32, FontStyle.Bold, TextAnchor.MiddleCenter, new Color(0f, 0f, 0f, 0.9f));
             criticalDamageStyle = CreateStyle(38, FontStyle.Bold, TextAnchor.MiddleCenter, Color.white);
             criticalDamageShadowStyle = CreateStyle(38, FontStyle.Bold, TextAnchor.MiddleCenter, new Color(0f, 0f, 0f, 0.95f));
+            ConfigureFloatingNumberStyle(damageStyle);
+            ConfigureFloatingNumberStyle(damageShadowStyle);
+            ConfigureFloatingNumberStyle(criticalDamageStyle);
+            ConfigureFloatingNumberStyle(criticalDamageShadowStyle);
+            poisonValueStyle = CreateStyle(34, FontStyle.Bold, TextAnchor.MiddleCenter, Poison);
+            poisonValueShadowStyle = CreateStyle(34, FontStyle.Bold, TextAnchor.MiddleCenter,
+                new Color(0.015f, 0.03f, 0.012f, 0.96f));
+            poisonCaptionStyle = CreateStyle(13, FontStyle.Bold, TextAnchor.MiddleCenter,
+                new Color(0.78f, 0.92f, 0.66f));
+            skillCalloutStyle = CreateStyle(18, FontStyle.Bold, TextAnchor.MiddleCenter,
+                new Color(0.95f, 0.91f, 0.76f));
+            skillCalloutCaptionStyle = CreateStyle(10, FontStyle.Bold, TextAnchor.MiddleCenter,
+                new Color(0.72f, 0.73f, 0.66f));
             bossWarningStyle = CreateStyle(22, FontStyle.Bold, TextAnchor.MiddleCenter,
                 new Color(1f, 0.76f, 0.36f));
             bossCountdownStyle = CreateStyle(72, FontStyle.Bold, TextAnchor.MiddleCenter,
@@ -489,6 +521,10 @@ namespace WuxiaRoguelite.UI
             {
                 observedAttackSequence = 0;
                 attackStartedAt = -10f;
+                activeSkillVfxName = string.Empty;
+                activePoisonStackDelta = 0;
+                activePoisonStacks = 0;
+                activePoisonDamage = 0f;
                 return;
             }
 
@@ -500,6 +536,10 @@ namespace WuxiaRoguelite.UI
             observedAttackSequence = battleManager.AttackSequence;
             attackStartedAt = Time.unscaledTime;
             activeVfxCues = battleManager.LastVfxCues;
+            activeSkillVfxName = battleManager.LastSkillVfxName;
+            activePoisonStackDelta = battleManager.LastPoisonStackDelta;
+            activePoisonStacks = battleManager.EnemyPoisonStacks;
+            activePoisonDamage = battleManager.LastPoisonDamage;
             hitFeedbackStartedAt = Time.unscaledTime;
             hitFeedbackWasCritical = battleManager.LastAttackWasCritical;
             hitFeedbackWasDodged = battleManager.LastAttackWasDodged;
@@ -1040,18 +1080,18 @@ namespace WuxiaRoguelite.UI
 
             ResponsiveGui.DrawSingleLineLabel(
                 new Rect(bar.x, bar.y - 1f, bar.width, bar.height + 2f),
-                $"气血 {stats.currentHealth:0} / {stats.maxHealth:0}", centerStyle, 8);
+                $"气血 {CombatNumberDisplay.Format(stats.currentHealth)} / {CombatNumberDisplay.Format(stats.maxHealth)}", centerStyle, 8);
 
-            string statText = $"攻 {stats.attack:0} · 防 {stats.defense:0.#}";
+            string statText = $"攻 {CombatNumberDisplay.Format(stats.attack)} · 防 {CombatNumberDisplay.Format(stats.defense)}";
             string effectText;
             if (boss && battleManager.BossWard > 0f)
             {
-                effectText = $"妖甲 {battleManager.BossWard:0} · 毒 {battleManager.EnemyPoisonStacks} · 破甲 {battleManager.EnemyArmorBreak:0.0}";
+                effectText = $"妖甲 {CombatNumberDisplay.Format(battleManager.BossWard)} · 毒 {battleManager.EnemyPoisonStacks} · 破甲 {CombatNumberDisplay.Format(battleManager.EnemyArmorBreak)}";
             }
             else
             {
                 effectText = battleManager.EnemyPoisonStacks > 0 || battleManager.EnemyArmorBreak > 0f
-                    ? $"毒 {battleManager.EnemyPoisonStacks} · 破甲 {battleManager.EnemyArmorBreak:0.0}"
+                    ? $"毒 {battleManager.EnemyPoisonStacks} · 破甲 {CombatNumberDisplay.Format(battleManager.EnemyArmorBreak)}"
                     : boss ? battleManager.CurrentBossPhaseName : "状态正常";
             }
             if (compact)
@@ -1120,12 +1160,21 @@ namespace WuxiaRoguelite.UI
             float progress = age / DamageDisplayDuration;
             float alpha = 1f - Mathf.Clamp01((progress - 0.58f) / 0.42f);
             float rise = Mathf.Lerp(0f, 48f, progress);
-            float width = critical ? 240f : 190f;
-            float height = critical ? 52f : 44f;
-            Rect popup = new Rect(targetRect.center.x - width * 0.5f, targetRect.y - 16f - rise, width, height);
-            string text = critical ? $"暴击  -{damage:0}" : $"受击  -{damage:0}";
+            string displayedDamage = CombatNumberDisplay.Format(damage);
+            string text = critical ? $"暴击  -{displayedDamage}" : $"受击  -{displayedDamage}";
             GUIStyle foreground = critical ? criticalDamageStyle : damageStyle;
             GUIStyle shadow = critical ? criticalDamageShadowStyle : damageShadowStyle;
+            GUIContent content = new GUIContent(text);
+            float minimumWidth = critical ? 240f : 190f;
+            float maximumWidth = Mathf.Max(minimumWidth, ResponsiveGui.SafeArea.width - 12f);
+            float measuredWidth = Mathf.Max(foreground.CalcSize(content).x, shadow.CalcSize(content).x) + 24f;
+            float width = Mathf.Clamp(measuredWidth, minimumWidth, maximumWidth);
+            float height = critical ? 52f : 44f;
+            float popupX = Mathf.Clamp(
+                targetRect.center.x - width * 0.5f,
+                ResponsiveGui.SafeArea.x + 6f,
+                ResponsiveGui.SafeArea.xMax - width - 6f);
+            Rect popup = new Rect(popupX, targetRect.y - 16f - rise, width, height);
 
             Color previous = GUI.color;
             GUI.color = new Color(1f, 1f, 1f, alpha);
@@ -1183,12 +1232,17 @@ namespace WuxiaRoguelite.UI
                 poisonEffectFrames.Length > 0)
             {
                 int frameIndex = Mathf.FloorToInt(Time.unscaledTime * 7f) % poisonEffectFrames.Length;
-                float pulse = 0.16f + Mathf.Abs(Mathf.Sin(Time.unscaledTime * 3.2f)) * 0.10f;
-                float size = enemyRect.width * 1.08f;
+                float stackRatio = Mathf.Clamp01(
+                    battleManager.EnemyPoisonStacks /
+                    (float)Mathf.Max(1, battleManager.EnemyPoisonMaxStacks));
+                float pulse = 0.12f + stackRatio * 0.10f +
+                              Mathf.Abs(Mathf.Sin(Time.unscaledTime * 3.2f)) * 0.08f;
+                float size = enemyRect.width * Mathf.Lerp(1.02f, 1.18f, stackRatio);
                 Rect auraRect = new Rect(enemyRect.center.x - size * 0.5f,
                     enemyRect.center.y - size * 0.5f, size, size);
                 DrawEffectSprite(auraRect, poisonEffectFrames[frameIndex],
                     new Color(1f, 1f, 1f, pulse));
+                DrawPoisonMotes(enemyRect, Time.unscaledTime, stackRatio, pulse * 1.7f);
             }
 
             if (battleManager.PlayerShield > 0f)
@@ -1257,6 +1311,8 @@ namespace WuxiaRoguelite.UI
                         width, width * 0.72f),
                     EffectFrame(swordQiEffectFrames, progress),
                     new Color(1f, 1f, 1f, 1f - Mathf.Clamp01((progress - 0.70f) / 0.30f)));
+                DrawSlashTrail(enemyRect, progress,
+                    new Color(0.58f, 0.90f, 0.94f, 0.80f), -18f, 1.16f);
             }
 
             if (HasCue(BattleVfxCue.SwiftCombo))
@@ -1265,42 +1321,61 @@ namespace WuxiaRoguelite.UI
                     new Color(0.74f, 0.94f, 1f, 0.90f), 1.12f, -0.18f);
                 DrawBurst(enemyRect, swordQiEffectFrames, age - 0.08f, 0.54f,
                     new Color(1f, 0.86f, 0.38f, 0.78f), 0.90f, 0.16f);
+                DrawSlashTrail(enemyRect, Mathf.Clamp01(age / 0.50f),
+                    new Color(0.66f, 0.92f, 1f, 0.86f), -24f, 1.22f);
+                DrawSlashTrail(enemyRect, Mathf.Clamp01((age - 0.07f) / 0.50f),
+                    new Color(0.92f, 0.73f, 0.28f, 0.74f), 20f, 1.05f);
             }
 
             if (HasCue(BattleVfxCue.PoisonApplied) || HasCue(BattleVfxCue.PoisonTick))
             {
                 float scale = HasCue(BattleVfxCue.PoisonMist) ? 1.28f : 0.92f;
                 DrawBurst(enemyRect, poisonEffectFrames, age, 0.66f, Color.white, scale, 0f);
+                float progress = Mathf.Clamp01(age / 0.66f);
+                DrawPulseOutline(enemyRect, progress, Poison,
+                    HasCue(BattleVfxCue.PoisonMist) ? 1.34f : 1.05f);
+                DrawPoisonMotes(enemyRect, age * 2.4f,
+                    HasCue(BattleVfxCue.PoisonMist) ? 1f : 0.58f, 0.84f * (1f - progress));
             }
 
             if (HasCue(BattleVfxCue.ArmorBreak))
             {
                 DrawBurst(enemyRect, impactEffectFrames, age, 0.38f,
                     new Color(0.94f, 0.72f, 0.30f, 0.86f), 0.72f, 0.08f);
+                DrawRadialShards(enemyRect, Mathf.Clamp01(age / 0.38f),
+                    new Color(0.94f, 0.72f, 0.30f, 0.82f));
             }
 
             if (HasCue(BattleVfxCue.ShieldImpact))
             {
                 DrawBurst(playerRect, impactEffectFrames, age, 0.46f,
                     new Color(0.98f, 0.82f, 0.34f, 0.82f), 1.06f, 0f);
+                DrawPulseOutline(playerRect, Mathf.Clamp01(age / 0.46f),
+                    new Color(0.98f, 0.82f, 0.34f, 0.90f), 1.16f);
             }
 
             if (HasCue(BattleVfxCue.Retaliation))
             {
                 DrawBurst(enemyRect, impactEffectFrames, age, 0.44f,
                     new Color(0.82f, 0.92f, 1f, 0.88f), 0.82f, -0.12f);
+                DrawSlashTrail(enemyRect, Mathf.Clamp01(age / 0.44f),
+                    new Color(0.68f, 0.88f, 0.94f, 0.82f), 34f, 0.94f);
             }
 
             if (HasCue(BattleVfxCue.Heal))
             {
                 DrawBurst(playerRect, impactEffectFrames, age, 0.58f,
                     new Color(0.38f, 1f, 0.64f, 0.72f), 0.62f, -0.22f);
+                DrawRisingMotes(playerRect, Mathf.Clamp01(age / 0.58f),
+                    new Color(0.38f, 0.82f, 0.62f, 0.82f));
             }
 
             if (HasCue(BattleVfxCue.OpeningStrike))
             {
                 DrawBurst(enemyRect, impactEffectFrames, age, 0.42f,
                     new Color(1f, 0.88f, 0.42f, 0.92f), 1.00f, -0.18f);
+                DrawSlashTrail(enemyRect, Mathf.Clamp01(age / 0.42f),
+                    new Color(1f, 0.88f, 0.42f, 0.94f), -42f, 1.30f);
             }
 
             if (HasCue(BattleVfxCue.BloodPower) || HasCue(BattleVfxCue.BloodBurst))
@@ -1308,6 +1383,9 @@ namespace WuxiaRoguelite.UI
                 DrawBurst(enemyRect, impactEffectFrames, age, 0.52f,
                     new Color(1f, 0.16f, 0.10f, 0.84f),
                     HasCue(BattleVfxCue.BloodBurst) ? 1.12f : 0.78f, 0f);
+                DrawPulseOutline(enemyRect, Mathf.Clamp01(age / 0.52f),
+                    new Color(0.82f, 0.12f, 0.08f, 0.82f),
+                    HasCue(BattleVfxCue.BloodBurst) ? 1.28f : 0.94f);
             }
 
             if (HasCue(BattleVfxCue.Foxfire))
@@ -1325,6 +1403,252 @@ namespace WuxiaRoguelite.UI
                         new Color(1f, 0.34f, 0.12f, 1f - staggered * 0.62f));
                 }
             }
+        }
+
+        private void DrawSkillCallout(Rect playerRect, Rect enemyRect)
+        {
+            if (string.IsNullOrEmpty(activeSkillVfxName) ||
+                (activeVfxCues & BattleVfxCue.Foxfire) != 0)
+            {
+                return;
+            }
+
+            float age = Time.unscaledTime - attackStartedAt;
+            if (age < 0f || age >= SkillCalloutDuration)
+            {
+                return;
+            }
+
+            float fadeIn = Mathf.Clamp01(age / 0.10f);
+            float fadeOut = 1f - Mathf.Clamp01((age - 0.48f) / 0.24f);
+            float alpha = Mathf.Min(fadeIn, fadeOut);
+            bool playerSkill = battleManager.LastAttackWasPlayer ||
+                               (activeVfxCues & (BattleVfxCue.Retaliation |
+                                                  BattleVfxCue.ShadowDodge |
+                                                  BattleVfxCue.Heal)) != 0;
+            Rect anchor = playerSkill ? playerRect : enemyRect;
+            float width = Mathf.Clamp(anchor.width * 1.04f, 118f, 172f);
+            float slide = Mathf.Lerp(8f, 0f, Mathf.SmoothStep(0f, 1f, fadeIn));
+            Rect panel = new Rect(
+                Mathf.Clamp(anchor.center.x - width * 0.5f,
+                    ResponsiveGui.SafeArea.x + 6f,
+                    ResponsiveGui.SafeArea.xMax - width - 6f),
+                anchor.y - 42f - slide,
+                width,
+                36f);
+            Color accent = GetSkillAccent(activeVfxCues);
+            Color previous = GUI.color;
+            GUI.color = new Color(1f, 1f, 1f, alpha);
+            WuxiaUiTheme.DrawCompactSurface(panel,
+                new Color(accent.r * 0.10f, accent.g * 0.10f, accent.b * 0.10f, 0.94f),
+                accent);
+            ResponsiveGui.DrawSingleLineLabel(
+                new Rect(panel.x + 5f, panel.y + 1f, panel.width - 10f, 12f),
+                "武学触发", skillCalloutCaptionStyle, 7);
+            ResponsiveGui.DrawSingleLineLabel(
+                new Rect(panel.x + 5f, panel.y + 12f, panel.width - 10f, 22f),
+                activeSkillVfxName, skillCalloutStyle, 9);
+            GUI.color = previous;
+        }
+
+        private void DrawPoisonPopup(Rect enemyRect)
+        {
+            bool poisonApplied = (activeVfxCues & BattleVfxCue.PoisonApplied) != 0;
+            bool poisonTick = (activeVfxCues & BattleVfxCue.PoisonTick) != 0;
+            if ((!poisonApplied && !poisonTick) || activePoisonStacks <= 0)
+            {
+                return;
+            }
+
+            float age = Time.unscaledTime - attackStartedAt;
+            if (age < 0f || age >= PoisonPopupDuration)
+            {
+                return;
+            }
+
+            float progress = age / PoisonPopupDuration;
+            float alpha = 1f - Mathf.Clamp01((progress - 0.58f) / 0.42f);
+            float rise = Mathf.Lerp(0f, 52f, Mathf.SmoothStep(0f, 1f, progress));
+            Rect popup = new Rect(enemyRect.center.x - 92f,
+                enemyRect.y + enemyRect.height * 0.32f - rise, 184f, 58f);
+            string value;
+            string caption;
+            if (poisonTick)
+            {
+                value = $"-{CombatNumberDisplay.Format(activePoisonDamage)}";
+                caption = $"毒发  ×{activePoisonStacks}";
+            }
+            else if (activePoisonStackDelta > 0)
+            {
+                value = $"+{activePoisonStackDelta}";
+                caption = $"毒层  ×{activePoisonStacks}";
+            }
+            else
+            {
+                value = $"×{activePoisonStacks}";
+                caption = "毒层已满";
+            }
+
+            Color previous = GUI.color;
+            GUI.color = new Color(1f, 1f, 1f, alpha);
+            GUI.Label(new Rect(popup.x + 3f, popup.y + 4f, popup.width, 40f),
+                value, poisonValueShadowStyle);
+            GUI.color = new Color(0.54f, 0.88f, 0.38f, alpha);
+            GUI.Label(new Rect(popup.x, popup.y, popup.width, 40f), value, poisonValueStyle);
+            GUI.color = new Color(1f, 1f, 1f, alpha);
+            GUI.Label(new Rect(popup.x, popup.y + 34f, popup.width, 20f),
+                caption, poisonCaptionStyle);
+            GUI.color = previous;
+        }
+
+        private void DrawPoisonStatusBadge(Rect enemyRect)
+        {
+            if (battleManager.EnemyPoisonStacks <= 0)
+            {
+                return;
+            }
+
+            int stacks = battleManager.EnemyPoisonStacks;
+            int maxStacks = Mathf.Max(1, battleManager.EnemyPoisonMaxStacks);
+            float ratio = Mathf.Clamp01(stacks / (float)maxStacks);
+            float pulse = 0.82f + Mathf.Abs(Mathf.Sin(Time.unscaledTime * 3.2f)) * 0.18f;
+            float width = 78f;
+            Rect badge = new Rect(enemyRect.xMax - width * 0.82f,
+                enemyRect.y + enemyRect.height * 0.64f, width, 31f);
+            FillRect(badge, PoisonDark);
+            DrawOutline(badge, new Color(Poison.r, Poison.g, Poison.b, 0.72f * pulse), 2f);
+            FillRect(new Rect(badge.x + 4f, badge.yMax - 5f, badge.width - 8f, 2f),
+                new Color(0.03f, 0.055f, 0.03f, 0.95f));
+            FillRect(new Rect(badge.x + 4f, badge.yMax - 5f, (badge.width - 8f) * ratio, 2f),
+                new Color(Poison.r, Poison.g, Poison.b, 0.92f));
+            ResponsiveGui.DrawSingleLineLabel(
+                new Rect(badge.x + 4f, badge.y + 1f, badge.width - 8f, 23f),
+                $"毒  ×{stacks}", poisonCaptionStyle, 9);
+        }
+
+        private static Color GetSkillAccent(BattleVfxCue cues)
+        {
+            if ((cues & (BattleVfxCue.PoisonApplied | BattleVfxCue.PoisonTick |
+                         BattleVfxCue.PoisonMist)) != 0)
+            {
+                return Poison;
+            }
+
+            if ((cues & (BattleVfxCue.BloodPower | BattleVfxCue.BloodBurst)) != 0)
+            {
+                return new Color(0.80f, 0.18f, 0.12f, 1f);
+            }
+
+            if ((cues & (BattleVfxCue.SwordQi | BattleVfxCue.SwiftCombo |
+                         BattleVfxCue.ShadowDodge)) != 0)
+            {
+                return new Color(0.44f, 0.74f, 0.78f, 1f);
+            }
+
+            return Gold;
+        }
+
+        private static void DrawSlashTrail(Rect target, float progress, Color color,
+            float angle, float scale)
+        {
+            if (progress < 0f || progress > 1f)
+            {
+                return;
+            }
+
+            float alpha = Mathf.Sin(progress * Mathf.PI) * color.a;
+            float width = target.width * scale * Mathf.Lerp(0.58f, 1f, progress);
+            float thickness = Mathf.Lerp(8f, 2f, progress);
+            Vector2 center = target.center + new Vector2(0f,
+                target.height * Mathf.Lerp(0.18f, -0.12f, progress));
+            DrawRotatedRect(new Rect(center.x - width * 0.5f,
+                    center.y - thickness * 0.5f, width, thickness),
+                new Color(color.r, color.g, color.b, alpha), angle);
+            DrawRotatedRect(new Rect(center.x - width * 0.38f,
+                    center.y - 1f, width * 0.76f, 2f),
+                new Color(1f, 0.96f, 0.78f, alpha * 0.72f), angle);
+        }
+
+        private static void DrawPulseOutline(Rect target, float progress, Color color, float scale)
+        {
+            if (progress < 0f || progress > 1f)
+            {
+                return;
+            }
+
+            float currentScale = Mathf.Lerp(0.62f, scale, Mathf.SmoothStep(0f, 1f, progress));
+            float width = target.width * currentScale;
+            float height = target.height * currentScale;
+            Rect outline = new Rect(target.center.x - width * 0.5f,
+                target.center.y - height * 0.5f, width, height);
+            Color pulseColor = new Color(
+                color.r, color.g, color.b, color.a * (1f - progress));
+            float thickness = Mathf.Lerp(4f, 1f, progress);
+            float arm = Mathf.Min(outline.width, outline.height) * 0.18f;
+            FillRect(new Rect(outline.x, outline.y, arm, thickness), pulseColor);
+            FillRect(new Rect(outline.x, outline.y, thickness, arm), pulseColor);
+            FillRect(new Rect(outline.xMax - arm, outline.y, arm, thickness), pulseColor);
+            FillRect(new Rect(outline.xMax - thickness, outline.y, thickness, arm), pulseColor);
+            FillRect(new Rect(outline.x, outline.yMax - thickness, arm, thickness), pulseColor);
+            FillRect(new Rect(outline.x, outline.yMax - arm, thickness, arm), pulseColor);
+            FillRect(new Rect(outline.xMax - arm, outline.yMax - thickness, arm, thickness), pulseColor);
+            FillRect(new Rect(outline.xMax - thickness, outline.yMax - arm, thickness, arm), pulseColor);
+        }
+
+        private static void DrawRadialShards(Rect target, float progress, Color color)
+        {
+            float alpha = Mathf.Sin(Mathf.Clamp01(progress) * Mathf.PI) * color.a;
+            for (int index = 0; index < 7; index++)
+            {
+                float angle = index * (360f / 7f) + 12f;
+                float radians = angle * Mathf.Deg2Rad;
+                float radius = target.width * Mathf.Lerp(0.12f, 0.54f, progress);
+                Vector2 center = target.center + new Vector2(
+                    Mathf.Cos(radians) * radius,
+                    Mathf.Sin(radians) * radius);
+                DrawRotatedRect(new Rect(center.x - 8f, center.y - 2f, 16f, 4f),
+                    new Color(color.r, color.g, color.b, alpha), angle);
+            }
+        }
+
+        private static void DrawRisingMotes(Rect target, float progress, Color color)
+        {
+            float alpha = (1f - progress) * color.a;
+            for (int index = 0; index < 6; index++)
+            {
+                float phase = index * 1.83f;
+                float x = target.center.x + Mathf.Sin(phase + progress * 4f) *
+                    target.width * (0.10f + index * 0.035f);
+                float y = target.yMax - target.height * (0.18f + progress * 0.74f) +
+                          Mathf.Cos(phase) * 8f;
+                float size = 3f + index % 3;
+                FillRect(new Rect(x - size * 0.5f, y - size * 0.5f, size, size),
+                    new Color(color.r, color.g, color.b, alpha));
+            }
+        }
+
+        private static void DrawPoisonMotes(Rect target, float clock, float intensity, float alpha)
+        {
+            int count = Mathf.Clamp(Mathf.RoundToInt(3f + intensity * 5f), 3, 8);
+            for (int index = 0; index < count; index++)
+            {
+                float phase = index * 2.17f + clock * (0.72f + index * 0.025f);
+                float radius = target.width * (0.26f + index % 3 * 0.08f);
+                float x = target.center.x + Mathf.Sin(phase) * radius;
+                float y = target.center.y + Mathf.Cos(phase * 0.83f) * target.height * 0.34f -
+                          Mathf.Repeat(clock * 9f + index * 7f, target.height * 0.20f);
+                float size = 3f + index % 3 * 1.5f;
+                FillRect(new Rect(x - size * 0.5f, y - size * 0.5f, size, size),
+                    new Color(0.47f, 0.82f, 0.30f, alpha * (0.58f + index % 2 * 0.22f)));
+            }
+        }
+
+        private static void DrawRotatedRect(Rect rect, Color color, float angle)
+        {
+            Matrix4x4 previousMatrix = GUI.matrix;
+            GUIUtility.RotateAroundPivot(angle, rect.center);
+            FillRect(rect, color);
+            GUI.matrix = previousMatrix;
         }
 
         private bool HasCue(BattleVfxCue cue)
@@ -1440,8 +1764,8 @@ namespace WuxiaRoguelite.UI
 
             string effectSummary =
                 battleManager.IsBossBattle
-                    ? $"侠盾 {battleManager.PlayerShield:0} · 妖甲 {battleManager.BossWard:0} · 毒 {battleManager.EnemyPoisonStacks} · 破甲 {battleManager.EnemyArmorBreak:0.0}"
-                    : $"护盾 {battleManager.PlayerShield:0}  ·  毒 {battleManager.EnemyPoisonStacks} 层  ·  破甲 {battleManager.EnemyArmorBreak:0.0}";
+                    ? $"侠盾 {CombatNumberDisplay.Format(battleManager.PlayerShield)} · 妖甲 {CombatNumberDisplay.Format(battleManager.BossWard)} · 毒 {battleManager.EnemyPoisonStacks} · 破甲 {CombatNumberDisplay.Format(battleManager.EnemyArmorBreak)}"
+                    : $"护盾 {CombatNumberDisplay.Format(battleManager.PlayerShield)}  ·  毒 {battleManager.EnemyPoisonStacks} 层  ·  破甲 {CombatNumberDisplay.Format(battleManager.EnemyArmorBreak)}";
             if (portrait)
             {
                 Rect logRect = new Rect(messageRect.x + 10f, messageRect.y + 3f,
@@ -1706,6 +2030,12 @@ namespace WuxiaRoguelite.UI
                 alignment = alignment,
                 normal = { textColor = color }
             });
+        }
+
+        private static void ConfigureFloatingNumberStyle(GUIStyle style)
+        {
+            style.wordWrap = false;
+            style.clipping = TextClipping.Overflow;
         }
 
         private static void FillRect(Rect rect, Color color)
