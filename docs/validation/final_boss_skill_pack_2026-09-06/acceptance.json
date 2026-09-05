@@ -1,0 +1,23 @@
+{
+  "status": "InEngineQA",
+  "approved": false,
+  "unity": "6000.5.4f1",
+  "portrait_passed": 27,
+  "landscape_passed": 27,
+  "font_validation": "Unity ValidateFromMenu passed",
+  "code_sha256": {
+    "Assets/Scripts/Battle/BattleManager.cs": "50d100db92e2dea4cd7d35d0e1d4205ddf45d8be37bd7cd0eafedbe15c9ffaba",
+    "Assets/Scripts/Battle/BattleManager.FinalBoss.cs": "80ce282677d42906bf81133935e6a729c0068a2b7a85db6ac99213702ae0acd4",
+    "Assets/Scripts/Battle/BossV2Definitions.cs": "2ce1cb192a7f82278830bb6a8da93a027c97636978f87ae7135191025b487ad1",
+    "Assets/Scripts/UI/BattleScreenController.cs": "7011570aca1340cf2de98976daf542ea0b4b9e8e9d035fd4fe960e756101e70e",
+    "Assets/Scripts/UI/BattleScreenController.FinalBoss.cs": "0399b9375d9869307a03fd87a5fb80cb61edd3d489a7f32244c937a9e451d06b",
+    "Assets/Editor/PrototypeSceneBuilder.FinalBoss.cs": "6bc576d7083a6a9ec9555c8cfe44cf4a27963ad6403fff67a9d338a9048b2f16",
+    "Assets/Scripts/Debug/FinalBossSkillPlayModeProbe.cs": "2d335c64f98da7a5bc2c7c3b755c8760d7d5b499d4280b520d082eec39e082f0",
+    "Assets/Scenes/MainPrototype.unity": "a45c928497e5820388fccd2c1b0acde2186b5bec54d42b1e1245050cbaab9b73"
+  },
+  "limitations": [
+    "controlled fixtures, not natural-route balance",
+    "no target-phone acceptance",
+    "reuse existing audio; no new sound files"
+  ]
+}

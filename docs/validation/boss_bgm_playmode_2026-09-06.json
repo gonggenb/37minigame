@@ -1,0 +1,61 @@
+{
+  "scope": "MainPrototype actual Play Mode, controlled combat fixtures and forced victory callback; not natural-route balance or human listening approval.",
+  "checks": [
+    {
+      "test": "normal timer",
+      "pass": true,
+      "phase": "NormalBattleRunning",
+      "main": 51.07935,
+      "music": "NormalBattle"
+    },
+    {
+      "test": "midboss dedicated loop and timer",
+      "pass": true,
+      "music": "MidBossBattle",
+      "clip": "bgm_boss_xuanjia_ironpass_loop_64s_v01",
+      "main": 51.07935,
+      "mainMusicTime": 9.557324,
+      "midBossTime": 11.07475,
+      "overlay": ""
+    },
+    {
+      "test": "resume map after midboss",
+      "pass": true,
+      "mainMusicTime": 20.8853283,
+      "resumedFrom": 9.557324,
+      "main": 40.12602
+    },
+    {
+      "test": "cave timer and music",
+      "pass": true,
+      "main": 40.12602,
+      "music": "Cave"
+    },
+    {
+      "test": "final boss dedicated loop and timer",
+      "pass": true,
+      "music": "Boss",
+      "clip": "bgm_boss_fox_demon_moonfire_loop_48s_v04",
+      "bossTime": 4.601221,
+      "main": 0
+    },
+    {
+      "test": "70 percent armor layer",
+      "pass": true,
+      "layer": "stem_boss_fox_demon_moonfire_armor_12s_v04",
+      "driftSeconds": 0.04269862
+    },
+    {
+      "test": "35 percent frenzy layer",
+      "pass": true,
+      "layer": "stem_boss_fox_demon_moonfire_frenzy_12s_v04",
+      "driftSeconds": 0.02135992,
+      "loopTime": 27.0719948
+    },
+    {
+      "test": "result stops boss music",
+      "pass": true,
+      "music": "Defeat"
+    }
+  ]
+}

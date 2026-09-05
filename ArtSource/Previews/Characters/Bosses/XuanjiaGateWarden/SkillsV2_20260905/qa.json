@@ -1,0 +1,303 @@
+{
+  "status": "Preview prepared; not imported or approved",
+  "assets": {
+    "double": {
+      "source": [
+        2156,
+        729
+      ],
+      "frames": 8,
+      "output": [
+        2048,
+        256
+      ],
+      "scale": 0.625,
+      "bounds": [
+        {
+          "source": [
+            0,
+            294,
+            232,
+            534
+          ],
+          "destination": [
+            52,
+            74,
+            145,
+            150
+          ],
+          "footBaseline": 224
+        },
+        {
+          "source": [
+            244,
+            309,
+            518,
+            533
+          ],
+          "destination": [
+            14,
+            84,
+            171,
+            140
+          ],
+          "footBaseline": 224
+        },
+        {
+          "source": [
+            544,
+            308,
+            884,
+            534
+          ],
+          "destination": [
+            4,
+            83,
+            213,
+            141
+          ],
+          "footBaseline": 224
+        },
+        {
+          "source": [
+            883,
+            308,
+            1140,
+            534
+          ],
+          "destination": [
+            21,
+            83,
+            161,
+            141
+          ],
+          "footBaseline": 224
+        },
+        {
+          "source": [
+            1202,
+            299,
+            1417,
+            534
+          ],
+          "destination": [
+            74,
+            77,
+            134,
+            147
+          ],
+          "footBaseline": 224
+        },
+        {
+          "source": [
+            1365,
+            244,
+            1649,
+            534
+          ],
+          "destination": [
+            19,
+            43,
+            178,
+            181
+          ],
+          "footBaseline": 224
+        },
+        {
+          "source": [
+            1625,
+            310,
+            1899,
+            534
+          ],
+          "destination": [
+            17,
+            84,
+            171,
+            140
+          ],
+          "footBaseline": 224
+        },
+        {
+          "source": [
+            1909,
+            295,
+            2145,
+            534
+          ],
+          "destination": [
+            47,
+            75,
+            148,
+            149
+          ],
+          "footBaseline": 224
+        }
+      ],
+      "alpha": true,
+      "note": "Preview matte; silver edges and pose continuity still need art QA"
+    },
+    "guard": {
+      "source": [
+        1774,
+        887
+      ],
+      "frames": 8,
+      "output": [
+        2048,
+        256
+      ],
+      "scale": 0.7281553398058253,
+      "bounds": [
+        {
+          "source": [
+            21,
+            338,
+            230,
+            536
+          ],
+          "destination": [
+            41,
+            80,
+            152,
+            144
+          ],
+          "footBaseline": 224
+        },
+        {
+          "source": [
+            240,
+            354,
+            442,
+            537
+          ],
+          "destination": [
+            28,
+            91,
+            147,
+            133
+          ],
+          "footBaseline": 224
+        },
+        {
+          "source": [
+            457,
+            347,
+            682,
+            536
+          ],
+          "destination": [
+            16,
+            86,
+            164,
+            138
+          ],
+          "footBaseline": 224
+        },
+        {
+          "source": [
+            695,
+            358,
+            915,
+            537
+          ],
+          "destination": [
+            22,
+            94,
+            160,
+            130
+          ],
+          "footBaseline": 224
+        },
+        {
+          "source": [
+            920,
+            353,
+            1138,
+            537
+          ],
+          "destination": [
+            25,
+            90,
+            159,
+            134
+          ],
+          "footBaseline": 224
+        },
+        {
+          "source": [
+            1140,
+            357,
+            1323,
+            537
+          ],
+          "destination": [
+            42,
+            93,
+            133,
+            131
+          ],
+          "footBaseline": 224
+        },
+        {
+          "source": [
+            1352,
+            351,
+            1547,
+            537
+          ],
+          "destination": [
+            38,
+            89,
+            142,
+            135
+          ],
+          "footBaseline": 224
+        },
+        {
+          "source": [
+            1558,
+            330,
+            1765,
+            536
+          ],
+          "destination": [
+            42,
+            74,
+            151,
+            150
+          ],
+          "footBaseline": 224
+        }
+      ],
+      "alpha": true,
+      "note": "Preview matte; silver edges and pose continuity still need art QA"
+    },
+    "slashes": {
+      "source": [
+        2172,
+        724
+      ],
+      "frames": 6,
+      "output": [
+        1536,
+        256
+      ],
+      "scale": 0.582010582010582,
+      "alpha": true
+    },
+    "ward": {
+      "source": [
+        2172,
+        724
+      ],
+      "frames": 6,
+      "output": [
+        1536,
+        256
+      ],
+      "scale": 0.45643153526970953,
+      "alpha": true
+    }
+  }
+}

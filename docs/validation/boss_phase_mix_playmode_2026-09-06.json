@@ -1,0 +1,59 @@
+{
+  "scope": "Actual MainPrototype Play Mode with controlled health/debug phase transitions.",
+  "note": "Initial exploration reset snapshot was taken after the natural 30-second midboss trigger; immediate reset recheck passed. Direct threshold skip initially played both sequential phase accents; transitional armor accent suppression was implemented and recheck passed. Initial failures retained.",
+  "checks": [
+    {
+      "test": "phase one restored",
+      "pass": true,
+      "baseGain": 0.38,
+      "accents": 0
+    },
+    {
+      "test": "armor mix and single accent",
+      "pass": true,
+      "baseGain": 0.2584,
+      "layerGain": 0.5,
+      "accents": 1,
+      "phase": "BossMomentum",
+      "main": 0,
+      "bossTime": 13.0285883
+    },
+    {
+      "test": "frenzy mix and single accent",
+      "pass": true,
+      "baseGain": 0.15959999,
+      "layerGain": 0.62,
+      "accents": 2,
+      "phase": "BossClimax"
+    },
+    {
+      "test": "new run restores exploration",
+      "pass": false,
+      "music": "MidBossBattle"
+    },
+    {
+      "test": "second boss resets phase mix",
+      "pass": true,
+      "baseGain": 0.38,
+      "accents": 0,
+      "phase": "Boss"
+    },
+    {
+      "test": "direct skip to frenzy plays one accent",
+      "pass": false,
+      "accents": 2
+    },
+    {
+      "test": "new run restores exploration (immediate check)",
+      "pass": true
+    },
+    {
+      "test": "direct skip to frenzy after fix",
+      "pass": true,
+      "accents": 1,
+      "phase": "BossClimax",
+      "baseGain": 0.15959999,
+      "layerGain": 0.62
+    }
+  ]
+}

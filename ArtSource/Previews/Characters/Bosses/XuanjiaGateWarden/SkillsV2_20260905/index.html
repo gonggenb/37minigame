@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>玄甲镇关使 · 新技能预览</title>
+<style>
+@font-face{font-family:Wuxia;src:url(font.ttf)}
+*{box-sizing:border-box}body{margin:0;background:#0e1112;color:#e9dfc3;font-family:Wuxia,serif;font-size:15px;line-height:1.6}main{max-width:1200px;margin:auto;padding:28px}header{border-bottom:1px solid #685331;margin-bottom:20px;padding-bottom:18px}.eyebrow{color:#d1aa5a;letter-spacing:3px;font-size:12px}h1{font-size:30px;margin:8px 0}h2{font-size:21px;margin:0 0 8px}p{margin:8px 0;color:#a9ada3}.layout{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:24px}.stage{border:1px solid #806239;background:#161b1b;position:relative}canvas{width:100%;display:block;image-rendering:pixelated}#cue{position:absolute;top:12px;left:12px;background:#0e1112dc;border-left:3px solid #b58a46;padding:5px 12px;font-size:14px}nav,.controls{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}button,select{font:inherit;color:#e9dfc3;background:#292f30;border:1px solid #67553b;min-height:44px;padding:7px 14px;cursor:pointer;border-radius:2px}button[aria-pressed=true],button:hover{border-color:#d1aa5a;background:#343a38}button:focus-visible,select:focus-visible,input:focus-visible{outline:2px solid #d1aa5a;outline-offset:2px}label{display:inline-flex;align-items:center;min-height:44px;gap:6px;margin-right:12px}input{accent-color:#b58a46}#scrub{width:100%;margin:12px 0;height:24px}.ruler{display:flex;justify-content:space-between;color:#a9ada3;font-size:12px}.panel{padding:18px;background:#1b1512;border:1px solid #594832}.badge{color:#d1aa5a;font-size:12px}.facts{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:18px 0}.facts div{padding:10px;background:#292f30;font-size:13px}.facts strong{display:block;font-size:19px;color:#e9dfc3}small{color:#a9ada3;font-size:12px}.strip{width:100%;image-rendering:pixelated;background:#202625;border:1px solid #4d4b3d;margin-top:8px}.film{margin-top:24px}a{color:#d1aa5a}footer{padding:20px 0;color:#a9ada3;font-size:12px}#time{font-variant-numeric:tabular-nums}.note{color:#d1aa5a}details{margin-top:18px}summary{cursor:pointer;min-height:44px;align-content:center}
+@media(max-width:850px){main{padding:16px}.layout{grid-template-columns:1fr}h1{font-size:25px}.panel{padding:16px}.facts{grid-template-columns:repeat(4,1fr)}}
+@media(max-width:500px){.facts{grid-template-columns:1fr 1fr}button,select{padding:6px 10px}.eyebrow{letter-spacing:1px}}
+</style>
+<main>
+<header><span class="eyebrow">技能视觉试作 · 2026.09.05</span><h1>玄甲镇关使</h1><p>横刀连破 · 玄甲固守 · 震岳斩　<span class="note">候选效果，尚未接入实战</span></p></header>
+<div class="layout"><section>
+<nav aria-label="选择技能"><button data-skill="double" aria-pressed="true">横刀连破</button><button data-skill="guard" aria-pressed="false">玄甲固守</button><button data-skill="mountain" aria-pressed="false">震岳斩 · 现有</button></nav>
+<div class="stage"><canvas id="stage" width="800" height="450" aria-label="角色与特效动画预览"></canvas><div id="cue">正在载入</div></div>
+<div class="controls"><button id="play">暂停</button><button id="restart">重播</button><button id="step">下一帧</button><select id="speed" aria-label="播放速度"><option value="0.5">0.5× 慢放</option><option value="1" selected>1× 原速</option><option value="1.5">1.5×</option></select></div>
+<input id="scrub" type="range" min="0" max="2.4" value="0" step="0.01" aria-label="动画时间"><div class="ruler"><span>准备</span><span id="time">0.00 秒</span><span>收势</span></div>
+<div><label><input id="actor" type="checkbox" checked>角色动作</label><label><input id="effects" type="checkbox" checked>技能特效</label><label><input id="small" type="checkbox">小尺寸检查</label><label><input id="background" type="checkbox" checked>场景背景</label></div>
+<small>为便于查看，动作会循环演示；正式方案中的固守仅在半血触发一次。此页不模拟伤害或胜率。</small>
+</section><aside class="panel"><span class="badge" id="type">两段攻击 · 新增</span><h2 id="title">横刀连破</h2><p id="desc"></p><div class="facts"><div>最大气血<strong>260 → 290</strong></div><div>攻击<strong>12 → 13</strong></div><div>攻速<strong>0.78</strong></div><div>防御<strong>3</strong></div></div><p id="mechanics"></p><p id="beats"></p><small>基础数值为轻调候选；实际强度需连同新技能一起验证。保留自动战斗，不要求手动躲避。</small><details><summary>查看设计与生成记录</summary><a href="design.md">完整技能方案</a><br><a href="prompts.md">生成提示词</a><br><a href="qa.json">技术整理记录</a></details></aside></div>
+<section class="film"><h2>动作帧与特效帧</h2><p>角色 8 帧 · 特效 6 帧 · 每格 256 × 256 · 左朝向</p><img id="actorStrip" class="strip" alt="角色八帧条带" src="double_preview_strip.png"><img id="fxStrip" class="strip" alt="特效六帧条带" src="slashes_preview_strip.png"></section>
+<footer>生成与预览素材已整理。尚未导入 Unity，未完成 Play Mode 或正式美术验收。三条核心时间规则保持不变。</footer>
+</main>
+<script>
+const $=id=>document.getElementById(id),ctx=$('stage').getContext('2d');
+const configs={
+double:{name:'横刀连破',type:'两段攻击 · 新增',actor:'double_preview_strip.png',fx:'slashes_preview_strip.png',duration:2.4,desc:'先横扫，再反向上挑。两次刀气方向不同，命中节奏清楚分开。',mechanics:'两段各 65% 攻击，分别计算防御、闪避、护盾与反震。与震岳斩共用 6 秒冷却并交替施放。',beats:'蓄势 → 横斩 → 回刀 → 上挑 → 收势',times:[0.35,0.56,0.70,0.85,1.03,1.18,1.36,1.55],labels:['准备','蓄势','第一斩','回刀','再次蓄势','第二斩','收势','归位']},
+guard:{name:'玄甲固守',type:'半血架守 · 新增',actor:'guard_preview_strip.png',fx:'ward_preview_strip.png',duration:4.5,desc:'横刀架守，分片金甲从脚下合拢。护甲稳定后减弱光亮，破碎时向外消散。',mechanics:'首次降到 50% 血时排队触发一次：8% 最大气血护甲（候选 23.2），最多 3 秒。所有伤害均可削甲，不回血、不免疫。',beats:'横刀 → 架守 → 金甲合拢 → 稳定 → 破碎',times:[0.3,0.46,0.62,0.80,1.05,3.50,3.70,3.90],labels:['准备','沉肩','横刀','架守','金甲合拢','护甲稳定','护甲消散','收势']},
+mountain:{name:'镇关·震岳斩',type:'单次重斩 · 当前素材',actor:'mountain.png',fx:'mountain_vfx.png',duration:2.4,desc:'复用当前举刀重劈和震地刀气，用作新旧动作风格对照。',mechanics:'保留 130% 攻击的单段伤害。首轮开战后 4.5 秒触发，之后与横刀连破交替。',beats:'举刀预警 → 劈落 → 震地 → 收势',times:[0.3,0.45,0.60,0.80,0.94,1.08,1.24,1.40],labels:['准备','沉肩','举刀','蓄势','震地命中','刀气扩散','收刀','归位']}
+};
+let selected='double',t=0,playing=true,last=0,ready=false;
+const images={};
+async function load(src){if(images[src])return images[src];const im=new Image();im.src=src;await im.decode();images[src]=im;return im;}
+function setSkill(key){selected=key;t=0;const c=configs[key];$('title').textContent=c.name;$('type').textContent=c.type;$('desc').textContent=c.desc;$('mechanics').textContent=c.mechanics;$('beats').textContent=c.beats;$('actorStrip').src=c.actor;$('fxStrip').src=c.fx;$('scrub').max=c.duration;document.querySelectorAll('[data-skill]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.skill===key));draw();}
+function sprite(src,n,frame,x,y,size,alpha=1){const im=images[src];if(!im)return;ctx.save();ctx.globalAlpha=alpha;ctx.imageSmoothingEnabled=false;ctx.drawImage(im,Math.floor(frame)*im.width/n,0,im.width/n,im.height,x,y,size,size);ctx.restore();}
+function draw(){if(!ready)return;const c=configs[selected];ctx.clearRect(0,0,800,450);ctx.fillStyle='#1b2527';ctx.fillRect(0,0,800,450);
+if($('background').checked){const im=images['stage.png'];const s=Math.max(800/im.width,450/im.height);ctx.drawImage(im,(800-im.width*s)/2,(450-im.height*s)/2,im.width*s,im.height*s);ctx.fillStyle='#0e111258';ctx.fillRect(0,0,800,450);}else{ctx.strokeStyle='#334043';ctx.beginPath();ctx.moveTo(0,355);ctx.lineTo(800,355);ctx.stroke();}
+const small=$('small').checked,sz=small?210:340,foot=375,x=480-sz/2,y=foot-sz*.875;
+ctx.fillStyle='#0e111277';ctx.beginPath();ctx.ellipse(480,foot,sz*.18,10,0,0,Math.PI*2);ctx.fill();
+let f=c.times.findIndex(end=>t<end);if(f<0)f=7;
+let v=-1,alpha=1;
+if(selected==='double'){if(t>=.48&&t<.85)v=Math.min(2,Math.floor((t-.48)/.123));if(t>=.94&&t<1.34)v=3+Math.min(2,Math.floor((t-.94)/.133));}
+if(selected==='guard'){if(t>=.52&&t<1.04)v=Math.min(2,Math.floor((t-.52)/.174));else if(t>=1.04&&t<3.50){v=3;alpha=.38+.06*Math.sin(t*3);}else if(t>=3.50&&t<3.82){v=t<3.66?4:5;alpha=1-(t-3.50)/.32;}}
+if(selected==='mountain'&&t>=.8&&t<1.30)v=Math.min(5,Math.floor((t-.8)*12));
+if($('effects').checked&&v>=0&&selected==='guard')sprite(c.fx,6,v,480-sz*.37,foot-sz*.74*.94,sz*.74,alpha*.72);
+if($('actor').checked)sprite(c.actor,8,f,x,y,sz);
+if($('effects').checked&&v>=0&&selected!=='guard'){const fxsize=sz*1.10;sprite(c.fx,6,v,480-sz*.99,foot-sz*.95,fxsize,.9);}
+$('cue').textContent=c.name+' · '+c.labels[f];$('time').textContent=t.toFixed(2)+' 秒 · 第 '+(f+1)+' 帧';$('scrub').value=t;
+}
+document.querySelectorAll('[data-skill]').forEach(b=>b.onclick=()=>setSkill(b.dataset.skill));
+$('play').onclick=()=>{playing=!playing;$('play').textContent=playing?'暂停':'播放';};$('restart').onclick=()=>{t=0;playing=true;$('play').textContent='暂停';draw();};
+$('step').onclick=()=>{playing=false;$('play').textContent='播放';const c=configs[selected];t=c.times.find(v=>v>t+.001)??0;draw();};$('scrub').oninput=()=>{playing=false;$('play').textContent='播放';t=Number($('scrub').value);draw();};for(const key of ['actor','effects','small','background'])$(key).onchange=draw;
+Promise.all([...new Set(['stage.png',...Object.values(configs).flatMap(c=>[c.actor,c.fx])])].map(load)).then(()=>{ready=true;setSkill('double');window.previewReady=true;}).catch(e=>{$('cue').textContent='素材载入失败：'+e.message;console.error(e);});
+window.setPreview=(key,time)=>{playing=false;$('play').textContent='播放';setSkill(key);t=time;draw();};
+function tick(now){if(last&&playing&&ready)t=(t+Math.min((now-last)/1000,.10)*Number($('speed').value))%configs[selected].duration;last=now;draw();requestAnimationFrame(tick);}requestAnimationFrame(tick);
+</script></html>

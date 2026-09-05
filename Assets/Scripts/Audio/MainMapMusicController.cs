@@ -21,6 +21,7 @@ namespace WuxiaRoguelite.Audio
         public AudioClip normalBattleStem;
         public AudioClip caveMusic;
         public AudioClip caveBattleStem;
+        public AudioClip midBossMusic;
         public AudioClip bossIntro;
         public AudioClip bossMusic;
         public AudioClip bossMomentumStem;
@@ -48,10 +49,17 @@ namespace WuxiaRoguelite.Audio
         [Min(0.01f)] public float overlayFadeInSeconds = 0.15f;
         [Min(0.01f)] public float overlayFadeOutSeconds = 0.25f;
 
+        [Header("Boss Phase Mix")]
+        [Range(0f, 1f)] public float bossArmorLayerVolume = 0.50f;
+        [Range(0f, 1f)] public float bossFrenzyLayerVolume = 0.62f;
+        [Range(0f, 1f)] public float bossArmorBaseMultiplier = 0.68f;
+        [Range(0f, 1f)] public float bossFrenzyBaseMultiplier = 0.42f;
+
         public string ActiveMusicState { get; private set; } = "Ready";
         public bool MusicEnabled { get; private set; } = true;
         public int TimeWarningBellStrikeCount { get; private set; }
         public int LastTimeWarningThreshold { get; private set; }
+        public int BossPhaseAccentCount { get; private set; }
         public string ActiveOverlayName =>
             overlaySource != null && overlaySource.clip != null && overlayTargetVolume > 0f
                 ? overlaySource.clip.name
@@ -74,6 +82,9 @@ namespace WuxiaRoguelite.Audio
         private float timeWarningMusicMultiplier = 1f;
         private float overlayTargetVolume;
         private GamePhase levelUpMusicContext = GamePhase.MainMapRunning;
+        private BossBattlePhase audibleBossPhase = BossBattlePhase.None;
+        private AudioClip bossArmorAccent;
+        private AudioClip bossFrenzyAccent;
 
         private const string TimeWarningBell40Resource =
             "Audio/TimePressure/sfx_time_bell_40s_v01";
@@ -85,6 +96,8 @@ namespace WuxiaRoguelite.Audio
             ResolveReferences(true);
             ConfigureSources();
             ResolveTimeWarningAssets();
+            bossArmorAccent = Resources.Load<AudioClip>("Audio/BossTransitions/stg_fox_armor_transition_v01");
+            bossFrenzyAccent = Resources.Load<AudioClip>("Audio/BossTransitions/stg_fox_frenzy_transition_v01");
             MusicEnabled = PlayerPrefs.GetInt(MusicEnabledPreference, 1) != 0;
             ApplyMusicEnabledState();
         }
@@ -236,9 +249,9 @@ namespace WuxiaRoguelite.Audio
                     break;
 
                 case GamePhase.MidBossBattle:
-                    PlayMainMapMusic();
-                    SetOverlay(normalBattleStem);
-                    StopSpecialMusic();
+                    PauseSource(musicSource, ref mainMusicPaused);
+                    SetOverlay(null);
+                    PlaySpecialLoop(midBossMusic);
                     ActiveMusicState = "MidBossBattle";
                     break;
 
@@ -350,6 +363,8 @@ namespace WuxiaRoguelite.Audio
 
             if (previousPhase != GamePhase.BossBattle)
             {
+                audibleBossPhase = BossBattlePhase.None;
+                BossPhaseAccentCount = 0;
                 specialMusicSource.Stop();
                 specialMusicSource.clip = bossIntro != null ? bossIntro : bossMusic;
                 specialMusicSource.loop = bossIntro == null;
@@ -381,6 +396,14 @@ namespace WuxiaRoguelite.Audio
 
         private void UpdateBossIntensity()
         {
+            // Phase layers share the loop's beat grid, not the entrance sting.
+            if (bossIntroActive)
+            {
+                SetOverlay(null);
+                ActiveMusicState = "BossIntro";
+                return;
+            }
+
             bool bossActive = battleManager != null &&
                               battleManager.IsBattleActive &&
                               battleManager.currentEnemy != null;
@@ -393,23 +416,54 @@ namespace WuxiaRoguelite.Audio
 
             if (battleManager.CurrentBossPhase == BossBattlePhase.BloodFrenzy && bossEnrageStem != null)
             {
-                SetOverlay(bossEnrageStem, true);
+                ApplyBossPhaseMix(BossBattlePhase.BloodFrenzy, bossFrenzyBaseMultiplier, bossFrenzyAccent);
+                SetOverlay(bossEnrageStem, true, bossFrenzyLayerVolume);
                 ActiveMusicState = "BossClimax";
                 return;
             }
 
             if (battleManager.CurrentBossPhase == BossBattlePhase.DemonArmor && bossMomentumStem != null)
             {
-                SetOverlay(bossMomentumStem, true);
+                // Combat processes crossed thresholds in sequence. If one hit crossed both,
+                // leave the entrance accent to frenzy on the following phase update.
+                AudioClip accent = battleManager.currentEnemy.HealthRatio <= BossV2Tuning.PhaseThreeHealthRatio
+                    ? null : bossArmorAccent;
+                ApplyBossPhaseMix(BossBattlePhase.DemonArmor, bossArmorBaseMultiplier, accent);
+                SetOverlay(bossMomentumStem, true, bossArmorLayerVolume);
                 ActiveMusicState = "BossMomentum";
                 return;
             }
 
+            ApplyBossPhaseMix(BossBattlePhase.Foxfire, 1f, null);
             SetOverlay(null);
             ActiveMusicState = "Boss";
         }
 
-        private void SetOverlay(AudioClip clip, bool syncToSpecialMusic = false)
+        private void ApplyBossPhaseMix(BossBattlePhase phase, float baseMultiplier, AudioClip accent)
+        {
+            if (specialMusicSource != null)
+            {
+                specialMusicSource.volume = Mathf.MoveTowards(specialMusicSource.volume,
+                    specialMusicVolume * baseMultiplier, Time.unscaledDeltaTime * 2f);
+            }
+
+            if (audibleBossPhase == phase)
+            {
+                return;
+            }
+
+            audibleBossPhase = phase;
+            if (accent != null && stingerSource != null)
+            {
+                // A direct skip to frenzy plays only its cue; rapid thresholds do not stack.
+                stingerSource.Stop();
+                stingerSource.PlayOneShot(accent, 0.8f);
+                stingerPaused = false;
+                BossPhaseAccentCount++;
+            }
+        }
+
+        private void SetOverlay(AudioClip clip, bool syncToSpecialMusic = false, float targetVolume = -1f)
         {
             if (overlaySource == null)
             {
@@ -452,7 +506,7 @@ namespace WuxiaRoguelite.Audio
                 ResumeOrPlay(overlaySource, ref overlayPaused);
             }
 
-            overlayTargetVolume = overlayVolume;
+            overlayTargetVolume = targetVolume >= 0f ? Mathf.Clamp01(targetVolume) : overlayVolume;
         }
 
         private void UpdateOverlayFade()
@@ -466,7 +520,9 @@ namespace WuxiaRoguelite.Audio
             float fadeSeconds = effectiveTargetVolume > overlaySource.volume
                 ? overlayFadeInSeconds
                 : overlayFadeOutSeconds;
-            float speed = Mathf.Max(overlayVolume, 0.01f) / Mathf.Max(fadeSeconds, 0.01f);
+            float fadeRange = Mathf.Max(Mathf.Max(overlayVolume, overlayTargetVolume),
+                Mathf.Max(overlaySource.volume, 0.01f));
+            float speed = fadeRange / Mathf.Max(fadeSeconds, 0.01f);
             overlaySource.volume = Mathf.MoveTowards(
                 overlaySource.volume,
                 effectiveTargetVolume,

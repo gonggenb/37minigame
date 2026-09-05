@@ -1,0 +1,13 @@
+{
+  "pageErrors": [],
+  "mobileOverflow": false,
+  "checks": [
+    "asset loading",
+    "skill tabs",
+    "frame stepping",
+    "VFX toggle",
+    "slow speed selection",
+    "540px layout"
+  ],
+  "scope": "Browser preview only, not Unity Play Mode"
+}

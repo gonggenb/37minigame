@@ -1,0 +1,305 @@
+[
+  {
+    "skill": "foxfire",
+    "kind": "character",
+    "path": "Assets/Art/Generated/Characters/Bosses/FoxDemon/spr_boss_fox_demon_foxfire_right_8f_v01.png",
+    "frames": 8,
+    "size": [
+      2048,
+      256
+    ],
+    "shared_scale": 0.7039473684210527,
+    "visual_scale": 0.9986120107337836,
+    "bounds": [
+      [
+        44,
+        11,
+        211,
+        224
+      ],
+      [
+        76,
+        18,
+        194,
+        224
+      ],
+      [
+        75,
+        17,
+        186,
+        224
+      ],
+      [
+        82,
+        10,
+        185,
+        224
+      ],
+      [
+        82,
+        17,
+        202,
+        224
+      ],
+      [
+        82,
+        17,
+        202,
+        224
+      ],
+      [
+        84,
+        17,
+        193,
+        224
+      ],
+      [
+        44,
+        11,
+        211,
+        224
+      ]
+    ],
+    "status": "InEngineQA",
+    "first_last": "existing in-engine idle seed",
+    "gates": {
+      "Generated": true,
+      "Normalized": true,
+      "Imported": true,
+      "InEngineQA": true,
+      "Approved": false
+    },
+    "evidence": "docs/validation/final_boss_skill_pack_2026-09-06.md"
+  },
+  {
+    "skill": "demon_armor",
+    "kind": "character",
+    "path": "Assets/Art/Generated/Characters/Bosses/FoxDemon/spr_boss_fox_demon_demon_armor_right_8f_v01.png",
+    "frames": 8,
+    "size": [
+      2048,
+      256
+    ],
+    "shared_scale": 0.7133333333333334,
+    "visual_scale": 0.9953271028037383,
+    "bounds": [
+      [
+        43,
+        10,
+        211,
+        224
+      ],
+      [
+        49,
+        11,
+        205,
+        224
+      ],
+      [
+        79,
+        23,
+        216,
+        224
+      ],
+      [
+        68,
+        19,
+        204,
+        224
+      ],
+      [
+        58,
+        19,
+        219,
+        224
+      ],
+      [
+        59,
+        21,
+        207,
+        224
+      ],
+      [
+        51,
+        11,
+        199,
+        224
+      ],
+      [
+        43,
+        10,
+        211,
+        224
+      ]
+    ],
+    "status": "InEngineQA",
+    "first_last": "existing in-engine idle seed",
+    "gates": {
+      "Generated": true,
+      "Normalized": true,
+      "Imported": true,
+      "InEngineQA": true,
+      "Approved": false
+    },
+    "evidence": "docs/validation/final_boss_skill_pack_2026-09-06.md"
+  },
+  {
+    "skill": "blood_frenzy",
+    "kind": "character",
+    "path": "Assets/Art/Generated/Characters/Bosses/FoxDemon/spr_boss_fox_demon_blood_frenzy_right_8f_v01.png",
+    "frames": 8,
+    "size": [
+      2048,
+      256
+    ],
+    "shared_scale": 0.6312684365781711,
+    "visual_scale": 1.1247196261682244,
+    "bounds": [
+      [
+        55,
+        36,
+        204,
+        224
+      ],
+      [
+        76,
+        72,
+        233,
+        224
+      ],
+      [
+        71,
+        102,
+        207,
+        224
+      ],
+      [
+        84,
+        59,
+        236,
+        224
+      ],
+      [
+        77,
+        36,
+        234,
+        224
+      ],
+      [
+        49,
+        10,
+        221,
+        224
+      ],
+      [
+        56,
+        43,
+        217,
+        224
+      ],
+      [
+        55,
+        36,
+        204,
+        224
+      ]
+    ],
+    "status": "InEngineQA",
+    "first_last": "existing in-engine idle seed",
+    "gates": {
+      "Generated": true,
+      "Normalized": true,
+      "Imported": true,
+      "InEngineQA": true,
+      "Approved": false
+    },
+    "evidence": "docs/validation/final_boss_skill_pack_2026-09-06.md"
+  },
+  {
+    "skill": "foxfire",
+    "kind": "effect",
+    "path": "Assets/Art/Generated/Effects/FoxDemon/spr_vfx_fox_foxfire_6f_v01.png",
+    "frames": 6,
+    "size": [
+      1536,
+      256
+    ],
+    "shared_scale": 0.32941176470588235,
+    "source_cuts": [
+      0,
+      177,
+      599,
+      1211,
+      1545,
+      1882,
+      2172
+    ],
+    "status": "InEngineQA",
+    "gates": {
+      "Generated": true,
+      "Normalized": true,
+      "Imported": true,
+      "InEngineQA": true,
+      "Approved": false
+    },
+    "evidence": "docs/validation/final_boss_skill_pack_2026-09-06.md"
+  },
+  {
+    "skill": "demon_armor",
+    "kind": "effect",
+    "path": "Assets/Art/Generated/Effects/FoxDemon/spr_vfx_fox_demon_armor_6f_v01.png",
+    "frames": 6,
+    "size": [
+      1536,
+      256
+    ],
+    "shared_scale": 0.32416787264833574,
+    "source_cuts": [
+      0,
+      357,
+      716,
+      1097,
+      1433,
+      1832,
+      2172
+    ],
+    "status": "InEngineQA",
+    "gates": {
+      "Generated": true,
+      "Normalized": true,
+      "Imported": true,
+      "InEngineQA": true,
+      "Approved": false
+    },
+    "evidence": "docs/validation/final_boss_skill_pack_2026-09-06.md"
+  },
+  {
+    "skill": "blood_frenzy",
+    "kind": "effect",
+    "path": "Assets/Art/Generated/Effects/FoxDemon/spr_vfx_fox_blood_frenzy_6f_v01.png",
+    "frames": 6,
+    "size": [
+      1536,
+      256
+    ],
+    "shared_scale": 0.3177304964539007,
+    "source_cuts": [
+      0,
+      236,
+      571,
+      1003,
+      1440,
+      1822,
+      2172
+    ],
+    "status": "InEngineQA",
+    "gates": {
+      "Generated": true,
+      "Normalized": true,
+      "Imported": true,
+      "InEngineQA": true,
+      "Approved": false
+    },
+    "evidence": "docs/validation/final_boss_skill_pack_2026-09-06.md"
+  }
+]

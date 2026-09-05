@@ -1,0 +1,35 @@
+{
+    "success": true,
+    "error": "",
+    "passed": [
+        "scene bindings: left-facing 8+8 character / 6+6 VFX frames",
+        "scene tuning: 290 health / 13 attack",
+        "automatic elapsed-30-second checkpoint",
+        "midboss entrance does not heal player",
+        "shared-cooldown rotation: MountainBreaker -> DoubleCleave -> MountainBreaker",
+        "midboss pauses main time and advances its independent timer",
+        "half-health does not interrupt current attack",
+        "guard begins after active strike",
+        "guard grants 8 percent maximum-health armor",
+        "damage removes armor before health",
+        "pause freezes guard lifetime",
+        "guard expires within three seconds",
+        "half-health guard does not immediately retrigger",
+        "player can attack and break armor during guard pose",
+        "cancel resets skill, armor and impact state",
+        "two independent 65-percent hits each subtract defense (hits=2, attempts=2, health loss=0.8999939, shield=0)",
+        "both cleave hits independently honor dodge",
+        "lethal first cleave cancels second hit and resolves defeat (won=False, attempts=1, hp=0)",
+        "normal combat consumes main time and queues checkpoint without replacing enemy",
+        "queued checkpoint starts after normal battle settlement",
+        "midboss victory returns to map",
+        "cave combat pauses main time",
+        "final boss enters at zero with independent timer and no midboss skill state"
+    ],
+    "observedSkills": [
+        "MountainBreaker",
+        "DoubleCleave",
+        "MountainBreaker"
+    ],
+    "scope": "Actual MainPrototype Play Mode; controlled fixtures, not natural-route balance approval"
+}

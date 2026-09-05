@@ -1,0 +1,40 @@
+{
+    "success": true,
+    "error": "",
+    "orientation": "portrait",
+    "passed": [
+        "three eight-frame action bindings with right masters flipped toward player",
+        "three six-frame effect bindings",
+        "24 character sprites: 256-square and bottom-center foot pivot",
+        "cast starts windup without immediate damage",
+        "no damage before first projectile arrival",
+        "pause freezes action, pending hits and independent boss time",
+        "three separate impacts at 0.45 / 0.65 / 0.85 seconds",
+        "original 32-percent attack / 42-percent defense formula preserved for each hit",
+        "final boss advances independent timer, not main time",
+        "action renderer resolves its bound sprite arrays",
+        "70-percent phase grants 12-percent armor and starts tail-guard action",
+        "player attacks continue without interrupting phase action",
+        "armor phase is one-shot",
+        "all-damage path cracks armor and carries excess damage to health",
+        "35-percent frenzy preserves 15-percent attack and 25-percent attack-speed increases",
+        "frenzy cast recovers to idle while phase persists",
+        "crossing both thresholds during cast applies stats immediately and queues presentation",
+        "queued armor starts after all three foxfire hits",
+        "queued frenzy follows armor without losing phase action",
+        "cancel resets action, queue, armor and impact effects",
+        "each foxfire hit independently honors evasion and records miss VFX",
+        "each foxfire impact consumes shield before health",
+        "lethal first impact cancels remaining hits and resolves defeat",
+        "boss death during windup cancels projectiles and resolves victory",
+        "natural cooldown starts new cast and preserves phase-one cooldown",
+        "normal combat consumes main time without final-boss actions",
+        "cave combat pauses main time"
+    ],
+    "impactTimes": [
+        0.4997258484363556,
+        0.698840856552124,
+        0.8994093537330627
+    ],
+    "scope": "MainPrototype Play Mode controlled fixtures; not natural-build balance or device approval"
+}

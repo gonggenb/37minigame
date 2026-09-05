@@ -55,9 +55,9 @@ namespace WuxiaRoguelite.GameFlow
         {
             displayName = GameTextCatalog.MidBossName,
             visualId = GameTextCatalog.MidBossVisualId,
-            maxHealth = 260f,
-            currentHealth = 260f,
-            attack = 12f,
+            maxHealth = MidBossTuning.MaxHealth,
+            currentHealth = MidBossTuning.MaxHealth,
+            attack = MidBossTuning.Attack,
             defense = 3f,
             attackSpeed = 0.78f,
             critChance = 0.04f,

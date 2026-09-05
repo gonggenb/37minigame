@@ -1,0 +1,23 @@
+{
+  "preview": "docs/validation/boss_phase_mix_preview_36s.wav",
+  "segments_seconds": [
+    [
+      0,
+      12
+    ],
+    [
+      12,
+      24
+    ],
+    [
+      24,
+      36
+    ]
+  ],
+  "rms_db": [
+    -25.26388838506262,
+    -19.248715877751444,
+    -17.346257233014853
+  ],
+  "preview_peak_db": -4.657006107778285
+}

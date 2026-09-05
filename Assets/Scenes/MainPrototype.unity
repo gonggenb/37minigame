@@ -26218,6 +26218,41 @@ MonoBehaviour:
   - {fileID: 1063378821, guid: 20e2b6aeb6e2e483f87fa4950c97f405, type: 3}
   - {fileID: -624034031, guid: 20e2b6aeb6e2e483f87fa4950c97f405, type: 3}
   - {fileID: 100450425, guid: 20e2b6aeb6e2e483f87fa4950c97f405, type: 3}
+  doubleCleaveEffectFrames:
+  - {fileID: 2100797649, guid: 61347af8cc89043c8a8311d6b153eff3, type: 3}
+  - {fileID: -1552542965, guid: 61347af8cc89043c8a8311d6b153eff3, type: 3}
+  - {fileID: 2104352494, guid: 61347af8cc89043c8a8311d6b153eff3, type: 3}
+  - {fileID: 81400260, guid: 61347af8cc89043c8a8311d6b153eff3, type: 3}
+  - {fileID: -1257010557, guid: 61347af8cc89043c8a8311d6b153eff3, type: 3}
+  - {fileID: -522361266, guid: 61347af8cc89043c8a8311d6b153eff3, type: 3}
+  ironGuardEffectFrames:
+  - {fileID: 827374940, guid: 3bc8a9b95830c4463ac90a2756dd87c6, type: 3}
+  - {fileID: 713430675, guid: 3bc8a9b95830c4463ac90a2756dd87c6, type: 3}
+  - {fileID: 1780625690, guid: 3bc8a9b95830c4463ac90a2756dd87c6, type: 3}
+  - {fileID: 1581664050, guid: 3bc8a9b95830c4463ac90a2756dd87c6, type: 3}
+  - {fileID: -162466652, guid: 3bc8a9b95830c4463ac90a2756dd87c6, type: 3}
+  - {fileID: -120063016, guid: 3bc8a9b95830c4463ac90a2756dd87c6, type: 3}
+  foxfireEffectFrames:
+  - {fileID: -1344148767, guid: 832dafbb5324a49d78afa6f09fb0ee81, type: 3}
+  - {fileID: 1064722150, guid: 832dafbb5324a49d78afa6f09fb0ee81, type: 3}
+  - {fileID: -479247886, guid: 832dafbb5324a49d78afa6f09fb0ee81, type: 3}
+  - {fileID: 236441620, guid: 832dafbb5324a49d78afa6f09fb0ee81, type: 3}
+  - {fileID: 1601262448, guid: 832dafbb5324a49d78afa6f09fb0ee81, type: 3}
+  - {fileID: -1116386657, guid: 832dafbb5324a49d78afa6f09fb0ee81, type: 3}
+  demonArmorEffectFrames:
+  - {fileID: 1486557672, guid: d5fc8f2804eee414183b12c554a90130, type: 3}
+  - {fileID: 1126339766, guid: d5fc8f2804eee414183b12c554a90130, type: 3}
+  - {fileID: -1495611098, guid: d5fc8f2804eee414183b12c554a90130, type: 3}
+  - {fileID: 1799713748, guid: d5fc8f2804eee414183b12c554a90130, type: 3}
+  - {fileID: -927920797, guid: d5fc8f2804eee414183b12c554a90130, type: 3}
+  - {fileID: -948727204, guid: d5fc8f2804eee414183b12c554a90130, type: 3}
+  bloodFrenzyEffectFrames:
+  - {fileID: -105863363, guid: 0267822d269414f25bdd2fca640b0010, type: 3}
+  - {fileID: -424397109, guid: 0267822d269414f25bdd2fca640b0010, type: 3}
+  - {fileID: -1025906324, guid: 0267822d269414f25bdd2fca640b0010, type: 3}
+  - {fileID: -1429739771, guid: 0267822d269414f25bdd2fca640b0010, type: 3}
+  - {fileID: 2017164495, guid: 0267822d269414f25bdd2fca640b0010, type: 3}
+  - {fileID: 297371733, guid: 0267822d269414f25bdd2fca640b0010, type: 3}
   enemyVisualProfiles:
   - id: blue
     idleFrames:
@@ -26239,6 +26274,14 @@ MonoBehaviour:
     - {fileID: 214580351, guid: 3bbbc73ffeea74fe1bda771498a5e424, type: 3}
     - {fileID: -1542804004, guid: 3bbbc73ffeea74fe1bda771498a5e424, type: 3}
     skillFrames: []
+    doubleCleaveFrames: []
+    ironGuardFrames: []
+    foxfireFrames: []
+    demonArmorFrames: []
+    bloodFrenzyFrames: []
+    foxfireVisualScale: 1
+    demonArmorVisualScale: 1
+    bloodFrenzyVisualScale: 1
     scale: 1
     flipHorizontally: 1
   - id: purple
@@ -26261,6 +26304,14 @@ MonoBehaviour:
     - {fileID: 1333041495, guid: 3b8eb64a4e081425bba939e50956598f, type: 3}
     - {fileID: 1567944874, guid: 3b8eb64a4e081425bba939e50956598f, type: 3}
     skillFrames: []
+    doubleCleaveFrames: []
+    ironGuardFrames: []
+    foxfireFrames: []
+    demonArmorFrames: []
+    bloodFrenzyFrames: []
+    foxfireVisualScale: 1
+    demonArmorVisualScale: 1
+    bloodFrenzyVisualScale: 1
     scale: 1
     flipHorizontally: 1
   - id: rat
@@ -26283,6 +26334,14 @@ MonoBehaviour:
     - {fileID: 214580351, guid: 3bbbc73ffeea74fe1bda771498a5e424, type: 3}
     - {fileID: -1542804004, guid: 3bbbc73ffeea74fe1bda771498a5e424, type: 3}
     skillFrames: []
+    doubleCleaveFrames: []
+    ironGuardFrames: []
+    foxfireFrames: []
+    demonArmorFrames: []
+    bloodFrenzyFrames: []
+    foxfireVisualScale: 1
+    demonArmorVisualScale: 1
+    bloodFrenzyVisualScale: 1
     scale: 0.85
     flipHorizontally: 1
   - id: rider
@@ -26305,6 +26364,14 @@ MonoBehaviour:
     - {fileID: 1333041495, guid: 3b8eb64a4e081425bba939e50956598f, type: 3}
     - {fileID: 1567944874, guid: 3b8eb64a4e081425bba939e50956598f, type: 3}
     skillFrames: []
+    doubleCleaveFrames: []
+    ironGuardFrames: []
+    foxfireFrames: []
+    demonArmorFrames: []
+    bloodFrenzyFrames: []
+    foxfireVisualScale: 1
+    demonArmorVisualScale: 1
+    bloodFrenzyVisualScale: 1
     scale: 1
     flipHorizontally: 1
   - id: ballista
@@ -26327,6 +26394,14 @@ MonoBehaviour:
     - {fileID: 364593753, guid: 452a05df1ecd14aefb380c9dde5b17f6, type: 3}
     - {fileID: -91949607, guid: 452a05df1ecd14aefb380c9dde5b17f6, type: 3}
     skillFrames: []
+    doubleCleaveFrames: []
+    ironGuardFrames: []
+    foxfireFrames: []
+    demonArmorFrames: []
+    bloodFrenzyFrames: []
+    foxfireVisualScale: 1
+    demonArmorVisualScale: 1
+    bloodFrenzyVisualScale: 1
     scale: 1
     flipHorizontally: 1
   - id: ink_wolf
@@ -26349,6 +26424,14 @@ MonoBehaviour:
     - {fileID: 214580351, guid: 3bbbc73ffeea74fe1bda771498a5e424, type: 3}
     - {fileID: -1542804004, guid: 3bbbc73ffeea74fe1bda771498a5e424, type: 3}
     skillFrames: []
+    doubleCleaveFrames: []
+    ironGuardFrames: []
+    foxfireFrames: []
+    demonArmorFrames: []
+    bloodFrenzyFrames: []
+    foxfireVisualScale: 1
+    demonArmorVisualScale: 1
+    bloodFrenzyVisualScale: 1
     scale: 1
     flipHorizontally: 1
   - id: stone_ape
@@ -26371,6 +26454,14 @@ MonoBehaviour:
     - {fileID: 364593753, guid: 452a05df1ecd14aefb380c9dde5b17f6, type: 3}
     - {fileID: -91949607, guid: 452a05df1ecd14aefb380c9dde5b17f6, type: 3}
     skillFrames: []
+    doubleCleaveFrames: []
+    ironGuardFrames: []
+    foxfireFrames: []
+    demonArmorFrames: []
+    bloodFrenzyFrames: []
+    foxfireVisualScale: 1
+    demonArmorVisualScale: 1
+    bloodFrenzyVisualScale: 1
     scale: 1.12
     flipHorizontally: 1
   - id: bamboo_puppet
@@ -26393,6 +26484,14 @@ MonoBehaviour:
     - {fileID: 1333041495, guid: 3b8eb64a4e081425bba939e50956598f, type: 3}
     - {fileID: 1567944874, guid: 3b8eb64a4e081425bba939e50956598f, type: 3}
     skillFrames: []
+    doubleCleaveFrames: []
+    ironGuardFrames: []
+    foxfireFrames: []
+    demonArmorFrames: []
+    bloodFrenzyFrames: []
+    foxfireVisualScale: 1
+    demonArmorVisualScale: 1
+    bloodFrenzyVisualScale: 1
     scale: 1
     flipHorizontally: 1
   - id: reed_mantis
@@ -26415,6 +26514,14 @@ MonoBehaviour:
     - {fileID: -1584720010, guid: 938b3e29951cf4f0c8046d5614d193c8, type: 3}
     - {fileID: -939351824, guid: 938b3e29951cf4f0c8046d5614d193c8, type: 3}
     skillFrames: []
+    doubleCleaveFrames: []
+    ironGuardFrames: []
+    foxfireFrames: []
+    demonArmorFrames: []
+    bloodFrenzyFrames: []
+    foxfireVisualScale: 1
+    demonArmorVisualScale: 1
+    bloodFrenzyVisualScale: 1
     scale: 1.02
     flipHorizontally: 1
   - id: bronze_toad
@@ -26437,6 +26544,14 @@ MonoBehaviour:
     - {fileID: 24154717, guid: e857b3caa8a7a41d29b5295fa0b27252, type: 3}
     - {fileID: -849372152, guid: e857b3caa8a7a41d29b5295fa0b27252, type: 3}
     skillFrames: []
+    doubleCleaveFrames: []
+    ironGuardFrames: []
+    foxfireFrames: []
+    demonArmorFrames: []
+    bloodFrenzyFrames: []
+    foxfireVisualScale: 1
+    demonArmorVisualScale: 1
+    bloodFrenzyVisualScale: 1
     scale: 1.08
     flipHorizontally: 1
   - id: crimson_scorpion
@@ -26459,6 +26574,14 @@ MonoBehaviour:
     - {fileID: 521582817, guid: 4dd60ce15e64b4d4daee0c0c6da443fb, type: 3}
     - {fileID: 1029497622, guid: 4dd60ce15e64b4d4daee0c0c6da443fb, type: 3}
     skillFrames: []
+    doubleCleaveFrames: []
+    ironGuardFrames: []
+    foxfireFrames: []
+    demonArmorFrames: []
+    bloodFrenzyFrames: []
+    foxfireVisualScale: 1
+    demonArmorVisualScale: 1
+    bloodFrenzyVisualScale: 1
     scale: 1.04
     flipHorizontally: 1
   - id: orc_warlord
@@ -26481,6 +26604,14 @@ MonoBehaviour:
     - {fileID: 2087004232, guid: d332a282c180746d894f1e845d6794c9, type: 3}
     - {fileID: -38341742, guid: d332a282c180746d894f1e845d6794c9, type: 3}
     skillFrames: []
+    doubleCleaveFrames: []
+    ironGuardFrames: []
+    foxfireFrames: []
+    demonArmorFrames: []
+    bloodFrenzyFrames: []
+    foxfireVisualScale: 1
+    demonArmorVisualScale: 1
+    bloodFrenzyVisualScale: 1
     scale: 1.62
     flipHorizontally: 1
   - id: orc_cave_guardian
@@ -26503,6 +26634,14 @@ MonoBehaviour:
     - {fileID: -2092620794, guid: 4669558828cf64da69d3885a63dbadad, type: 3}
     - {fileID: 1402934936, guid: 4669558828cf64da69d3885a63dbadad, type: 3}
     skillFrames: []
+    doubleCleaveFrames: []
+    ironGuardFrames: []
+    foxfireFrames: []
+    demonArmorFrames: []
+    bloodFrenzyFrames: []
+    foxfireVisualScale: 1
+    demonArmorVisualScale: 1
+    bloodFrenzyVisualScale: 1
     scale: 1.48
     flipHorizontally: 1
   - id: fox_demon_boss
@@ -26525,6 +26664,38 @@ MonoBehaviour:
     - {fileID: 755285262, guid: 4a3f8b9c06d3b4430bfb0617982468de, type: 3}
     - {fileID: -22605999, guid: 4a3f8b9c06d3b4430bfb0617982468de, type: 3}
     skillFrames: []
+    doubleCleaveFrames: []
+    ironGuardFrames: []
+    foxfireFrames:
+    - {fileID: 302786370, guid: aee1598bd1aba446b9bcbb2a80850cc0, type: 3}
+    - {fileID: 1726687042, guid: aee1598bd1aba446b9bcbb2a80850cc0, type: 3}
+    - {fileID: 709843383, guid: aee1598bd1aba446b9bcbb2a80850cc0, type: 3}
+    - {fileID: -1131310757, guid: aee1598bd1aba446b9bcbb2a80850cc0, type: 3}
+    - {fileID: 1170761490, guid: aee1598bd1aba446b9bcbb2a80850cc0, type: 3}
+    - {fileID: -1131398503, guid: aee1598bd1aba446b9bcbb2a80850cc0, type: 3}
+    - {fileID: -108152265, guid: aee1598bd1aba446b9bcbb2a80850cc0, type: 3}
+    - {fileID: -1757205727, guid: aee1598bd1aba446b9bcbb2a80850cc0, type: 3}
+    demonArmorFrames:
+    - {fileID: 464878800, guid: 42ef2d71c3ab54347803eb30f5727dbc, type: 3}
+    - {fileID: -1941244073, guid: 42ef2d71c3ab54347803eb30f5727dbc, type: 3}
+    - {fileID: -1869443184, guid: 42ef2d71c3ab54347803eb30f5727dbc, type: 3}
+    - {fileID: 52329809, guid: 42ef2d71c3ab54347803eb30f5727dbc, type: 3}
+    - {fileID: -1267721767, guid: 42ef2d71c3ab54347803eb30f5727dbc, type: 3}
+    - {fileID: 1277028010, guid: 42ef2d71c3ab54347803eb30f5727dbc, type: 3}
+    - {fileID: -721133411, guid: 42ef2d71c3ab54347803eb30f5727dbc, type: 3}
+    - {fileID: 1142193806, guid: 42ef2d71c3ab54347803eb30f5727dbc, type: 3}
+    bloodFrenzyFrames:
+    - {fileID: -1432505656, guid: 534b0585ed4bc45cf891200b0a5a4694, type: 3}
+    - {fileID: -1807499536, guid: 534b0585ed4bc45cf891200b0a5a4694, type: 3}
+    - {fileID: -170775855, guid: 534b0585ed4bc45cf891200b0a5a4694, type: 3}
+    - {fileID: 1455781861, guid: 534b0585ed4bc45cf891200b0a5a4694, type: 3}
+    - {fileID: 1361200082, guid: 534b0585ed4bc45cf891200b0a5a4694, type: 3}
+    - {fileID: -1425458439, guid: 534b0585ed4bc45cf891200b0a5a4694, type: 3}
+    - {fileID: -279047016, guid: 534b0585ed4bc45cf891200b0a5a4694, type: 3}
+    - {fileID: -726653472, guid: 534b0585ed4bc45cf891200b0a5a4694, type: 3}
+    foxfireVisualScale: 0.998612
+    demonArmorVisualScale: 0.9953271
+    bloodFrenzyVisualScale: 1.1247196
     scale: 1.62
     flipHorizontally: 1
   - id: xuanjia_gate_warden
@@ -26548,6 +26719,30 @@ MonoBehaviour:
     - {fileID: 1376344663, guid: 3d7ac27a2d25a4b82a79ec3c56cfd036, type: 3}
     - {fileID: 1580277566, guid: 3d7ac27a2d25a4b82a79ec3c56cfd036, type: 3}
     - {fileID: -840507522, guid: 3d7ac27a2d25a4b82a79ec3c56cfd036, type: 3}
+    doubleCleaveFrames:
+    - {fileID: -1279364491, guid: 746eaa00afe9043bea96c939341974f3, type: 3}
+    - {fileID: 144095923, guid: 746eaa00afe9043bea96c939341974f3, type: 3}
+    - {fileID: -1709091314, guid: 746eaa00afe9043bea96c939341974f3, type: 3}
+    - {fileID: 752608344, guid: 746eaa00afe9043bea96c939341974f3, type: 3}
+    - {fileID: 1797382922, guid: 746eaa00afe9043bea96c939341974f3, type: 3}
+    - {fileID: 1653476580, guid: 746eaa00afe9043bea96c939341974f3, type: 3}
+    - {fileID: -223722442, guid: 746eaa00afe9043bea96c939341974f3, type: 3}
+    - {fileID: 1210790943, guid: 746eaa00afe9043bea96c939341974f3, type: 3}
+    ironGuardFrames:
+    - {fileID: 866261414, guid: 76977144fd31a465bad8ab0435a24cc7, type: 3}
+    - {fileID: 1865824469, guid: 76977144fd31a465bad8ab0435a24cc7, type: 3}
+    - {fileID: -1053658144, guid: 76977144fd31a465bad8ab0435a24cc7, type: 3}
+    - {fileID: -1384420966, guid: 76977144fd31a465bad8ab0435a24cc7, type: 3}
+    - {fileID: -1809956286, guid: 76977144fd31a465bad8ab0435a24cc7, type: 3}
+    - {fileID: 972015718, guid: 76977144fd31a465bad8ab0435a24cc7, type: 3}
+    - {fileID: -205999963, guid: 76977144fd31a465bad8ab0435a24cc7, type: 3}
+    - {fileID: 1209287609, guid: 76977144fd31a465bad8ab0435a24cc7, type: 3}
+    foxfireFrames: []
+    demonArmorFrames: []
+    bloodFrenzyFrames: []
+    foxfireVisualScale: 1
+    demonArmorVisualScale: 1
+    bloodFrenzyVisualScale: 1
     scale: 1.52
     flipHorizontally: 0
   playerSpriteScale: 1
@@ -26682,9 +26877,9 @@ MonoBehaviour:
     displayName: "\u7384\u7532\u9547\u5173\u4F7F"
     visualId: xuanjia_gate_warden
     level: 0
-    maxHealth: 260
-    currentHealth: 260
-    attack: 12
+    maxHealth: 290
+    currentHealth: 290
+    attack: 13
     defense: 3
     attackSpeed: 0.78
     critChance: 0.04
@@ -37817,10 +38012,11 @@ MonoBehaviour:
   normalBattleStem: {fileID: 8300000, guid: c637ec11dad0844d99534162855d756d, type: 3}
   caveMusic: {fileID: 8300000, guid: 3557888e4da2f42a98a8c071fe0e8b62, type: 3}
   caveBattleStem: {fileID: 8300000, guid: 17b7e89f8edb943c6b4aa7502dcd586c, type: 3}
-  bossIntro: {fileID: 8300000, guid: 370ec99b9e8ee42baa2845da09d0b862, type: 3}
-  bossMusic: {fileID: 8300000, guid: 6ce62790cb8a846308684efa40cbfffb, type: 3}
-  bossMomentumStem: {fileID: 8300000, guid: ce8b011a343cc4e4e9d4a9f7bf6d3c1d, type: 3}
-  bossEnrageStem: {fileID: 8300000, guid: 2616ce832ec1b4869a58a0bb1eede2ff, type: 3}
+  midBossMusic: {fileID: 8300000, guid: 78d5f15164b354500af5eb45b54cb8ed, type: 3}
+  bossIntro: {fileID: 8300000, guid: 835c1ff04e7eb4327a1fe8e321fc1081, type: 3}
+  bossMusic: {fileID: 8300000, guid: 92898dfa6d2494292bfb735a2fc4a523, type: 3}
+  bossMomentumStem: {fileID: 8300000, guid: 8b220da53a765414baefd7716acac348, type: 3}
+  bossEnrageStem: {fileID: 8300000, guid: 28b6efc437efb4aaaade6f7b17a289b9, type: 3}
   victoryStinger: {fileID: 8300000, guid: da0f1044e4f234a51be661aeb61557b5, type: 3}
   defeatStinger: {fileID: 8300000, guid: 9c862c6702be54bff9e3ed77faa383dd, type: 3}
   timeWarningBell40: {fileID: 0}

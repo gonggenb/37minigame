@@ -22,7 +22,7 @@ using WuxiaRoguelite.Visual;
 
 namespace WuxiaRoguelite.EditorTools
 {
-    public static class PrototypeSceneBuilder
+    public static partial class PrototypeSceneBuilder
     {
         private const string ScenePath = "Assets/Scenes/MainPrototype.unity";
         private const string SpritePath = "Assets/Art/Generated/prototype_square.png";
@@ -109,6 +109,10 @@ namespace WuxiaRoguelite.EditorTools
         private const string OrcCaveGuardianIdlePath = GeneratedEnemyRoot + "/OrcCaveGuardian/spr_enemy_orc_cave_guardian_idle_right_8f_v01.png";
         private const string OrcCaveGuardianAttackPath = GeneratedEnemyRoot + "/OrcCaveGuardian/spr_enemy_orc_cave_guardian_attack_right_8f_v01.png";
         private const float BossBattleVisualScale = 1.62f;
+        private const string XuanjiaDoubleCleavePath = XuanjiaMidBossRoot + "/spr_boss_xuanjia_gate_warden_double_cleave_left_8f_v01.png";
+        private const string XuanjiaIronGuardPath = XuanjiaMidBossRoot + "/spr_boss_xuanjia_gate_warden_iron_guard_left_8f_v01.png";
+        private const string DoubleCleaveVfxPath = "Assets/Art/Generated/Effects/XuanjiaGateWarden/spr_vfx_midboss_double_cleave_6f_v01.png";
+        private const string IronGuardVfxPath = "Assets/Art/Generated/Effects/XuanjiaGateWarden/spr_vfx_midboss_iron_guard_6f_v01.png";
         private const float MidBossBattleVisualScale = 1.52f;
         private const float CaveBattleVisualScale = 1.48f;
         private const string CombatImpactVfxPath = "Assets/Art/Generated/Effects/spr_vfx_wuxia_impact_6f_v01.png";
@@ -130,12 +134,13 @@ namespace WuxiaRoguelite.EditorTools
         private const string CaveMusicPath = MusicAudioRoot + "/bgm_cave_mystery_loop_32s_v01.wav";
         private const string CaveBattleStemPath =
             MusicAudioRoot + "/stem_cave_combat_tension_16s_v01.wav";
-        private const string BossIntroPath = MusicAudioRoot + "/stg_boss_heavenbreak_intro_4s_v03.wav";
-        private const string BossMusicPath = MusicAudioRoot + "/bgm_boss_heavenbreak_loop_32s_v03.wav";
+        private const string MidBossMusicPath = MusicAudioRoot + "/bgm_boss_xuanjia_ironpass_loop_64s_v01.wav";
+        private const string BossIntroPath = MusicAudioRoot + "/stg_boss_fox_demon_moonfire_intro_3s_v04.wav";
+        private const string BossMusicPath = MusicAudioRoot + "/bgm_boss_fox_demon_moonfire_loop_48s_v04.wav";
         private const string BossMomentumStemPath =
-            MusicAudioRoot + "/stem_boss_heavenbreak_momentum_16s_v03.wav";
+            MusicAudioRoot + "/stem_boss_fox_demon_moonfire_armor_12s_v04.wav";
         private const string BossEnrageStemPath =
-            MusicAudioRoot + "/stem_boss_heavenbreak_climax_16s_v03.wav";
+            MusicAudioRoot + "/stem_boss_fox_demon_moonfire_frenzy_12s_v04.wav";
         private const string VictoryStingerPath = MusicAudioRoot + "/stg_result_victory_v01.wav";
         private const string DefeatStingerPath = MusicAudioRoot + "/stg_result_defeat_v01.wav";
         private const string SkillIconRoot = "Assets/Art/Generated/Icons/Skills";
@@ -298,6 +303,7 @@ namespace WuxiaRoguelite.EditorTools
             musicController.caveMusic = AssetDatabase.LoadAssetAtPath<AudioClip>(CaveMusicPath);
             musicController.caveBattleStem = AssetDatabase.LoadAssetAtPath<AudioClip>(CaveBattleStemPath);
             musicController.bossIntro = AssetDatabase.LoadAssetAtPath<AudioClip>(BossIntroPath);
+            musicController.midBossMusic = AssetDatabase.LoadAssetAtPath<AudioClip>(MidBossMusicPath);
             musicController.bossMusic = AssetDatabase.LoadAssetAtPath<AudioClip>(BossMusicPath);
             musicController.bossMomentumStem =
                 AssetDatabase.LoadAssetAtPath<AudioClip>(BossMomentumStemPath);
@@ -378,6 +384,9 @@ namespace WuxiaRoguelite.EditorTools
             battleScreen.swordQiEffectFrames = swordQiEffectFrames;
             battleScreen.poisonEffectFrames = poisonEffectFrames;
             battleScreen.mountainBreakerEffectFrames = mountainBreakerEffectFrames;
+            battleScreen.doubleCleaveEffectFrames = LoadFrames(DoubleCleaveVfxPath, fallbackSprite);
+            battleScreen.ironGuardEffectFrames = LoadFrames(IronGuardVfxPath, fallbackSprite);
+            BindFinalBossEffects(battleScreen);
             battleScreen.bossSpriteScale = BossBattleVisualScale;
             battleScreen.enemyVisualProfiles = CreateEnemyVisualProfiles(
                 ratRun, ratAttack, riderRun, riderAttack, ballistaFly, ballistaAttack,
@@ -526,6 +535,9 @@ namespace WuxiaRoguelite.EditorTools
             battleScreen.swordQiEffectFrames = LoadFrames(SwordQiVfxPath, fallbackSprite);
             battleScreen.poisonEffectFrames = LoadFrames(PoisonMistVfxPath, fallbackSprite);
             battleScreen.mountainBreakerEffectFrames = LoadFrames(MountainBreakerVfxPath, fallbackSprite);
+            battleScreen.doubleCleaveEffectFrames = LoadFrames(DoubleCleaveVfxPath, fallbackSprite);
+            battleScreen.ironGuardEffectFrames = LoadFrames(IronGuardVfxPath, fallbackSprite);
+            BindFinalBossEffects(battleScreen);
             BindCombatAudio(feedbackAudio);
             EditorUtility.SetDirty(battleScreen);
             EditorUtility.SetDirty(feedbackAudio);
@@ -1529,8 +1541,8 @@ namespace WuxiaRoguelite.EditorTools
             {
                 XuanjiaMidBossIdlePath,
                 XuanjiaMidBossAttackPath,
-                XuanjiaMidBossSkillPath,
-                MountainBreakerVfxPath
+                XuanjiaMidBossSkillPath, XuanjiaDoubleCleavePath, XuanjiaIronGuardPath,
+                DoubleCleaveVfxPath, IronGuardVfxPath, MountainBreakerVfxPath
             };
             if (requiredSheets.Any(path => !File.Exists(path)))
             {
@@ -1538,8 +1550,12 @@ namespace WuxiaRoguelite.EditorTools
                 return;
             }
 
-            ConfigureGeneratedMonsterAssets();
-            ConfigureBattleFeedbackAssets();
+            foreach (string path in requiredSheets)
+            {
+                bool effect = path.Contains("/Effects/");
+                ConfigureSpriteSheet(path, 256, 256, effect ? 256f : 160f,
+                    effect ? (Vector2?)null : new Vector2(0.5f, 0.125f));
+            }
             Sprite fallbackSprite = GetOrCreatePrototypeSprite();
             Sprite[] idleFrames = LoadFrames(XuanjiaMidBossIdlePath, fallbackSprite);
             Sprite[] attackFrames = LoadFrames(XuanjiaMidBossAttackPath, fallbackSprite);
@@ -1559,6 +1575,8 @@ namespace WuxiaRoguelite.EditorTools
                         skillFrames));
                 battleScreen.mountainBreakerEffectFrames =
                     LoadFrames(MountainBreakerVfxPath, fallbackSprite);
+                battleScreen.doubleCleaveEffectFrames = LoadFrames(DoubleCleaveVfxPath, fallbackSprite);
+                battleScreen.ironGuardEffectFrames = LoadFrames(IronGuardVfxPath, fallbackSprite);
                 EditorUtility.SetDirty(battleScreen);
             }
 
@@ -1570,9 +1588,9 @@ namespace WuxiaRoguelite.EditorTools
                 gameFlow.midBossStats ??= new CombatantStats();
                 gameFlow.midBossStats.displayName = GameTextCatalog.MidBossName;
                 gameFlow.midBossStats.visualId = GameTextCatalog.MidBossVisualId;
-                gameFlow.midBossStats.maxHealth = 260f;
-                gameFlow.midBossStats.currentHealth = 260f;
-                gameFlow.midBossStats.attack = 12f;
+                gameFlow.midBossStats.maxHealth = MidBossTuning.MaxHealth;
+                gameFlow.midBossStats.currentHealth = MidBossTuning.MaxHealth;
+                gameFlow.midBossStats.attack = MidBossTuning.Attack;
                 gameFlow.midBossStats.defense = 3f;
                 gameFlow.midBossStats.attackSpeed = 0.78f;
                 gameFlow.midBossStats.critChance = 0.04f;
@@ -1791,6 +1809,16 @@ namespace WuxiaRoguelite.EditorTools
                 idleFrames = idleFrames,
                 attackFrames = attackFrames,
                 skillFrames = skillFrames,
+                doubleCleaveFrames = id == GameTextCatalog.MidBossVisualId
+                    ? LoadFrames(XuanjiaDoubleCleavePath, idleFrames[0]) : null,
+                ironGuardFrames = id == GameTextCatalog.MidBossVisualId
+                    ? LoadFrames(XuanjiaIronGuardPath, idleFrames[0]) : null,
+                foxfireFrames = id == GameTextCatalog.FinalBossVisualId ? LoadFrames(FoxfireActionPath, idleFrames[0]) : null,
+                demonArmorFrames = id == GameTextCatalog.FinalBossVisualId ? LoadFrames(DemonArmorActionPath, idleFrames[0]) : null,
+                bloodFrenzyFrames = id == GameTextCatalog.FinalBossVisualId ? LoadFrames(BloodFrenzyActionPath, idleFrames[0]) : null,
+                foxfireVisualScale = id == GameTextCatalog.FinalBossVisualId ? ReadFinalBossScales().foxfire : 1f,
+                demonArmorVisualScale = id == GameTextCatalog.FinalBossVisualId ? ReadFinalBossScales().demon_armor : 1f,
+                bloodFrenzyVisualScale = id == GameTextCatalog.FinalBossVisualId ? ReadFinalBossScales().blood_frenzy : 1f,
                 scale = scale,
                 flipHorizontally = flipHorizontally
             };
@@ -1937,6 +1965,9 @@ namespace WuxiaRoguelite.EditorTools
             ConfigureSpriteSheet(SwordQiVfxPath, 256, 256, 256f);
             ConfigureSpriteSheet(PoisonMistVfxPath, 256, 256, 256f);
             ConfigureSpriteSheet(MountainBreakerVfxPath, 256, 256, 256f);
+            ConfigureSpriteSheet(DoubleCleaveVfxPath, 256, 256, 256f);
+            ConfigureSpriteSheet(IronGuardVfxPath, 256, 256, 256f);
+            foreach (string path in FinalBossEffectPaths) ConfigureSpriteSheet(path, 256, 256, 256f);
             foreach (string path in new[]
                      {
                          CombatSwingSfxPath, CombatImpactSfxPath,
@@ -2102,7 +2133,9 @@ namespace WuxiaRoguelite.EditorTools
                 BronzeToadIdlePath, BronzeToadAttackPath,
                 CrimsonScorpionIdlePath, CrimsonScorpionAttackPath,
                 FoxDemonBossIdlePath, FoxDemonBossAttackPath,
+                FoxfireActionPath, DemonArmorActionPath, BloodFrenzyActionPath,
                 XuanjiaMidBossIdlePath, XuanjiaMidBossAttackPath, XuanjiaMidBossSkillPath,
+                XuanjiaDoubleCleavePath, XuanjiaIronGuardPath,
                 OrcWarlordIdlePath, OrcWarlordAttackPath,
                 OrcCaveGuardianIdlePath, OrcCaveGuardianAttackPath
             };

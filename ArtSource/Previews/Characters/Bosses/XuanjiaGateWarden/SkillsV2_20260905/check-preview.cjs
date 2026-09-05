@@ -1,0 +1,28 @@
+const {chromium}=require('playwright');
+const fs=require('node:fs');
+const path=require('node:path');
+(async()=>{
+const browser=await chromium.launch({headless:true,channel:'chrome'});
+const page=await browser.newPage({viewport:{width:1180,height:950},deviceScaleFactor:1});
+const errors=[];page.on('pageerror',e=>errors.push(e.message));
+await page.goto('http://127.0.0.1:8766');await page.waitForFunction(()=>window.previewReady===true);
+await page.evaluate(()=>window.setPreview('double',.66));
+await page.screenshot({path:path.join(__dirname,'preview_double.png')});
+await page.locator('#stage').screenshot({path:path.join(__dirname,'double_peak.png')});
+await page.getByRole('button',{name:'玄甲固守',exact:true}).click();
+await page.evaluate(()=>window.setPreview('guard',1.3));
+await page.screenshot({path:path.join(__dirname,'preview_guard.png')});
+await page.locator('#stage').screenshot({path:path.join(__dirname,'guard_peak.png')});
+await page.getByRole('button',{name:'下一帧',exact:true}).click();
+if(!await page.locator('#time').textContent())throw Error('Missing frame state');
+await page.locator('#effects').uncheck();await page.locator('#effects').check();
+await page.locator('#speed').selectOption('0.5');
+await page.setViewportSize({width:540,height:960});
+await page.evaluate(()=>window.setPreview('double',1.12));
+await page.screenshot({path:path.join(__dirname,'preview_mobile.png'),fullPage:true});
+const overflow=await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth);
+if(overflow)throw Error('Mobile overflow');
+if(errors.length)throw Error(errors.join('\n'));
+fs.writeFileSync(path.join(__dirname,'browser-qa.json'),JSON.stringify({pageErrors:errors,mobileOverflow:overflow,checks:['asset loading','skill tabs','frame stepping','VFX toggle','slow speed selection','540px layout'],scope:'Browser preview only, not Unity Play Mode'},null,2));
+await browser.close();console.log('Browser preview checks passed');
+})().catch(e=>{console.error(e);process.exit(1)});

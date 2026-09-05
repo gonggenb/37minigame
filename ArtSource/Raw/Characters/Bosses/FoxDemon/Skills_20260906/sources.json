@@ -1,0 +1,57 @@
+{
+  "characters": {
+    "foxfire": {
+      "path": "ArtSource/Raw/Characters/Bosses/FoxDemon/Skills_20260906/foxfire_keyed_8f_v01.png",
+      "source_generated_id": "5324d425-029b-499a-8913-f03566051d39"
+    },
+    "demon_armor": {
+      "path": "ArtSource/Raw/Characters/Bosses/FoxDemon/Skills_20260906/demon_armor_keyed_8f_v01.png",
+      "source_generated_id": "c4a56460-6599-455e-9efc-fb42df8a510c"
+    },
+    "blood_frenzy": {
+      "path": "ArtSource/Raw/Characters/Bosses/FoxDemon/Skills_20260906/blood_frenzy_keyed_8f_v01.png",
+      "source_generated_id": "4c0761dc-2d6a-495d-99b4-c88b74403774"
+    }
+  },
+  "effects": {
+    "foxfire": {
+      "path": "ArtSource/Raw/VFX/FoxDemon/foxfire_alpha_6f_v01.png",
+      "source_generated_id": "bb8f35b6-a1da-4b24-91f6-901de73a86f9",
+      "cuts": [
+        0,
+        177,
+        599,
+        1211,
+        1545,
+        1882,
+        2172
+      ]
+    },
+    "demon_armor": {
+      "path": "ArtSource/Raw/VFX/FoxDemon/demon_armor_alpha_6f_v01.png",
+      "source_generated_id": "d3edac91-4c65-4ec8-9cf5-29d341fb5463",
+      "cuts": [
+        0,
+        357,
+        716,
+        1097,
+        1433,
+        1832,
+        2172
+      ]
+    },
+    "blood_frenzy": {
+      "path": "ArtSource/Raw/VFX/FoxDemon/blood_frenzy_alpha_6f_v01.png",
+      "source_generated_id": "9c86eb62-c03d-49f3-968a-68e48e701b5c",
+      "cuts": [
+        0,
+        236,
+        571,
+        1003,
+        1440,
+        1822,
+        2172
+      ]
+    }
+  }
+}

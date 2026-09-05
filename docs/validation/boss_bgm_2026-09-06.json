@@ -1,0 +1,52 @@
+[
+  {
+    "file": "Assets/Audio/Generated/Music/bgm_boss_xuanjia_ironpass_loop_64s_v01.wav",
+    "bpm": 120,
+    "seconds": 64.0,
+    "loop": true,
+    "peak_db": -4.000508460444033,
+    "rms_db": -16.941821313234,
+    "seam_delta": 0.0023193359375,
+    "sha256": "3a9c1d43c66ef922912427800c5087bc22400c43469a5963cb7df12414e4bff9"
+  },
+  {
+    "file": "Assets/Audio/Generated/Music/bgm_boss_fox_demon_moonfire_loop_48s_v04.wav",
+    "bpm": 160,
+    "seconds": 48.0,
+    "loop": true,
+    "peak_db": -4.000508460444033,
+    "rms_db": -16.87604341417446,
+    "seam_delta": 0.00347900390625,
+    "sha256": "9f3d6efb60e79d175182b885b1a8431b38d073204a6bc225da01f0f83576cf7c"
+  },
+  {
+    "file": "Assets/Audio/Generated/Music/stem_boss_fox_demon_moonfire_armor_12s_v04.wav",
+    "bpm": 160,
+    "seconds": 12.0,
+    "loop": true,
+    "peak_db": -7.0005506829029605,
+    "rms_db": -18.395228264628525,
+    "seam_delta": 0.0050048828125,
+    "sha256": "353df9c0ff051ab3361f7f1bebf047e1165b0fc32f53edd2c214fcd5def878b5"
+  },
+  {
+    "file": "Assets/Audio/Generated/Music/stem_boss_fox_demon_moonfire_frenzy_12s_v04.wav",
+    "bpm": 160,
+    "seconds": 12.0,
+    "loop": true,
+    "peak_db": -7.0005506829029605,
+    "rms_db": -18.35951414635901,
+    "seam_delta": 0.007965087890625,
+    "sha256": "aa0788008c0951201e15722ea4f945ee70542ce26d648d2b850f66557baa8aab"
+  },
+  {
+    "file": "Assets/Audio/Generated/Music/stg_boss_fox_demon_moonfire_intro_3s_v04.wav",
+    "bpm": 160,
+    "seconds": 3.0,
+    "loop": false,
+    "peak_db": -5.000377362660108,
+    "rms_db": -17.525543017699672,
+    "seam_delta": 0.0,
+    "sha256": "940ecf9657e0e5a8776e9253df8e3f33218a244a6e33f387dfec0ac7e802af79"
+  }
+]

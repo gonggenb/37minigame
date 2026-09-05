@@ -9,7 +9,7 @@ using WuxiaRoguelite.Visual;
 namespace WuxiaRoguelite.UI
 {
     [DisallowMultipleComponent]
-    public class BattleScreenController : MonoBehaviour
+    public partial class BattleScreenController : MonoBehaviour
     {
         [Serializable]
         public class EnemyVisualProfile
@@ -18,6 +18,14 @@ namespace WuxiaRoguelite.UI
             public Sprite[] idleFrames;
             public Sprite[] attackFrames;
             public Sprite[] skillFrames;
+            public Sprite[] doubleCleaveFrames;
+            public Sprite[] ironGuardFrames;
+            public Sprite[] foxfireFrames;
+            public Sprite[] demonArmorFrames;
+            public Sprite[] bloodFrenzyFrames;
+            public float foxfireVisualScale = 1f;
+            public float demonArmorVisualScale = 1f;
+            public float bloodFrenzyVisualScale = 1f;
             [Min(0.5f)] public float scale = ActorVisualScale.Medium;
             public bool flipHorizontally;
         }
@@ -40,6 +48,11 @@ namespace WuxiaRoguelite.UI
         public Sprite[] swordQiEffectFrames;
         public Sprite[] poisonEffectFrames;
         public Sprite[] mountainBreakerEffectFrames;
+        public Sprite[] doubleCleaveEffectFrames;
+        public Sprite[] ironGuardEffectFrames;
+        public Sprite[] foxfireEffectFrames;
+        public Sprite[] demonArmorEffectFrames;
+        public Sprite[] bloodFrenzyEffectFrames;
         public EnemyVisualProfile[] enemyVisualProfiles;
         [Min(0.5f)] public float playerSpriteScale = ActorVisualScale.Medium;
         [Min(0.5f)] public float bossSpriteScale = ActorVisualScale.Large;
@@ -238,6 +251,9 @@ namespace WuxiaRoguelite.UI
                 ? baseActorSize * Mathf.Min(battleActorScale, 1.06f)
                 : actorSize;
             float enemyActorSize = enemyBaseSize * enemySpriteScale;
+            // Reserve room for raised fan/tails and state VFX below the horizontal HUD.
+            if (battleManager.IsBossBattle)
+                enemyActorSize = Mathf.Min(enemyActorSize, Mathf.Max(128f, (stageHeight - 12f) / 1.12f));
             float tallestActorSize = Mathf.Max(playerActorSize, enemyActorSize);
             float baseY = portrait
                 ? Mathf.Clamp(
@@ -248,13 +264,9 @@ namespace WuxiaRoguelite.UI
             // Visual pacing is intentionally independent from BattleManager's attack cadence.
             // A new resolved attack can replace the current pose, but never delays damage or timers.
             float actionAge = Time.unscaledTime - attackStartedAt;
-            bool mountainBreakerAction = battleManager.IsMidBossBattle &&
-                                         (activeVfxCues & BattleVfxCue.MountainBreaker) != 0 &&
-                                         actionAge >= 0f && actionAge < MidBossTuning.SkillVisualDuration;
-            float attackDuration = mountainBreakerAction
-                ? MidBossTuning.SkillVisualDuration
-                : Mathf.Max(0.01f, attackVisualDuration);
-            float actionProgress = Mathf.Clamp01((Time.unscaledTime - attackStartedAt) / attackDuration);
+            bool midBossAction = battleManager.IsMidBossSkillActive;
+            bool finalBossAction = battleManager.IsFinalBossActionActive;
+            float actionProgress = Mathf.Clamp01(actionAge / Mathf.Max(0.01f, attackVisualDuration));
             float lunge = Mathf.Sin(actionProgress * Mathf.PI) * Mathf.Min(54f, width * 0.05f);
             bool shouldShakeTarget = battleManager.LastAttackWasCritical ||
                                      battleManager.LastAttackWasDodged;
@@ -264,7 +276,7 @@ namespace WuxiaRoguelite.UI
 
             float playerX = width * (portrait ? 0.25f : 0.30f) - actorSize * 0.5f;
             float enemyX = width * (portrait ? 0.75f : 0.70f) - actorSize * 0.5f;
-            if (actionProgress < 1f)
+            if (actionProgress < 1f && !midBossAction && !finalBossAction)
             {
                 playerX += lunge;
                 enemyX -= lunge;
@@ -278,28 +290,32 @@ namespace WuxiaRoguelite.UI
                 }
             }
 
-            bool playerAttacking = actionProgress < 1f && !mountainBreakerAction;
-            bool enemyAttacking = actionProgress < 1f;
-            Sprite[] currentEnemyActionFrames = mountainBreakerAction &&
-                                                enemyVisual != null &&
-                                                enemyVisual.skillFrames != null &&
-                                                enemyVisual.skillFrames.Length > 0
-                ? enemyVisual.skillFrames
+            bool playerAttacking = actionProgress < 1f && (!(midBossAction || finalBossAction) || battleManager.LastAttackWasPlayer);
+            bool enemyAttacking = midBossAction || finalBossAction || actionProgress < 1f;
+            Sprite[] currentEnemyActionFrames = midBossAction
+                ? SelectMidBossActionFrames(enemyVisual, currentEnemyAttackFrames)
+                : finalBossAction ? SelectFinalBossActionFrames(enemyVisual, currentEnemyAttackFrames)
                 : currentEnemyAttackFrames;
+            float enemyActionProgress = midBossAction ? GetMidBossActionProgress()
+                : finalBossAction ? GetFinalBossActionProgress() : actionProgress;
             Rect playerRect = new Rect(playerX + (actorSize - playerActorSize) * 0.5f,
                 baseY - playerActorSize, playerActorSize, playerActorSize);
             Rect enemyRect = new Rect(enemyX + (actorSize - enemyActorSize) * 0.5f,
                 baseY - enemyActorSize, enemyActorSize, enemyActorSize);
+            // Generated fox atlases reserve the bottom eighth for a stable foot pivot.
+            if (battleManager.IsBossBattle) enemyRect.y += enemyRect.height * 0.125f;
             DrawPersistentBattleAuras(playerRect, enemyRect);
+            DrawMidBossWard(enemyRect);
             DrawFighter(playerRect, PlayerColor, "侠", false,
                 playerAttacking ? playerAttackFrames : playerIdleFrames, playerAttacking, actionProgress);
-            if (battleManager.IsBossBattle)
-            {
-                DrawBossAura(enemyRect);
-            }
-            DrawFighter(enemyRect, EnemyColor, "敌", enemyVisual != null ? enemyVisual.flipHorizontally : true,
-                enemyAttacking ? currentEnemyActionFrames : currentEnemyIdleFrames, enemyAttacking, actionProgress,
-                GetEnemySpriteTint());
+            Rect enemyPoseRect = finalBossAction ? GetFinalBossPoseRect(enemyRect, enemyVisual) : enemyRect;
+            DrawFighter(enemyPoseRect, EnemyColor, "敌", enemyVisual != null ? enemyVisual.flipHorizontally : true,
+                enemyAttacking ? currentEnemyActionFrames : currentEnemyIdleFrames, enemyAttacking, enemyActionProgress,
+                GetEnemySpriteTint(), battleManager.IsBossBattle
+                    ? enemyRect.y + enemyRect.height * 0.875f : (float?)null);
+            if (battleManager.IsBossBattle) DrawFinalBossStateEffects(enemyRect);
+            DrawMidBossImpact(playerRect, enemyRect);
+            DrawFinalBossFoxfire(playerRect, enemyRect);
             DrawBattleSkillVfx(playerRect, enemyRect,
                 enemyVisual != null ? enemyVisual.flipHorizontally : true);
             DrawSkillCallout(playerRect, enemyRect);
@@ -1032,9 +1048,9 @@ namespace WuxiaRoguelite.UI
         }
 
         private void DrawFighter(Rect rect, Color color, string mark, bool facesLeft, Sprite[] frames,
-            bool attacking, float actionProgress, Color? spriteTint = null)
+            bool attacking, float actionProgress, Color? spriteTint = null, float? groundY = null)
         {
-            FillRect(new Rect(rect.x + rect.width * 0.14f, rect.yMax + 4f, rect.width * 0.72f, 8f), new Color(0f, 0f, 0f, 0.42f));
+            FillRect(new Rect(rect.x + rect.width * 0.14f, (groundY ?? rect.yMax) + 4f, rect.width * 0.72f, 8f), new Color(0f, 0f, 0f, 0.42f));
 
             Sprite frame = GetFrame(frames, attacking, actionProgress);
             if (frame != null)
@@ -1248,12 +1264,13 @@ namespace WuxiaRoguelite.UI
             string effectText;
             if (boss && battleManager.BossWard > 0f)
             {
-                effectText = $"妖甲 {CombatNumberDisplay.Format(battleManager.BossWard)} · 毒 {battleManager.EnemyPoisonStacks} · 破甲 {CombatNumberDisplay.Format(battleManager.EnemyArmorBreak)}";
+                effectText = $"{(battleManager.IsMidBossBattle ? GameTextCatalog.MidBossWardName : "妖甲")} {CombatNumberDisplay.Format(battleManager.BossWard)} · 毒 {battleManager.EnemyPoisonStacks} · 破甲 {CombatNumberDisplay.Format(battleManager.EnemyArmorBreak)}";
             }
             else
             {
                 effectText = battleManager.EnemyPoisonStacks > 0 || battleManager.EnemyArmorBreak > 0f
                     ? $"毒 {battleManager.EnemyPoisonStacks} · 破甲 {CombatNumberDisplay.Format(battleManager.EnemyArmorBreak)}"
+                    : battleManager.IsMidBossBattle ? GameTextCatalog.MidBossName
                     : boss ? battleManager.CurrentBossPhaseName : "状态正常";
             }
             if (compact)
@@ -1261,6 +1278,14 @@ namespace WuxiaRoguelite.UI
                 ResponsiveGui.DrawSingleLineLabel(
                     new Rect(rect.x + 10f, rect.y + 41f, rect.width - 20f, 15f),
                     effectText, detailStyle, 7);
+                return;
+            }
+            if (boss && battleManager.IsBossEncounter)
+            {
+                // Armor adds another number; share one fitted row instead of overlapping columns.
+                ResponsiveGui.DrawSingleLineLabel(
+                    new Rect(rect.x + 10f, rect.y + 48f, rect.width - 20f, 17f),
+                    statText + " · " + effectText, detailStyle, 7);
                 return;
             }
             ResponsiveGui.DrawSingleLineLabel(
@@ -1472,17 +1497,19 @@ namespace WuxiaRoguelite.UI
                 DrawEffectSprite(new Rect(center.x - width * 0.5f, center.y - width * 0.36f,
                         width, width * 0.72f),
                     EffectFrame(swordQiEffectFrames, progress),
-                    new Color(1f, 1f, 1f, 1f - Mathf.Clamp01((progress - 0.70f) / 0.30f)));
+                    new Color(1f, 1f, 1f, 1f - Mathf.Clamp01((progress - 0.70f) / 0.30f)),
+                    ShouldFlipDirectionalEffect(playerRect, enemyRect, sourceFacesLeft: true));
                 DrawSlashTrail(enemyRect, progress,
                     new Color(0.58f, 0.90f, 0.94f, 0.80f), -18f, 1.16f);
             }
 
             if (HasCue(BattleVfxCue.SwiftCombo))
             {
+                bool flipSwordQi = ShouldFlipDirectionalEffect(playerRect, enemyRect, sourceFacesLeft: true);
                 DrawBurst(enemyRect, swordQiEffectFrames, age, 0.62f,
-                    new Color(0.74f, 0.94f, 1f, 0.90f), 1.12f, -0.18f);
+                    new Color(0.74f, 0.94f, 1f, 0.90f), 1.12f, -0.18f, flipSwordQi);
                 DrawBurst(enemyRect, swordQiEffectFrames, age - 0.08f, 0.54f,
-                    new Color(1f, 0.86f, 0.38f, 0.78f), 0.90f, 0.16f);
+                    new Color(1f, 0.86f, 0.38f, 0.78f), 0.90f, 0.16f, flipSwordQi);
                 DrawSlashTrail(enemyRect, Mathf.Clamp01(age / 0.50f),
                     new Color(0.66f, 0.92f, 1f, 0.86f), -24f, 1.22f);
                 DrawSlashTrail(enemyRect, Mathf.Clamp01((age - 0.07f) / 0.50f),
@@ -1550,51 +1577,13 @@ namespace WuxiaRoguelite.UI
                     HasCue(BattleVfxCue.BloodBurst) ? 1.28f : 0.94f);
             }
 
-            if (HasCue(BattleVfxCue.Foxfire))
-            {
-                float progress = Mathf.Clamp01(age / 0.62f);
-                for (int index = 0; index < 3; index++)
-                {
-                    float staggered = Mathf.Clamp01(progress * 1.35f - index * 0.12f);
-                    Vector2 center = Vector2.Lerp(enemyRect.center, playerRect.center,
-                        Mathf.SmoothStep(0f, 1f, staggered));
-                    float size = playerRect.width * (0.34f + index * 0.04f);
-                    DrawEffectSprite(new Rect(center.x - size * 0.5f,
-                            center.y - size * 0.5f + (index - 1) * size * 0.34f, size, size),
-                        EffectFrame(impactEffectFrames, staggered),
-                        new Color(1f, 0.34f, 0.12f, 1f - staggered * 0.62f));
-                }
-            }
 
-            if (HasCue(BattleVfxCue.MountainBreaker) &&
-                mountainBreakerEffectFrames != null && mountainBreakerEffectFrames.Length > 0)
-            {
-                float impactAge = age - MidBossTuning.SkillImpactDelay;
-                float effectDuration = Mathf.Max(0.01f,
-                    MidBossTuning.SkillVisualDuration - MidBossTuning.SkillImpactDelay);
-                if (impactAge >= 0f && impactAge < effectDuration)
-                {
-                    float progress = impactAge / effectDuration;
-                    float size = Mathf.Max(playerRect.width, enemyRect.width) * 1.72f;
-                    Vector2 center = new Vector2(
-                        Mathf.Lerp(enemyRect.center.x, playerRect.center.x, 0.52f),
-                        Mathf.Lerp(enemyRect.yMax, playerRect.yMax, 0.5f) - size * 0.34f);
-                    Rect effectRect = new Rect(
-                        center.x - size * 0.5f,
-                        center.y - size * 0.5f,
-                        size,
-                        size);
-                    DrawEffectSprite(effectRect,
-                        EffectFrame(mountainBreakerEffectFrames, progress),
-                        new Color(1f, 1f, 1f, 1f - progress * 0.42f));
-                }
-            }
         }
 
         private void DrawSkillCallout(Rect playerRect, Rect enemyRect)
         {
             if (string.IsNullOrEmpty(activeSkillVfxName) ||
-                (activeVfxCues & (BattleVfxCue.Foxfire | BattleVfxCue.MountainBreaker)) != 0)
+                (activeVfxCues & (BattleVfxCue.Foxfire | BattleVfxCue.MountainBreaker | BattleVfxCue.DoubleCleave)) != 0)
             {
                 return;
             }
@@ -1867,7 +1856,7 @@ namespace WuxiaRoguelite.UI
         }
 
         private static void DrawBurst(Rect target, Sprite[] frames, float age, float duration,
-            Color tint, float scale, float verticalOffsetRatio)
+            Color tint, float scale, float verticalOffsetRatio, bool flipHorizontally = false)
         {
             if (age < 0f || age >= duration || frames == null || frames.Length == 0)
             {
@@ -1879,7 +1868,7 @@ namespace WuxiaRoguelite.UI
             Rect rect = new Rect(target.center.x - size * 0.5f,
                 target.center.y - size * 0.5f + target.height * verticalOffsetRatio, size, size);
             DrawEffectSprite(rect, EffectFrame(frames, progress),
-                new Color(tint.r, tint.g, tint.b, tint.a * (1f - progress * 0.72f)));
+                new Color(tint.r, tint.g, tint.b, tint.a * (1f - progress * 0.72f)), flipHorizontally);
         }
 
         private static Rect OffsetRect(Rect rect, float x, float y)
@@ -1897,7 +1886,15 @@ namespace WuxiaRoguelite.UI
             FillRect(new Rect(rect.xMax - thickness, rect.y + thickness, thickness, rect.height - thickness * 2f), color);
         }
 
-        private static void DrawEffectSprite(Rect rect, Sprite sprite, Color tint)
+        private static bool ShouldFlipDirectionalEffect(Rect caster, Rect target, bool sourceFacesLeft)
+        {
+            // Sprite import/character flipping is unrelated to a VFX's authored direction.
+            // Sword qi and the midboss slash sheets lead left; compare with the actual target.
+            if (Mathf.Approximately(caster.center.x, target.center.x)) return false;
+            return sourceFacesLeft != (target.center.x < caster.center.x);
+        }
+
+        private static void DrawEffectSprite(Rect rect, Sprite sprite, Color tint, bool flipHorizontally = false)
         {
             if (sprite == null)
             {
@@ -1910,6 +1907,12 @@ namespace WuxiaRoguelite.UI
                 source.y / sprite.texture.height,
                 source.width / sprite.texture.width,
                 source.height / sprite.texture.height);
+            if (flipHorizontally)
+            {
+                // Mirror only this sliced frame, never the whole strip or its frame order.
+                uv.x += uv.width;
+                uv.width = -uv.width;
+            }
             Color previous = GUI.color;
             GUI.color = tint;
             GUI.DrawTextureWithTexCoords(rect, sprite.texture, uv, true);
@@ -1949,7 +1952,9 @@ namespace WuxiaRoguelite.UI
             }
 
             string effectSummary =
-                battleManager.IsBossBattle
+                battleManager.IsMidBossBattle
+                    ? $"侠盾 {CombatNumberDisplay.Format(battleManager.PlayerShield)} · {GameTextCatalog.MidBossWardName} {CombatNumberDisplay.Format(battleManager.BossWard)} · 毒 {battleManager.EnemyPoisonStacks}"
+                : battleManager.IsBossBattle
                     ? $"侠盾 {CombatNumberDisplay.Format(battleManager.PlayerShield)} · 妖甲 {CombatNumberDisplay.Format(battleManager.BossWard)} · 毒 {battleManager.EnemyPoisonStacks} · 破甲 {CombatNumberDisplay.Format(battleManager.EnemyArmorBreak)}"
                     : $"护盾 {CombatNumberDisplay.Format(battleManager.PlayerShield)}  ·  毒 {battleManager.EnemyPoisonStacks} 层  ·  破甲 {CombatNumberDisplay.Format(battleManager.EnemyArmorBreak)}";
             if (portrait)
@@ -2070,29 +2075,6 @@ namespace WuxiaRoguelite.UI
                 unlocked ? label : "未显", active ? detailStyle : captionStyle, 7);
         }
 
-        private void DrawBossAura(Rect rect)
-        {
-            if (!battleManager.IsBossBattle)
-            {
-                return;
-            }
-
-            Color aura = battleManager.CurrentBossPhase switch
-            {
-                BossBattlePhase.BloodFrenzy => new Color(0.92f, 0.12f, 0.08f, 0.16f),
-                BossBattlePhase.DemonArmor => new Color(0.86f, 0.62f, 0.20f, 0.13f),
-                _ => new Color(0.72f, 0.20f, 0.16f, 0.09f)
-            };
-            float pulse = 0.7f + Mathf.Sin(Time.unscaledTime * 5f) * 0.3f;
-            for (int i = 0; i < 3; i++)
-            {
-                float inset = 8f + i * 8f;
-                FillRect(new Rect(rect.x - inset, rect.y - inset,
-                    rect.width + inset * 2f, rect.height + inset * 2f),
-                    new Color(aura.r, aura.g, aura.b, aura.a * pulse * (1f - i * 0.25f)));
-            }
-        }
-
         private Color GetBossSpriteTint()
         {
             if (!battleManager.IsBossBattle)
@@ -2135,7 +2117,17 @@ namespace WuxiaRoguelite.UI
                 return;
             }
 
-            float age = Time.unscaledTime - battleManager.LastBossSkillTriggeredAt;
+            bool finalAction = battleManager.IsBossBattle && battleManager.IsFinalBossActionActive;
+            BossSkillId displayedSkill = finalAction ? battleManager.CurrentFinalBossAction : battleManager.LastBossSkill;
+            string displayedName = displayedSkill switch
+            {
+                BossSkillId.FoxfireBarrage => GameTextCatalog.FinalBossFoxfireSkillName,
+                BossSkillId.DemonArmor => GameTextCatalog.FinalBossPhaseTwoName,
+                BossSkillId.BloodFrenzy => GameTextCatalog.FinalBossPhaseThreeName,
+                _ => battleManager.LastBossSkillName
+            };
+            float age = finalAction ? battleManager.FinalBossActionElapsed
+                : Time.unscaledTime - battleManager.LastBossSkillTriggeredAt;
             if (age < 0f || age > 1.15f)
             {
                 return;
@@ -2149,13 +2141,13 @@ namespace WuxiaRoguelite.UI
             Color previous = GUI.color;
             GUI.color = new Color(1f, 1f, 1f, alpha);
             WuxiaUiTheme.DrawPanel(panel, new Color(0.04f, 0.018f, 0.02f, 0.94f),
-                battleManager.LastBossSkill == BossSkillId.BloodFrenzy
+                displayedSkill == BossSkillId.BloodFrenzy
                     ? new Color(0.92f, 0.24f, 0.16f)
-                    : battleManager.LastBossSkill == BossSkillId.MountainBreaker
+                    : displayedSkill == BossSkillId.MountainBreaker
                         ? new Color(0.78f, 0.49f, 0.20f)
                     : Gold,
                 WuxiaPanelKind.Boss);
-            Texture2D icon = GetBossSkillIcon(battleManager.LastBossSkill);
+            Texture2D icon = GetBossSkillIcon(displayedSkill);
             if (icon != null)
             {
                 GUI.DrawTexture(new Rect(panel.x + 8f, panel.y + 6f, 40f, 40f), icon,
@@ -2163,14 +2155,18 @@ namespace WuxiaRoguelite.UI
             }
             ResponsiveGui.DrawSingleLineLabel(
                 new Rect(panel.x + 54f, panel.y + 4f, panel.width - 62f, 24f),
-                battleManager.LastBossSkillName, bossWarningStyle, 10);
+                displayedName, bossWarningStyle, 10);
             ResponsiveGui.DrawSingleLineLabel(
                 new Rect(panel.x + 54f, panel.y + 27f, panel.width - 62f, 18f),
-                battleManager.LastBossSkill == BossSkillId.FoxfireBarrage
+                displayedSkill == BossSkillId.FoxfireBarrage
                     ? "三道狐火 · 可闪避 · 防御逐段生效"
-                    : battleManager.LastBossSkill == BossSkillId.MountainBreaker
+                    : displayedSkill == BossSkillId.MountainBreaker
                         ? "举刀预警 · 震波左掠 · 防御与闪避生效"
-                    : battleManager.LastBossSkill == BossSkillId.DemonArmor
+                    : displayedSkill == BossSkillId.DoubleCleave
+                        ? "横斩接上挑 · 防御与闪避逐段生效"
+                    : displayedSkill == BossSkillId.IronGuard
+                        ? "半血架守 · 三秒玄甲 · 所有伤害可击破"
+                    : displayedSkill == BossSkillId.DemonArmor
                         ? "固定妖甲 · 所有伤害均可击破"
                         : "攻势加快 · 狐火间隔缩短",
                 captionStyle, 8);

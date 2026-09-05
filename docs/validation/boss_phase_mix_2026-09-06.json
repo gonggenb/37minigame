@@ -1,0 +1,42 @@
+[
+  {
+    "file": "Assets/Audio/Generated/Music/stem_boss_fox_demon_moonfire_armor_12s_v04.wav",
+    "bpm": 160,
+    "seconds": 12.0,
+    "loop": true,
+    "peak_db": -4.000508460444033,
+    "rms_db": -15.23461932066711,
+    "seam_delta": 0.002044677734375,
+    "sha256": "a1a9dca64890906c114b87a8e51250a73949f1411dba3173eeccb56edbe3066e"
+  },
+  {
+    "file": "Assets/Audio/Generated/Music/stem_boss_fox_demon_moonfire_frenzy_12s_v04.wav",
+    "bpm": 160,
+    "seconds": 12.0,
+    "loop": true,
+    "peak_db": -4.000508460444033,
+    "rms_db": -14.095662711833857,
+    "seam_delta": 0.01544189453125,
+    "sha256": "2d2caeb3b96ab16ca695d66bbc00e91ce7832b8119d69e1ff55b6b2e9f8e88ba"
+  },
+  {
+    "file": "Assets/Resources/Audio/BossTransitions/stg_fox_armor_transition_v01.wav",
+    "bpm": 160,
+    "seconds": 1.2,
+    "loop": false,
+    "peak_db": -5.000377362660108,
+    "rms_db": -18.336032034808383,
+    "seam_delta": 0.0,
+    "sha256": "0b71d493c375ee3699da38a6de4d7107f4a811ad1d68321965bccb28c50c3b94"
+  },
+  {
+    "file": "Assets/Resources/Audio/BossTransitions/stg_fox_frenzy_transition_v01.wav",
+    "bpm": 160,
+    "seconds": 1.2,
+    "loop": false,
+    "peak_db": -5.000377362660108,
+    "rms_db": -17.943224126720033,
+    "seam_delta": 0.0,
+    "sha256": "6109c9065ac04372f7d6d614ab85822dc297a5db674ca7e6c33ae7ada5e9230c"
+  }
+]
