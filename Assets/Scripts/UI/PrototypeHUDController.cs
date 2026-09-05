@@ -146,7 +146,7 @@ namespace WuxiaRoguelite.UI
     }
 
     [DefaultExecutionOrder(-1000)]
-    public class PrototypeHUDController : MonoBehaviour
+    public partial class PrototypeHUDController : MonoBehaviour
     {
         [Serializable]
         public class IconEntry
@@ -260,6 +260,7 @@ namespace WuxiaRoguelite.UI
         private void Update()
         {
             UpdateHealthFeedback();
+            UpdateExplorationNotices();
 
             if (gameFlow != null &&
                 (gameFlow.IsLevelTwoDifficultyNoticeActive ||
@@ -403,7 +404,8 @@ namespace WuxiaRoguelite.UI
                     return;
                 }
 
-                if (gameFlow.CurrentPhase != GamePhase.Result && gameFlow.CurrentPhase != GamePhase.CaveRunning && !characterPanelOpen)
+                if (gameFlow.CurrentPhase != GamePhase.Result && gameFlow.CurrentPhase != GamePhase.CaveRunning &&
+                    !(ResponsiveGui.IsPortrait && gameFlow.CurrentPhase == GamePhase.LevelUpPaused) && !characterPanelOpen)
                 {
                     DrawCompactHud();
                 }
@@ -533,6 +535,7 @@ namespace WuxiaRoguelite.UI
 
         private void DrawSettingsPanel()
         {
+            if (ResponsiveGui.IsPortrait) { DrawPortraitSettings(); return; }
             Rect screen = new Rect(0f, 0f, ResponsiveGui.Width, ResponsiveGui.Height);
             FillRect(screen, new Color(0.015f, 0.02f, 0.02f, 0.82f));
 
@@ -800,6 +803,7 @@ namespace WuxiaRoguelite.UI
 
         private void DrawCompactHud()
         {
+            if (ResponsiveGui.IsPortrait) { DrawPortraitExploration(); return; }
             Rect safe = ResponsiveGui.SafeArea;
             bool portraitLayout = ResponsiveGui.IsPortrait;
             bool timePaused = gameFlow.CurrentPhase == GamePhase.LevelUpPaused;
@@ -932,7 +936,7 @@ namespace WuxiaRoguelite.UI
                 ? Mathf.Max(218f, (safe.width - 44f) * 0.5f)
                 : Mathf.Min(286f, safe.width * 0.30f);
             float healthTop = portraitLayout
-                ? safe.y + 68f
+                ? safe.y + PortraitUiLayout.CombatHealthTop(gameFlow.CurrentPhase)
                 : safe.y + 89f;
             float height = portraitLayout ? 96f : 112f;
             Rect hud = new Rect(safe.x + (portraitLayout ? 16f : Mathf.Clamp(ResponsiveGui.Width * 0.055f, 34f, 72f)),
@@ -1166,7 +1170,7 @@ namespace WuxiaRoguelite.UI
             WuxiaUiTheme.DrawSlot(rect, new Color(0.035f, 0.045f, 0.045f, 0.98f),
                 featureColor, highlighted);
 
-            Texture2D icon = FindMartialArtIcon(artId);
+            Texture icon = FindMartialArtIcon(artId);
             if (icon != null)
             {
                 Color previous = GUI.color;
@@ -1218,7 +1222,7 @@ namespace WuxiaRoguelite.UI
             WuxiaUiTheme.DrawSlot(rect, new Color(0.025f, 0.045f, 0.04f, 0.98f),
                 accent, pulse > 0f);
 
-            Texture2D icon = FindMartialArtIcon(buff.iconId);
+            Texture icon = FindMartialArtIcon(buff.iconId);
             if (icon != null)
             {
                 GUI.DrawTexture(new Rect(rect.x + 3f, rect.y + 3f, rect.width - 6f, rect.height - 6f),
@@ -1380,15 +1384,7 @@ namespace WuxiaRoguelite.UI
 
         private static Color SchoolColor(MartialArtSchool school)
         {
-            switch (school)
-            {
-                case MartialArtSchool.SwiftSword:
-                    return new Color(0.42f, 0.72f, 0.96f, 1f);
-                case MartialArtSchool.VenomPalm:
-                    return new Color(0.42f, 0.82f, 0.48f, 1f);
-                default:
-                    return new Color(0.92f, 0.52f, 0.25f, 1f);
-            }
+            return MartialArtIconRenderer.SchoolColor(school);
         }
 
         private void DrawBossApproachWarning()
@@ -1777,7 +1773,7 @@ namespace WuxiaRoguelite.UI
         private void DrawCharacterScreen()
         {
             FillRect(new Rect(0f, 0f, ResponsiveGui.Width, ResponsiveGui.Height), new Color(0.025f, 0.03f, 0.03f, 0.98f));
-            Rect panel = CenteredRect(760f, 460f);
+            Rect panel = CenteredRect(760f, ResponsiveGui.IsPortrait ? 790f : 460f);
             DrawPanel(panel, Panel, currentView == CharacterView.Status ? Jade : Gold);
 
             ResponsiveGui.DrawSingleLineLabel(
@@ -1786,7 +1782,7 @@ namespace WuxiaRoguelite.UI
             ResponsiveGui.DrawSingleLineLabel(
                 new Rect(panel.xMax - 174f, panel.y + 11f, 116f, 28f),
                 "江湖暂停", centeredStyle, 10);
-            if (GUI.Button(new Rect(panel.xMax - 44f, panel.y + 10f, 28f, 28f), "×", actionButtonStyle))
+            if (GUI.Button(new Rect(panel.xMax - 60f, panel.y + 6f, 44f, 44f), "×", actionButtonStyle))
             {
                 SetCharacterScreenOpen(false);
                 return;
@@ -1794,16 +1790,17 @@ namespace WuxiaRoguelite.UI
 
             float tabY = panel.y + 50f;
             float tabWidth = Mathf.Min(150f, (panel.width - 36f) * 0.5f);
-            if (GUI.Button(new Rect(panel.x + 18f, tabY, tabWidth, 32f), "角色状态", currentView == CharacterView.Status ? activeTabStyle : tabStyle))
+            float tabHeight = ResponsiveGui.IsPortrait ? 44f : 32f;
+            if (GUI.Button(new Rect(panel.x + 18f, tabY, tabWidth, tabHeight), "角色状态", currentView == CharacterView.Status ? activeTabStyle : tabStyle))
             {
                 currentView = CharacterView.Status;
             }
-            if (GUI.Button(new Rect(panel.x + 22f + tabWidth, tabY, tabWidth, 32f), "装备背包", currentView == CharacterView.Equipment ? activeTabStyle : tabStyle))
+            if (GUI.Button(new Rect(panel.x + 22f + tabWidth, tabY, tabWidth, tabHeight), "装备背包", currentView == CharacterView.Equipment ? activeTabStyle : tabStyle))
             {
                 currentView = CharacterView.Equipment;
             }
 
-            Rect content = new Rect(panel.x + 18f, tabY + 44f, panel.width - 36f, panel.height - 108f);
+            Rect content = new Rect(panel.x + 18f, tabY + tabHeight + 12f, panel.width - 36f, panel.height - tabHeight - 76f);
             if (currentView == CharacterView.Status)
             {
                 DrawStatus(content);
@@ -1883,7 +1880,7 @@ namespace WuxiaRoguelite.UI
                         secretsY + 26f + row * 54f, tileWidth, 48f);
                     FillRect(tile, new Color(0.12f, 0.095f, 0.15f, 1f));
                     DrawIcon(new Rect(tile.x + 5f, tile.y + 5f, 38f, 38f),
-                        FindMartialArtIcon(secretId), new Color(0.72f, 0.46f, 0.86f));
+                        FindMartialArtIcon(secretId), MartialArtIconRenderer.Accent(secretId));
                     ResponsiveGui.DrawSingleLineLabel(
                         new Rect(tile.x + 49f, tile.y + 3f, tile.width - 54f, 22f),
                         secretId, headingStyle, 8);
@@ -1911,6 +1908,7 @@ namespace WuxiaRoguelite.UI
 
         private void DrawEquipment(Rect rect)
         {
+            if (ResponsiveGui.IsPortrait) { DrawPortraitEquipment(rect); return; }
             PlayerEquipment equipment = playerStats.equipment;
             if (equipment == null)
             {
@@ -1983,6 +1981,7 @@ namespace WuxiaRoguelite.UI
 
         private void DrawLevelUpPanel()
         {
+            if (ResponsiveGui.IsPortrait) { DrawPortraitLevelUp(); return; }
             FillRect(new Rect(0f, 0f, ResponsiveGui.Width, ResponsiveGui.Height),
                 new Color(0.02f, 0.025f, 0.025f, 0.72f));
             Rect panel = CenteredRect(660f, 340f);
@@ -2009,7 +2008,7 @@ namespace WuxiaRoguelite.UI
 
                 bool selected = GUI.Button(card, GUIContent.none, actionButtonStyle);
                 DrawIcon(new Rect(card.x + 7f, card.y + 7f, 48f, 48f),
-                    FindMartialArtIcon(artId), CategoryColor(MartialArtCatalog.Get(artId)?.category));
+                    FindMartialArtIcon(artId), MartialArtIconRenderer.Accent(artId));
                 ResponsiveGui.DrawSingleLineLabel(
                     new Rect(card.x + 65f, card.y + 5f, card.width - 74f, 26f),
                     GetOfferName(artId), headingStyle, 10);
@@ -2072,7 +2071,7 @@ namespace WuxiaRoguelite.UI
             FillRect(rect, PanelLight);
             MartialArtDefinition definition = MartialArtCatalog.Get(artId);
             DrawIcon(new Rect(rect.x + 5f, rect.y + 5f, 38f, 38f),
-                FindMartialArtIcon(artId), CategoryColor(definition?.category));
+                FindMartialArtIcon(artId), MartialArtIconRenderer.Accent(artId));
             ResponsiveGui.DrawSingleLineLabel(
                 new Rect(rect.x + 49f, rect.y + 2f, rect.width - 54f, 22f),
                 $"{artId} · {RankName(playerStats.GetMartialArtRank(artId))}", bodyStyle, 9);
@@ -2102,7 +2101,7 @@ namespace WuxiaRoguelite.UI
             }
         }
 
-        private static void DrawIcon(Rect rect, Texture2D icon, Color accent)
+        private static void DrawIcon(Rect rect, Texture icon, Color accent)
         {
             FillRect(rect, new Color(0.035f, 0.04f, 0.04f, 0.95f));
             FillRect(new Rect(rect.x, rect.y, 2f, rect.height), accent);
@@ -2113,7 +2112,12 @@ namespace WuxiaRoguelite.UI
             }
         }
 
-        private Texture2D FindMartialArtIcon(string id)
+        private Texture FindMartialArtIcon(string id)
+        {
+            return MartialArtIconRenderer.Get(LoadMartialArtIcon(id), id);
+        }
+
+        private Texture2D LoadMartialArtIcon(string id)
         {
             string resourceId = ContentIconCatalog.MartialArt(id);
             Texture2D resourceIcon = string.IsNullOrEmpty(resourceId)
@@ -2178,21 +2182,9 @@ namespace WuxiaRoguelite.UI
             return null;
         }
 
-        private static Color CategoryColor(string category)
-        {
-            switch (category)
-            {
-                case "内功":
-                    return new Color(0.38f, 0.72f, 0.58f);
-                case "身法":
-                    return new Color(0.36f, 0.64f, 0.86f);
-                default:
-                    return new Color(0.82f, 0.34f, 0.24f);
-            }
-        }
-
         private void DrawResultPanel()
         {
+            if (ResponsiveGui.IsPortrait) { DrawPortraitResult(); return; }
             FillRect(new Rect(0f, 0f, ResponsiveGui.Width, ResponsiveGui.Height), new Color(0.02f, 0.025f, 0.025f, 0.78f));
             Rect safe = ResponsiveGui.SafeArea;
             float width = Mathf.Min(460f, safe.width - 32f);

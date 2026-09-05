@@ -387,20 +387,34 @@ namespace WuxiaRoguelite.Cave
             float height = ResponsiveGui.Height;
             Rect safe = ResponsiveGui.SafeArea;
             FillRect(new Rect(0f, 0f, width, height), CaveBlack);
+            bool portraitLayout = ResponsiveGui.IsPortrait;
             Rect caveHeader = new Rect(
                 safe.x + 14f,
                 safe.y + 7f,
                 Mathf.Min(480f, safe.width - 28f),
-                52f);
+                portraitLayout ? 116f : 52f);
             WuxiaUiTheme.DrawPanel(caveHeader,
                 new Color(0.025f, 0.03f, 0.035f, 0.90f), WuxiaUiTheme.Paused,
                 WuxiaPanelKind.Paper);
+            if (portraitLayout)
+            {
+                WuxiaUiComponents.Timer(new Rect(caveHeader.x + 8, caveHeader.y + 10, 96, 96),
+                    gameFlow.mainTimeRemaining, gameFlow.mainTimeLimit, true);
+                WuxiaUiComponents.Text(new Rect(caveHeader.x + 120, caveHeader.y + 18, caveHeader.width - 144, 34),
+                    "隐窟 · " + ContentName(), 20);
+                WuxiaUiComponents.Text(new Rect(caveHeader.x + 120, caveHeader.y + 60, caveHeader.width - 144, 34),
+                    "主时间暂停", 16, WuxiaUiTheme.Paused);
+            }
+            else
+            {
             ResponsiveGui.DrawSingleLineLabel(new Rect(caveHeader.x, caveHeader.y + 2f, caveHeader.width, 28f),
                 "隐窟 · " + ContentName(), titleStyle, 16);
             ResponsiveGui.DrawSingleLineLabel(new Rect(caveHeader.x, caveHeader.y + 28f, caveHeader.width, 19f),
                 $"主地图倒数已暂停  {gameFlow.mainTimeRemaining:0.0} 秒", hintStyle, 10);
+            }
 
-            Rect room = new Rect(14f, 66f, width - 28f, height - 80f);
+            float roomTop = portraitLayout ? caveHeader.yMax + 8f : 66f;
+            Rect room = new Rect(safe.x + 14f, roomTop, safe.width - 28f, safe.yMax - roomTop - 14f);
             FillRect(room, Wall);
             Rect floor = new Rect(room.x + 18f, room.y + 18f, room.width - 36f, room.height - 36f);
             Texture2D background = GetCaveSceneBackground();
@@ -606,6 +620,7 @@ namespace WuxiaRoguelite.Cave
 
         private void DrawMerchantPanel()
         {
+            if (ResponsiveGui.IsPortrait) { DrawPortraitMerchant(); return; }
             FillRect(new Rect(0f, 0f, ResponsiveGui.Width, ResponsiveGui.Height), new Color(0f, 0f, 0f, 0.66f));
             float panelWidth = Mathf.Min(920f, ResponsiveGui.Width - 24f);
             float panelHeight = Mathf.Min(510f, ResponsiveGui.Height - 24f);
@@ -615,16 +630,17 @@ namespace WuxiaRoguelite.Cave
                 new Color(0.075f, 0.085f, 0.08f, 1f), Gold,
                 WuxiaPanelKind.Paper);
             ResponsiveGui.DrawSingleLineLabel(
-                new Rect(panel.x + 18f, panel.y + 8f, panel.width - 260f, 30f),
+                new Rect(panel.x + 18f, panel.y + 8f, panel.width - 330f, 30f),
                 "云游商人 · 固定货架", headingStyle, 12);
             ResponsiveGui.DrawSingleLineLabel(
-                new Rect(panel.xMax - 238f, panel.y + 8f, 110f, 30f),
+                new Rect(panel.xMax - 290f, panel.y + 8f, 110f, 30f),
                 $"铜钱 {playerStats.copper}", hintStyle, 10);
 
             bool canRefresh = !merchantRefreshed && playerStats.copper >= 5;
             bool previousEnabled = GUI.enabled;
             GUI.enabled = canRefresh;
-            if (GUI.Button(new Rect(panel.xMax - 122f, panel.y + 8f, 104f, 30f),
+            // Reserve the top-right rail for the shared settings button.
+            if (GUI.Button(new Rect(panel.xMax - 174f, panel.y, 104f, 44f),
                     merchantRefreshed ? "本洞已刷新" : "刷新 5 铜", buttonStyle))
             {
                 playerStats.TrySpendCopper(5);
@@ -662,6 +678,74 @@ namespace WuxiaRoguelite.Cave
             }
         }
 
+        private int portraitMerchantSelection;
+        private Vector2 portraitMerchantDetailScroll;
+
+        private void DrawPortraitMerchant()
+        {
+            GUIStyle touchStyle = WuxiaUiComponents.TouchButton();
+            FillRect(new Rect(0, 0, ResponsiveGui.Width, ResponsiveGui.Height), new Color(0.02f, 0.025f, 0.023f, 0.94f));
+            Rect p = PortraitUiLayout.Modal(812);
+            WuxiaUiTheme.DrawPanel(p, WuxiaUiTheme.BackgroundInk, Gold);
+            WuxiaUiComponents.Text(new Rect(p.x + 24, p.y + 18, p.width - 160, 38), "云游商人", 28);
+            WuxiaUiComponents.Text(new Rect(p.xMax - 138, p.y + 20, 114, 34), $"铜钱 {playerStats.copper}", 18, Gold, TextAnchor.MiddleRight);
+            WuxiaUiComponents.Text(new Rect(p.x + 24, p.y + 62, p.width - 48, 28), "主时间暂停 · 云游货架", 16, WuxiaUiTheme.Paused);
+            Rect view = new Rect(p.x + 24, p.y + 102, p.width - 48, p.height - 340);
+            float cw = (view.width - 28) / 2;
+            const float ch = 184;
+            int rows = Mathf.CeilToInt(merchantOffers.Count / 2f);
+            merchantScroll = GUI.BeginScrollView(view, merchantScroll, new Rect(0, 0, view.width - 18, rows * (ch + 10)));
+            for (int i = 0; i < merchantOffers.Count; i++)
+            {
+                MerchantOffer offer = merchantOffers[i];
+                Rect card = new Rect((i % 2) * (cw + 10), (i / 2) * (ch + 10), cw, ch);
+                if (GUI.Button(card, GUIContent.none, buttonStyle))
+                {
+                    portraitMerchantSelection = i;
+                    portraitMerchantDetailScroll = Vector2.zero;
+                }
+                if (portraitMerchantSelection == i) WuxiaUiTheme.DrawOutline(new Rect(card.x + 3, card.y + 3, card.width - 6, card.height - 6), Gold, 2);
+                Texture icon = MartialArtIconRenderer.Get(LoadContentIcon(offer.iconId), offer.contentId);
+                Rect iconRect = new Rect(card.x + 12, card.y + 12, 46, 46);
+                if (icon != null) GUI.DrawTexture(iconRect, icon, ScaleMode.ScaleToFit, true);
+                WuxiaUiComponents.Text(new Rect(card.x + 66, card.y + 14, card.width - 76, 42), OfferTypeName(offer.type), 14, WuxiaUiTheme.TextSecondary, TextAnchor.MiddleLeft, true);
+                WuxiaUiComponents.Text(new Rect(card.x + 12, card.y + 66, card.width - 24, 26), offer.displayName, 18);
+                WuxiaUiComponents.Text(new Rect(card.x + 12, card.y + 98, card.width - 24, 48), offer.description, 14, WuxiaUiTheme.TextSecondary, TextAnchor.UpperLeft, true);
+                WuxiaUiComponents.Text(new Rect(card.x + 12, card.yMax - 30, card.width - 24, 24), offer.sold ? "已售罄" : $"{offer.price} 铜钱", 16, offer.sold ? WuxiaUiTheme.TextDisabled : Gold);
+            }
+            GUI.EndScrollView();
+            portraitMerchantSelection = Mathf.Clamp(portraitMerchantSelection, 0, Mathf.Max(0, merchantOffers.Count - 1));
+            if (merchantOffers.Count > 0)
+            {
+                MerchantOffer selected = merchantOffers[portraitMerchantSelection];
+                Rect detail = new Rect(p.x + 24, p.yMax - 226, p.width - 48, 88);
+                WuxiaUiTheme.DrawCompactSurface(detail, WuxiaUiTheme.BackgroundInk, Gold);
+                string description = selected.displayName + " · " + selected.description;
+                string comparison = EquipmentComparison(selected);
+                if (!string.IsNullOrEmpty(comparison)) description += "\n" + comparison;
+                Rect detailView = new Rect(detail.x + 12, detail.y + 8, detail.width - 24, detail.height - 16);
+                float detailHeight = Mathf.Max(detailView.height, bodyStyle.CalcHeight(new GUIContent(description), detailView.width - 22) + 8);
+                portraitMerchantDetailScroll = GUI.BeginScrollView(detailView, portraitMerchantDetailScroll,
+                    new Rect(0, 0, detailView.width - 22, detailHeight));
+                WuxiaUiComponents.Text(new Rect(0, 0, detailView.width - 22, detailHeight), description,
+                    14, WuxiaUiTheme.TextPrimary, TextAnchor.UpperLeft, true);
+                GUI.EndScrollView();
+                bool oldEnabled = GUI.enabled;
+                GUI.enabled = !selected.sold && playerStats.copper >= selected.price;
+                string label = selected.sold ? "已售罄" : playerStats.copper < selected.price ? "铜钱不足" : $"购买 {selected.displayName} · {selected.price} 铜";
+                if (GUI.Button(new Rect(p.x + 24, p.yMax - 126, p.width - 48, 50), label, WuxiaUiComponents.TouchButton(true))) PurchaseOffer(selected);
+                GUI.enabled = oldEnabled;
+            }
+            float bw = (p.width - 60) / 2;
+            GUI.enabled = !merchantRefreshed && playerStats.copper >= 5;
+            if (GUI.Button(new Rect(p.x + 24, p.yMax - 64, bw, 44), merchantRefreshed ? "本洞已刷新" : "刷新 · 5 铜钱", touchStyle))
+            {
+                if (playerStats.TrySpendCopper(5)) { merchantRefreshed = true; BuildMerchantStock(); portraitMerchantSelection = 0; }
+            }
+            GUI.enabled = true;
+            if (GUI.Button(new Rect(p.xMax - 24 - bw, p.yMax - 64, bw, 44), "结束交易", touchStyle)) FinishMerchantEvent();
+        }
+
         private void FinishMerchantEvent()
         {
             merchantOpen = false;
@@ -680,7 +764,7 @@ namespace WuxiaRoguelite.Cave
                     : new Color(0.13f, 0.145f, 0.135f, 1f),
                 accent,
                 WuxiaPanelKind.Default);
-            Texture2D icon = LoadContentIcon(offer.iconId);
+            Texture icon = MartialArtIconRenderer.Get(LoadContentIcon(offer.iconId), offer.contentId);
             Rect iconRect = new Rect(card.x + 8f, card.y + 10f, 48f, 48f);
             WuxiaUiTheme.DrawSlot(iconRect,
                 new Color(0.035f, 0.04f, 0.04f, 0.95f), accent);

@@ -45,6 +45,12 @@ the same internal identity. The tool also synchronizes that family name and the
 TTF SHA-256 fingerprint into each matching Unity `.meta` file so an out-of-date
 import is rejected. Source fonts are not added to the build.
 
+The generator also renames the CFF font, family, full-name and FDArray identities;
+renaming only the OpenType `name` table leaves a second source-font identity in
+the binary. After regenerating a font, restart an already-running Editor if its
+native glyph cache still shows incorrect outlines. Glyph coverage alone cannot
+prove correct rendering: check actual Play Mode text as well.
+
 After a Unity script reload, `WebGLChineseFontBuildValidator` checks runtime C#
 strings plus serialized scenes, Prefabs, assets, Resources, UI Toolkit files,
 and configured data. It reports missing glyphs immediately. Every platform build

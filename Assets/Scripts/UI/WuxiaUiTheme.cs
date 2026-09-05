@@ -117,7 +117,9 @@ namespace WuxiaRoguelite.UI
             FillRect(rect, background);
 
             Color previous = GUI.color;
-            GUI.color = new Color(1f, 1f, 1f, Mathf.Clamp01(0.76f + background.a * 0.24f));
+            GUI.color = kind == WuxiaPanelKind.Paper
+                ? new Color(0.25f, 0.27f, 0.26f, 1f)
+                : new Color(1f, 1f, 1f, Mathf.Clamp01(0.76f + background.a * 0.24f));
             GUI.Box(rect, GUIContent.none, GetPanelStyle(kind));
             GUI.color = previous;
 
@@ -133,9 +135,11 @@ namespace WuxiaRoguelite.UI
         /// </summary>
         public static void DrawCompactSurface(Rect rect, Color background, Color accent)
         {
+            EnsureTextures();
             FillRect(new Rect(rect.x + 2f, rect.y + 3f, rect.width, rect.height),
                 new Color(0.01f, 0.008f, 0.006f, 0.36f * background.a));
             FillRect(rect, background);
+            GUI.Box(rect, GUIContent.none, panelDefaultStyle);
             FillRect(new Rect(rect.x, rect.y, rect.width, 1f),
                 new Color(accent.r, accent.g, accent.b, 0.72f));
             FillRect(new Rect(rect.x, rect.yMax - 1f, rect.width, 1f),
@@ -215,25 +219,25 @@ namespace WuxiaRoguelite.UI
             }
 
             panelDefault = Resources.Load<Texture2D>(
-                "UI/Theme/tex_ui_panel_default_v01_128");
+                "UI/Theme/tex_ui_panel_default_v02");
             panelPaper = Resources.Load<Texture2D>(
-                "UI/Theme/tex_ui_panel_paper_v01_128");
+                "UI/Theme/tex_ui_panel_paper_v02");
             panelBoss = Resources.Load<Texture2D>(
-                "UI/Theme/tex_ui_panel_boss_v01_128");
+                "UI/Theme/tex_ui_panel_boss_v02");
             slotFrame = Resources.Load<Texture2D>(
-                "UI/Theme/tex_ui_slot_default_v01_64");
+                "UI/Theme/tex_ui_slot_default_v02");
             buttonNormal = Resources.Load<Texture2D>(
-                "UI/Theme/tex_ui_button_normal_v01_128x48");
+                "UI/Theme/tex_ui_button_normal_v02");
             buttonHover = Resources.Load<Texture2D>(
-                "UI/Theme/tex_ui_button_hover_v01_128x48");
+                "UI/Theme/tex_ui_button_hover_v02");
             buttonPressed = Resources.Load<Texture2D>(
-                "UI/Theme/tex_ui_button_pressed_v01_128x48");
+                "UI/Theme/tex_ui_button_pressed_v02");
             buttonSelected = Resources.Load<Texture2D>(
-                "UI/Theme/tex_ui_button_selected_v01_128x48");
+                "UI/Theme/tex_ui_button_selected_v02");
             buttonPrimary = Resources.Load<Texture2D>(
-                "UI/Theme/tex_ui_button_primary_v01_128x48");
+                "UI/Theme/tex_ui_button_primary_v02");
             buttonPrimaryHover = Resources.Load<Texture2D>(
-                "UI/Theme/tex_ui_button_primary_hover_v01_128x48");
+                "UI/Theme/tex_ui_button_primary_hover_v02");
 
             // PLACEHOLDER_UI: only used if a formal Resources asset is missing.
             panelDefault ??= CreateMaterialOverlay(64, 64, true,
@@ -242,7 +246,7 @@ namespace WuxiaRoguelite.UI
             panelBoss ??= panelDefault;
             slotFrame ??= CreateMaterialOverlay(32, 32, false,
                 "PLACEHOLDER_UI_SlotMaterial");
-            timerDial = CreateTimerDial(128);
+            timerDial = Resources.Load<Texture2D>("UI/Theme/tex_ui_timer_dial_v02") ?? CreateTimerDial(128);
             buttonNormal ??= CreateButtonTexture(
                 SurfaceIron, Hex(0x202526), Brass, "PLACEHOLDER_UI_Button_Normal");
             buttonHover ??= CreateButtonTexture(
@@ -256,10 +260,10 @@ namespace WuxiaRoguelite.UI
             buttonPrimaryHover ??= CreateButtonTexture(
                 Hex(0x443724), Hex(0x29231B), Gold, "PLACEHOLDER_UI_Button_PrimaryHover");
 
-            panelDefaultStyle = FrameStyle(panelDefault, new RectOffset(30, 30, 30, 30));
-            panelPaperStyle = FrameStyle(panelPaper, new RectOffset(32, 32, 32, 32));
-            panelBossStyle = FrameStyle(panelBoss, new RectOffset(34, 34, 34, 34));
-            slotStyle = FrameStyle(slotFrame, new RectOffset(16, 16, 16, 16));
+            panelDefaultStyle = FrameStyle(panelDefault, new RectOffset(14, 14, 14, 14));
+            panelPaperStyle = FrameStyle(panelPaper, new RectOffset(14, 14, 14, 14));
+            panelBossStyle = FrameStyle(panelBoss, new RectOffset(14, 14, 14, 14));
+            slotStyle = FrameStyle(slotFrame, new RectOffset(8, 8, 8, 8));
         }
 
         private static GUIStyle GetPanelStyle(WuxiaPanelKind kind)

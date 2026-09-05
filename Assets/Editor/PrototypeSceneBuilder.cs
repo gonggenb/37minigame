@@ -338,10 +338,10 @@ namespace WuxiaRoguelite.EditorTools
             CameraFollow follow = camera.gameObject.AddComponent<CameraFollow>();
             follow.target = player.transform;
             follow.offset = cameraOffset;
-            follow.portraitOffset = new Vector3(14f, 16.5f, -30f);
+            follow.portraitOffset = CameraFollow.DefaultPortraitOffset;
             follow.lookAtHeight = 0.72f;
             follow.landscapeFieldOfView = 36.5f;
-            follow.portraitFieldOfView = 45f;
+            follow.portraitFieldOfView = CameraFollow.DefaultPortraitFieldOfView;
 
             gameFlow.playerStats = playerStats;
             gameFlow.playerController = playerController;
@@ -3273,10 +3273,10 @@ namespace WuxiaRoguelite.EditorTools
                 if (follow != null)
                 {
                     follow.offset = new Vector3(10f, 10.8f, -20f);
-                    follow.portraitOffset = new Vector3(14f, 16.5f, -30f);
+                    follow.portraitOffset = CameraFollow.DefaultPortraitOffset;
                     follow.lookAtHeight = 0.72f;
                     follow.landscapeFieldOfView = 36.5f;
-                    follow.portraitFieldOfView = 45f;
+                    follow.portraitFieldOfView = CameraFollow.DefaultPortraitFieldOfView;
                     EditorUtility.SetDirty(follow);
                 }
                 EditorUtility.SetDirty(camera);
@@ -3761,10 +3761,10 @@ namespace WuxiaRoguelite.EditorTools
             }
 
             follow.offset = new Vector3(10f, 10.8f, -20f);
-            follow.portraitOffset = new Vector3(14f, 16.5f, -30f);
+            follow.portraitOffset = CameraFollow.DefaultPortraitOffset;
             follow.lookAtHeight = 0.72f;
             follow.landscapeFieldOfView = 36.5f;
-            follow.portraitFieldOfView = 45f;
+            follow.portraitFieldOfView = CameraFollow.DefaultPortraitFieldOfView;
             camera.fieldOfView = follow.landscapeFieldOfView;
 
             if (follow.target != null)

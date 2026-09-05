@@ -26,9 +26,14 @@ namespace WuxiaRoguelite.Editor
             importer.wrapMode = TextureWrapMode.Clamp;
             importer.filterMode = FilterMode.Bilinear;
             importer.textureCompression = TextureImporterCompression.Uncompressed;
-            importer.maxTextureSize = 128;
+            importer.maxTextureSize = assetPath.Contains("timer_dial") ? 256 : 128;
             importer.spritePixelsPerUnit = 100f;
-            importer.spriteBorder = assetPath.Contains("button_")
+            importer.spriteBorder = assetPath.Contains("_v02")
+                ? assetPath.Contains("timer_dial") ? Vector4.zero
+                    : assetPath.Contains("button_") ? new Vector4(26, 14, 26, 14)
+                    : assetPath.Contains("slot_") ? new Vector4(8, 8, 8, 8)
+                    : new Vector4(14, 14, 14, 14)
+                : assetPath.Contains("button_")
                 ? new Vector4(26f, 14f, 26f, 14f)
                 : assetPath.Contains("slot_")
                     ? new Vector4(16f, 16f, 16f, 16f)

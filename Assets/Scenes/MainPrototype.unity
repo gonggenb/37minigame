@@ -32931,11 +32931,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WuxiaRoguelite.CameraTools.CameraFollow
   target: {fileID: 285907372}
   offset: {x: 10, y: 10.8, z: -20}
-  portraitOffset: {x: 14, y: 16.5, z: -30}
+  portraitOffset: {x: 9.45, y: 11.16, z: -20.25}
   lookAtHeight: 0.72
   smoothTime: 0.16
   landscapeFieldOfView: 36.5
-  portraitFieldOfView: 45
+  portraitFieldOfView: 40
   initialVisionScale: 0.74
   maximumVisionScale: 1.08
 --- !u!20 &943471321

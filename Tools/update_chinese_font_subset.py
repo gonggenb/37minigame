@@ -172,6 +172,17 @@ def rename_for_unity(font: TTFont, weight: int) -> None:
         name_table.setName(postscript_name, 6, platform_id, encoding_id, language_id)
         name_table.setName(family, 16, platform_id, encoding_id, language_id)
         name_table.setName(style, 17, platform_id, encoding_id, language_id)
+    # CFF has a second identity table. Native font renderers can consult it
+    # instead of OpenType's name table, so never leave the source Noto name here.
+    if "CFF " in font:
+        cff = font["CFF "].cff
+        cff.fontNames = [postscript_name]
+        top = cff.topDictIndex[0]
+        top.FullName = full_name
+        top.FamilyName = family
+        if hasattr(top, "FDArray"):
+            for index, dictionary in enumerate(top.FDArray):
+                dictionary.FontName = f"{postscript_name}-FD{index}"
 
 
 def update_unity_import_fingerprint(target_path: Path) -> None:

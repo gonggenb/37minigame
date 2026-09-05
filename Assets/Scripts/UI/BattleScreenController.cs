@@ -185,7 +185,7 @@ namespace WuxiaRoguelite.UI
             DrawHeader(width);
 
             float sidePadding = portrait ? safe.x + 16f : Mathf.Clamp(width * 0.055f, 34f, 72f);
-            float healthTop = safe.y + (portrait ? 68f : 89f);
+            float healthTop = safe.y + (portrait ? PortraitUiLayout.CombatHealthTop(gameFlow.CurrentPhase) : 89f);
             float healthHeight = portrait ? 64f : 72f;
             float healthWidth = portrait
                 ? (safe.width - 44f) * 0.5f
@@ -193,6 +193,8 @@ namespace WuxiaRoguelite.UI
             Rect enemyHealthRect = portrait
                 ? new Rect(safe.xMax - 16f - healthWidth, healthTop, healthWidth, healthHeight)
                 : new Rect(width - sidePadding - healthWidth, healthTop, healthWidth, healthHeight);
+            if (portrait && battleManager.IsBossBattle)
+                enemyHealthRect = new Rect(safe.x + 16f, safe.y + 58f, safe.width - 32f, 106f);
             // The player health bar now lives in PrototypeHUDController's unified
             // health + martial-art HUD. Keep the enemy panel here so combat still
             // has a clear target readout without duplicating the player's health.
@@ -201,9 +203,9 @@ namespace WuxiaRoguelite.UI
             if (battleManager.IsBossBattle)
             {
                 DrawBossSkillStrip(new Rect(
-                    enemyHealthRect.x,
+                    portrait ? safe.xMax - 16f - healthWidth : enemyHealthRect.x,
                     enemyHealthRect.yMax + 4f,
-                    enemyHealthRect.width,
+                    portrait ? healthWidth : enemyHealthRect.width,
                     portrait ? 29f : 34f));
             }
             float duelTop = portrait ? healthTop + 100f : healthTop;
@@ -711,8 +713,44 @@ namespace WuxiaRoguelite.UI
             return normalBattleBackgrounds[onlyValidIndex];
         }
 
+        private void DrawPortraitBattleHeader()
+        {
+            Rect safe = ResponsiveGui.SafeArea;
+            bool finalBoss = gameFlow.CurrentPhase == GamePhase.BossBattle;
+            bool midBoss = gameFlow.CurrentPhase == GamePhase.MidBossBattle;
+            bool cave = gameFlow.CurrentPhase == GamePhase.CaveRunning;
+            Rect header = new Rect(safe.x + 16, safe.y + 8, safe.width - 88, finalBoss ? 42 : 126);
+            WuxiaUiTheme.DrawCompactSurface(header, new Color(0.035f, 0.04f, 0.035f, 0.94f),
+                cave ? WuxiaUiTheme.Paused : Gold);
+            if (finalBoss)
+            {
+                WuxiaUiComponents.Text(new Rect(header.x + 12, header.y, header.width - 24, 42),
+                    $"决战独立计时  {gameFlow.bossBattleTime:0.0} 秒", 22, Gold);
+                return;
+            }
+            if (midBoss)
+            {
+                WuxiaUiComponents.Text(new Rect(header.x + 12, header.y + 8, header.width - 24, 34),
+                    $"中期强敌 · {GameTextCatalog.MidBossName}", 20);
+                WuxiaUiComponents.Text(new Rect(header.x + 12, header.y + 50, header.width - 24, 28),
+                    $"主时间 {Mathf.CeilToInt(gameFlow.mainTimeRemaining)} 秒 · 暂停", 16, WuxiaUiTheme.Paused);
+                WuxiaUiComponents.Text(new Rect(header.x + 12, header.y + 86, header.width - 24, 28),
+                    $"交锋 {gameFlow.midBossBattleTime:0.0} 秒 · 胜利后继续探索", 16, Gold);
+                return;
+            }
+            WuxiaUiComponents.Timer(new Rect(header.x + 10, header.y + 16, 96, 96),
+                gameFlow.mainTimeRemaining, gameFlow.mainTimeLimit, cave);
+            float x = header.x + 120;
+            WuxiaUiComponents.Text(new Rect(x, header.y + 18, header.width - 132, 32),
+                cave ? "秘境 · 自动战斗" : "遭遇 · 自动战斗", 20);
+            WuxiaUiComponents.Text(new Rect(x, header.y + 60, header.width - 132, 48),
+                cave ? "主时间暂停\n洞内战斗继续" : "主时间继续\n武学自动运转", 16,
+                cave ? WuxiaUiTheme.Paused : Gold, TextAnchor.MiddleLeft, true);
+        }
+
         private void DrawHeader(float width)
         {
+            if (ResponsiveGui.IsPortrait) { DrawPortraitBattleHeader(); return; }
             Rect safe = ResponsiveGui.SafeArea;
             bool portrait = ResponsiveGui.IsPortrait;
             BossApproachStage approachStage = gameFlow.CurrentBossApproachStage;
@@ -1190,6 +1228,21 @@ namespace WuxiaRoguelite.UI
             ResponsiveGui.DrawSingleLineLabel(
                 new Rect(bar.x, bar.y - 1f, bar.width, bar.height + 2f),
                 $"气血 {CombatNumberDisplay.Format(stats.currentHealth)} / {CombatNumberDisplay.Format(stats.maxHealth)}", centerStyle, 8);
+
+            if (ResponsiveGui.IsPortrait && battleManager.IsBossBattle)
+            {
+                foreach (float threshold in new[] { 0.70f, 0.35f })
+                {
+                    float x = bar.x + 2f + innerWidth * threshold;
+                    FillRect(new Rect(x, bar.y - 2, 2, bar.height + 4), Gold);
+                }
+                float wardMax = Mathf.Max(1, stats.maxHealth * 0.12f);
+                Rect ward = new Rect(rect.x + 12, rect.y + 72, rect.width - 24, 9);
+                FillRect(ward, Ink);
+                FillRect(new Rect(ward.x, ward.y, ward.width * Mathf.Clamp01(battleManager.BossWard / wardMax), ward.height), WuxiaUiTheme.Paused);
+                WuxiaUiComponents.Text(new Rect(rect.x + 12, rect.y + 83, rect.width - 24, 20),
+                    $"{battleManager.CurrentBossPhaseName} · 妖甲 {CombatNumberDisplay.Format(battleManager.BossWard)}", 14, Gold);
+            }
 
             string statText = $"攻 {CombatNumberDisplay.Format(stats.attack)} · 防 {CombatNumberDisplay.Format(stats.defense)}";
             string effectText;

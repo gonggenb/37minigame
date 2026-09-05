@@ -1,4 +1,27 @@
-# Main HUD Visual Mockup v01
+# Main HUD Visual Mockups
+
+## Portrait auto-battle v03
+
+- Preview: `hud_portrait_autobattle_mockup_v03.png`
+- Generated: 2026-09-05
+- Canvas: `941 × 1672` portrait (`9:16` target composition)
+- Mode: built-in `imagegen`, targeted edit of portrait v02
+- Status: `Generated`
+- Runtime role: current portrait exploration HUD direction; visual reference only, not imported into `Assets`
+- Auto-battle correction: no active-skill tray, no attack/ultimate buttons, and no tappable cooldown controls; exploration keeps only a collapsed `武学·自动运转` build summary and the contextual world-interaction button
+- Future battle-state rule: automatic martial arts may expose read-only trigger/cooldown feedback, but never use button affordances or reserve touch input regions
+
+## Portrait-first v02
+
+- Preview: `hud_portrait_visual_mockup_v02.png`
+- Generated: 2026-09-05
+- Canvas: `941 × 1672` portrait (`9:16` target composition)
+- Mode: built-in `imagegen`, two-pass edit from the current `540 × 960` portrait Play Mode screenshot
+- Status: `Superseded` by portrait auto-battle v03
+- Runtime role: visual direction reference only; not imported into `Assets`, not sliced, and not connected to a Canvas or Prefab
+- Portrait decisions: independent top-center timer, compact player strip, two-button upper-right cluster, capped three-slot status rail, collapsed build tab, no persistent joystick, and a shallow bottom skill tray above the gesture safe area
+
+## Landscape v01
 
 - Preview: `hud_mainmap_visual_mockup_v01.png`
 - Generated: 2026-08-13
