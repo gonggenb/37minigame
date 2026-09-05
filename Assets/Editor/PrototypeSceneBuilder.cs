@@ -53,6 +53,9 @@ namespace WuxiaRoguelite.EditorTools
         private const string TinyRoot = "Assets/Art/ThirdParty/TinySwords";
         private const string CrimsonRoot = "Assets/Art/ThirdParty/CrimsonWarrior/Player";
         private const string KayKitRoot = "Assets/Art/ThirdParty/KayKitMedieval/Models";
+        private const string QuaterniusVillageRoot = "Assets/Art/ThirdParty/QuaterniusMedievalVillage";
+        private const string QuaterniusVillageModelRoot = QuaterniusVillageRoot + "/Models";
+        private const string QuaterniusVillageTextureRoot = QuaterniusVillageRoot + "/Textures";
         private const string PlayerIdlePath = CrimsonRoot + "/CrimsonWarrior_Idle_Right.png";
         private const string PlayerRunPath = CrimsonRoot + "/CrimsonWarrior_Run_Right.png";
         private const string PlayerAttackPath = CrimsonRoot + "/CrimsonWarrior_SwordAttack_Right.png";
@@ -97,15 +100,22 @@ namespace WuxiaRoguelite.EditorTools
         private const string GeneratedBossRoot = "Assets/Art/Generated/Characters/Bosses";
         private const string FoxDemonBossIdlePath = GeneratedBossRoot + "/FoxDemon/spr_boss_fox_demon_idle_right_8f_v01.png";
         private const string FoxDemonBossAttackPath = GeneratedBossRoot + "/FoxDemon/spr_boss_fox_demon_attack_right_8f_v01.png";
+        private const string XuanjiaMidBossRoot = GeneratedBossRoot + "/XuanjiaGateWarden";
+        private const string XuanjiaMidBossIdlePath = XuanjiaMidBossRoot + "/spr_boss_xuanjia_gate_warden_idle_left_1f_v01.png";
+        private const string XuanjiaMidBossAttackPath = XuanjiaMidBossRoot + "/spr_boss_xuanjia_gate_warden_attack_left_8f_v01.png";
+        private const string XuanjiaMidBossSkillPath = XuanjiaMidBossRoot + "/spr_boss_xuanjia_gate_warden_skill_mountain_breaker_left_8f_v01.png";
         private const string OrcWarlordIdlePath = GeneratedBossRoot + "/OrcWarlord/spr_boss_orc_warlord_idle_right_8f_v01.png";
         private const string OrcWarlordAttackPath = GeneratedBossRoot + "/OrcWarlord/spr_boss_orc_warlord_attack_right_8f_v01.png";
         private const string OrcCaveGuardianIdlePath = GeneratedEnemyRoot + "/OrcCaveGuardian/spr_enemy_orc_cave_guardian_idle_right_8f_v01.png";
         private const string OrcCaveGuardianAttackPath = GeneratedEnemyRoot + "/OrcCaveGuardian/spr_enemy_orc_cave_guardian_attack_right_8f_v01.png";
         private const float BossBattleVisualScale = 1.62f;
+        private const float MidBossBattleVisualScale = 1.52f;
         private const float CaveBattleVisualScale = 1.48f;
         private const string CombatImpactVfxPath = "Assets/Art/Generated/Effects/spr_vfx_wuxia_impact_6f_v01.png";
         private const string SwordQiVfxPath = "Assets/Art/Generated/Effects/spr_vfx_sword_qi_6f_v01.png";
         private const string PoisonMistVfxPath = "Assets/Art/Generated/Effects/spr_vfx_poison_mist_6f_v01.png";
+        private const string MountainBreakerVfxPath =
+            "Assets/Art/Generated/Effects/XuanjiaGateWarden/spr_vfx_midboss_mountain_breaker_6f_v01.png";
         private const string SpeedBoostVfxPath =
             "Assets/Art/Generated/Effects/tex_vfx_speed_boost_wisp_v01.png";
         private const string CombatAudioRoot = "Assets/Audio/Generated/Combat";
@@ -215,13 +225,14 @@ namespace WuxiaRoguelite.EditorTools
             Sprite[] combatImpactFrames = LoadFrames(CombatImpactVfxPath, fallbackSprite);
             Sprite[] swordQiEffectFrames = LoadFrames(SwordQiVfxPath, fallbackSprite);
             Sprite[] poisonEffectFrames = LoadFrames(PoisonMistVfxPath, fallbackSprite);
+            Sprite[] mountainBreakerEffectFrames = LoadFrames(MountainBreakerVfxPath, fallbackSprite);
             Sprite treasureChestSprite = LoadSingleSprite(TreasureChestPath, fallbackSprite);
             Sprite[] healingHerbFrames = LoadHerbFrames(HealingHerbPath, fallbackSprite);
 
             Scene scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
 
             Camera camera = new GameObject("Main Camera").AddComponent<Camera>();
-            Vector3 cameraOffset = new Vector3(7.8f, 7.2f, -14f);
+            Vector3 cameraOffset = new Vector3(10f, 10.8f, -20f);
             Vector3 cameraLookTarget = Vector3.up * 0.72f;
             camera.transform.position = cameraOffset;
             camera.transform.rotation = Quaternion.LookRotation(cameraLookTarget - cameraOffset, Vector3.up);
@@ -327,10 +338,10 @@ namespace WuxiaRoguelite.EditorTools
             CameraFollow follow = camera.gameObject.AddComponent<CameraFollow>();
             follow.target = player.transform;
             follow.offset = cameraOffset;
-            follow.portraitOffset = new Vector3(9.4f, 10.2f, -18f);
+            follow.portraitOffset = new Vector3(14f, 16.5f, -30f);
             follow.lookAtHeight = 0.72f;
-            follow.landscapeFieldOfView = 34f;
-            follow.portraitFieldOfView = 40f;
+            follow.landscapeFieldOfView = 36.5f;
+            follow.portraitFieldOfView = 45f;
 
             gameFlow.playerStats = playerStats;
             gameFlow.playerController = playerController;
@@ -366,6 +377,7 @@ namespace WuxiaRoguelite.EditorTools
             battleScreen.impactEffectFrames = combatImpactFrames;
             battleScreen.swordQiEffectFrames = swordQiEffectFrames;
             battleScreen.poisonEffectFrames = poisonEffectFrames;
+            battleScreen.mountainBreakerEffectFrames = mountainBreakerEffectFrames;
             battleScreen.bossSpriteScale = BossBattleVisualScale;
             battleScreen.enemyVisualProfiles = CreateEnemyVisualProfiles(
                 ratRun, ratAttack, riderRun, riderAttack, ballistaFly, ballistaAttack,
@@ -513,6 +525,7 @@ namespace WuxiaRoguelite.EditorTools
             battleScreen.impactEffectFrames = LoadFrames(CombatImpactVfxPath, fallbackSprite);
             battleScreen.swordQiEffectFrames = LoadFrames(SwordQiVfxPath, fallbackSprite);
             battleScreen.poisonEffectFrames = LoadFrames(PoisonMistVfxPath, fallbackSprite);
+            battleScreen.mountainBreakerEffectFrames = LoadFrames(MountainBreakerVfxPath, fallbackSprite);
             BindCombatAudio(feedbackAudio);
             EditorUtility.SetDirty(battleScreen);
             EditorUtility.SetDirty(feedbackAudio);
@@ -663,6 +676,7 @@ namespace WuxiaRoguelite.EditorTools
             RelocateRiverConflicts();
             ApplyHd2dWorldLighting(hd2dRoot.transform);
             ApplyHd2dCohesionPassInternal(mapRoot.transform);
+            ApplySceneDirectorLevelRefactorInternal(mapRoot.transform);
 
             EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
             EditorSceneManager.SaveOpenScenes();
@@ -693,6 +707,57 @@ namespace WuxiaRoguelite.EditorTools
             EditorSceneManager.SaveOpenScenes();
             AssetDatabase.SaveAssets();
             Debug.Log("HD-2D cohesion pass applied: matte prop materials, softened scenic sprites, contact shadows, stable billboards, and responsive landscape/portrait camera composition.");
+        }
+
+        [MenuItem("37 MiniGame/Apply Scene Director Level Refactor")]
+        public static void ApplySceneDirectorLevelRefactor()
+        {
+            if (EditorApplication.isPlaying)
+            {
+                Debug.LogError("Exit Play Mode before applying the Scene Director level refactor.");
+                return;
+            }
+
+            GameObject mapRoot = GameObject.Find("3D Prototype Map");
+            if (mapRoot == null)
+            {
+                Debug.LogError("Cannot apply the Scene Director level refactor: 3D Prototype Map was not found.");
+                return;
+            }
+
+            EnsureFolders();
+            AssetDatabase.Refresh();
+            ApplySceneDirectorLevelRefactorInternal(mapRoot.transform);
+            EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
+            EditorSceneManager.SaveOpenScenes();
+            AssetDatabase.SaveAssets();
+            Debug.Log("Scene Director refactor applied: clearer gameplay framing, authored POI clusters, road-edge breakup, environmental storytelling, and layered warm/cool lighting.");
+        }
+
+        [MenuItem("37 MiniGame/Apply Advanced 3D Environment Pass")]
+        public static void ApplyAdvanced3dEnvironmentPass()
+        {
+            if (EditorApplication.isPlaying)
+            {
+                Debug.LogError("Exit Play Mode before applying the advanced 3D environment pass.");
+                return;
+            }
+
+            GameObject mapRoot = GameObject.Find("3D Prototype Map");
+            if (mapRoot == null)
+            {
+                Debug.LogError("Cannot apply the advanced 3D environment pass: 3D Prototype Map was not found.");
+                return;
+            }
+
+            EnsureFolders();
+            ConfigureQuaterniusTextureImports();
+            AssetDatabase.Refresh();
+            ApplyAdvanced3dEnvironmentPassInternal(mapRoot.transform);
+            EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
+            EditorSceneManager.SaveOpenScenes();
+            AssetDatabase.SaveAssets();
+            Debug.Log("Advanced 3D environment pass applied: modular buildings, fortified silhouettes, authored prop clusters, ground contact detail, and layered landmark lighting.");
         }
 
         private static void ApplyHd2dCohesionPassInternal(Transform mapRoot)
@@ -1457,6 +1522,70 @@ namespace WuxiaRoguelite.EditorTools
             Debug.Log("Fox demon boss battle presentation refreshed; cave enemy presentation was left unchanged.");
         }
 
+        [MenuItem("37 MiniGame/Refresh Xuanjia Mid Boss Presentation")]
+        public static void RefreshXuanjiaMidBossPresentation()
+        {
+            string[] requiredSheets =
+            {
+                XuanjiaMidBossIdlePath,
+                XuanjiaMidBossAttackPath,
+                XuanjiaMidBossSkillPath,
+                MountainBreakerVfxPath
+            };
+            if (requiredSheets.Any(path => !File.Exists(path)))
+            {
+                Debug.LogError("Xuanjia mid boss refresh stopped: one or more generated sprite sheets are missing.");
+                return;
+            }
+
+            ConfigureGeneratedMonsterAssets();
+            ConfigureBattleFeedbackAssets();
+            Sprite fallbackSprite = GetOrCreatePrototypeSprite();
+            Sprite[] idleFrames = LoadFrames(XuanjiaMidBossIdlePath, fallbackSprite);
+            Sprite[] attackFrames = LoadFrames(XuanjiaMidBossAttackPath, fallbackSprite);
+            Sprite[] skillFrames = LoadFrames(XuanjiaMidBossSkillPath, fallbackSprite);
+
+            BattleScreenController battleScreen = UnityEngine.Object.FindAnyObjectByType<BattleScreenController>();
+            if (battleScreen != null)
+            {
+                battleScreen.enemyVisualProfiles = UpsertEnemyVisualProfile(
+                    battleScreen.enemyVisualProfiles,
+                    CreateEnemyVisualProfile(
+                        GameTextCatalog.MidBossVisualId,
+                        idleFrames,
+                        attackFrames,
+                        MidBossBattleVisualScale,
+                        false,
+                        skillFrames));
+                battleScreen.mountainBreakerEffectFrames =
+                    LoadFrames(MountainBreakerVfxPath, fallbackSprite);
+                EditorUtility.SetDirty(battleScreen);
+            }
+
+            GameFlowController gameFlow = UnityEngine.Object.FindAnyObjectByType<GameFlowController>();
+            if (gameFlow != null)
+            {
+                gameFlow.midBossTriggerElapsedTime = MidBossTuning.TriggerElapsedTime;
+                gameFlow.midBossWarningDuration = MidBossTuning.WarningDuration;
+                gameFlow.midBossStats ??= new CombatantStats();
+                gameFlow.midBossStats.displayName = GameTextCatalog.MidBossName;
+                gameFlow.midBossStats.visualId = GameTextCatalog.MidBossVisualId;
+                gameFlow.midBossStats.maxHealth = 260f;
+                gameFlow.midBossStats.currentHealth = 260f;
+                gameFlow.midBossStats.attack = 12f;
+                gameFlow.midBossStats.defense = 3f;
+                gameFlow.midBossStats.attackSpeed = 0.78f;
+                gameFlow.midBossStats.critChance = 0.04f;
+                gameFlow.midBossStats.critMultiplier = 1.5f;
+                EditorUtility.SetDirty(gameFlow);
+            }
+
+            EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
+            EditorSceneManager.SaveOpenScenes();
+            AssetDatabase.SaveAssets();
+            Debug.Log("Xuanjia mid boss, Mountain Breaker skill frames, VFX, and 30-second checkpoint were refreshed.");
+        }
+
         private static BattleScreenController.EnemyVisualProfile[] UpsertEnemyVisualProfile(
             BattleScreenController.EnemyVisualProfile[] profiles,
             BattleScreenController.EnemyVisualProfile replacement)
@@ -1635,18 +1764,33 @@ namespace WuxiaRoguelite.EditorTools
                     BossBattleVisualScale, true));
             }
 
+            if (File.Exists(XuanjiaMidBossIdlePath) &&
+                File.Exists(XuanjiaMidBossAttackPath) &&
+                File.Exists(XuanjiaMidBossSkillPath))
+            {
+                Sprite fallbackSprite = GetOrCreatePrototypeSprite();
+                profiles.Add(CreateEnemyVisualProfile(
+                    GameTextCatalog.MidBossVisualId,
+                    LoadFrames(XuanjiaMidBossIdlePath, fallbackSprite),
+                    LoadFrames(XuanjiaMidBossAttackPath, fallbackSprite),
+                    MidBossBattleVisualScale,
+                    false,
+                    LoadFrames(XuanjiaMidBossSkillPath, fallbackSprite)));
+            }
+
             return profiles.ToArray();
         }
 
         private static BattleScreenController.EnemyVisualProfile CreateEnemyVisualProfile(
             string id, Sprite[] idleFrames, Sprite[] attackFrames, float scale,
-            bool flipHorizontally = false)
+            bool flipHorizontally = false, Sprite[] skillFrames = null)
         {
             return new BattleScreenController.EnemyVisualProfile
             {
                 id = id,
                 idleFrames = idleFrames,
                 attackFrames = attackFrames,
+                skillFrames = skillFrames,
                 scale = scale,
                 flipHorizontally = flipHorizontally
             };
@@ -1792,6 +1936,7 @@ namespace WuxiaRoguelite.EditorTools
             ConfigureSpriteSheet(CombatImpactVfxPath, 256, 256, 256f);
             ConfigureSpriteSheet(SwordQiVfxPath, 256, 256, 256f);
             ConfigureSpriteSheet(PoisonMistVfxPath, 256, 256, 256f);
+            ConfigureSpriteSheet(MountainBreakerVfxPath, 256, 256, 256f);
             foreach (string path in new[]
                      {
                          CombatSwingSfxPath, CombatImpactSfxPath,
@@ -1957,6 +2102,7 @@ namespace WuxiaRoguelite.EditorTools
                 BronzeToadIdlePath, BronzeToadAttackPath,
                 CrimsonScorpionIdlePath, CrimsonScorpionAttackPath,
                 FoxDemonBossIdlePath, FoxDemonBossAttackPath,
+                XuanjiaMidBossIdlePath, XuanjiaMidBossAttackPath, XuanjiaMidBossSkillPath,
                 OrcWarlordIdlePath, OrcWarlordAttackPath,
                 OrcCaveGuardianIdlePath, OrcCaveGuardianAttackPath
             };
@@ -2495,23 +2641,16 @@ namespace WuxiaRoguelite.EditorTools
             Material stone,
             Material inlay)
         {
-            GameObject gate = new GameObject(name);
-            gate.transform.SetParent(parent);
-            gate.transform.position = position;
-            gate.transform.rotation = Quaternion.Euler(0f, yRotation, 0f);
-
-            CreateLocalCube("Left Stone Pillar", gate.transform,
-                new Vector3(-1.35f, 1.14f, 0f), new Vector3(0.36f, 2.28f, 0.46f), stone);
-            CreateLocalCube("Right Stone Pillar", gate.transform,
-                new Vector3(1.35f, 1.14f, 0f), new Vector3(0.36f, 2.28f, 0.46f), stone);
-            CreateLocalCube("Lintel", gate.transform,
-                new Vector3(0f, 2.23f, 0f), new Vector3(3.05f, 0.32f, 0.50f), stone);
-            GameObject colorInlay = CreateLocalCube("Regional Color Inlay", gate.transform,
-                new Vector3(0f, 2.24f, -0.27f), new Vector3(2.0f, 0.11f, 0.07f), inlay);
-            Collider inlayCollider = colorInlay.GetComponent<Collider>();
-            if (inlayCollider != null)
+            GameObject gate = PlaceModel("detail_rocks", name, parent, position, 1.65f, yRotation);
+            if (gate == null)
             {
-                UnityEngine.Object.DestroyImmediate(inlayCollider);
+                gate = new GameObject(name);
+                gate.transform.SetParent(parent);
+                gate.transform.position = position;
+                gate.transform.rotation = Quaternion.Euler(0f, yRotation, 0f);
+
+                CreateLocalCube("Route Waystone", gate.transform,
+                    new Vector3(0f, 0.65f, 0f), new Vector3(0.72f, 1.3f, 0.52f), stone);
             }
 
             MainMapRegionGuide guide = gate.AddComponent<MainMapRegionGuide>();
@@ -3102,18 +3241,20 @@ namespace WuxiaRoguelite.EditorTools
             if (sun != null)
             {
                 sun.color = new Color(1f, 0.86f, 0.68f, 1f);
-                sun.intensity = 1.08f;
+                sun.intensity = 1.15f;
                 sun.transform.rotation = Quaternion.Euler(48f, -38f, 0f);
-                sun.shadowStrength = 0.58f;
+                sun.shadowStrength = 0.68f;
                 EditorUtility.SetDirty(sun);
             }
 
             RenderSettings.ambientSkyColor = new Color(0.42f, 0.52f, 0.56f, 1f);
             RenderSettings.ambientEquatorColor = new Color(0.28f, 0.34f, 0.31f, 1f);
             RenderSettings.ambientGroundColor = new Color(0.12f, 0.10f, 0.075f, 1f);
+            RenderSettings.ambientIntensity = 0.86f;
+            RenderSettings.reflectionIntensity = 0.25f;
             RenderSettings.fogColor = new Color(0.55f, 0.62f, 0.60f, 1f);
-            RenderSettings.fogStartDistance = 20f;
-            RenderSettings.fogEndDistance = 58f;
+            RenderSettings.fogStartDistance = 24f;
+            RenderSettings.fogEndDistance = 64f;
 
             CreateWarmLandmarkLight("North Gate Warm Light", parent, new Vector3(0f, 3.2f, 13.5f), 1.35f, 8f);
             CreateWarmLandmarkLight("East Hamlet Warm Light", parent, new Vector3(18f, 2.8f, 7.5f), 1.15f, 7f);
@@ -3131,11 +3272,11 @@ namespace WuxiaRoguelite.EditorTools
                 CameraFollow follow = camera.GetComponent<CameraFollow>();
                 if (follow != null)
                 {
-                    follow.offset = new Vector3(7.8f, 7.2f, -14f);
-                    follow.portraitOffset = new Vector3(9.4f, 10.2f, -18f);
+                    follow.offset = new Vector3(10f, 10.8f, -20f);
+                    follow.portraitOffset = new Vector3(14f, 16.5f, -30f);
                     follow.lookAtHeight = 0.72f;
-                    follow.landscapeFieldOfView = 34f;
-                    follow.portraitFieldOfView = 40f;
+                    follow.landscapeFieldOfView = 36.5f;
+                    follow.portraitFieldOfView = 45f;
                     EditorUtility.SetDirty(follow);
                 }
                 EditorUtility.SetDirty(camera);
@@ -3448,7 +3589,12 @@ namespace WuxiaRoguelite.EditorTools
             string sourceAssetName = string.IsNullOrEmpty(sourcePath)
                 ? "generated"
                 : Path.GetFileNameWithoutExtension(sourcePath);
-            string safeName = SanitizeAssetName($"{sourceAssetName}_{source.name}");
+            bool isQuaterniusMaterial = sourcePath.StartsWith(
+                QuaterniusVillageModelRoot,
+                StringComparison.OrdinalIgnoreCase);
+            string safeName = isQuaterniusMaterial
+                ? SanitizeAssetName($"Quaternius_{source.name}")
+                : SanitizeAssetName($"{sourceAssetName}_{source.name}");
             string materialPath = $"{PropMaterialRoot}/{safeName}.mat";
             Material material = AssetDatabase.LoadAssetAtPath<Material>(materialPath);
             if (material == null)
@@ -3470,8 +3616,20 @@ namespace WuxiaRoguelite.EditorTools
             color.a = 1f;
             material.SetTexture("_MainTex", texture);
             material.SetColor("_Color", color);
-            material.SetFloat("_Saturation", 0.72f);
-            material.SetFloat("_Contrast", 0.88f);
+            material.SetFloat("_Saturation", isQuaterniusMaterial ? 0.82f : 0.72f);
+            material.SetFloat("_Contrast", isQuaterniusMaterial ? 0.96f : 0.88f);
+            if (material.HasProperty("_BumpMap") && source.HasProperty("_BumpMap"))
+            {
+                material.SetTexture("_BumpMap", source.GetTexture("_BumpMap"));
+                material.SetFloat("_BumpScale", isQuaterniusMaterial ? 0.72f : 0.45f);
+            }
+            if (material.HasProperty("_Smoothness"))
+            {
+                float sourceSmoothness = source.HasProperty("_Glossiness")
+                    ? source.GetFloat("_Glossiness")
+                    : 0.18f;
+                material.SetFloat("_Smoothness", Mathf.Clamp(sourceSmoothness, 0.08f, 0.32f));
+            }
             if (source.HasProperty("_MainTex"))
             {
                 material.SetTextureScale("_MainTex", source.GetTextureScale("_MainTex"));
@@ -3602,11 +3760,11 @@ namespace WuxiaRoguelite.EditorTools
                 return;
             }
 
-            follow.offset = new Vector3(7.8f, 7.2f, -14f);
-            follow.portraitOffset = new Vector3(9.4f, 10.2f, -18f);
+            follow.offset = new Vector3(10f, 10.8f, -20f);
+            follow.portraitOffset = new Vector3(14f, 16.5f, -30f);
             follow.lookAtHeight = 0.72f;
-            follow.landscapeFieldOfView = 34f;
-            follow.portraitFieldOfView = 40f;
+            follow.landscapeFieldOfView = 36.5f;
+            follow.portraitFieldOfView = 45f;
             camera.fieldOfView = follow.landscapeFieldOfView;
 
             if (follow.target != null)
@@ -3624,6 +3782,719 @@ namespace WuxiaRoguelite.EditorTools
 
             EditorUtility.SetDirty(camera);
             EditorUtility.SetDirty(follow);
+        }
+
+        private static void ApplyAdvanced3dEnvironmentPassInternal(Transform mapRoot)
+        {
+            Transform previous = mapRoot.Find("Advanced 3D Environment Pass");
+            if (previous != null)
+            {
+                UnityEngine.Object.DestroyImmediate(previous.gameObject);
+            }
+
+            GameObject passRoot = new GameObject("Advanced 3D Environment Pass");
+            passRoot.transform.SetParent(mapRoot, false);
+            Material road = GetOrCreateMainMapRoadMaterial();
+
+            BuildAdvancedArrivalGate(passRoot.transform, road);
+            BuildAdvancedEastCourierInn(passRoot.transform, road);
+            BuildAdvancedWestAmbush(passRoot.transform, road);
+            BuildAdvancedNorthWatch(passRoot.transform, road);
+            BuildAdvancedSouthMine(passRoot.transform, road);
+            BuildAdvancedGroundPolish(passRoot.transform, road);
+
+            Light sun = UnityEngine.Object.FindObjectsByType<Light>(FindObjectsSortMode.None)
+                .FirstOrDefault(candidate => candidate.type == LightType.Directional);
+            if (sun != null)
+            {
+                sun.color = new Color(1f, 0.80f, 0.61f, 1f);
+                sun.intensity = 1.26f;
+                sun.shadowStrength = 0.76f;
+                sun.shadowBias = 0.035f;
+                sun.shadowNormalBias = 0.38f;
+                sun.transform.rotation = Quaternion.Euler(48f, -38f, 0f);
+                EditorUtility.SetDirty(sun);
+            }
+
+            RenderSettings.ambientMode = UnityEngine.Rendering.AmbientMode.Trilight;
+            RenderSettings.ambientSkyColor = new Color(0.46f, 0.56f, 0.62f, 1f);
+            RenderSettings.ambientEquatorColor = new Color(0.30f, 0.36f, 0.35f, 1f);
+            RenderSettings.ambientGroundColor = new Color(0.14f, 0.16f, 0.13f, 1f);
+            RenderSettings.ambientIntensity = 0.82f;
+            RenderSettings.reflectionIntensity = 0.32f;
+            RenderSettings.fog = true;
+            RenderSettings.fogMode = FogMode.Linear;
+            RenderSettings.fogColor = new Color(0.47f, 0.55f, 0.56f, 1f);
+            RenderSettings.fogStartDistance = 29f;
+            RenderSettings.fogEndDistance = 70f;
+            ConfigureResponsiveHd2dCamera();
+        }
+
+        private static void BuildAdvancedArrivalGate(Transform parent, Material road)
+        {
+            GameObject cluster = CreateAdvancedCluster(
+                "Sparse Arrival Cluster - Fortified Courier Gate",
+                parent,
+                new Vector3(0f, 0f, 16.3f),
+                0f);
+
+            PlaceQuaterniusModel("Wall_Arch", "Courier Gate Arch", cluster.transform,
+                new Vector3(0f, 0f, 0f), 3.6f, 0f);
+            PlaceQuaterniusModel("Wall_UnevenBrick_Straight", "Gate Wall West Inner", cluster.transform,
+                new Vector3(-2.8f, 0f, 0f), 2.2f, 0f);
+            PlaceQuaterniusModel("Wall_UnevenBrick_Straight", "Gate Wall West Outer", cluster.transform,
+                new Vector3(-5.0f, 0f, 0.15f), 2.2f, -8f);
+            PlaceQuaterniusModel("Wall_UnevenBrick_Straight", "Gate Wall East Inner", cluster.transform,
+                new Vector3(2.8f, 0f, 0f), 2.2f, 0f);
+            PlaceQuaterniusModel("Wall_UnevenBrick_Straight", "Gate Wall East Outer", cluster.transform,
+                new Vector3(5.0f, 0f, 0.15f), 2.2f, 8f);
+            PlaceQuaterniusModel("Roof_Front_Brick4", "Gate Rain Hood", cluster.transform,
+                new Vector3(0f, 3.05f, 0f), 4.5f, 0f);
+            PlaceQuaterniusModel("Prop_MetalFence_Ornament", "Gate Crest", cluster.transform,
+                new Vector3(0f, 5.55f, -0.05f), 1.3f, 0f);
+            PlaceQuaterniusModel("Prop_Brick1", "Gate Fallen Masonry A", cluster.transform,
+                new Vector3(-4.3f, 0f, -1.0f), 0.70f, 24f);
+            PlaceQuaterniusModel("Prop_Brick3", "Gate Fallen Masonry B", cluster.transform,
+                new Vector3(-3.7f, 0f, -1.35f), 0.46f, 74f);
+            PlaceQuaterniusModel("Prop_Brick4", "Gate Fallen Masonry C", cluster.transform,
+                new Vector3(4.15f, 0f, -1.1f), 0.52f, 132f);
+            CreateGroundOval("Gate Threshold Wear", cluster.transform,
+                new Vector3(0f, 0.012f, -0.3f), new Vector2(3.5f, 1.05f), 0f, road,
+                new Color(0.65f, 0.57f, 0.44f, 1f));
+            CreateLanternPost("Gate Guidance Lantern West", cluster.transform,
+                new Vector3(-2.15f, 0f, -1.25f), 20f, 0.95f);
+            CreateLanternPost("Gate Guidance Lantern East", cluster.transform,
+                new Vector3(2.15f, 0f, -1.25f), 160f, 0.95f);
+        }
+
+        private static void BuildAdvancedEastCourierInn(Transform parent, Material road)
+        {
+            GameObject cluster = CreateAdvancedCluster(
+                "Medium East Cluster - Abandoned Two Storey Courier Inn",
+                parent,
+                new Vector3(18.2f, 0f, 9.0f),
+                -72f);
+
+            BuildAdvancedHouse("Courier Inn", cluster.transform, Vector3.zero, 0f, true);
+            PlaceQuaterniusModel("Prop_Wagon", "Courier Wagon Left In Haste", cluster.transform,
+                new Vector3(-5.7f, 0f, -2.3f), 3.3f, -28f);
+            PlaceQuaterniusModel("Prop_Crate", "Uncollected Cargo A", cluster.transform,
+                new Vector3(-4.5f, 0f, -3.8f), 0.95f, 17f);
+            PlaceQuaterniusModel("Prop_Crate", "Uncollected Cargo B", cluster.transform,
+                new Vector3(-3.6f, 0f, -4.1f), 0.72f, 48f);
+            PlaceQuaterniusModel("Prop_WoodenFence_Single", "Courier Yard Fence A", cluster.transform,
+                new Vector3(4.4f, 0f, 1.9f), 2.1f, 8f);
+            PlaceQuaterniusModel("Prop_WoodenFence_Extension1", "Courier Yard Fence B", cluster.transform,
+                new Vector3(5.8f, 0f, 2.7f), 1.85f, 56f);
+            PlaceQuaterniusModel("Prop_Brick2", "Courier Yard Debris A", cluster.transform,
+                new Vector3(4.0f, 0f, -3.0f), 0.45f, 15f);
+            PlaceQuaterniusModel("Prop_Brick4", "Courier Yard Debris B", cluster.transform,
+                new Vector3(4.6f, 0f, -3.4f), 0.34f, 96f);
+            CreateGroundOval("Courier Wagon Turn", cluster.transform,
+                new Vector3(-3.8f, 0.011f, -2.4f), new Vector2(3.2f, 1.2f), -18f, road,
+                new Color(0.63f, 0.55f, 0.42f, 1f));
+            CreateWarmLandmarkLight("Courier Inn Window Glow", cluster.transform,
+                new Vector3(0f, 3.8f, -3.0f), 1.2f, 7.2f);
+        }
+
+        private static void BuildAdvancedWestAmbush(Transform parent, Material road)
+        {
+            GameObject cluster = CreateAdvancedCluster(
+                "Dense West Cluster - Caravan Ambush Aftermath",
+                parent,
+                new Vector3(-21.8f, 0f, -10.8f),
+                18f);
+
+            PlaceQuaterniusModel("Prop_Wagon", "Overturned Supply Wagon", cluster.transform,
+                new Vector3(0f, 0f, 0f), 3.8f, 66f, new Vector3(0f, 0f, 18f));
+            PlaceQuaterniusModel("Prop_WoodenFence_Single", "Broken Barricade A", cluster.transform,
+                new Vector3(-3.2f, 0f, 1.1f), 2.25f, 22f, new Vector3(0f, 0f, 11f));
+            PlaceQuaterniusModel("Prop_WoodenFence_Extension2", "Broken Barricade B", cluster.transform,
+                new Vector3(-1.9f, 0f, 2.4f), 1.95f, 83f, new Vector3(0f, 0f, -15f));
+            PlaceQuaterniusModel("Prop_Crate", "Scattered Supply Crate A", cluster.transform,
+                new Vector3(2.8f, 0f, -1.2f), 0.96f, 24f, new Vector3(8f, 0f, 12f));
+            PlaceQuaterniusModel("Prop_Crate", "Scattered Supply Crate B", cluster.transform,
+                new Vector3(3.5f, 0f, -0.4f), 0.73f, 71f, new Vector3(0f, 0f, -8f));
+            PlaceQuaterniusModel("Prop_Brick1", "Ambush Debris A", cluster.transform,
+                new Vector3(2.0f, 0f, 1.9f), 0.42f, 34f);
+            PlaceQuaterniusModel("Prop_Brick3", "Ambush Debris B", cluster.transform,
+                new Vector3(2.6f, 0f, 2.15f), 0.34f, 112f);
+            PlaceDressingModel("detail_treeA", "Ambush Canopy A", cluster.transform,
+                cluster.transform.TransformPoint(new Vector3(-4.6f, 0f, 3.1f)), 2.6f, 35f);
+            PlaceDressingModel("detail_treeC", "Ambush Canopy B", cluster.transform,
+                cluster.transform.TransformPoint(new Vector3(4.5f, 0f, 2.7f)), 2.3f, 138f);
+            PlaceDressingModel("detail_rocks", "Ambush Cover Rock", cluster.transform,
+                cluster.transform.TransformPoint(new Vector3(-4.3f, 0f, -2.5f)), 1.75f, 78f);
+            PlaceDressingModel("detail_rocks_small", "Ambush Scree", cluster.transform,
+                cluster.transform.TransformPoint(new Vector3(3.7f, 0f, 2.1f)), 1.05f, 22f);
+            CreateGroundOval("Ambush Wheel Rut", cluster.transform,
+                new Vector3(0f, 0.011f, -0.2f), new Vector2(3.4f, 1.0f), 58f, road,
+                new Color(0.53f, 0.47f, 0.36f, 1f));
+        }
+
+        private static void BuildAdvancedNorthWatch(Transform parent, Material road)
+        {
+            GameObject cluster = CreateAdvancedCluster(
+                "Sparse North Ridge Cluster - Silent Watch House",
+                parent,
+                new Vector3(-18.2f, 0f, 21.0f),
+                12f);
+
+            BuildAdvancedHouse("Silent Watch House", cluster.transform, Vector3.zero, 0f, false);
+            PlaceQuaterniusModel("Stairs_Exterior_Straight", "Watch House Steps", cluster.transform,
+                new Vector3(0f, 0f, -3.05f), 2.05f, 0f);
+            PlaceQuaterniusModel("Prop_WoodenFence_Single", "Watch Ridge Fence A", cluster.transform,
+                new Vector3(-4.0f, 0f, 1.9f), 2.1f, 12f);
+            PlaceQuaterniusModel("Prop_WoodenFence_Extension1", "Watch Ridge Fence B", cluster.transform,
+                new Vector3(-5.2f, 0f, 2.6f), 1.9f, 55f);
+            PlaceQuaterniusModel("Prop_Crate", "Abandoned Signal Supplies", cluster.transform,
+                new Vector3(3.8f, 0f, -1.7f), 0.84f, 14f);
+            PlaceDressingModel("detail_rocks", "Watch Ridge Wind Rock", cluster.transform,
+                cluster.transform.TransformPoint(new Vector3(4.6f, 0f, 2.4f)), 1.6f, 44f);
+            CreateGroundOval("Cold Watchfire Ash", cluster.transform,
+                new Vector3(3.4f, 0.011f, -2.4f), new Vector2(1.0f, 0.75f), 15f, road,
+                new Color(0.37f, 0.37f, 0.34f, 1f));
+        }
+
+        private static void BuildAdvancedSouthMine(Transform parent, Material road)
+        {
+            GameObject cluster = CreateAdvancedCluster(
+                "Medium Dense South Cluster - Freshly Abandoned Mine Works",
+                parent,
+                new Vector3(18.7f, 0f, -17.8f),
+                34f);
+
+            BuildAdvancedWorkshop("Mine Ore House", cluster.transform, new Vector3(0f, 0f, 0f), 0f);
+            PlaceQuaterniusModel("Prop_Wagon", "Ore Wagon Ready To Flee", cluster.transform,
+                new Vector3(-5.2f, 0f, -0.8f), 3.1f, 32f);
+            PlaceQuaterniusModel("Prop_Crate", "Mine Supply Crate A", cluster.transform,
+                new Vector3(-3.3f, 0f, 2.2f), 0.92f, 16f);
+            PlaceQuaterniusModel("Prop_Crate", "Mine Supply Crate B", cluster.transform,
+                new Vector3(-2.4f, 0f, 2.5f), 0.70f, 61f);
+            PlaceQuaterniusModel("Prop_WoodenFence_Single", "Rockfall Warning Fence A", cluster.transform,
+                new Vector3(4.0f, 0f, -1.4f), 2.2f, -6f);
+            PlaceQuaterniusModel("Prop_WoodenFence_Single", "Rockfall Warning Fence B", cluster.transform,
+                new Vector3(5.8f, 0f, -1.0f), 2.0f, 20f);
+            PlaceDressingModel("detail_rocks", "Fresh Mine Rockfall A", cluster.transform,
+                cluster.transform.TransformPoint(new Vector3(4.8f, 0f, 2.4f)), 2.05f, 34f);
+            PlaceDressingModel("detail_rocks", "Fresh Mine Rockfall B", cluster.transform,
+                cluster.transform.TransformPoint(new Vector3(6.3f, 0f, 2.0f)), 1.45f, 118f);
+            PlaceDressingModel("detail_rocks_small", "Mine Scree A", cluster.transform,
+                cluster.transform.TransformPoint(new Vector3(3.7f, 0f, 3.2f)), 1.05f, 86f);
+            PlaceQuaterniusModel("Prop_Brick2", "Mine Broken Masonry A", cluster.transform,
+                new Vector3(2.8f, 0f, -2.6f), 0.52f, 18f);
+            PlaceQuaterniusModel("Prop_Brick4", "Mine Broken Masonry B", cluster.transform,
+                new Vector3(3.4f, 0f, -2.9f), 0.42f, 93f);
+            CreateGroundOval("Mine Ore Dust Contact", cluster.transform,
+                new Vector3(0.3f, 0.011f, -0.6f), new Vector2(4.0f, 1.7f), -12f, road,
+                new Color(0.57f, 0.48f, 0.37f, 1f));
+            CreateLanternPost("Mine Emergency Lantern", cluster.transform,
+                new Vector3(-2.9f, 0f, -2.7f), 15f, 1.05f);
+            CreateWarmLandmarkLight("Mine Furnace Glow", cluster.transform,
+                new Vector3(0f, 2.2f, -2.4f), 1.25f, 6.5f);
+        }
+
+        private static GameObject CreateAdvancedCluster(
+            string name,
+            Transform parent,
+            Vector3 position,
+            float yRotation)
+        {
+            GameObject cluster = new GameObject(name);
+            cluster.transform.SetParent(parent, false);
+            cluster.transform.position = position;
+            cluster.transform.rotation = Quaternion.Euler(0f, yRotation, 0f);
+            return cluster;
+        }
+
+        private static void BuildAdvancedHouse(
+            string name,
+            Transform parent,
+            Vector3 localPosition,
+            float localRotation,
+            bool twoStoreys)
+        {
+            GameObject house = CreateAdvancedCluster(name, parent,
+                parent.TransformPoint(localPosition), parent.eulerAngles.y + localRotation);
+            int storeys = twoStoreys ? 2 : 1;
+            for (int floor = 0; floor < storeys; floor++)
+            {
+                float y = floor * 3.10f;
+                string frontCenter = floor == 0 ? "Wall_Plaster_Door_RoundInset" : "Wall_Plaster_Window_Wide_Round";
+                string sideModel = floor == 0 ? "Wall_Plaster_Straight_Base" : "Wall_Plaster_Window_Thin_Round";
+                PlaceQuaterniusModel(sideModel, name + " Front Left " + floor, house.transform,
+                    new Vector3(-2f, y, -2.05f), 2.05f, 0f);
+                PlaceQuaterniusModel(frontCenter, name + " Front Center " + floor, house.transform,
+                    new Vector3(0f, y, -2.05f), 2.05f, 0f);
+                PlaceQuaterniusModel(sideModel, name + " Front Right " + floor, house.transform,
+                    new Vector3(2f, y, -2.05f), 2.05f, 0f);
+                PlaceQuaterniusModel("Wall_Plaster_Straight", name + " Rear Left " + floor, house.transform,
+                    new Vector3(-2f, y, 2.05f), 2.05f, 180f);
+                PlaceQuaterniusModel("Wall_Plaster_Window_Wide_Flat2", name + " Rear Center " + floor, house.transform,
+                    new Vector3(0f, y, 2.05f), 2.05f, 180f);
+                PlaceQuaterniusModel("Wall_Plaster_Straight", name + " Rear Right " + floor, house.transform,
+                    new Vector3(2f, y, 2.05f), 2.05f, 180f);
+                PlaceQuaterniusModel(sideModel, name + " West Side A " + floor, house.transform,
+                    new Vector3(-3.0f, y, -1.0f), 2.05f, 90f);
+                PlaceQuaterniusModel("Wall_Plaster_Window_Thin_Round", name + " West Side B " + floor, house.transform,
+                    new Vector3(-3.0f, y, 1.0f), 2.05f, 90f);
+                PlaceQuaterniusModel("Wall_Plaster_Window_Thin_Round", name + " East Side A " + floor, house.transform,
+                    new Vector3(3.0f, y, -1.0f), 2.05f, -90f);
+                PlaceQuaterniusModel(sideModel, name + " East Side B " + floor, house.transform,
+                    new Vector3(3.0f, y, 1.0f), 2.05f, -90f);
+            }
+
+            PlaceQuaterniusModel("Door_2_Round", name + " Closed Door", house.transform,
+                new Vector3(0f, 0f, -2.32f), 1.08f, 0f);
+            PlaceQuaterniusModel("DoorFrame_Round_WoodDark", name + " Door Frame", house.transform,
+                new Vector3(0f, 0f, -2.35f), 1.45f, 0f);
+            PlaceQuaterniusModel("WindowShutters_Wide_Round_Open", name + " Open Shutters", house.transform,
+                new Vector3(2f, twoStoreys ? 3.72f : 0.65f, -2.30f), 2.20f, 0f);
+            if (twoStoreys)
+            {
+                PlaceQuaterniusModel("Balcony_Simple_Straight", name + " Balcony Left", house.transform,
+                    new Vector3(-1.5f, 3.0f, -2.72f), 2.0f, 0f);
+                PlaceQuaterniusModel("Balcony_Cross_Straight", name + " Balcony Right", house.transform,
+                    new Vector3(1.5f, 3.0f, -2.72f), 2.0f, 0f);
+            }
+            string roofModel = twoStoreys ? "Roof_RoundTiles_6x8" : "Roof_RoundTiles_4x6";
+            float roofFootprint = twoStoreys ? 6.7f : 5.55f;
+            float roofBase = storeys * 3.08f;
+            PlaceQuaterniusModel(roofModel, name + " Deep Tile Roof", house.transform,
+                new Vector3(0f, roofBase, 0f), roofFootprint, 0f);
+            PlaceQuaterniusModel(twoStoreys ? "Roof_Front_Brick6" : "Roof_Front_Brick4",
+                name + " Front Gable", house.transform,
+                new Vector3(0f, roofBase, -2.15f), twoStoreys ? 5.6f : 4.4f, 0f);
+            PlaceQuaterniusModel("Prop_Chimney", name + " Chimney", house.transform,
+                new Vector3(1.6f, storeys * 3.08f + 2.3f, 0.5f), 1.0f, 0f);
+        }
+
+        private static void BuildAdvancedWorkshop(
+            string name,
+            Transform parent,
+            Vector3 localPosition,
+            float localRotation)
+        {
+            GameObject house = CreateAdvancedCluster(name, parent,
+                parent.TransformPoint(localPosition), parent.eulerAngles.y + localRotation);
+            PlaceQuaterniusModel("Wall_UnevenBrick_Straight", name + " Front Left", house.transform,
+                new Vector3(-1.05f, 0f, -2.0f), 2.1f, 0f);
+            PlaceQuaterniusModel("Wall_UnevenBrick_Door_Round", name + " Front Door", house.transform,
+                new Vector3(1.05f, 0f, -2.0f), 2.1f, 0f);
+            PlaceQuaterniusModel("Wall_UnevenBrick_Window_Wide_Round", name + " Rear Left", house.transform,
+                new Vector3(-1.05f, 0f, 2.0f), 2.1f, 180f);
+            PlaceQuaterniusModel("Wall_UnevenBrick_Straight", name + " Rear Right", house.transform,
+                new Vector3(1.05f, 0f, 2.0f), 2.1f, 180f);
+            PlaceQuaterniusModel("Wall_UnevenBrick_Straight", name + " West Side A", house.transform,
+                new Vector3(-2.05f, 0f, -1.0f), 2.1f, 90f);
+            PlaceQuaterniusModel("Wall_UnevenBrick_Straight", name + " West Side B", house.transform,
+                new Vector3(-2.05f, 0f, 1.0f), 2.1f, 90f);
+            PlaceQuaterniusModel("Wall_UnevenBrick_Window_Thin_Round", name + " East Side A", house.transform,
+                new Vector3(2.05f, 0f, -1.0f), 2.1f, -90f);
+            PlaceQuaterniusModel("Wall_UnevenBrick_Straight", name + " East Side B", house.transform,
+                new Vector3(2.05f, 0f, 1.0f), 2.1f, -90f);
+            PlaceQuaterniusModel("Door_4_Round", name + " Door", house.transform,
+                new Vector3(1.05f, 0f, -2.28f), 1.08f, 0f);
+            PlaceQuaterniusModel("Roof_RoundTiles_4x6", name + " Tile Roof", house.transform,
+                new Vector3(0f, 3.10f, 0f), 5.25f, 0f);
+            PlaceQuaterniusModel("Roof_Front_Brick4", name + " Front Gable", house.transform,
+                new Vector3(0f, 3.10f, -2.15f), 4.2f, 0f);
+            PlaceQuaterniusModel("Prop_Chimney2", name + " Furnace Chimney", house.transform,
+                new Vector3(-1.35f, 4.8f, 0.5f), 1.15f, 0f);
+        }
+
+        private static void BuildAdvancedGroundPolish(Transform parent, Material road)
+        {
+            GameObject polish = new GameObject("Ground Contact And Route Edge Polish");
+            polish.transform.SetParent(parent, false);
+            Vector3[] positions =
+            {
+                new Vector3(-5.4f, 0.011f, 15.6f), new Vector3(5.6f, 0.011f, 16.0f),
+                new Vector3(12.5f, 0.011f, 8.1f), new Vector3(14.6f, 0.011f, 4.8f),
+                new Vector3(-14.0f, 0.011f, -6.0f), new Vector3(-17.0f, 0.011f, -8.2f),
+                new Vector3(11.8f, 0.011f, -12.8f), new Vector3(14.2f, 0.011f, -15.1f)
+            };
+            for (int i = 0; i < positions.Length; i++)
+            {
+                CreateGroundOval("Layered Route Edge " + (i + 1).ToString("00"), polish.transform,
+                    positions[i], new Vector2(0.78f + 0.14f * (i % 3), 0.28f + 0.08f * (i % 2)),
+                    17f + i * 29f, road,
+                    new Color(0.66f + 0.02f * (i % 2), 0.59f, 0.46f, 1f));
+                PlaceQuaterniusModel(i % 2 == 0 ? "Prop_Brick1" : "Prop_Brick3",
+                    "Route Edge Debris " + (i + 1).ToString("00"), polish.transform,
+                    positions[i] + new Vector3(0.45f, -0.011f, -0.15f),
+                    0.30f + 0.05f * (i % 3), 31f + i * 47f);
+            }
+        }
+
+        private static void ConfigureQuaterniusTextureImports()
+        {
+            string[] normalPaths = Directory.GetFiles(QuaterniusVillageTextureRoot, "*_Normal.png");
+            foreach (string fullPath in normalPaths)
+            {
+                string assetPath = fullPath.Replace('\\', '/');
+                TextureImporter importer = AssetImporter.GetAtPath(assetPath) as TextureImporter;
+                if (importer == null || importer.textureType == TextureImporterType.NormalMap)
+                {
+                    continue;
+                }
+
+                importer.textureType = TextureImporterType.NormalMap;
+                importer.textureCompression = TextureImporterCompression.CompressedHQ;
+                importer.mipmapEnabled = true;
+                importer.SaveAndReimport();
+            }
+        }
+
+        private static void ApplySceneDirectorLevelRefactorInternal(Transform mapRoot)
+        {
+            Transform previous = mapRoot.Find("Scene Director Level Refactor");
+            if (previous != null)
+            {
+                UnityEngine.Object.DestroyImmediate(previous.gameObject);
+            }
+
+            GameObject refactorRoot = new GameObject("Scene Director Level Refactor");
+            refactorRoot.transform.SetParent(mapRoot);
+
+            Material road = GetOrCreateMainMapRoadMaterial();
+            Sprite bamboo = AssetDatabase.LoadAssetAtPath<Sprite>(Hd2dBambooPath);
+
+            BuildCentralArrivalCluster(refactorRoot.transform, road, bamboo);
+            BuildEastHamletStoryCluster(refactorRoot.transform, road, bamboo);
+            BuildWestForestStoryCluster(refactorRoot.transform, road, bamboo);
+            BuildNorthPassStoryCluster(refactorRoot.transform, road, bamboo);
+            BuildSouthMineStoryCluster(refactorRoot.transform, road, bamboo);
+            BuildAuthoredRoadEdgeRhythm(refactorRoot.transform, road, bamboo);
+            RecomposeExistingScenery();
+            ConfigureScenicSpriteMaterials(refactorRoot.transform, GetOrCreateScenicSpriteMaterial());
+            ConfigureResponsiveHd2dCamera();
+
+            Light sun = UnityEngine.Object.FindObjectsByType<Light>(FindObjectsSortMode.None)
+                .FirstOrDefault(candidate => candidate.type == LightType.Directional);
+            if (sun != null)
+            {
+                sun.color = new Color(1f, 0.84f, 0.66f, 1f);
+                sun.intensity = 1.15f;
+                sun.shadowStrength = 0.68f;
+                sun.transform.rotation = Quaternion.Euler(52f, -42f, 0f);
+                EditorUtility.SetDirty(sun);
+            }
+
+            RenderSettings.ambientIntensity = 0.86f;
+            RenderSettings.reflectionIntensity = 0.25f;
+            RenderSettings.fogColor = new Color(0.50f, 0.59f, 0.58f, 1f);
+            RenderSettings.fogStartDistance = 24f;
+            RenderSettings.fogEndDistance = 64f;
+        }
+
+        private static void BuildCentralArrivalCluster(Transform parent, Material road, Sprite bamboo)
+        {
+            GameObject cluster = new GameObject("Sparse Central Arrival Cluster - Safe Zone");
+            cluster.transform.SetParent(parent);
+
+            CreateLanternPost("Bridge Arrival Lantern West", cluster.transform, new Vector3(-3.9f, 0f, -2.9f), 18f, 0.82f);
+            CreateLanternPost("Bridge Arrival Lantern East", cluster.transform, new Vector3(4.2f, 0f, 3.0f), 198f, 0.72f);
+            PlaceDressingModel("detail_rocks_small", "Courier Plaza Worn Stones", cluster.transform,
+                new Vector3(-4.7f, 0f, 3.8f), 0.92f, 28f);
+            PlaceDressingModel("detail_rocks_small", "Courier Plaza Milestone Debris", cluster.transform,
+                new Vector3(4.9f, 0f, -3.9f), 0.72f, 114f);
+            CreateGroundOval("Bridge Foot Worn Earth", cluster.transform,
+                new Vector3(0.5f, 0.010f, -3.2f), new Vector2(2.6f, 1.05f), 8f, road, new Color(0.84f, 0.80f, 0.70f, 1f));
+            CreateGroundOval("Courier Plaza Cart Turn", cluster.transform,
+                new Vector3(-2.8f, 0.009f, 2.9f), new Vector2(1.45f, 0.70f), -22f, road, new Color(0.78f, 0.73f, 0.63f, 1f));
+            CreateRoadsideShrub("Central Sparse Grass", cluster.transform, bamboo,
+                new Vector3(5.2f, 0f, 4.0f), 0.13f, 0, false);
+        }
+
+        private static void BuildEastHamletStoryCluster(Transform parent, Material road, Sprite bamboo)
+        {
+            GameObject cluster = new GameObject("Medium East Hamlet Cluster - Recently Vacated Courier Stop");
+            cluster.transform.SetParent(parent);
+
+            PlaceDressingModel("market", "Abandoned Courier Awning", cluster.transform,
+                new Vector3(25.7f, 0f, 8.2f), 2.55f, -64f);
+            PlaceDressingModel("wall_straight", "Courier Stop Windbreak", cluster.transform,
+                new Vector3(26.6f, 0f, 11.2f), 3.0f, 10f);
+            PlaceDressingModel("detail_rocks", "Courier Stop Anchor Rock", cluster.transform,
+                new Vector3(27.2f, 0f, 6.2f), 1.42f, 48f);
+            PlaceDressingModel("detail_rocks_small", "Courier Stop Scattered Cargo Stones", cluster.transform,
+                new Vector3(23.9f, 0f, 9.8f), 0.98f, 126f);
+            CreateLanternPost("Courier Stop Last Lantern", cluster.transform, new Vector3(24.2f, 0f, 6.4f), 35f, 0.74f);
+            CreateGroundOval("Courier Stop Trampled Earth", cluster.transform,
+                new Vector3(25.4f, 0.009f, 8.6f), new Vector2(2.2f, 1.15f), 24f, road, new Color(0.74f, 0.68f, 0.55f, 1f));
+            CreateRoadsideShrub("East Hamlet Grass A", cluster.transform, bamboo, new Vector3(27.8f, 0f, 10.8f), 0.17f, 1, false);
+            CreateRoadsideShrub("East Hamlet Grass B", cluster.transform, bamboo, new Vector3(23.4f, 0f, 7.8f), 0.14f, 2, true);
+            CreateRoadsideShrub("East Hamlet Grass C", cluster.transform, bamboo, new Vector3(27.6f, 0f, 5.0f), 0.12f, 1, true);
+        }
+
+        private static void BuildWestForestStoryCluster(Transform parent, Material road, Sprite bamboo)
+        {
+            GameObject cluster = new GameObject("Dense West Forest Cluster - Ambushed Caravan Aftermath");
+            cluster.transform.SetParent(parent);
+
+            PlaceDressingModel("wall_straight", "Toppled Forest Barricade", cluster.transform,
+                new Vector3(-26.0f, 0f, -12.8f), 3.15f, 62f);
+            PlaceDressingModel("detail_treeA", "Ambush Canopy Pine", cluster.transform,
+                new Vector3(-27.8f, 0f, -15.2f), 2.35f, 25f);
+            PlaceDressingModel("detail_treeC", "Ambush Leaning Pine", cluster.transform,
+                new Vector3(-23.8f, 0f, -15.8f), 1.95f, 142f);
+            PlaceDressingModel("detail_rocks", "Ambush Cover Boulder", cluster.transform,
+                new Vector3(-27.4f, 0f, -10.5f), 1.58f, 96f);
+            PlaceDressingModel("detail_rocks_small", "Ambush Wheel-Rut Stones A", cluster.transform,
+                new Vector3(-23.8f, 0f, -12.0f), 1.05f, 15f);
+            PlaceDressingModel("detail_rocks_small", "Ambush Wheel-Rut Stones B", cluster.transform,
+                new Vector3(-25.0f, 0f, -16.9f), 0.82f, 174f);
+            CreateGroundOval("Ambush Mud Scar", cluster.transform,
+                new Vector3(-25.3f, 0.009f, -13.6f), new Vector2(2.45f, 0.82f), 58f, road, new Color(0.61f, 0.57f, 0.43f, 1f));
+            CreateRoadsideShrub("West Dense Brush A", cluster.transform, bamboo, new Vector3(-28.8f, 0f, -13.5f), 0.22f, 2, false);
+            CreateRoadsideShrub("West Dense Brush B", cluster.transform, bamboo, new Vector3(-22.5f, 0f, -14.6f), 0.18f, 3, true);
+            CreateRoadsideShrub("West Dense Brush C", cluster.transform, bamboo, new Vector3(-27.0f, 0f, -17.0f), 0.16f, 2, true);
+            CreateRoadsideShrub("West Dense Brush D", cluster.transform, bamboo, new Vector3(-23.0f, 0f, -10.5f), 0.14f, 3, false);
+        }
+
+        private static void BuildNorthPassStoryCluster(Transform parent, Material road, Sprite bamboo)
+        {
+            GameObject cluster = new GameObject("Sparse North Pass Cluster - Abandoned Watch Post");
+            cluster.transform.SetParent(parent);
+
+            PlaceDressingModel("watchtower", "North Pass Empty Watch Post", cluster.transform,
+                new Vector3(-25.9f, 0f, 23.0f), 2.28f, 168f);
+            PlaceDressingModel("wall_straight", "North Pass Broken Signal Wall", cluster.transform,
+                new Vector3(-22.8f, 0f, 24.2f), 3.0f, 12f);
+            PlaceDressingModel("detail_rocks", "North Pass Wind Rock", cluster.transform,
+                new Vector3(-27.8f, 0f, 20.7f), 1.45f, 42f);
+            PlaceDressingModel("detail_rocks_small", "North Pass Ash Stones", cluster.transform,
+                new Vector3(-23.2f, 0f, 21.2f), 0.88f, 120f);
+            CreateGroundOval("North Watch Fire Ash", cluster.transform,
+                new Vector3(-24.5f, 0.009f, 21.5f), new Vector2(1.1f, 0.8f), 4f, road, new Color(0.54f, 0.52f, 0.47f, 1f));
+            CreateRoadsideShrub("North Wind Grass A", cluster.transform, bamboo, new Vector3(-28.4f, 0f, 23.2f), 0.14f, 1, true);
+            CreateRoadsideShrub("North Wind Grass B", cluster.transform, bamboo, new Vector3(-21.7f, 0f, 22.4f), 0.12f, 1, false);
+        }
+
+        private static void BuildSouthMineStoryCluster(Transform parent, Material road, Sprite bamboo)
+        {
+            GameObject cluster = new GameObject("Medium South Mine Cluster - Fresh Rockfall");
+            cluster.transform.SetParent(parent);
+
+            PlaceDressingModel("wall_straight", "Mine Emergency Timber Line", cluster.transform,
+                new Vector3(22.8f, 0f, -16.2f), 3.2f, 78f);
+            PlaceDressingModel("detail_rocks", "Fresh Rockfall Main Boulder", cluster.transform,
+                new Vector3(22.0f, 0f, -18.2f), 1.78f, 35f);
+            PlaceDressingModel("detail_rocks", "Fresh Rockfall Split Boulder", cluster.transform,
+                new Vector3(25.0f, 0f, -17.0f), 1.34f, 118f);
+            PlaceDressingModel("detail_rocks_small", "Fresh Rockfall Scree A", cluster.transform,
+                new Vector3(23.8f, 0f, -19.0f), 1.08f, 15f);
+            PlaceDressingModel("detail_rocks_small", "Fresh Rockfall Scree B", cluster.transform,
+                new Vector3(20.5f, 0f, -19.4f), 0.90f, 166f);
+            CreateLanternPost("Mine Warning Lantern", cluster.transform, new Vector3(20.7f, 0f, -16.6f), 102f, 0.88f);
+            CreateGroundOval("Mine Ore Dust", cluster.transform,
+                new Vector3(22.5f, 0.009f, -17.8f), new Vector2(2.6f, 1.2f), -18f, road, new Color(0.67f, 0.56f, 0.43f, 1f));
+            CreateRoadsideShrub("South Dry Grass A", cluster.transform, bamboo, new Vector3(25.6f, 0f, -18.6f), 0.13f, 2, true);
+            CreateRoadsideShrub("South Dry Grass B", cluster.transform, bamboo, new Vector3(20.2f, 0f, -20.0f), 0.11f, 1, false);
+        }
+
+        private static void BuildAuthoredRoadEdgeRhythm(Transform parent, Material road, Sprite bamboo)
+        {
+            GameObject edgeRoot = new GameObject("Road Edge Rhythm - Dense Medium Sparse Empty");
+            edgeRoot.transform.SetParent(parent);
+
+            Vector3[] wornEarth =
+            {
+                new Vector3(-1.8f, 0.009f, 7.8f), new Vector3(2.0f, 0.009f, 11.5f),
+                new Vector3(8.4f, 0.009f, 1.8f), new Vector3(13.8f, 0.009f, -1.8f),
+                new Vector3(-8.0f, 0.009f, -1.5f), new Vector3(-15.4f, 0.009f, 1.9f),
+                new Vector3(2.0f, 0.009f, -9.5f), new Vector3(-2.1f, 0.009f, -14.5f)
+            };
+            for (int i = 0; i < wornEarth.Length; i++)
+            {
+                CreateGroundOval($"Irregular Road Shoulder {i + 1:00}", edgeRoot.transform, wornEarth[i],
+                    new Vector2(0.72f + (i % 3) * 0.20f, 0.32f + (i % 2) * 0.12f),
+                    18f + i * 31f, road, new Color(0.77f, 0.72f, 0.61f, 1f));
+            }
+
+            Vector3[] shoulderStones =
+            {
+                new Vector3(-2.4f, 0f, 9.2f), new Vector3(2.7f, 0f, 13.0f),
+                new Vector3(9.6f, 0f, 2.5f), new Vector3(14.8f, 0f, -2.8f),
+                new Vector3(-9.2f, 0f, -2.3f), new Vector3(-14.0f, 0f, 2.6f),
+                new Vector3(2.5f, 0f, -10.8f), new Vector3(-2.6f, 0f, -13.2f)
+            };
+            for (int i = 0; i < shoulderStones.Length; i++)
+            {
+                PlaceDressingModel("detail_rocks_small", $"Road Shoulder Stone Cluster {i + 1:00}",
+                    edgeRoot.transform, shoulderStones[i], 0.56f + (i % 3) * 0.10f, 22f + i * 47f);
+            }
+
+            Vector3[] grassPositions =
+            {
+                new Vector3(-3.0f, 0f, 8.5f), new Vector3(3.1f, 0f, 12.4f),
+                new Vector3(9.0f, 0f, 3.3f), new Vector3(15.4f, 0f, -2.0f),
+                new Vector3(-9.8f, 0f, -3.1f), new Vector3(-15.0f, 0f, 3.3f),
+                new Vector3(3.2f, 0f, -11.5f), new Vector3(-3.1f, 0f, -12.5f)
+            };
+            for (int i = 0; i < grassPositions.Length; i++)
+            {
+                CreateRoadsideShrub($"Road Shoulder Grass {i + 1:00}", edgeRoot.transform, bamboo,
+                    grassPositions[i], 0.095f + (i % 3) * 0.018f, i % 3, i % 2 == 0);
+            }
+        }
+
+        private static GameObject PlaceDressingModel(
+            string assetName,
+            string objectName,
+            Transform parent,
+            Vector3 position,
+            float targetFootprint,
+            float yRotation)
+        {
+            if (MainMapRiverLayout.IsInsideRiver(position, 0.25f))
+            {
+                position = MainMapRiverLayout.GetNearestSafeBankPosition(position, 0.75f);
+            }
+
+            GameObject instance = PlaceModel(assetName, objectName, parent, position, targetFootprint, yRotation);
+            if (instance == null)
+            {
+                return null;
+            }
+
+            foreach (Collider collider in instance.GetComponentsInChildren<Collider>(true))
+            {
+                UnityEngine.Object.DestroyImmediate(collider);
+            }
+            return instance;
+        }
+
+        private static void CreateRoadsideShrub(
+            string name,
+            Transform parent,
+            Sprite sprite,
+            Vector3 position,
+            float scale,
+            int sortingOrder,
+            bool flipX)
+        {
+            if (sprite == null)
+            {
+                return;
+            }
+
+            CreateHd2dBillboard(name, parent, sprite, position, scale,
+                new Color(0.44f, 0.60f, 0.42f, 0.72f), sortingOrder, flipX);
+        }
+
+        private static void CreateGroundOval(
+            string name,
+            Transform parent,
+            Vector3 position,
+            Vector2 radius,
+            float yRotation,
+            Material material,
+            Color tint)
+        {
+            GameObject oval = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
+            oval.name = name;
+            oval.transform.SetParent(parent);
+            oval.transform.position = position;
+            oval.transform.rotation = Quaternion.Euler(0f, yRotation, 0f);
+            oval.transform.localScale = new Vector3(radius.x, 0.006f, radius.y);
+            Renderer renderer = oval.GetComponent<Renderer>();
+            renderer.sharedMaterial = material;
+            renderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+            renderer.receiveShadows = false;
+            MaterialPropertyBlock block = new MaterialPropertyBlock();
+            block.SetColor("_Color", tint);
+            renderer.SetPropertyBlock(block);
+            UnityEngine.Object.DestroyImmediate(oval.GetComponent<Collider>());
+        }
+
+        private static void CreateLanternPost(
+            string name,
+            Transform parent,
+            Vector3 position,
+            float yRotation,
+            float lightIntensity)
+        {
+            GameObject lantern = new GameObject(name);
+            lantern.transform.SetParent(parent);
+            lantern.transform.position = position;
+            lantern.transform.rotation = Quaternion.Euler(0f, yRotation, 0f);
+
+            Material darkWood = Material("Lantern_DarkWood", new Color(0.18f, 0.10f, 0.055f));
+            Material paper = Material("Lantern_WarmPaper", new Color(0.95f, 0.61f, 0.24f));
+            GameObject post = CreateLocalCube("Post", lantern.transform,
+                new Vector3(0f, 0.75f, 0f), new Vector3(0.10f, 1.5f, 0.10f), darkWood);
+            GameObject arm = CreateLocalCube("Arm", lantern.transform,
+                new Vector3(0.24f, 1.34f, 0f), new Vector3(0.48f, 0.08f, 0.08f), darkWood);
+            GameObject lamp = CreateLocalCube("Warm Paper Lamp", lantern.transform,
+                new Vector3(0.45f, 1.13f, 0f), new Vector3(0.27f, 0.38f, 0.27f), paper);
+            GameObject cap = CreateLocalCube("Rain Cap", lantern.transform,
+                new Vector3(0.45f, 1.36f, 0f), new Vector3(0.38f, 0.06f, 0.38f), darkWood);
+            UnityEngine.Object.DestroyImmediate(post.GetComponent<Collider>());
+            UnityEngine.Object.DestroyImmediate(arm.GetComponent<Collider>());
+            UnityEngine.Object.DestroyImmediate(lamp.GetComponent<Collider>());
+            UnityEngine.Object.DestroyImmediate(cap.GetComponent<Collider>());
+
+            Light light = new GameObject("Warm Pool Light").AddComponent<Light>();
+            light.transform.SetParent(lantern.transform, false);
+            light.transform.localPosition = new Vector3(0.45f, 1.18f, 0f);
+            light.type = LightType.Point;
+            light.color = new Color(1f, 0.54f, 0.20f, 1f);
+            light.intensity = lightIntensity;
+            light.range = 4.8f;
+            light.shadows = LightShadows.None;
+        }
+
+        private static void RecomposeExistingScenery()
+        {
+            RepositionScenery("Tree A2", new Vector3(25.0f, 0f, 2.5f), 1.60f);
+            RepositionScenery("Tree B1", new Vector3(-8.8f, 0f, -4.9f), 1.98f);
+            RepositionScenery("Tree B2", new Vector3(-20.5f, 0f, 12.2f), 1.62f);
+            RepositionScenery("Tree C1", new Vector3(21.5f, 0f, 4.0f), 1.55f);
+            RepositionScenery("Tree C2", new Vector3(25.5f, 0f, -10.5f), 1.55f);
+            RepositionScenery("Tree C3", new Vector3(23.8f, 0f, -0.5f), 1.52f);
+            RepositionScenery("East Orchard Tree A", new Vector3(18.2f, 0f, 3.1f), 1.62f);
+
+            ScaleDecorativeRoot("East Route Sign", 0.68f);
+            ScaleDecorativeRoot("West Route Sign", 0.68f);
+            ScaleDecorativeRoot("North Route Sign", 0.68f);
+            ScaleDecorativeRoot("South Route Sign", 0.68f);
+        }
+
+        private static void ScaleDecorativeRoot(string objectName, float uniformScale)
+        {
+            GameObject target = GameObject.Find(objectName);
+            if (target == null)
+            {
+                return;
+            }
+
+            target.transform.localScale = Vector3.one * uniformScale;
+            foreach (Collider collider in target.GetComponentsInChildren<Collider>(true))
+            {
+                UnityEngine.Object.DestroyImmediate(collider);
+            }
+            EditorUtility.SetDirty(target.transform);
+        }
+
+        private static void RepositionScenery(string objectName, Vector3 position, float targetFootprint)
+        {
+            GameObject target = GameObject.Find(objectName);
+            if (target == null)
+            {
+                return;
+            }
+
+            Bounds before = CalculateRendererBounds(target);
+            float currentFootprint = Mathf.Max(before.size.x, before.size.z);
+            if (currentFootprint > 0.001f)
+            {
+                target.transform.localScale *= targetFootprint / currentFootprint;
+            }
+            Bounds after = CalculateRendererBounds(target);
+            target.transform.position = position + Vector3.up * (position.y - after.min.y);
+            EditorUtility.SetDirty(target.transform);
         }
 
         private static Material GetOrCreateWorldSurfaceMaterial(
@@ -4188,6 +5059,60 @@ namespace WuxiaRoguelite.EditorTools
             bounds = CalculateRendererBounds(instance);
             instance.transform.position += Vector3.up * (position.y - bounds.min.y);
             ApplyStylizedMapMaterials(instance.transform, false);
+            return instance;
+        }
+
+        private static GameObject PlaceQuaterniusModel(
+            string assetName,
+            string objectName,
+            Transform parent,
+            Vector3 localPosition,
+            float targetFootprint,
+            float localYRotation,
+            Vector3? localTilt = null)
+        {
+            GameObject model = AssetDatabase.LoadAssetAtPath<GameObject>(
+                $"{QuaterniusVillageModelRoot}/{assetName}.fbx");
+            if (model == null)
+            {
+                Debug.LogWarning($"Missing Quaternius Medieval Village model: {assetName}");
+                return null;
+            }
+
+            GameObject instance = PrefabUtility.InstantiatePrefab(model, parent) as GameObject;
+            if (instance == null)
+            {
+                return null;
+            }
+
+            instance.name = objectName;
+            instance.transform.localPosition = localPosition;
+            Vector3 tilt = localTilt ?? Vector3.zero;
+            Quaternion authoredAxisConversion = model.transform.localRotation;
+            instance.transform.localRotation = Quaternion.Euler(tilt) *
+                Quaternion.Euler(0f, localYRotation, 0f) *
+                authoredAxisConversion;
+            instance.transform.localScale = Vector3.one;
+
+            Bounds bounds = CalculateRendererBounds(instance);
+            float footprint = Mathf.Max(bounds.size.x, bounds.size.z);
+            if (footprint > 0.001f)
+            {
+                instance.transform.localScale *= targetFootprint / footprint;
+            }
+
+            bounds = CalculateRendererBounds(instance);
+            float requestedBaseY = parent.TransformPoint(localPosition).y;
+            instance.transform.position += Vector3.up * (requestedBaseY - bounds.min.y);
+            ApplyStylizedMapMaterials(instance.transform, false);
+            foreach (Collider collider in instance.GetComponentsInChildren<Collider>(true))
+            {
+                UnityEngine.Object.DestroyImmediate(collider);
+            }
+            foreach (Transform child in instance.GetComponentsInChildren<Transform>(true))
+            {
+                child.gameObject.isStatic = true;
+            }
             return instance;
         }
 

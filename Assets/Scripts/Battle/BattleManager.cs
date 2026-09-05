@@ -41,6 +41,8 @@ namespace WuxiaRoguelite.Battle
         public float EnemyAttackCooldownRemaining { get; private set; }
         public float EnemyAttackCooldownDuration { get; private set; }
         public bool IsBossBattle { get; private set; }
+        public bool IsMidBossBattle { get; private set; }
+        public bool IsBossEncounter => IsBossBattle || IsMidBossBattle;
         public BossBattlePhase CurrentBossPhase { get; private set; }
         public BossSkillId LastBossSkill { get; private set; }
         public int BossSkillSequence { get; private set; }
@@ -63,6 +65,7 @@ namespace WuxiaRoguelite.Battle
             BossSkillId.FoxfireBarrage => GameTextCatalog.FinalBossFoxfireSkillName,
             BossSkillId.DemonArmor => GameTextCatalog.FinalBossPhaseTwoName,
             BossSkillId.BloodFrenzy => GameTextCatalog.FinalBossPhaseThreeName,
+            BossSkillId.MountainBreaker => GameTextCatalog.MidBossSkillName,
             _ => string.Empty
         };
 
@@ -70,6 +73,9 @@ namespace WuxiaRoguelite.Battle
         private float poisonTickCooldown;
         private float bossBaseAttack;
         private float bossBaseAttackSpeed;
+        private bool midBossSkillWindupActive;
+        private float midBossSkillWindupRemaining;
+        private bool midBossSkillImpactResolved;
         private readonly Dictionary<string, float> martialArtLastActivationTimes =
             new Dictionary<string, float>();
 
@@ -91,12 +97,17 @@ namespace WuxiaRoguelite.Battle
 
         public void BeginBattle(CombatantStats enemy, Action<bool> onComplete)
         {
-            BeginBattleInternal(enemy, onComplete, false);
+            BeginBattleInternal(enemy, onComplete, false, false);
         }
 
         public void BeginBossBattle(CombatantStats enemy, Action<bool> onComplete)
         {
-            BeginBattleInternal(enemy, onComplete, true);
+            BeginBattleInternal(enemy, onComplete, true, false);
+        }
+
+        public void BeginMidBossBattle(CombatantStats enemy, Action<bool> onComplete)
+        {
+            BeginBattleInternal(enemy, onComplete, false, true);
         }
 
         public void DebugSetBossHealthRatio(float healthRatio)
@@ -115,17 +126,24 @@ namespace WuxiaRoguelite.Battle
 #endif
         }
 
-        private void BeginBattleInternal(CombatantStats enemy, Action<bool> onComplete, bool isBossBattle)
+        private void BeginBattleInternal(
+            CombatantStats enemy,
+            Action<bool> onComplete,
+            bool isBossBattle,
+            bool isMidBossBattle)
         {
             CancelBattle();
             currentEnemy = enemy;
             IsBossBattle = isBossBattle;
+            IsMidBossBattle = isMidBossBattle;
             CurrentBossPhase = isBossBattle ? BossBattlePhase.Foxfire : BossBattlePhase.None;
             bossBaseAttack = enemy != null ? enemy.attack : 0f;
             bossBaseAttackSpeed = enemy != null ? enemy.attackSpeed : 0f;
             BossWard = 0f;
             BossWardMax = 0f;
-            BossSkillCooldownDuration = isBossBattle ? BossV2Tuning.OpeningFoxfireDelay : 0f;
+            BossSkillCooldownDuration = isBossBattle
+                ? BossV2Tuning.OpeningFoxfireDelay
+                : isMidBossBattle ? MidBossTuning.OpeningSkillDelay : 0f;
             BossSkillCooldownRemaining = BossSkillCooldownDuration;
             LastBossSkill = BossSkillId.None;
             BossSkillSequence = 0;
@@ -146,6 +164,9 @@ namespace WuxiaRoguelite.Battle
             LastPoisonDamage = 0f;
             EnemyArmorBreak = 0f;
             poisonTickCooldown = 1f;
+            midBossSkillWindupActive = false;
+            midBossSkillWindupRemaining = 0f;
+            midBossSkillImpactResolved = false;
             martialArtLastActivationTimes.Clear();
             PlayerShield = CalculateOpeningShield();
             if (playerStats.GetMartialArtRank("金钟罩") > 0)
@@ -180,6 +201,7 @@ namespace WuxiaRoguelite.Battle
             EnemyAttackCooldownRemaining = 0f;
             EnemyAttackCooldownDuration = 0f;
             IsBossBattle = false;
+            IsMidBossBattle = false;
             CurrentBossPhase = BossBattlePhase.None;
             LastBossSkill = BossSkillId.None;
             BossSkillSequence = 0;
@@ -190,6 +212,9 @@ namespace WuxiaRoguelite.Battle
             BossSkillCooldownDuration = 0f;
             bossBaseAttack = 0f;
             bossBaseAttackSpeed = 0f;
+            midBossSkillWindupActive = false;
+            midBossSkillWindupRemaining = 0f;
+            midBossSkillImpactResolved = false;
             martialArtLastActivationTimes.Clear();
         }
 
@@ -208,13 +233,35 @@ namespace WuxiaRoguelite.Battle
                 PlayerAttackCooldownRemaining -= combatDeltaTime;
                 EnemyAttackCooldownRemaining -= combatDeltaTime;
                 poisonTickCooldown -= combatDeltaTime;
-                if (IsBossBattle)
+                if (IsBossEncounter)
                 {
-                    UpdateBossPhase();
+                    if (IsBossBattle)
+                    {
+                        UpdateBossPhase();
+                    }
                     BossSkillCooldownRemaining -= combatDeltaTime;
                 }
 
-                if (PlayerAttackCooldownRemaining <= 0f)
+                if (IsMidBossBattle && midBossSkillWindupActive)
+                {
+                    midBossSkillWindupRemaining -= Time.deltaTime;
+                    if (!midBossSkillImpactResolved &&
+                        midBossSkillWindupRemaining <=
+                        MidBossTuning.SkillVisualDuration - MidBossTuning.SkillImpactDelay)
+                    {
+                        ResolveMountainBreaker();
+                    }
+
+                    if (midBossSkillWindupRemaining <= 0f)
+                    {
+                        midBossSkillWindupActive = false;
+                        midBossSkillWindupRemaining = 0f;
+                        BossSkillCooldownDuration = MidBossTuning.SkillCooldown;
+                        BossSkillCooldownRemaining = BossSkillCooldownDuration;
+                    }
+                }
+
+                if (PlayerAttackCooldownRemaining <= 0f && !midBossSkillWindupActive)
                 {
                     float cooldownMultiplier = DoAttack(playerStats.runtimeStats, currentEnemy);
                     PlayerAttackCooldownDuration =
@@ -228,7 +275,8 @@ namespace WuxiaRoguelite.Battle
                     poisonTickCooldown += 1f;
                 }
 
-                if (currentEnemy != null && !currentEnemy.IsDead && EnemyAttackCooldownRemaining <= 0f)
+                if (currentEnemy != null && !currentEnemy.IsDead && EnemyAttackCooldownRemaining <= 0f &&
+                    !midBossSkillWindupActive)
                 {
                     DoAttack(currentEnemy, playerStats.runtimeStats);
                     EnemyAttackCooldownDuration = 1f / Mathf.Max(0.1f, currentEnemy.attackSpeed);
@@ -242,6 +290,15 @@ namespace WuxiaRoguelite.Battle
                     CastFoxfireBarrage();
                     BossSkillCooldownDuration = GetFoxfireCooldown();
                     BossSkillCooldownRemaining = BossSkillCooldownDuration;
+                }
+
+
+                if (IsMidBossBattle && !midBossSkillWindupActive &&
+                    currentEnemy != null && !currentEnemy.IsDead &&
+                    playerStats.runtimeStats != null && !playerStats.runtimeStats.IsDead &&
+                    BossSkillCooldownRemaining <= 0f)
+                {
+                    BeginMountainBreakerWindup();
                 }
 
                 yield return null;
@@ -755,6 +812,79 @@ namespace WuxiaRoguelite.Battle
                 TriggerBossSkill(BossSkillId.BloodFrenzy,
                     $"{currentEnemy.displayName}踏入残血狂暴：攻势与狐火加快");
             }
+        }
+
+        private void BeginMountainBreakerWindup()
+        {
+            if (currentEnemy == null || playerStats.runtimeStats == null ||
+                currentEnemy.IsDead || playerStats.runtimeStats.IsDead)
+            {
+                return;
+            }
+
+            midBossSkillWindupActive = true;
+            midBossSkillWindupRemaining = MidBossTuning.SkillVisualDuration;
+            midBossSkillImpactResolved = false;
+            LastAttackWasPlayer = false;
+            LastAttackWasCritical = false;
+            LastAttackWasDodged = false;
+            LastDamage = 0f;
+            LastTriggeredEffect = GameTextCatalog.MidBossSkillName;
+            LastSkillVfxName = GameTextCatalog.MidBossSkillName;
+            LastPoisonStackDelta = 0;
+            LastPoisonDamage = 0f;
+            LastVfxCues = BattleVfxCue.MountainBreaker;
+            AttackSequence += 1;
+            TriggerBossSkill(BossSkillId.MountainBreaker,
+                $"{currentEnemy.displayName}举刀蓄势：{GameTextCatalog.MidBossSkillName}");
+        }
+
+        private void ResolveMountainBreaker()
+        {
+            midBossSkillImpactResolved = true;
+
+            CombatantStats player = playerStats.runtimeStats;
+            if (currentEnemy == null || player == null || currentEnemy.IsDead || player.IsDead)
+            {
+                return;
+            }
+
+            EnemyAttackAttempts += 1;
+            int shadowRank = playerStats.GetMartialArtRank("无相残影");
+            int shadowInterval = shadowRank <= 0 ? int.MaxValue : 7 - shadowRank;
+            bool forcedShadowDodge = shadowInterval < int.MaxValue &&
+                                     EnemyAttackAttempts % shadowInterval == 0;
+            if (forcedShadowDodge || UnityEngine.Random.value < player.dodgeChance)
+            {
+                LastAttackWasDodged = true;
+                LastDamage = 0f;
+                LastVfxCues |= BattleVfxCue.Dodge;
+                HealPlayerOnDodge();
+                if (forcedShadowDodge)
+                {
+                    LastVfxCues |= BattleVfxCue.ShadowDodge;
+                    RegisterMartialArtActivation("无相残影");
+                }
+
+                battleLog = $"{currentEnemy.displayName}的{GameTextCatalog.MidBossSkillName}被闪开";
+                return;
+            }
+
+            float damage = Mathf.Max(1f,
+                currentEnemy.attack * MidBossTuning.SkillAttackRatio - player.defense);
+            damage *= GetPlayerIncomingDamageMultiplier(player);
+            damage = AbsorbWithShield(damage);
+            player.TakeDamage(damage);
+            LastDamage = damage;
+            LastVfxCues |= BattleVfxCue.BasicHit;
+            LastTriggeredEffect = GameTextCatalog.MidBossSkillName;
+            if (damage > 0f)
+            {
+                ApplyRetaliation(currentEnemy);
+            }
+
+            battleLog = $"{currentEnemy.displayName}施展{GameTextCatalog.MidBossSkillName}，造成 " +
+                        $"{CombatNumberDisplay.Format(damage)} 伤害";
         }
 
         private void CastFoxfireBarrage()

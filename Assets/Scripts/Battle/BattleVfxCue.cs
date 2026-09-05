@@ -22,6 +22,7 @@ namespace WuxiaRoguelite.Battle
         OpeningStrike = 1 << 13,
         BloodPower = 1 << 14,
         BloodBurst = 1 << 15,
-        Foxfire = 1 << 16
+        Foxfire = 1 << 16,
+        MountainBreaker = 1 << 17
     }
 }

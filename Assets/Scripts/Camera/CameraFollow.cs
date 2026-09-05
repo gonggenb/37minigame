@@ -5,12 +5,12 @@ namespace WuxiaRoguelite.CameraTools
     public class CameraFollow : MonoBehaviour
     {
         public Transform target;
-        public Vector3 offset = new Vector3(7.8f, 7.2f, -14f);
-        public Vector3 portraitOffset = new Vector3(9.4f, 10.2f, -18f);
+        public Vector3 offset = new Vector3(10f, 10.8f, -20f);
+        public Vector3 portraitOffset = new Vector3(14f, 16.5f, -30f);
         public float lookAtHeight = 0.72f;
         public float smoothTime = 0.16f;
-        [Range(25f, 70f)] public float landscapeFieldOfView = 34f;
-        [Range(25f, 70f)] public float portraitFieldOfView = 40f;
+        [Range(25f, 70f)] public float landscapeFieldOfView = 36.5f;
+        [Range(25f, 70f)] public float portraitFieldOfView = 45f;
 
         [Header("Run Vision")]
         [Range(0.4f, 1.5f)] public float initialVisionScale = 0.74f;

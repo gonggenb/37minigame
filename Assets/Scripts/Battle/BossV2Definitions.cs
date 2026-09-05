@@ -13,7 +13,23 @@ namespace WuxiaRoguelite.Battle
         None = 0,
         FoxfireBarrage = 1,
         DemonArmor = 2,
-        BloodFrenzy = 3
+        BloodFrenzy = 3,
+        MountainBreaker = 4
+    }
+
+    /// <summary>
+    /// Level-two midpoint power-check tuning. This encounter intentionally avoids
+    /// the final boss's phase changes and build-specific counters.
+    /// </summary>
+    public static class MidBossTuning
+    {
+        public const float TriggerElapsedTime = 30f;
+        public const float WarningDuration = 5f;
+        public const float OpeningSkillDelay = 4.5f;
+        public const float SkillCooldown = 6f;
+        public const float SkillAttackRatio = 1.30f;
+        public const float SkillImpactDelay = 0.50f;
+        public const float SkillVisualDuration = 0.80f;
     }
 
     /// <summary>

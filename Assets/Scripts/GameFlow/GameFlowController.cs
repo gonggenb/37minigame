@@ -26,6 +26,7 @@ namespace WuxiaRoguelite.GameFlow
         [Header("Timers")]
         public float mainTimeLimit = 60f;
         public float mainTimeRemaining;
+        public float midBossBattleTime;
         public float bossBattleTime;
 
         [Header("Normal Victory Movement Boost")]
@@ -47,6 +48,22 @@ namespace WuxiaRoguelite.GameFlow
         };
         [Min(0f)] public float bossIntroDuration = 6f;
 
+        [Header("Level Two Mid Boss")]
+        [Min(1f)] public float midBossTriggerElapsedTime = MidBossTuning.TriggerElapsedTime;
+        [Min(1f)] public float midBossWarningDuration = MidBossTuning.WarningDuration;
+        public CombatantStats midBossStats = new CombatantStats
+        {
+            displayName = GameTextCatalog.MidBossName,
+            visualId = GameTextCatalog.MidBossVisualId,
+            maxHealth = 260f,
+            currentHealth = 260f,
+            attack = 12f,
+            defense = 3f,
+            attackSpeed = 0.78f,
+            critChance = 0.04f,
+            critMultiplier = 1.5f
+        };
+
         [Header("Boss Intro Dialogue")]
         [TextArea(1, 2)]
         public string bossIntroNarration = "血月照临古刹，九道狐火沿石阶次第亮起。";
@@ -58,6 +75,7 @@ namespace WuxiaRoguelite.GameFlow
         public GamePhase CurrentPhase { get; private set; } = GamePhase.Ready;
         public bool IsCharacterMenuPaused { get; private set; }
         public bool IsBossTransitionPending { get; private set; }
+        public bool IsMidBossTransitionPending { get; private set; }
         public bool IsBossIntroActive { get; private set; }
         public bool IsOpeningIntroActive => CurrentPhase == GamePhase.OpeningIntro;
         public bool IsLevelSelectionOpen { get; private set; }
@@ -66,6 +84,18 @@ namespace WuxiaRoguelite.GameFlow
         public bool IsTutorialCompletionSummary { get; private set; }
         public bool IsTutorialLevel => LevelSequence.IsTutorialScene;
         public bool IsLevelTwoUnlocked => LevelSequence.TutorialCompleted;
+        public bool IsMidBossEncounterEnabled =>
+            !IsTutorialLevel && midBossTriggerElapsedTime > 0f &&
+            midBossTriggerElapsedTime < mainTimeLimit;
+        public float MidBossTriggerMainTimeRemaining =>
+            Mathf.Clamp(mainTimeLimit - midBossTriggerElapsedTime, 0f, mainTimeLimit);
+        public float MidBossCountdownRemaining =>
+            Mathf.Max(0f, mainTimeRemaining - MidBossTriggerMainTimeRemaining);
+        public bool IsMidBossWarningActive =>
+            IsMidBossEncounterEnabled && !midBossDefeated &&
+            (IsMidBossTransitionPending ||
+             ((CurrentPhase == GamePhase.MainMapRunning || CurrentPhase == GamePhase.NormalBattleRunning) &&
+              MidBossCountdownRemaining <= midBossWarningDuration));
         public bool CanContinueToNextLevel =>
             CurrentPhase == GamePhase.Result && IsTutorialCompletionSummary;
         public string CurrentLevelDisplayName =>
@@ -157,6 +187,7 @@ namespace WuxiaRoguelite.GameFlow
             get
             {
                 if (CurrentPhase == GamePhase.Ready ||
+                    CurrentPhase == GamePhase.MidBossBattle ||
                     CurrentPhase == GamePhase.BossBattle ||
                     CurrentPhase == GamePhase.Result)
                 {
@@ -188,6 +219,7 @@ namespace WuxiaRoguelite.GameFlow
         }
         public string statusMessage = "按开始进入江湖";
         public bool bossDefeated;
+        public bool midBossDefeated;
         public int pendingCultivationReward;
         public int pendingCopperReward;
         public readonly string[] allMartialArts = MartialArtCatalog.AllIds;
@@ -197,6 +229,7 @@ namespace WuxiaRoguelite.GameFlow
         private GamePhase phaseBeforeLevelUp = GamePhase.MainMapRunning;
         private float timeScaleBeforeCharacterMenu = 1f;
         private CombatantStats pendingBoss;
+        private CombatantStats pendingMidBoss;
         private string pendingEnemyName;
         private int pendingEnemyLevel;
         private EncounterType pendingEnemyType;
@@ -212,6 +245,11 @@ namespace WuxiaRoguelite.GameFlow
             if (bossStats != null && bossStats.visualId == GameTextCatalog.FinalBossVisualId)
             {
                 bossStats.displayName = GameTextCatalog.FinalBossName;
+            }
+
+            if (midBossStats != null && midBossStats.visualId == GameTextCatalog.MidBossVisualId)
+            {
+                midBossStats.displayName = GameTextCatalog.MidBossName;
             }
         }
 
@@ -229,11 +267,14 @@ namespace WuxiaRoguelite.GameFlow
             }
 
             mainTimeRemaining = mainTimeLimit;
+            midBossBattleTime = 0f;
             bossBattleTime = 0f;
             bossDefeated = false;
+            midBossDefeated = false;
             IsBossIntroActive = false;
             BossIntroTimeRemaining = 0f;
             pendingBoss = null;
+            pendingMidBoss = null;
             ClearOpeningIntro();
             SetPhase(GamePhase.Ready);
             if (!IsTutorialLevel && LevelSequence.ConsumeLevelTwoAutoStartRequest())
@@ -265,6 +306,19 @@ namespace WuxiaRoguelite.GameFlow
             if (CurrentPhase == GamePhase.MainMapRunning || CurrentPhase == GamePhase.NormalBattleRunning)
             {
                 mainTimeRemaining -= Time.deltaTime;
+                if (ShouldTriggerMidBoss())
+                {
+                    if (CurrentPhase == GamePhase.NormalBattleRunning)
+                    {
+                        MarkMidBossTransitionPending();
+                    }
+                    else
+                    {
+                        BeginMidBossBattle();
+                        return;
+                    }
+                }
+
                 if (mainTimeRemaining <= 0f)
                 {
                     mainTimeRemaining = 0f;
@@ -291,6 +345,12 @@ namespace WuxiaRoguelite.GameFlow
                         BeginBossBattle();
                     }
                 }
+            }
+
+            else if (CurrentPhase == GamePhase.MidBossBattle &&
+                     battleManager != null && battleManager.IsBattleActive)
+            {
+                midBossBattleTime += Time.deltaTime;
             }
 
             if (CurrentPhase == GamePhase.BossBattle)
@@ -333,9 +393,12 @@ namespace WuxiaRoguelite.GameFlow
             }
 
             mainTimeRemaining = mainTimeLimit;
+            midBossBattleTime = 0f;
             bossBattleTime = 0f;
             bossDefeated = false;
+            midBossDefeated = false;
             IsBossTransitionPending = false;
+            IsMidBossTransitionPending = false;
             IsBossIntroActive = false;
             IsLevelSelectionOpen = false;
             IsTutorialNoticeActive = false;
@@ -344,6 +407,7 @@ namespace WuxiaRoguelite.GameFlow
             tutorialTransitionPending = false;
             BossIntroTimeRemaining = 0f;
             pendingBoss = null;
+            pendingMidBoss = null;
             ClearOpeningIntro();
             pendingCultivationReward = 0;
             pendingCopperReward = 0;
@@ -473,9 +537,12 @@ namespace WuxiaRoguelite.GameFlow
             }
 
             mainTimeRemaining = mainTimeLimit;
+            midBossBattleTime = 0f;
             bossBattleTime = 0f;
             bossDefeated = false;
+            midBossDefeated = false;
             IsBossTransitionPending = false;
+            IsMidBossTransitionPending = false;
             IsLevelSelectionOpen = false;
             IsTutorialNoticeActive = false;
             IsLevelTwoDifficultyNoticeActive = false;
@@ -485,6 +552,7 @@ namespace WuxiaRoguelite.GameFlow
             IsBossIntroActive = false;
             BossIntroTimeRemaining = 0f;
             pendingBoss = null;
+            pendingMidBoss = null;
             ClearOpeningIntro();
             pendingCultivationReward = 0;
             pendingCopperReward = 0;
@@ -594,6 +662,13 @@ namespace WuxiaRoguelite.GameFlow
                 ? $"{art} 修至第 {rank} 重。{GetOpeningRouteHint(art)}"
                 : $"{art} 修至第 {rank} 重，继续探索。";
 
+            if (phaseBeforeLevelUp == GamePhase.MainMapRunning &&
+                IsMidBossTransitionPending && !midBossDefeated)
+            {
+                BeginMidBossBattle();
+                return;
+            }
+
             if (mainTimeRemaining <= 0f && phaseBeforeLevelUp == GamePhase.MainMapRunning)
             {
                 if (IsTutorialLevel)
@@ -624,6 +699,16 @@ namespace WuxiaRoguelite.GameFlow
 
             mainTimeRemaining = 0f;
             BeginBossBattle();
+        }
+
+        public void ForceEnterMidBoss()
+        {
+            if (!IsMidBossEncounterEnabled || CurrentPhase == GamePhase.Result || midBossDefeated)
+            {
+                return;
+            }
+
+            BeginMidBossBattle();
         }
 
         public void AddDebugCultivation()
@@ -756,6 +841,12 @@ namespace WuxiaRoguelite.GameFlow
                 statusMessage = leveledUp
                     ? $"{rewardSummary}；修为突破，请选择武学。"
                     : rewardSummary;
+                return;
+            }
+
+            if (IsMidBossTransitionPending && !midBossDefeated)
+            {
+                BeginMidBossBattle();
                 return;
             }
 
@@ -897,6 +988,65 @@ namespace WuxiaRoguelite.GameFlow
                 : "暂时撤离洞穴，入口仍可再次进入。主地图时间恢复流逝。";
         }
 
+        private bool ShouldTriggerMidBoss()
+        {
+            return IsMidBossEncounterEnabled && !midBossDefeated &&
+                   !IsMidBossTransitionPending &&
+                   mainTimeRemaining <= MidBossTriggerMainTimeRemaining;
+        }
+
+        private void MarkMidBossTransitionPending()
+        {
+            if (IsMidBossTransitionPending || midBossDefeated)
+            {
+                return;
+            }
+
+            IsMidBossTransitionPending = true;
+            statusMessage = $"{GameTextCatalog.MidBossName}已至：完成当前交锋后接受战力检验。";
+        }
+
+        private void BeginMidBossBattle()
+        {
+            if (!IsMidBossEncounterEnabled || midBossDefeated ||
+                CurrentPhase == GamePhase.MidBossBattle ||
+                CurrentPhase == GamePhase.BossBattle || CurrentPhase == GamePhase.Result)
+            {
+                return;
+            }
+
+            IsMidBossTransitionPending = false;
+            battleManager?.CancelBattle();
+            ClearOpeningIntro();
+            midBossBattleTime = 0f;
+            pendingMidBoss = midBossStats.Clone();
+            pendingMidBoss.ResetHealth();
+            SetPhase(GamePhase.MidBossBattle);
+            statusMessage = $"中期战力检验：{midBossStats.displayName}镇守前路，主香暂停。";
+            battleManager?.BeginMidBossBattle(pendingMidBoss, OnMidBossBattleFinished);
+            pendingMidBoss = null;
+        }
+
+        private void OnMidBossBattleFinished(bool playerWon)
+        {
+            if (!playerWon)
+            {
+                EndRun(false, $"未能通过{GameTextCatalog.MidBossName}的战力检验");
+                return;
+            }
+
+            midBossDefeated = true;
+            playerStats.killCount += 1;
+            if (IsBossTransitionPending || mainTimeRemaining <= 0f)
+            {
+                BeginBossBattle();
+                return;
+            }
+
+            SetPhase(GamePhase.MainMapRunning);
+            statusMessage = $"击败{GameTextCatalog.MidBossName}：战力检验通过，主香继续燃烧。";
+        }
+
         private void BeginBossBattle()
         {
             if (IsTutorialLevel)
@@ -911,6 +1061,7 @@ namespace WuxiaRoguelite.GameFlow
             }
 
             IsBossTransitionPending = false;
+            IsMidBossTransitionPending = false;
             caveRoom?.ResetRoom();
             battleManager.CancelBattle();
             ClearOpeningIntro();
@@ -922,6 +1073,7 @@ namespace WuxiaRoguelite.GameFlow
 
             bossBattleTime = 0f;
             pendingBoss = bossStats.Clone();
+            pendingMidBoss = null;
             pendingBoss.ResetHealth();
             SetPhase(GamePhase.BossBattle);
             BossIntroTimeRemaining = Mathf.Max(0f, bossIntroDuration);
@@ -1174,9 +1326,11 @@ namespace WuxiaRoguelite.GameFlow
         private void EndRun(bool victory, string reason)
         {
             IsBossTransitionPending = false;
+            IsMidBossTransitionPending = false;
             IsBossIntroActive = false;
             BossIntroTimeRemaining = 0f;
             pendingBoss = null;
+            pendingMidBoss = null;
             ClearOpeningIntro();
             if (battleManager != null)
             {
@@ -1239,9 +1393,12 @@ namespace WuxiaRoguelite.GameFlow
             }
 
             mainTimeRemaining = mainTimeLimit;
+            midBossBattleTime = 0f;
             bossBattleTime = 0f;
             bossDefeated = false;
+            midBossDefeated = false;
             IsBossTransitionPending = false;
+            IsMidBossTransitionPending = false;
             IsLevelSelectionOpen = false;
             IsTutorialNoticeActive = false;
             IsLevelTwoDifficultyNoticeActive = false;
@@ -1274,6 +1431,7 @@ namespace WuxiaRoguelite.GameFlow
             IsLevelTwoDifficultyNoticeActive = false;
             IsTutorialCompletionSummary = true;
             IsBossTransitionPending = false;
+            IsMidBossTransitionPending = false;
             battleManager?.CancelBattle();
             caveRoom?.ResetRoom();
             playerController?.SetMovementEnabled(false);

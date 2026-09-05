@@ -17,6 +17,7 @@ namespace WuxiaRoguelite.UI
             public string id;
             public Sprite[] idleFrames;
             public Sprite[] attackFrames;
+            public Sprite[] skillFrames;
             [Min(0.5f)] public float scale = ActorVisualScale.Medium;
             public bool flipHorizontally;
         }
@@ -38,6 +39,7 @@ namespace WuxiaRoguelite.UI
         public Sprite[] impactEffectFrames;
         public Sprite[] swordQiEffectFrames;
         public Sprite[] poisonEffectFrames;
+        public Sprite[] mountainBreakerEffectFrames;
         public EnemyVisualProfile[] enemyVisualProfiles;
         [Min(0.5f)] public float playerSpriteScale = ActorVisualScale.Medium;
         [Min(0.5f)] public float bossSpriteScale = ActorVisualScale.Large;
@@ -230,7 +232,7 @@ namespace WuxiaRoguelite.UI
             float enemySpriteScale = gameFlow.CurrentPhase == GamePhase.BossBattle
                 ? bossSpriteScale
                 : enemyVisual != null ? enemyVisual.scale : ActorVisualScale.Medium;
-            float enemyBaseSize = gameFlow.CurrentPhase == GamePhase.BossBattle
+            float enemyBaseSize = battleManager.IsBossEncounter
                 ? baseActorSize * Mathf.Min(battleActorScale, 1.06f)
                 : actorSize;
             float enemyActorSize = enemyBaseSize * enemySpriteScale;
@@ -243,7 +245,13 @@ namespace WuxiaRoguelite.UI
                 : stageBottom - 6f;
             // Visual pacing is intentionally independent from BattleManager's attack cadence.
             // A new resolved attack can replace the current pose, but never delays damage or timers.
-            float attackDuration = Mathf.Max(0.01f, attackVisualDuration);
+            float actionAge = Time.unscaledTime - attackStartedAt;
+            bool mountainBreakerAction = battleManager.IsMidBossBattle &&
+                                         (activeVfxCues & BattleVfxCue.MountainBreaker) != 0 &&
+                                         actionAge >= 0f && actionAge < MidBossTuning.SkillVisualDuration;
+            float attackDuration = mountainBreakerAction
+                ? MidBossTuning.SkillVisualDuration
+                : Mathf.Max(0.01f, attackVisualDuration);
             float actionProgress = Mathf.Clamp01((Time.unscaledTime - attackStartedAt) / attackDuration);
             float lunge = Mathf.Sin(actionProgress * Mathf.PI) * Mathf.Min(54f, width * 0.05f);
             bool shouldShakeTarget = battleManager.LastAttackWasCritical ||
@@ -268,8 +276,14 @@ namespace WuxiaRoguelite.UI
                 }
             }
 
-            bool playerAttacking = actionProgress < 1f;
+            bool playerAttacking = actionProgress < 1f && !mountainBreakerAction;
             bool enemyAttacking = actionProgress < 1f;
+            Sprite[] currentEnemyActionFrames = mountainBreakerAction &&
+                                                enemyVisual != null &&
+                                                enemyVisual.skillFrames != null &&
+                                                enemyVisual.skillFrames.Length > 0
+                ? enemyVisual.skillFrames
+                : currentEnemyAttackFrames;
             Rect playerRect = new Rect(playerX + (actorSize - playerActorSize) * 0.5f,
                 baseY - playerActorSize, playerActorSize, playerActorSize);
             Rect enemyRect = new Rect(enemyX + (actorSize - enemyActorSize) * 0.5f,
@@ -282,7 +296,7 @@ namespace WuxiaRoguelite.UI
                 DrawBossAura(enemyRect);
             }
             DrawFighter(enemyRect, EnemyColor, "敌", enemyVisual != null ? enemyVisual.flipHorizontally : true,
-                enemyAttacking ? currentEnemyAttackFrames : currentEnemyIdleFrames, enemyAttacking, actionProgress,
+                enemyAttacking ? currentEnemyActionFrames : currentEnemyIdleFrames, enemyAttacking, actionProgress,
                 GetEnemySpriteTint());
             DrawBattleSkillVfx(playerRect, enemyRect,
                 enemyVisual != null ? enemyVisual.flipHorizontally : true);
@@ -643,7 +657,7 @@ namespace WuxiaRoguelite.UI
             }
 
             backgroundTrackedEnemy = currentEnemy;
-            activeBattleBackground = gameFlow.CurrentPhase == GamePhase.BossBattle &&
+            activeBattleBackground = battleManager.IsBossEncounter &&
                                      bossBattleBackground != null
                 ? bossBattleBackground
                 : SelectRandomNormalBackground();
@@ -709,7 +723,9 @@ namespace WuxiaRoguelite.UI
                 ? safe.x + 14f
                 : (width - headerWidth) * 0.5f;
             Rect headerRect = new Rect(headerX, safe.y + 7f, headerWidth, portrait ? 56f : 74f);
-            Color headerAccent = approachStage == BossApproachStage.FinalCountdown ||
+            Color headerAccent = gameFlow.IsMidBossWarningActive
+                ? new Color(0.78f, 0.43f, 0.16f)
+                : approachStage == BossApproachStage.FinalCountdown ||
                                  approachStage == BossApproachStage.Arrived
                 ? new Color(0.94f, 0.18f, 0.11f)
                 : approachStage == BossApproachStage.Imminent ||
@@ -725,7 +741,7 @@ namespace WuxiaRoguelite.UI
             {
                 WuxiaUiTheme.DrawPanel(headerRect,
                     new Color(0.02f, 0.03f, 0.04f, 0.70f), headerAccent,
-                    gameFlow.CurrentPhase == GamePhase.BossBattle
+                    battleManager.IsBossEncounter
                         ? WuxiaPanelKind.Boss
                         : WuxiaPanelKind.Combat);
             }
@@ -736,6 +752,8 @@ namespace WuxiaRoguelite.UI
 
             string title = gameFlow.CurrentPhase == GamePhase.BossBattle
                 ? $"决战 · {gameFlow.bossStats.displayName}"
+                : gameFlow.CurrentPhase == GamePhase.MidBossBattle
+                    ? $"中期强敌 · {gameFlow.midBossStats.displayName}"
                 : gameFlow.CurrentPhase == GamePhase.CaveRunning
                     ? "秘境 · 自动战斗"
                     : "遭遇 · 自动战斗";
@@ -760,11 +778,28 @@ namespace WuxiaRoguelite.UI
                     return;
                 }
 
+                if (gameFlow.CurrentPhase == GamePhase.MidBossBattle)
+                {
+                    ResponsiveGui.DrawSingleLineLabel(
+                        new Rect(headerRect.x + headerRect.width * 0.45f, headerRect.y + 3f,
+                            headerRect.width * 0.52f, 22f),
+                        $"检验 {gameFlow.midBossBattleTime:0.0} 秒", timerStyle, 9);
+                    ResponsiveGui.DrawSingleLineLabel(
+                        new Rect(headerRect.x + 10f, headerRect.y + 28f,
+                            headerRect.width - 20f, 18f),
+                        "主香暂停 · 击败后继续探索", captionStyle, 8);
+                    return;
+                }
+
                 bool compactPaused = gameFlow.CurrentPhase == GamePhase.CaveRunning;
                 float compactRatio = Mathf.Clamp01(
                     gameFlow.mainTimeRemaining / Mathf.Max(0.01f, gameFlow.mainTimeLimit));
                 string compactTimer = compactPaused
                     ? "主香暂停"
+                    : gameFlow.IsMidBossTransitionPending
+                        ? $"{GameTextCatalog.MidBossName}已至 · 战后迎战"
+                    : gameFlow.IsMidBossWarningActive
+                        ? $"{GameTextCatalog.MidBossName} {Mathf.Max(1, Mathf.CeilToInt(gameFlow.MidBossCountdownRemaining))} 息后抵达"
                     : approachStage == BossApproachStage.Arrived
                         ? "香尽 · 战后决战"
                         : $"余 {Mathf.CeilToInt(gameFlow.mainTimeRemaining)} 息";
@@ -794,11 +829,26 @@ namespace WuxiaRoguelite.UI
                 return;
             }
 
+            if (gameFlow.CurrentPhase == GamePhase.MidBossBattle)
+            {
+                ResponsiveGui.DrawSingleLineLabel(
+                    new Rect(headerRect.x, headerRect.y + 30f, headerRect.width, 20f),
+                    $"战力检验  {gameFlow.midBossBattleTime:0.0} 秒", timerStyle, 9);
+                ResponsiveGui.DrawSingleLineLabel(
+                    new Rect(headerRect.x, headerRect.y + 51f, headerRect.width, 15f),
+                    "主时间停止 · 击败后恢复", captionStyle, 8);
+                return;
+            }
+
             bool timerPaused = gameFlow.CurrentPhase == GamePhase.CaveRunning;
             float timeRatio = Mathf.Clamp01(
                 gameFlow.mainTimeRemaining / Mathf.Max(0.01f, gameFlow.mainTimeLimit));
             string timerText = timerPaused
                 ? "洞中凝时 · 主香暂停"
+                : gameFlow.IsMidBossTransitionPending
+                    ? $"{GameTextCatalog.MidBossName}已至 · 完成本场后迎战"
+                : gameFlow.IsMidBossWarningActive
+                    ? $"{GameTextCatalog.MidBossName}将在 {Mathf.Max(1, Mathf.CeilToInt(gameFlow.MidBossCountdownRemaining))} 息后抵达"
                 : approachStage == BossApproachStage.Arrived
                     ? "香已燃尽 · 胜此战后即入决战"
                     : timeRatio <= 1f / 3f
@@ -827,6 +877,12 @@ namespace WuxiaRoguelite.UI
         {
             if (gameFlow.CurrentPhase != GamePhase.NormalBattleRunning)
             {
+                return;
+            }
+
+            if (gameFlow.IsMidBossWarningActive)
+            {
+                DrawMidBossApproachOverlay(width, height);
                 return;
             }
 
@@ -882,6 +938,59 @@ namespace WuxiaRoguelite.UI
             FillRect(new Rect(countdown.x, countdown.y, countdown.width, 3f),
                 new Color(0.96f, 0.16f, 0.08f, 0.76f + pulse * 0.24f));
             GUI.Label(countdown, seconds.ToString(), bossCountdownStyle);
+        }
+
+        private void DrawMidBossApproachOverlay(float width, float height)
+        {
+            float pulse = 0.5f + 0.5f * Mathf.Abs(Mathf.Sin(Time.time * 5f));
+            float edge = ResponsiveGui.IsPortrait ? 14f : 10f;
+            Color warning = new Color(0.74f, 0.32f, 0.08f, 0.16f + pulse * 0.16f);
+            FillRect(new Rect(0f, 0f, width, edge), warning);
+            FillRect(new Rect(0f, height - edge, width, edge), warning);
+            FillRect(new Rect(0f, edge, edge, height - edge * 2f), warning);
+            FillRect(new Rect(width - edge, edge, edge, height - edge * 2f), warning);
+
+            Rect safe = ResponsiveGui.SafeArea;
+            if (gameFlow.IsMidBossTransitionPending)
+            {
+                float bannerWidth = Mathf.Min(500f, safe.width - 32f);
+                Rect banner = new Rect(
+                    safe.x + (safe.width - bannerWidth) * 0.5f,
+                    safe.y + safe.height * 0.43f,
+                    bannerWidth,
+                    88f);
+                FillRect(banner, new Color(0.055f, 0.030f, 0.014f, 0.92f));
+                FillRect(new Rect(banner.x, banner.y, banner.width, 3f),
+                    new Color(0.86f, 0.48f, 0.16f, 0.88f));
+                ResponsiveGui.DrawSingleLineLabel(
+                    new Rect(banner.x + 16f, banner.y + 9f, banner.width - 32f, 38f),
+                    $"{GameTextCatalog.MidBossName}已至",
+                    bossWarningStyle,
+                    14);
+                ResponsiveGui.DrawSingleLineLabel(
+                    new Rect(banner.x + 16f, banner.y + 47f, banner.width - 32f, 28f),
+                    "完成当前战斗后进入中期战力检验",
+                    timerStyle,
+                    10);
+                return;
+            }
+
+            int seconds = Mathf.Max(1, Mathf.CeilToInt(gameFlow.MidBossCountdownRemaining));
+            float size = ResponsiveGui.IsPortrait ? 126f : 112f;
+            Rect countdown = new Rect(
+                safe.x + (safe.width - size) * 0.5f,
+                safe.y + safe.height * (ResponsiveGui.IsPortrait ? 0.44f : 0.42f),
+                size,
+                size);
+            FillRect(countdown, new Color(0.055f, 0.030f, 0.014f, 0.84f));
+            FillRect(new Rect(countdown.x, countdown.y, countdown.width, 3f),
+                new Color(0.88f, 0.49f, 0.16f, 0.76f + pulse * 0.24f));
+            GUI.Label(countdown, seconds.ToString(), bossCountdownStyle);
+            ResponsiveGui.DrawSingleLineLabel(
+                new Rect(countdown.x - 80f, countdown.yMax + 7f, countdown.width + 160f, 30f),
+                $"{GameTextCatalog.MidBossName}即将拦路",
+                bossWarningStyle,
+                10);
         }
 
         private void DrawFighter(Rect rect, Color color, string mark, bool facesLeft, Sprite[] frames,
@@ -1022,7 +1131,7 @@ namespace WuxiaRoguelite.UI
                     new Color(1f, 0.16f, 0.08f, 0.72f * flash));
             }
 
-            bool boss = gameFlow.CurrentPhase == GamePhase.BossBattle;
+            bool boss = battleManager.IsBossEncounter;
             bool compact = ResponsiveGui.IsPortrait || rect.height <= 66f;
             Color accent = boss ? new Color(0.92f, 0.50f, 0.18f) : EnemyColor;
             WuxiaUiTheme.DrawPanel(rect,
@@ -1403,12 +1512,36 @@ namespace WuxiaRoguelite.UI
                         new Color(1f, 0.34f, 0.12f, 1f - staggered * 0.62f));
                 }
             }
+
+            if (HasCue(BattleVfxCue.MountainBreaker) &&
+                mountainBreakerEffectFrames != null && mountainBreakerEffectFrames.Length > 0)
+            {
+                float impactAge = age - MidBossTuning.SkillImpactDelay;
+                float effectDuration = Mathf.Max(0.01f,
+                    MidBossTuning.SkillVisualDuration - MidBossTuning.SkillImpactDelay);
+                if (impactAge >= 0f && impactAge < effectDuration)
+                {
+                    float progress = impactAge / effectDuration;
+                    float size = Mathf.Max(playerRect.width, enemyRect.width) * 1.72f;
+                    Vector2 center = new Vector2(
+                        Mathf.Lerp(enemyRect.center.x, playerRect.center.x, 0.52f),
+                        Mathf.Lerp(enemyRect.yMax, playerRect.yMax, 0.5f) - size * 0.34f);
+                    Rect effectRect = new Rect(
+                        center.x - size * 0.5f,
+                        center.y - size * 0.5f,
+                        size,
+                        size);
+                    DrawEffectSprite(effectRect,
+                        EffectFrame(mountainBreakerEffectFrames, progress),
+                        new Color(1f, 1f, 1f, 1f - progress * 0.42f));
+                }
+            }
         }
 
         private void DrawSkillCallout(Rect playerRect, Rect enemyRect)
         {
             if (string.IsNullOrEmpty(activeSkillVfxName) ||
-                (activeVfxCues & BattleVfxCue.Foxfire) != 0)
+                (activeVfxCues & (BattleVfxCue.Foxfire | BattleVfxCue.MountainBreaker)) != 0)
             {
                 return;
             }
@@ -1944,7 +2077,7 @@ namespace WuxiaRoguelite.UI
 
         private void DrawBossSkillBanner(Rect stageRect)
         {
-            if (!battleManager.IsBossBattle || battleManager.LastBossSkill == BossSkillId.None)
+            if (!battleManager.IsBossEncounter || battleManager.LastBossSkill == BossSkillId.None)
             {
                 return;
             }
@@ -1965,6 +2098,8 @@ namespace WuxiaRoguelite.UI
             WuxiaUiTheme.DrawPanel(panel, new Color(0.04f, 0.018f, 0.02f, 0.94f),
                 battleManager.LastBossSkill == BossSkillId.BloodFrenzy
                     ? new Color(0.92f, 0.24f, 0.16f)
+                    : battleManager.LastBossSkill == BossSkillId.MountainBreaker
+                        ? new Color(0.78f, 0.49f, 0.20f)
                     : Gold,
                 WuxiaPanelKind.Boss);
             Texture2D icon = GetBossSkillIcon(battleManager.LastBossSkill);
@@ -1980,6 +2115,8 @@ namespace WuxiaRoguelite.UI
                 new Rect(panel.x + 54f, panel.y + 27f, panel.width - 62f, 18f),
                 battleManager.LastBossSkill == BossSkillId.FoxfireBarrage
                     ? "三道狐火 · 可闪避 · 防御逐段生效"
+                    : battleManager.LastBossSkill == BossSkillId.MountainBreaker
+                        ? "举刀预警 · 震波左掠 · 防御与闪避生效"
                     : battleManager.LastBossSkill == BossSkillId.DemonArmor
                         ? "固定妖甲 · 所有伤害均可击破"
                         : "攻势加快 · 狐火间隔缩短",

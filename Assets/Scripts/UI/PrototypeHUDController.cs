@@ -939,6 +939,8 @@ namespace WuxiaRoguelite.UI
                 healthTop, width, height);
             Color accent = gameFlow.CurrentPhase == GamePhase.BossBattle
                 ? new Color(0.88f, 0.27f, 0.18f)
+                : gameFlow.CurrentPhase == GamePhase.MidBossBattle
+                    ? new Color(0.78f, 0.43f, 0.16f)
                 : gameFlow.CurrentPhase == GamePhase.CaveRunning
                     ? new Color(0.30f, 0.66f, 0.90f)
                     : Jade;
@@ -1391,6 +1393,12 @@ namespace WuxiaRoguelite.UI
 
         private void DrawBossApproachWarning()
         {
+            if (gameFlow.IsMidBossWarningActive)
+            {
+                DrawMidBossApproachWarning();
+                return;
+            }
+
             BossApproachStage stage = gameFlow.CurrentBossApproachStage;
             if (gameFlow.mainTimeRemaining > 0f &&
                 gameFlow.mainTimeRemaining <= 20f &&
@@ -1448,6 +1456,45 @@ namespace WuxiaRoguelite.UI
             FillRect(new Rect(banner.x, banner.y, banner.width, 2f),
                 new Color(0.95f, 0.34f, 0.13f, 0.60f + pulse * 0.30f));
             ResponsiveGui.DrawSingleLineLabel(banner, warningText, bossWarningStyle, 11);
+        }
+
+        private void DrawMidBossApproachWarning()
+        {
+            Rect safe = ResponsiveGui.SafeArea;
+            float pulse = 0.5f + 0.5f * Mathf.Abs(Mathf.Sin(Time.time * 5f));
+            float edge = ResponsiveGui.IsPortrait ? 14f : 10f;
+            Color warningEdge = new Color(0.74f, 0.32f, 0.08f, 0.12f + pulse * 0.12f);
+            FillRect(new Rect(0f, 0f, ResponsiveGui.Width, edge), warningEdge);
+            FillRect(new Rect(0f, ResponsiveGui.Height - edge, ResponsiveGui.Width, edge), warningEdge);
+            FillRect(new Rect(0f, edge, edge, ResponsiveGui.Height - edge * 2f), warningEdge);
+            FillRect(new Rect(ResponsiveGui.Width - edge, edge, edge,
+                ResponsiveGui.Height - edge * 2f), warningEdge);
+
+            int seconds = Mathf.Max(1, Mathf.CeilToInt(gameFlow.MidBossCountdownRemaining));
+            float panelSize = ResponsiveGui.IsPortrait ? 132f : 118f;
+            float panelY = ResponsiveGui.IsPortrait ? safe.y + 166f : safe.y + 104f;
+            Rect countdownPanel = new Rect(
+                safe.x + (safe.width - panelSize) * 0.5f,
+                panelY,
+                panelSize,
+                panelSize);
+            FillRect(countdownPanel, new Color(0.07f, 0.035f, 0.014f, 0.82f));
+            FillRect(new Rect(countdownPanel.x, countdownPanel.y, countdownPanel.width, 3f),
+                new Color(0.88f, 0.49f, 0.16f, 0.76f + pulse * 0.24f));
+            GUI.Label(countdownPanel, seconds.ToString(), bossCountdownStyle);
+
+            float width = Mathf.Min(390f, safe.width - 32f);
+            Rect warning = new Rect(
+                safe.x + (safe.width - width) * 0.5f,
+                countdownPanel.yMax + 8f,
+                width,
+                36f);
+            FillRect(warning, new Color(0.05f, 0.028f, 0.014f, 0.88f));
+            ResponsiveGui.DrawSingleLineLabel(
+                warning,
+                $"{GameTextCatalog.MidBossName}即将拦路 · 准备接受战力检验",
+                bossWarningStyle,
+                10);
         }
 
         private void DrawBossIntroOverlay()

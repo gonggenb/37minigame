@@ -235,6 +235,13 @@ namespace WuxiaRoguelite.Audio
                     ActiveMusicState = "NormalBattle";
                     break;
 
+                case GamePhase.MidBossBattle:
+                    PlayMainMapMusic();
+                    SetOverlay(normalBattleStem);
+                    StopSpecialMusic();
+                    ActiveMusicState = "MidBossBattle";
+                    break;
+
                 case GamePhase.CaveRunning:
                     PauseSource(musicSource, ref mainMusicPaused);
                     PlaySpecialLoop(caveMusic);
@@ -509,7 +516,8 @@ namespace WuxiaRoguelite.Audio
                 phase == GamePhase.NormalBattleRunning;
             bool mainTimerPaused =
                 phase == GamePhase.CaveRunning ||
-                phase == GamePhase.LevelUpPaused;
+                phase == GamePhase.LevelUpPaused ||
+                phase == GamePhase.MidBossBattle;
 
             if (mainTimerPaused)
             {

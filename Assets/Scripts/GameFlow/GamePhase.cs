@@ -17,6 +17,7 @@ namespace WuxiaRoguelite.GameFlow
         NormalBattleRunning,
         CaveRunning,
         LevelUpPaused,
+        MidBossBattle,
         BossBattle,
         Result
     }

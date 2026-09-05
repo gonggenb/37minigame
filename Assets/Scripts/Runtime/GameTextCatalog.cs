@@ -6,6 +6,9 @@ namespace WuxiaRoguelite.Runtime
     /// </summary>
     public static class GameTextCatalog
     {
+        public const string MidBossName = "玄甲镇关使";
+        public const string MidBossVisualId = "xuanjia_gate_warden";
+        public const string MidBossSkillName = "镇关·震岳斩";
         public const string FinalBossName = "九尾妖狐";
         public const string FinalBossVisualId = "fox_demon_boss";
         public const string FinalBossPhaseOneName = "妖狐试锋";
