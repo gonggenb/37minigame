@@ -804,6 +804,9 @@ namespace WuxiaRoguelite.GameFlow
             }
 
             playerStats.killCount += 1;
+            bool gainedMomentumRank = playerStats.RegisterMapBattleVictory(
+                pendingEnemyType == EncounterType.EliteEnemy,
+                out float recoveredHealth);
             bool grantedMovementBoost = pendingEnemyType == EncounterType.NormalEnemy &&
                                         playerStats.ApplyTemporaryMoveSpeedBuff(
                                             normalVictoryMoveSpeedBonusRatio,
@@ -828,6 +831,17 @@ namespace WuxiaRoguelite.GameFlow
                 rewardSummary +=
                     $"，乘胜轻身：移速 +{Mathf.RoundToInt(normalVictoryMoveSpeedBonusRatio * 100f)}%" +
                     $"（{normalVictoryMoveSpeedBonusDuration:0.#} 秒）";
+            }
+            if (recoveredHealth >= 0.5f)
+            {
+                rewardSummary += $"，调息恢复 {Mathf.RoundToInt(recoveredHealth)} 气血";
+            }
+            if (gainedMomentumRank)
+            {
+                rewardSummary +=
+                    $"，连战磨砺 {playerStats.combatMomentumRank}/{PlayerStats.MaxCombatMomentumRank}：" +
+                    $"攻击与气血上限 +{Mathf.RoundToInt(PlayerStats.CombatMomentumStatBonusRatio * 100f)}%，" +
+                    $"防御 +{PlayerStats.CombatMomentumDefenseBonus:0.#}";
             }
 
             pendingCultivationReward = 0;

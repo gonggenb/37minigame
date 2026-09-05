@@ -1835,7 +1835,7 @@ namespace WuxiaRoguelite.UI
                 playerStats.runtimeStats.displayName, headingStyle, 12);
             ResponsiveGui.DrawSingleLineLabel(
                 new Rect(rect.x + 68f, rect.y + 25f, rect.width - 68f, 18f),
-                $"等级 {playerStats.level}  ·  击杀 {playerStats.killCount}  ·  洞穴 {playerStats.caveEntries}",
+                $"等级 {playerStats.level}  ·  击杀 {playerStats.killCount}  ·  磨砺 {playerStats.combatMomentumRank}/{PlayerStats.MaxCombatMomentumRank}  ·  洞穴 {playerStats.caveEntries}",
                 mutedStyle, 9);
             ResponsiveGui.DrawSingleLineLabel(
                 new Rect(rect.x + 68f, rect.y + 44f, rect.width - 68f, 18f),
@@ -2218,7 +2218,7 @@ namespace WuxiaRoguelite.UI
                 gameFlow.statusMessage, bodyStyle, 9);
             ResponsiveGui.DrawSingleLineLabel(
                 new Rect(panel.x + 24f, panel.y + 122f, panel.width - 48f, 22f),
-                $"等级 {playerStats.level}  ·  击杀 {playerStats.killCount}  ·  洞穴 {playerStats.caveEntries}",
+                $"等级 {playerStats.level}  ·  击杀 {playerStats.killCount}  ·  磨砺 {playerStats.combatMomentumRank}/{PlayerStats.MaxCombatMomentumRank}  ·  洞穴 {playerStats.caveEntries}",
                 mutedStyle, 9);
             string buildSummary = playerStats.learnedMartialArts.Count > 0
                 ? string.Join(" · ", playerStats.learnedMartialArts.Take(3))

@@ -1,0 +1,6 @@
+﻿run,seed,starter,policy,victory,result,mid_boss_victory,simulated_duration,map_movement_time,normal_battle_time,cave_time,level_up_time,mid_boss_phase_time,boss_phase_time,distance,normal_enemies,elite_enemies,caves,treasures,herbs,vision_relics,mystery_herbs,martial_choices,level,map_battle_victories,momentum_rank,copper,extra_equipment,secrets,capstone,final_hp_ratio,main_time_remaining,mid_boss_battle_time,boss_battle_time,normal_timer_drop,cave_timer_max_drift,boss_timer_max_drift,martial_arts,route
+1,37582,"剑气诀","战斗优先",0,"洞穴挑战失败",0,43.965,4.186,25.778,11.002,2.001,0,0,14.749,3,0,1,0,0,0,0,3,3,3,1,22,0,0,0,0,30.036,0,0,22.031,0,0,"剑气诀3","普通 > 普通 > 普通 > 洞穴"
+2,37679,"毒砂掌","战斗优先",0,"普通战斗失败",1,56.001,6.031,33.975,0,2.997,12,0,20.157,4,0,0,1,0,0,0,4,4,3,1,27,1,0,0,0,19.994,12,0,29.977,0,0,"毒砂掌3 / 百毒心经1","普通 > 宝箱 > 普通 > 普通 > 普通"
+3,37776,"铁布衫","战斗优先",0,"未能通过玄甲镇关使的战力检验",0,46.997,4,28.998,0,3.001,10.031,0,12.508,3,0,0,1,0,0,0,4,4,3,1,27,1,0,0,0,27.002,10.031,0,26.002,0,0,"反震诀3 / 铁布衫1","普通 > 宝箱 > 普通 > 普通"
+4,37873,"踏雪无痕","战斗优先",0,"未能通过玄甲镇关使的战力检验",0,52.003,4.003,30.999,0,2.001,14.001,0,12.508,3,0,0,1,0,0,0,3,3,3,1,27,1,0,0,0,24.998,14.001,0,27.994,0,0,"流云步1 / 踏雪无痕2","普通 > 宝箱 > 普通 > 普通"
+5,37970,"饮血刀法","战斗优先",0,"普通战斗失败",1,59.002,5.967,35.034,0,2.005,14.994,0,20.007,4,0,0,1,0,0,0,3,3,3,1,27,1,0,0,0,18.999,14.994,0,31.03,0,0,"沸血诀1 / 饮血刀法2","普通 > 宝箱 > 普通 > 普通 > 普通"

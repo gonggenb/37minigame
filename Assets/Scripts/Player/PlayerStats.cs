@@ -7,6 +7,13 @@ namespace WuxiaRoguelite.Player
 {
     public class PlayerStats : MonoBehaviour
     {
+        public const int MapVictoriesPerMomentumRank = 2;
+        public const int MaxCombatMomentumRank = 3;
+        public const float CombatMomentumStatBonusRatio = 0.05f;
+        public const float CombatMomentumDefenseBonus = 0.5f;
+        public const float NormalVictoryRecoveryRatio = 0.10f;
+        public const float EliteVictoryRecoveryRatio = 0.18f;
+
         public readonly struct TimedBuffSnapshot
         {
             public readonly string id;
@@ -69,6 +76,8 @@ namespace WuxiaRoguelite.Player
         public int copper;
         public int killCount;
         public int caveEntries;
+        public int mapBattleVictories { get; private set; }
+        public int combatMomentumRank { get; private set; }
         public readonly List<string> learnedMartialArts = new List<string>();
         public readonly Dictionary<string, int> martialArtRanks = new Dictionary<string, int>();
         public readonly List<string> unlockedSecrets = new List<string>();
@@ -120,6 +129,8 @@ namespace WuxiaRoguelite.Player
             copper = 0;
             killCount = 0;
             caveEntries = 0;
+            mapBattleVictories = 0;
+            combatMomentumRank = 0;
             learnedMartialArts.Clear();
             martialArtRanks.Clear();
             unlockedSecrets.Clear();
@@ -169,6 +180,44 @@ namespace WuxiaRoguelite.Player
         public void HealPercent(float ratio)
         {
             runtimeStats.Heal(runtimeStats.maxHealth * Mathf.Clamp01(ratio));
+        }
+
+        /// <summary>
+        /// Converts successful main-map combat into predictable run growth.
+        /// Recovery scales with missing health so repeated battles soften attrition
+        /// without becoming a full heal. Every two victories grant a capped stat rank.
+        /// Cave and Boss victories do not call this method.
+        /// </summary>
+        public bool RegisterMapBattleVictory(bool elite, out float recoveredHealth)
+        {
+            recoveredHealth = 0f;
+            if (runtimeStats == null)
+            {
+                return false;
+            }
+
+            mapBattleVictories += 1;
+            float healthBeforeRecovery = runtimeStats.currentHealth;
+            float missingHealth = Mathf.Max(0f, runtimeStats.maxHealth - runtimeStats.currentHealth);
+            float recoveryRatio = elite ? EliteVictoryRecoveryRatio : NormalVictoryRecoveryRatio;
+            runtimeStats.Heal(missingHealth * recoveryRatio);
+            recoveredHealth = Mathf.Max(0f, runtimeStats.currentHealth - healthBeforeRecovery);
+
+            int targetRank = Mathf.Min(
+                MaxCombatMomentumRank,
+                mapBattleVictories / MapVictoriesPerMomentumRank);
+            if (targetRank <= combatMomentumRank)
+            {
+                return false;
+            }
+
+            combatMomentumRank += 1;
+            runtimeStats.attack *= 1f + CombatMomentumStatBonusRatio;
+            runtimeStats.defense += CombatMomentumDefenseBonus;
+            float healthGain = runtimeStats.maxHealth * CombatMomentumStatBonusRatio;
+            runtimeStats.maxHealth += healthGain;
+            runtimeStats.Heal(healthGain);
+            return true;
         }
 
         public void ApplyAttackBuff(float ratio)

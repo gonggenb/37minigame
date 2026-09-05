@@ -3802,6 +3802,7 @@ namespace WuxiaRoguelite.EditorTools
             BuildAdvancedNorthWatch(passRoot.transform, road);
             BuildAdvancedSouthMine(passRoot.transform, road);
             BuildAdvancedGroundPolish(passRoot.transform, road);
+            ApplyAdvancedGameplayReadableScale(passRoot.transform);
 
             Light sun = UnityEngine.Object.FindObjectsByType<Light>(FindObjectsSortMode.None)
                 .FirstOrDefault(candidate => candidate.type == LightType.Directional);
@@ -3828,6 +3829,30 @@ namespace WuxiaRoguelite.EditorTools
             RenderSettings.fogStartDistance = 29f;
             RenderSettings.fogEndDistance = 70f;
             ConfigureResponsiveHd2dCamera();
+        }
+
+        private static void ApplyAdvancedGameplayReadableScale(Transform passRoot)
+        {
+            // These clusters are viewed through a close portrait gameplay camera.
+            // Keep their landmark silhouettes, but reduce their screen occupancy so
+            // walls and tiled roofs cannot hide the player or nearby encounters.
+            SetAdvancedClusterScale(passRoot, "Sparse Arrival Cluster - Fortified Courier Gate", 0.76f);
+            SetAdvancedClusterScale(passRoot, "Medium East Cluster - Abandoned Two Storey Courier Inn", 0.64f);
+            SetAdvancedClusterScale(passRoot, "Dense West Cluster - Caravan Ambush Aftermath", 0.80f);
+            SetAdvancedClusterScale(passRoot, "Sparse North Ridge Cluster - Silent Watch House", 0.68f);
+            SetAdvancedClusterScale(passRoot, "Medium Dense South Cluster - Freshly Abandoned Mine Works", 0.70f);
+        }
+
+        private static void SetAdvancedClusterScale(Transform passRoot, string clusterName, float uniformScale)
+        {
+            Transform cluster = passRoot != null ? passRoot.Find(clusterName) : null;
+            if (cluster == null)
+            {
+                return;
+            }
+
+            cluster.localScale = Vector3.one * uniformScale;
+            EditorUtility.SetDirty(cluster);
         }
 
         private static void BuildAdvancedArrivalGate(Transform parent, Material road)
