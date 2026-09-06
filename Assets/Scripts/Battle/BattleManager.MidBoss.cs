@@ -191,6 +191,7 @@ namespace WuxiaRoguelite.Battle
 
             float damage = Mathf.Max(1f, currentEnemy.attack * attackRatio - player.defense);
             damage *= GetPlayerIncomingDamageMultiplier(player);
+            damage = RollDamage(damage);
             float shieldBefore = PlayerShield;
             damage = AbsorbWithShield(damage);
             if (PlayerShield < shieldBefore)

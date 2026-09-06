@@ -314,6 +314,7 @@ namespace WuxiaRoguelite.UI
 
         private void OnDestroy()
         {
+            if (menuScrim != null) Destroy(menuScrim);
             if (runtimeSettingsIcon != null)
             {
                 Destroy(runtimeSettingsIcon);
@@ -358,6 +359,7 @@ namespace WuxiaRoguelite.UI
 
                 if (settingsOpen)
                 {
+                    if (gameFlow.CurrentPhase == GamePhase.Ready) DrawCoverBackground(false);
                     DrawSettingsPanel();
                     return;
                 }
@@ -365,6 +367,12 @@ namespace WuxiaRoguelite.UI
                 if (gameFlow.IsTutorialNoticeActive)
                 {
                     DrawTutorialNotice();
+                    return;
+                }
+
+                if (gameFlow.IsTutorialLessonActive)
+                {
+                    DrawTutorialLessonCard(gameFlow.CurrentTutorialLesson, gameFlow.ConfirmTutorialLesson);
                     return;
                 }
 
@@ -537,7 +545,8 @@ namespace WuxiaRoguelite.UI
         {
             if (ResponsiveGui.IsPortrait) { DrawPortraitSettings(); return; }
             Rect screen = new Rect(0f, 0f, ResponsiveGui.Width, ResponsiveGui.Height);
-            FillRect(screen, new Color(0.015f, 0.02f, 0.02f, 0.82f));
+            FillRect(screen, WithAlpha(WuxiaUiTheme.BackgroundInk,
+                gameFlow.CurrentPhase == GamePhase.Ready ? 0.60f : 0.82f));
 
             Rect panel = CenteredRect(440f, 404f);
             DrawPanel(panel, Panel, Gold);
@@ -662,113 +671,33 @@ namespace WuxiaRoguelite.UI
             return new Rect(safe.xMax - 58f, safe.y + 68f, 48f, 48f);
         }
 
-        private void DrawMainMenu()
-        {
-            Rect screen = new Rect(0f, 0f, ResponsiveGui.Width, ResponsiveGui.Height);
-            if (mainMenuBackground != null)
-            {
-                GUI.DrawTexture(screen, mainMenuBackground, ScaleMode.ScaleAndCrop, true);
-            }
-            else
-            {
-                FillRect(screen, new Color(0.08f, 0.10f, 0.10f));
-            }
-
-            FillRect(screen, new Color(0.025f, 0.035f, 0.035f, 0.28f));
-
-            Rect safe = ResponsiveGui.SafeArea;
-            float panelWidth = Mathf.Min(460f, safe.width - 32f);
-            float panelHeight = Mathf.Min(268f, safe.height - 32f);
-            Rect panel = new Rect(
-                safe.x + (safe.width - panelWidth) * 0.5f,
-                safe.y + (safe.height - panelHeight) * 0.5f,
-                panelWidth,
-                panelHeight);
-            DrawPanel(panel, new Color(0.045f, 0.055f, 0.052f, 0.82f), Gold);
-
-            ResponsiveGui.DrawSingleLineLabel(
-                new Rect(panel.x + 20f, panel.y + 22f, panel.width - 40f, 54f),
-                "一炷江湖", mainMenuTitleStyle, 28);
-            ResponsiveGui.DrawSingleLineLabel(
-                new Rect(panel.x + 28f, panel.y + 78f, panel.width - 56f, 28f),
-                "六十息择路 · 历战成长 · 终迎强敌", mainMenuSubtitleStyle, 11);
-
-            float lineWidth = Mathf.Min(250f, panel.width - 80f);
-            FillRect(new Rect(panel.center.x - lineWidth * 0.5f, panel.y + 116f, lineWidth, 1f),
-                new Color(Gold.r, Gold.g, Gold.b, 0.65f));
-
-            Rect startButton = new Rect(panel.center.x - 94f, panel.yMax - 86f, 188f, 46f);
-            if (GUI.Button(startButton, "选择关卡", mainMenuButtonStyle))
-            {
-                gameFlow.OpenLevelSelection();
-            }
-
-            ResponsiveGui.DrawSingleLineLabel(
-                new Rect(panel.x + 24f, panel.yMax - 34f, panel.width - 48f, 20f),
-                "移动探索 · 碰怪自动战斗 · 寻找洞穴与宝箱", mainMenuSubtitleStyle, 10);
-        }
-
-        private void DrawLevelSelection()
-        {
-            Rect screen = new Rect(0f, 0f, ResponsiveGui.Width, ResponsiveGui.Height);
-            if (mainMenuBackground != null)
-            {
-                GUI.DrawTexture(screen, mainMenuBackground, ScaleMode.ScaleAndCrop, true);
-            }
-            else
-            {
-                FillRect(screen, new Color(0.08f, 0.10f, 0.10f));
-            }
-            FillRect(screen, new Color(0.025f, 0.035f, 0.035f, 0.52f));
-
-            Rect safe = ResponsiveGui.SafeArea;
-            float width = Mathf.Min(720f, safe.width - 28f);
-            float height = Mathf.Min(360f, safe.height - 28f);
-            Rect panel = new Rect(safe.center.x - width * 0.5f, safe.center.y - height * 0.5f, width, height);
-            DrawPanel(panel, new Color(0.045f, 0.055f, 0.052f, 0.93f), Gold);
-            GUI.Label(new Rect(panel.x + 24f, panel.y + 16f, panel.width - 48f, 42f), "选择关卡", mainMenuTitleStyle);
-
-            float gap = 14f;
-            float cardWidth = (panel.width - 52f - gap) * 0.5f;
-            Rect tutorialCard = new Rect(panel.x + 26f, panel.y + 74f, cardWidth, 194f);
-            Rect levelTwoCard = new Rect(tutorialCard.xMax + gap, tutorialCard.y, cardWidth, tutorialCard.height);
-            DrawPanel(tutorialCard, Ink, Jade);
-            DrawPanel(levelTwoCard, Ink, gameFlow.IsLevelTwoUnlocked ? Gold : WuxiaUiTheme.TextDisabled);
-
-            GUI.Label(new Rect(tutorialCard.x + 12f, tutorialCard.y + 14f, tutorialCard.width - 24f, 34f),
-                "关卡1 · 初入江湖", levelCardTitleStyle);
-            GUI.Label(new Rect(tutorialCard.x + 22f, tutorialCard.y + 54f, tutorialCard.width - 44f, 62f),
-                "东南西北各有一处互动目标\n三十息，自由探索", centeredStyle);
-            if (GUI.Button(new Rect(tutorialCard.x + 22f, tutorialCard.yMax - 52f, tutorialCard.width - 44f, 36f),
-                    gameFlow.IsLevelTwoUnlocked ? "重温教学" : "开始教学", mainMenuButtonStyle))
-            {
-                gameFlow.SelectTutorialLevel();
-            }
-
-            GUI.Label(new Rect(levelTwoCard.x + 12f, levelTwoCard.y + 14f, levelTwoCard.width - 24f, 34f),
-                "关卡2 · 驿路风云", levelCardTitleStyle);
-            GUI.Label(new Rect(levelTwoCard.x + 22f, levelTwoCard.y + 54f, levelTwoCard.width - 44f, 62f),
-                gameFlow.IsLevelTwoUnlocked
-                    ? $"完整地图与构筑路线\n最终迎战{GameTextCatalog.FinalBossName}"
-                    : "完成关卡1后解锁",
-                centeredStyle);
-            GUI.enabled = gameFlow.IsLevelTwoUnlocked;
-            if (GUI.Button(new Rect(levelTwoCard.x + 22f, levelTwoCard.yMax - 52f, levelTwoCard.width - 44f, 36f),
-                    gameFlow.IsLevelTwoUnlocked ? "进入关卡2" : "尚未解锁", mainMenuButtonStyle))
-            {
-                gameFlow.SelectLevelTwo();
-            }
-            GUI.enabled = true;
-
-            if (GUI.Button(new Rect(panel.x + 24f, panel.yMax - 48f, 112f, 30f), "返回", actionButtonStyle))
-            {
-                gameFlow.CloseLevelSelection();
-            }
-        }
-
         private void DrawTutorialNotice()
         {
-            DrawCenteredClickNotice("你只有30秒!", gameFlow.DismissTutorialNotice, true);
+            DrawTutorialLessonCard(TutorialLessonCatalog.Opening, gameFlow.DismissTutorialNotice);
+        }
+
+        private void DrawTutorialLessonCard(TutorialLesson lesson, Action confirm)
+        {
+            FillRect(new Rect(0f, 0f, ResponsiveGui.Width, ResponsiveGui.Height),
+                WuxiaUiTheme.BackgroundInk * new Color(1f, 1f, 1f, 0.88f));
+            Rect safe = ResponsiveGui.SafeArea;
+            float width = Mathf.Min(490f, safe.width - 32f);
+            float bodyHeight = bodyStyle.CalcHeight(new GUIContent(lesson.Body), width - 48f);
+            float height = bodyHeight + 180f;
+            Rect card = new Rect(safe.center.x - width * 0.5f, safe.center.y - height * 0.5f, width, height);
+            DrawPanel(card, Panel, Gold);
+            GUI.Label(new Rect(card.x + 24f, card.y + 18f, width - 48f, 30f), lesson.Title, titleStyle);
+            GUI.Label(new Rect(card.x + 24f, card.y + 62f, width - 48f, bodyHeight), lesson.Body, bodyStyle);
+            if (GUI.Button(new Rect(card.x + 24f, card.yMax - 94f, width - 48f, 48f),
+                lesson.Action, mainMenuButtonStyle)) confirm();
+            GUI.Label(new Rect(card.x + 24f, card.yMax - 36f, width - 48f, 22f),
+                "仅关卡1显示 · 阅读期间不计时", mutedStyle);
+            DrawTutorialSkipButton();
+            DrawSettingsButton();
+            // Consume backdrop input; the movement gesture cannot dismiss a new lesson.
+            if (Event.current.type == EventType.MouseDown || Event.current.type == EventType.MouseUp ||
+                Event.current.type == EventType.MouseDrag || Event.current.type == EventType.ScrollWheel)
+                Event.current.Use();
         }
 
         private void DrawLevelTwoDifficultyNotice()
@@ -1436,7 +1365,7 @@ namespace WuxiaRoguelite.UI
                 FillRect(warning, new Color(0.05f, 0.02f, 0.018f, 0.84f));
                 ResponsiveGui.DrawSingleLineLabel(
                     warning,
-                    "终局强敌即将降临",
+                    gameFlow.IsTutorialLevel ? "新手守关即将开始" : "终局强敌即将降临",
                     bossWarningStyle,
                     12);
                 return;

@@ -244,7 +244,7 @@ namespace WuxiaRoguelite.UI
             Sprite[] currentEnemyIdleFrames = SelectEnemyFrames(enemyVisual, false);
             Sprite[] currentEnemyAttackFrames = SelectEnemyFrames(enemyVisual, true);
             float playerActorSize = actorSize * playerSpriteScale;
-            float enemySpriteScale = gameFlow.CurrentPhase == GamePhase.BossBattle
+            float enemySpriteScale = gameFlow.CurrentPhase == GamePhase.BossBattle && !gameFlow.IsTutorialLevel
                 ? bossSpriteScale
                 : enemyVisual != null ? enemyVisual.scale : ActorVisualScale.Medium;
             float enemyBaseSize = battleManager.IsBossEncounter
@@ -254,6 +254,8 @@ namespace WuxiaRoguelite.UI
             // Reserve room for raised fan/tails and state VFX below the horizontal HUD.
             if (battleManager.IsBossBattle)
                 enemyActorSize = Mathf.Min(enemyActorSize, Mathf.Max(128f, (stageHeight - 12f) / 1.12f));
+            if (gameFlow.IsTutorialLevel && gameFlow.CurrentPhase == GamePhase.BossBattle)
+                enemyActorSize = Mathf.Min(enemyActorSize, Mathf.Max(80f, stageHeight - 16f));
             float tallestActorSize = Mathf.Max(playerActorSize, enemyActorSize);
             float baseY = portrait
                 ? Mathf.Clamp(
@@ -741,7 +743,7 @@ namespace WuxiaRoguelite.UI
             if (finalBoss)
             {
                 WuxiaUiComponents.Text(new Rect(header.x + 12, header.y, header.width - 24, 42),
-                    $"决战独立计时  {gameFlow.bossBattleTime:0.0} 秒", 22, Gold);
+                    $"{(gameFlow.IsTutorialLevel ? "新手试炼" : "决战")}独立计时  {gameFlow.bossBattleTime:0.0} 秒", 22, Gold);
                 return;
             }
             if (midBoss)
@@ -805,7 +807,7 @@ namespace WuxiaRoguelite.UI
                 new Color(headerAccent.r, headerAccent.g, headerAccent.b, 0.55f));
 
             string title = gameFlow.CurrentPhase == GamePhase.BossBattle
-                ? $"决战 · {gameFlow.bossStats.displayName}"
+                ? $"{(gameFlow.IsTutorialLevel ? "新手试炼" : "决战")} · {gameFlow.bossStats.displayName}"
                 : gameFlow.CurrentPhase == GamePhase.MidBossBattle
                     ? $"中期强敌 · {gameFlow.midBossStats.displayName}"
                 : gameFlow.CurrentPhase == GamePhase.CaveRunning
@@ -828,7 +830,8 @@ namespace WuxiaRoguelite.UI
                     ResponsiveGui.DrawSingleLineLabel(
                         new Rect(headerRect.x + 10f, headerRect.y + 28f,
                             headerRect.width - 20f, 18f),
-                        $"{GetBossPhaseOrdinal()} · {battleManager.CurrentBossPhaseName}", captionStyle, 8);
+                        gameFlow.IsTutorialLevel ? "普通攻击 · 击败后完成教学"
+                            : $"{GetBossPhaseOrdinal()} · {battleManager.CurrentBossPhaseName}", captionStyle, 8);
                     return;
                 }
 
@@ -879,7 +882,8 @@ namespace WuxiaRoguelite.UI
                     $"决战独立计时  {gameFlow.bossBattleTime:0.0} 秒", timerStyle, 9);
                 ResponsiveGui.DrawSingleLineLabel(
                     new Rect(headerRect.x, headerRect.y + 51f, headerRect.width, 15f),
-                    $"主时间停止 · {GetBossPhaseOrdinal()} · {battleManager.CurrentBossPhaseName}", captionStyle, 8);
+                    gameFlow.IsTutorialLevel ? "主时间停止 · 击败后完成教学"
+                        : $"主时间停止 · {GetBossPhaseOrdinal()} · {battleManager.CurrentBossPhaseName}", captionStyle, 8);
                 return;
             }
 

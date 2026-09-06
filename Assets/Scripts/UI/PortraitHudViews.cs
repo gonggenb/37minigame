@@ -164,13 +164,16 @@ namespace WuxiaRoguelite.UI
 
         private void DrawPortraitSettings()
         {
-            PortraitBackdrop();
+            bool onCover = gameFlow.CurrentPhase == GamePhase.Ready;
+            if (onCover) FillRect(new Rect(0, 0, ResponsiveGui.Width, ResponsiveGui.Height),
+                WithAlpha(WuxiaUiTheme.BackgroundInk, 0.60f));
+            else PortraitBackdrop();
             Rect p = PortraitUiLayout.Modal(560, 456);
             DrawPanel(p, Ink, Gold);
-            WuxiaUiComponents.Text(new Rect(p.x + 24, p.y + 24, p.width - 48, 40), "暂停", 30, Paper, TextAnchor.MiddleCenter);
+            WuxiaUiComponents.Text(new Rect(p.x + 24, p.y + 24, p.width - 48, 40), onCover ? "设置" : "暂停", 30, Paper, TextAnchor.MiddleCenter);
             WuxiaUiComponents.Text(new Rect(p.x + 24, p.y + 70, p.width - 48, 28),
-                gameFlow.CurrentLevelDisplayName, 16, Muted, TextAnchor.MiddleCenter);
-            if (GUI.Button(new Rect(p.x + 24, p.y + 118, p.width - 48, 54), "继续游戏", mainMenuButtonStyle)) SetSettingsOpen(false);
+                onCover ? GameTextCatalog.GameTitle : gameFlow.CurrentLevelDisplayName, 16, Muted, TextAnchor.MiddleCenter);
+            if (GUI.Button(new Rect(p.x + 24, p.y + 118, p.width - 48, 54), onCover ? "返回主页" : "继续游戏", mainMenuButtonStyle)) SetSettingsOpen(false);
             Rect music = new Rect(p.x + 24, p.y + 194, p.width - 48, 64);
             WuxiaUiTheme.DrawCompactSurface(music, Panel, Gold);
             WuxiaUiComponents.Text(new Rect(music.x + 14, music.y, music.width - 132, 64), "背景音乐", 18);

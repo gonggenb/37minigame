@@ -6,6 +6,11 @@ namespace WuxiaRoguelite.Runtime
     /// </summary>
     public static class GameTextCatalog
     {
+        public const string GameTitle = "一炷江湖";
+        public const string TutorialLevelName = "初入江湖";
+        public const string MainLevelName = "驿路风云";
+        public const string TutorialBossName = "山道恶霸";
+        public const string TutorialBossVisualId = "orc_warlord";
         public const string MidBossName = "玄甲镇关使";
         public const string MidBossVisualId = "xuanjia_gate_warden";
         public const string MidBossSkillName = "镇关·震岳斩";

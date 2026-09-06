@@ -9,6 +9,8 @@ namespace WuxiaRoguelite.Battle
 {
     public partial class BattleManager : MonoBehaviour
     {
+        public const float DamageVarianceRatio = 0.05f;
+
         public PlayerStats playerStats;
         public CombatantStats currentEnemy;
         public string battleLog = "尚未进入战斗";
@@ -413,6 +415,7 @@ namespace WuxiaRoguelite.Battle
                 damage *= 1f - Mathf.Clamp(reduction, 0f, 0.65f);
             }
 
+            damage = RollDamage(damage);
             float shieldBefore = PlayerShield;
             if (!isPlayerAttack)
             {
@@ -653,7 +656,7 @@ namespace WuxiaRoguelite.Battle
                 return 0f;
             }
 
-            float damage = attacker.attack * ratio;
+            float damage = RollDamage(attacker.attack * ratio);
             LastVfxCues |= BattleVfxCue.SwordQi;
             ApplyDamageToCurrentEnemy(damage);
             int temperedPoisonRank = playerStats.GetSecretRank("青锋淬毒");
@@ -684,7 +687,7 @@ namespace WuxiaRoguelite.Battle
                 return 0f;
             }
 
-            float damage = attacker.attack * (0.70f + rank * 0.20f);
+            float damage = RollDamage(attacker.attack * (0.70f + rank * 0.20f));
             ApplyDamageToCurrentEnemy(damage);
             LastVfxCues |= BattleVfxCue.SwiftCombo;
             RegisterMartialArtActivation("无影连环剑");
@@ -701,7 +704,7 @@ namespace WuxiaRoguelite.Battle
             }
 
             float ratio = 0.45f + rank * 0.20f;
-            float damage = Mathf.Max(1f, playerStats.runtimeStats.defense * ratio);
+            float damage = RollDamage(Mathf.Max(1f, playerStats.runtimeStats.defense * ratio));
             ApplyDamageToCurrentEnemy(damage);
             LastVfxCues |= BattleVfxCue.Retaliation;
             RegisterMartialArtActivation("反震诀");
@@ -731,6 +734,7 @@ namespace WuxiaRoguelite.Battle
                 RegisterMartialArtActivation("化功毒雾");
                 FeatureSkillVfx("化功毒雾");
             }
+            damage = RollDamage(damage);
             ApplyDamageToCurrentEnemy(damage);
 
             int lifeDrainRank = playerStats.GetMartialArtRank("吸星诀");
@@ -848,6 +852,14 @@ namespace WuxiaRoguelite.Battle
             }
 
             return 1f - Mathf.Clamp(reduction, 0f, 0.65f);
+        }
+
+        private static float RollDamage(float damage)
+        {
+            // Roll once per damage packet, before shields. Keep the same value for
+            // health loss, lifesteal, combat logs and floating text; never roll in UI.
+            return damage <= 0f ? 0f : damage * UnityEngine.Random.Range(
+                1f - DamageVarianceRatio, 1f + DamageVarianceRatio);
         }
 
         private float ApplyDamageToCurrentEnemy(float damage)

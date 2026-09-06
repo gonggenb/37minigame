@@ -12,7 +12,7 @@ using WuxiaRoguelite.Runtime;
 
 namespace WuxiaRoguelite.GameFlow
 {
-    public class GameFlowController : MonoBehaviour
+    public partial class GameFlowController : MonoBehaviour
     {
         public static GameFlowController Instance { get; private set; }
 
@@ -199,6 +199,9 @@ namespace WuxiaRoguelite.GameFlow
                     return BossApproachStage.Arrived;
                 }
 
+                if (IsTutorialLevel && mainTimeRemaining > 5f)
+                    return BossApproachStage.None;
+
                 if (mainTimeRemaining <= 5f)
                 {
                     return BossApproachStage.FinalCountdown;
@@ -258,6 +261,7 @@ namespace WuxiaRoguelite.GameFlow
             if (IsTutorialLevel)
             {
                 mainTimeLimit = LevelSequence.TutorialTimeLimitSeconds;
+                bossStats = TutorialBossTuning.CreateStats();
             }
 
             cameraFollow = cameraFollow == null ? FindFirstObjectByType<CameraFollow>() : cameraFollow;
@@ -327,11 +331,12 @@ namespace WuxiaRoguelite.GameFlow
                         if (CurrentPhase == GamePhase.NormalBattleRunning)
                         {
                             tutorialTransitionPending = true;
-                            statusMessage = "教学三十息已尽：完成当前交锋后进入教学总结。";
+                            IsBossTransitionPending = true;
+                            statusMessage = $"教学三十息已尽：完成当前交锋与武学选择后，挑战{GameTextCatalog.TutorialBossName}。";
                         }
                         else
                         {
-                            CompleteTutorial();
+                            BeginBossBattle();
                         }
                         return;
                     }
@@ -372,6 +377,7 @@ namespace WuxiaRoguelite.GameFlow
 
         public void StartRun()
         {
+            ResetTutorialLessons();
             if (battleManager != null)
             {
                 battleManager.CancelBattle();
@@ -599,7 +605,13 @@ namespace WuxiaRoguelite.GameFlow
 
         public void HandleEncounter(EncounterTrigger encounter)
         {
-            if (encounter == null || CurrentPhase != GamePhase.MainMapRunning)
+            if (encounter == null || encounter.consumed || CurrentPhase != GamePhase.MainMapRunning ||
+                IsCharacterMenuPaused || WuxiaRoguelite.UI.PrototypeHUDController.IsSettingsOpen)
+            {
+                return;
+            }
+
+            if (TryShowEncounterLesson(encounter))
             {
                 return;
             }
@@ -673,7 +685,7 @@ namespace WuxiaRoguelite.GameFlow
             {
                 if (IsTutorialLevel)
                 {
-                    CompleteTutorial();
+                    BeginBossBattle();
                     return;
                 }
 
@@ -693,7 +705,7 @@ namespace WuxiaRoguelite.GameFlow
 
             if (IsTutorialLevel)
             {
-                CompleteTutorial();
+                BeginBossBattle();
                 return;
             }
 
@@ -850,7 +862,7 @@ namespace WuxiaRoguelite.GameFlow
             pendingEnemyLevel = 0;
             pendingEnemyType = EncounterType.NormalEnemy;
 
-            if (CurrentPhase == GamePhase.LevelUpPaused)
+            if (CurrentPhase == GamePhase.LevelUpPaused || IsTutorialLessonActive)
             {
                 statusMessage = leveledUp
                     ? $"{rewardSummary}；修为突破，请选择武学。"
@@ -866,7 +878,7 @@ namespace WuxiaRoguelite.GameFlow
 
             if (IsTutorialLevel && (tutorialTransitionPending || mainTimeRemaining <= 0f))
             {
-                CompleteTutorial();
+                BeginBossBattle();
                 return;
             }
 
@@ -1065,7 +1077,7 @@ namespace WuxiaRoguelite.GameFlow
         {
             if (IsTutorialLevel)
             {
-                CompleteTutorial();
+                BeginTutorialBoss();
                 return;
             }
 
@@ -1118,6 +1130,11 @@ namespace WuxiaRoguelite.GameFlow
 
         private void OnBossBattleFinished(bool playerWon)
         {
+            if (IsTutorialLevel && playerWon)
+            {
+                CompleteTutorial();
+                return;
+            }
             bossDefeated = playerWon;
             EndRun(playerWon, playerWon ? $"击败{bossStats.displayName}" : "决战落败");
         }
@@ -1230,6 +1247,7 @@ namespace WuxiaRoguelite.GameFlow
 
             SetPhase(GamePhase.LevelUpPaused);
             statusMessage = "修为突破：选择一门武学。所有时间暂停。";
+            TryShowMartialArtLesson();
         }
 
         private void GenerateMartialArtChoices()
@@ -1371,6 +1389,10 @@ namespace WuxiaRoguelite.GameFlow
 
         private void SetPhase(GamePhase phase)
         {
+            if (phase != GamePhase.TutorialLearning)
+            {
+                ClearTutorialLesson();
+            }
             if (IsCharacterMenuPaused)
             {
                 SetCharacterMenuPaused(false);
@@ -1452,7 +1474,7 @@ namespace WuxiaRoguelite.GameFlow
             LevelSequence.MarkTutorialCompleted();
             bossDefeated = true;
             SetPhase(GamePhase.Result);
-            statusMessage = "三十息教学完成，已解锁关卡2。";
+            statusMessage = $"击败{GameTextCatalog.TutorialBossName}，教学完成！已解锁关卡2。";
         }
 
         private void TransitionFromTutorialToLevelTwo(bool skipped)

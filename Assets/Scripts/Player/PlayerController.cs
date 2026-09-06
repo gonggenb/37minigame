@@ -29,6 +29,10 @@ namespace WuxiaRoguelite.Player
         public void SetMovementEnabled(bool enabled)
         {
             canMove = enabled;
+            if (!enabled)
+            {
+                moveInput = Vector2.zero;
+            }
             if (!enabled && body != null)
             {
                 body.linearVelocity = Vector3.zero;

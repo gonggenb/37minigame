@@ -19,6 +19,7 @@ namespace WuxiaRoguelite.GameFlow
         LevelUpPaused,
         MidBossBattle,
         BossBattle,
-        Result
+        Result,
+        TutorialLearning
     }
 }

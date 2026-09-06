@@ -105,6 +105,7 @@ namespace WuxiaRoguelite.Battle
                 damage = Mathf.Max(1f, currentEnemy.attack * BossV2Tuning.FoxfireAttackRatioPerHit -
                     player.defense * BossV2Tuning.FoxfireDefenseRatioPerHit);
                 damage *= GetPlayerIncomingDamageMultiplier(player);
+                damage = RollDamage(damage);
                 damage = AbsorbWithShield(damage);
                 player.TakeDamage(damage);
                 if (damage > 0f) ApplyRetaliation(currentEnemy);

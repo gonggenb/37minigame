@@ -38032,6 +38032,10 @@ MonoBehaviour:
   timeWarningDuckReleaseSeconds: 0.85
   overlayFadeInSeconds: 0.15
   overlayFadeOutSeconds: 0.25
+  bossArmorLayerVolume: 0.5
+  bossFrenzyLayerVolume: 0.62
+  bossArmorBaseMultiplier: 0.68
+  bossFrenzyBaseMultiplier: 0.42
 --- !u!82 &1108178755
 AudioSource:
   m_ObjectHideFlags: 0
