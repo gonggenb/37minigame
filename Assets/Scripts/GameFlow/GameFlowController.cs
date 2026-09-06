@@ -101,7 +101,7 @@ namespace WuxiaRoguelite.GameFlow
         public string CurrentLevelDisplayName =>
             IsTutorialLevel ? "关卡1 · 初入江湖" : "关卡2 · 驿路风云";
         public int OpeningDialogueIndex { get; private set; }
-        public int OpeningDialogueCount => launchTutorialAfterOpeningIntro ? 4 : 5;
+        public int OpeningDialogueCount => OpeningDialogueCatalog.Count(launchTutorialAfterOpeningIntro);
         public string OpeningPlayerName =>
             playerStats != null && playerStats.runtimeStats != null
                 ? playerStats.runtimeStats.displayName
@@ -110,36 +110,12 @@ namespace WuxiaRoguelite.GameFlow
             bossStats != null && !string.IsNullOrWhiteSpace(bossStats.displayName)
                 ? bossStats.displayName
                 : GameTextCatalog.FinalBossName;
-        private string OpeningPreparationDurationText =>
-            launchTutorialAfterOpeningIntro ? "三十息" : "六十息";
-        public string CurrentOpeningSpeaker
-        {
-            get
-            {
-                return OpeningDialogueIndex switch
-                {
-                    0 => "旁白",
-                    1 => OpeningPlayerName,
-                    2 => FinalBossDisplayName,
-                    3 => OpeningPlayerName,
-                    _ => "出发提示"
-                };
-            }
-        }
-        public string CurrentOpeningDialogue
-        {
-            get
-            {
-                return OpeningDialogueIndex switch
-                {
-                    0 => $"暮色压下青崖，村道尽头狐火明灭。山中妖物受{FinalBossDisplayName}驱使，正截断你的去路。",
-                    1 => $"妖气一路延至此处……{FinalBossDisplayName}，现身。",
-                    2 => $"想见我？先从这些傀儡手里活下来。{OpeningPreparationDurationText}后，我在血月古刹等你。",
-                    3 => $"{OpeningPreparationDurationText}足够。斩妖、寻洞、练功——我会亲自到你面前。",
-                    _ => $"主香点燃后，只有{OpeningPreparationDurationText}准备。碰怪会自动交锋且主香不停；进入隐藏洞穴时主香暂停。中央驿路的四方路牌会提示区域收益与风险。"
-                };
-            }
-        }
+        public OpeningPortrait CurrentOpeningPortrait => OpeningDialogueCatalog.Portrait(OpeningDialogueIndex);
+        public string CurrentOpeningSpeaker => OpeningDialogueCatalog.Speaker(
+            OpeningDialogueIndex, OpeningPlayerName, FinalBossDisplayName);
+        public string CurrentOpeningDialogue => OpeningDialogueCatalog.Text(
+            OpeningDialogueIndex, launchTutorialAfterOpeningIntro);
+        public string OpeningContinueLabel => launchTutorialAfterOpeningIntro ? "踏入山道" : "选择起手武学";
         public float BossIntroTimeRemaining { get; private set; }
         public float BossIntroProgress =>
             bossIntroDuration <= 0f
@@ -302,6 +278,7 @@ namespace WuxiaRoguelite.GameFlow
 
         private void Update()
         {
+            if (WuxiaRoguelite.UI.LevelLoadingScreen.IsLoading) return;
             if (CurrentPhase == GamePhase.MainMapRunning && playerStats != null)
             {
                 playerStats.AdvanceTemporaryMoveSpeedBuffs(Time.deltaTime);
@@ -520,6 +497,7 @@ namespace WuxiaRoguelite.GameFlow
 
         public void ReturnToMainMenu()
         {
+            if (WuxiaRoguelite.UI.LevelLoadingScreen.IsLoading) return;
             if (IsTutorialLevel)
             {
                 Time.timeScale = 1f;
@@ -770,7 +748,7 @@ namespace WuxiaRoguelite.GameFlow
         {
             OpeningDialogueIndex = 0;
             SetPhase(GamePhase.OpeningIntro);
-            statusMessage = "狐火初现：完成序章后，主地图六十息倒计时开始。";
+            statusMessage = "狐火初现：阅读序章期间不开始探索计时。";
         }
 
         public void AdvanceOpeningIntro()
@@ -1479,19 +1457,18 @@ namespace WuxiaRoguelite.GameFlow
 
         private void TransitionFromTutorialToLevelTwo(bool skipped)
         {
+            if (WuxiaRoguelite.UI.LevelLoadingScreen.IsLoading) return;
             tutorialTransitionPending = false;
             IsTutorialNoticeActive = false;
-            IsLevelTwoDifficultyNoticeActive = true;
-            IsTutorialCompletionSummary = false;
-            levelTwoDifficultyNoticeOpenedAt = Time.unscaledTime;
+            IsLevelTwoDifficultyNoticeActive = false;
             battleManager?.CancelBattle();
             caveRoom?.ResetRoom();
             Time.timeScale = 1f;
-            SetPhase(GamePhase.Ready);
-            LevelSequence.MarkTutorialCompleted();
+            playerController?.SetMovementEnabled(false);
             statusMessage = skipped
-                ? "已跳过关卡1：确认难度提示后进入关卡2。"
-                : "教学完成：确认难度提示后进入关卡2。";
+                ? "已跳过关卡1，正在进入下一关……"
+                : "教学完成，正在进入下一关……";
+            LevelSequence.CompleteTutorialAndLoadLevelTwo();
         }
 
         private static string GetOpeningRouteHint(string martialArt)

@@ -1,0 +1,29 @@
+{
+  "generator": "built-in imagegen",
+  "version": "v01",
+  "jobs": [
+    {
+      "key": "hero",
+      "refs": [
+        "/tmp/codex-remote-attachments/01a075c2-1be4-7491-ac98-6179eb211667/0AF1E8B5-540B-4567-9F8D-A0D4652CE873/2-照片-2.jpg",
+        "/Users/gongyuyang/.codex/generated_images/01a075c2-1be4-7491-ac98-6179eb211667/exec-37744ef2-52a0-490c-931b-76a3be0d90bb.png"
+      ],
+      "prompt": "Use case: identity-preserve / background-extraction. Create ONE independent production dialogue character cutout for Unity, real transparent alpha background, 1024x1536 portrait PNG. Reference 1 is canonical hero identity; reference 2 is approved dialogue direction, use its LEFT foreground male portrait only as pose/style guidance. Exact same adult Chinese wuxia male, black high ponytail and gold ring, blue and white robe with subtle gold trim, dark bracers, gold cords and red waist tassel. Keep face, clothing, anatomy and detailed painterly anime artwork closely faithful. A restrained conversational martial stance, torso three-quarter turned slightly to viewer RIGHT, eyes look to the right toward opponent, one hand held near chest, other relaxed. Calm determined expression, not combat action. Frame from complete intact ponytail and head down to MID THIGH. Both arms and visible hands intact. Entire silhouette including flying hair and sleeves kept within canvas with 4% transparent margin on left/right and top. Character large centered, not tiny. Mid-thigh bottom may be cleanly cut flat to sit behind dialogue box. No scenery, no dark rectangle, no floor, no cast shadow, no smoke, no aura, no blue lightning, no particle effects, no UI, no text, no border, no second person, no checkered pattern baked into pixels. Background truly transparent. Fine clean antialiased hair edges. Even soft warm-neutral face lighting compatible with dim temple at dusk."
+    },
+    {
+      "key": "fox",
+      "refs": [
+        "/tmp/codex-remote-attachments/01a075c2-1be4-7491-ac98-6179eb211667/0AF1E8B5-540B-4567-9F8D-A0D4652CE873/1-照片-1.jpg",
+        "/Users/gongyuyang/.codex/generated_images/01a075c2-1be4-7491-ac98-6179eb211667/exec-37744ef2-52a0-490c-931b-76a3be0d90bb.png"
+      ],
+      "prompt": "Use case: identity-preserve / background-extraction. Create ONE independent production dialogue character cutout for Unity, real transparent alpha background, 1024x1536 portrait PNG. Reference 1 is canonical fox boss identity; reference 2 is approved dialogue direction, use its RIGHT foreground fox woman only as pose/style guidance. Exact same adult nine-tailed fox woman, long wine-red hair, red and gold hair ornaments, red fox ears, gold jewelry, white red and black flowing robes, gold flower sash. Preserve face and costume fidelity and detailed painterly anime rendering. Confident amused, slightly dangerous knowing smile. Torso three-quarter toward viewer LEFT and eyes look left to the protagonist. One elegant hand near chin and other relaxed; conversational pose, not an attack. Render nine full fox tails with white fur and reddish tips in a compact elegant fan BEHIND her body, keeping tails subordinate to face. Frame from complete intact fox ears and tails down to MID THIGH. Entire silhouette, hair, sleeves, hands and tails inside canvas with 4% transparent margin on left/right/top. No lateral cutoff tails. Bottom robe at mid-thigh may be cleanly cut flat for placement behind a dialogue box. Character large centered, face in upper third. No scenery, no dark rectangular background, no floor, no cast shadow, no foxfire, no smoke, no aura or particles, no UI, no text, no border, no second person, no checkerboard baked into image. Background truly transparent. Clean antialiased hair/fur edges. Soft warm-neutral face lighting compatible with dim temple at dusk."
+    },
+    {
+      "key": "backdrop",
+      "refs": [
+        "/Users/gongyuyang/.codex/generated_images/01a075c2-1be4-7491-ac98-6179eb211667/exec-37744ef2-52a0-490c-931b-76a3be0d90bb.png"
+      ],
+      "prompt": "Use case: compositing / precise-object-edit. Create ONE clean standalone background plate from the approved dialogue screen reference: the dim dusk eastern mountain temple approach. Remove ALL people, all character hair and fox tails, all dialogue panels, labels, UI and lettering. Reconstruct empty environment cleanly. Landscape 1920x1080 canvas, full bleed opaque art. A weathered ancient Chinese temple gate at center, stone steps receding toward the gate, bamboo framing far sides, distant rugged misty mountains, old dark timber roof silhouettes, subtle warm lanterns at both sides, dusk muted amber sky, thin drifting mist, very few tiny red foxfire motes. Rich painterly Chinese fantasy background exactly compatible with reference atmosphere. Center 56% width must stand alone as a convincing portrait crop with temple gate still visible: concentrate gateway and stairs in center, simpler dark low-detail outer sides for character portraits. The upper third contains gate roof and sky; bottom third is quiet dark stone foreground. Dark but readable, layered atmospheric depth, restrained contrast below character art. No photography, no 3D render, no characters, no silhouettes of people, no creatures, no tails, no weapons, no cards, no words, no watermark."
+    }
+  ]
+}

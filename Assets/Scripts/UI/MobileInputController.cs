@@ -93,6 +93,7 @@ namespace WuxiaRoguelite.UI
         private bool? appliedPortraitLayout;
 
         private bool ShouldShow =>
+            !LevelLoadingScreen.IsLoading &&
             gameFlow != null &&
             !PrototypeHUDController.IsSettingsOpen &&
             !gameFlow.IsCharacterMenuPaused &&

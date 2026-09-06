@@ -259,6 +259,7 @@ namespace WuxiaRoguelite.UI
 
         private void Update()
         {
+            if (LevelLoadingScreen.IsLoading) return;
             UpdateHealthFeedback();
             UpdateExplorationNotices();
 
@@ -338,6 +339,7 @@ namespace WuxiaRoguelite.UI
 
         private void OnGUI()
         {
+            if (LevelLoadingScreen.IsLoading) return;
             RuntimeChineseFont.PrepareSkin();
 
             if (gameFlow == null || playerStats == null || playerStats.runtimeStats == null)

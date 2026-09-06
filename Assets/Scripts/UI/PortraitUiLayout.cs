@@ -58,25 +58,40 @@ namespace WuxiaRoguelite.UI
             Color accent = paused ? WuxiaUiTheme.Paused : TimeColor(ratio);
             WuxiaUiTheme.DrawTimerDial(rect, accent);
             // Sixty independent live marks sit over the unnumbered generated dial.
-            // Repaint-only avoids needless drawing and keeps the GUI matrix balanced.
+            // Rotate in the dial's logical space, then apply the caller's scale and
+            // translation. RotateAroundPivot mixes the pivot with the existing GUI
+            // scale on high-DPI players, moving the marks outside the dial.
             if (Event.current.type == EventType.Repaint)
             {
                 Matrix4x4 matrix = GUI.matrix;
-                for (int i = 0; i < 60; i++)
+                try
+                {
+                    for (int i = 0; i < 60; i++)
+                    {
+                        GUI.matrix = TimerTickMatrix(matrix, rect.center, i);
+                        WuxiaUiTheme.FillRect(new Rect(rect.center.x - 1f,
+                            rect.center.y - rect.width * 0.39f, 2f, rect.height * 0.04f),
+                            i < Mathf.CeilToInt(ratio * 60f) ? accent : WuxiaUiTheme.SurfaceIron);
+                    }
+                }
+                finally
                 {
                     GUI.matrix = matrix;
-                    GUIUtility.RotateAroundPivot(i * 6f, rect.center);
-                    WuxiaUiTheme.FillRect(new Rect(rect.center.x - 1f,
-                        rect.center.y - rect.width * 0.39f, 2f, rect.height * 0.04f),
-                        i < Mathf.CeilToInt(ratio * 60f) ? accent : WuxiaUiTheme.SurfaceIron);
                 }
-                GUI.matrix = matrix;
             }
             Text(new Rect(rect.x + 12, rect.y + rect.height * 0.24f, rect.width - 24,
                 rect.height * 0.43f), Mathf.CeilToInt(seconds).ToString("00"),
                 Mathf.RoundToInt(rect.width * 0.33f), WuxiaUiTheme.TextPrimary, TextAnchor.MiddleCenter);
             Text(new Rect(rect.x + 12, rect.y + rect.height * 0.64f, rect.width - 24, 18),
                 paused ? "暂停" : "秒", 12, accent, TextAnchor.MiddleCenter);
+        }
+
+        internal static Matrix4x4 TimerTickMatrix(Matrix4x4 parent, Vector2 center, int tick)
+        {
+            Vector3 pivot = new Vector3(center.x, center.y, 0f);
+            return parent * Matrix4x4.Translate(pivot) *
+                Matrix4x4.Rotate(Quaternion.Euler(0f, 0f, tick * 6f)) *
+                Matrix4x4.Translate(-pivot);
         }
 
         public static void ReportRow(Rect rect, string label, string value)

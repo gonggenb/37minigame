@@ -89,12 +89,6 @@ namespace WuxiaRoguelite.UI
         private GUIStyle skillCalloutCaptionStyle;
         private GUIStyle bossWarningStyle;
         private GUIStyle bossCountdownStyle;
-        private GUIStyle dialogueKickerStyle;
-        private GUIStyle dialogueTitleStyle;
-        private GUIStyle dialogueSpeakerStyle;
-        private GUIStyle dialogueBodyStyle;
-        private GUIStyle dialogueHintStyle;
-        private GUIStyle dialogueButtonStyle;
         private int observedAttackSequence;
         private float attackStartedAt = -10f;
         private CombatantStats trackedPlayer;
@@ -121,7 +115,6 @@ namespace WuxiaRoguelite.UI
         private CombatantStats backgroundTrackedEnemy;
         private Texture2D activeBattleBackground;
         private int lastNormalBackgroundIndex = -1;
-        private bool introBackgroundPrepared;
         private Texture2D bossFoxfireIcon;
         private Texture2D bossArmorIcon;
         private Texture2D bossFrenzyIcon;
@@ -145,22 +138,13 @@ namespace WuxiaRoguelite.UI
 
         private void Update()
         {
-            if (gameFlow != null && gameFlow.IsOpeningIntroActive &&
-                (Input.GetKeyDown(KeyCode.Space) ||
-                 Input.GetKeyDown(KeyCode.Return) ||
-                 Input.GetKeyDown(KeyCode.KeypadEnter)))
-            {
-                gameFlow.AdvanceOpeningIntro();
-            }
-
-            if (gameFlow == null || !gameFlow.IsOpeningIntroActive)
-            {
-                introBackgroundPrepared = false;
-            }
+            if (LevelLoadingScreen.IsLoading) return;
+            UpdateOpeningPresentation();
         }
 
         private void OnGUI()
         {
+            if (LevelLoadingScreen.IsLoading) return;
             RuntimeChineseFont.PrepareSkin();
 
             bool introActive = gameFlow != null && gameFlow.IsOpeningIntroActive;
@@ -378,175 +362,7 @@ namespace WuxiaRoguelite.UI
                 new Color(1f, 0.76f, 0.36f));
             bossCountdownStyle = CreateStyle(72, FontStyle.Bold, TextAnchor.MiddleCenter,
                 new Color(1f, 0.20f, 0.12f));
-            dialogueKickerStyle = CreateStyle(12, FontStyle.Bold, TextAnchor.MiddleCenter,
-                new Color(0.92f, 0.72f, 0.34f));
-            dialogueTitleStyle = CreateStyle(28, FontStyle.Bold, TextAnchor.MiddleCenter, Color.white);
-            dialogueSpeakerStyle = CreateStyle(17, FontStyle.Bold, TextAnchor.MiddleLeft,
-                new Color(1f, 0.84f, 0.48f));
-            dialogueBodyStyle = CreateStyle(18, FontStyle.Normal, TextAnchor.UpperLeft,
-                new Color(0.94f, 0.92f, 0.84f));
-            dialogueBodyStyle.wordWrap = true;
-            dialogueBodyStyle.clipping = TextClipping.Clip;
-            dialogueHintStyle = CreateStyle(11, FontStyle.Normal, TextAnchor.MiddleLeft,
-                new Color(0.68f, 0.72f, 0.72f));
-            dialogueButtonStyle = WuxiaUiTheme.CreateButtonStyle(
-                16, WuxiaButtonKind.Primary);
-        }
-
-        private void DrawOpeningIntro()
-        {
-            if (!introBackgroundPrepared)
-            {
-                activeBattleBackground = bossBattleBackground != null
-                    ? bossBattleBackground
-                    : SelectRandomNormalBackground();
-                backgroundTrackedEnemy = null;
-                introBackgroundPrepared = true;
-            }
-
-            float guiScale = CalculateGuiScale(Screen.width, Screen.height);
-            float width = Screen.width / guiScale;
-            float height = Screen.height / guiScale;
-            bool portrait = ResponsiveGui.IsPortrait;
-            Rect safe = ResponsiveGui.SafeArea;
-            Matrix4x4 originalGuiMatrix = GUI.matrix;
-            GUI.matrix = Matrix4x4.Scale(new Vector3(guiScale, guiScale, 1f)) * originalGuiMatrix;
-
-            DrawBackdrop(width, height);
-            FillRect(new Rect(0f, 0f, width, height), new Color(0.025f, 0.012f, 0.025f, 0.30f));
-            FillRect(new Rect(0f, 0f, width, height * 0.20f), new Color(0f, 0f, 0f, 0.42f));
-            FillRect(new Rect(0f, height * 0.72f, width, height * 0.28f), new Color(0f, 0f, 0f, 0.34f));
-
-            float titleWidth = Mathf.Min(portrait ? safe.width - 32f : 540f, safe.width - 24f);
-            Rect titlePanel = new Rect(
-                safe.x + (safe.width - titleWidth) * 0.5f,
-                safe.y + 12f,
-                titleWidth,
-                portrait ? 86f : 76f);
-            WuxiaUiTheme.DrawPanel(titlePanel,
-                new Color(0.025f, 0.018f, 0.025f, 0.80f), Gold,
-                WuxiaPanelKind.Paper);
-            GUI.Label(new Rect(titlePanel.x, titlePanel.y + 5f, titlePanel.width, 20f),
-                "江湖序章", dialogueKickerStyle);
-            GUI.Label(new Rect(titlePanel.x, titlePanel.y + 25f, titlePanel.width, 42f),
-                "狐 火 初 现", dialogueTitleStyle);
-
-            float panelHeight = portrait ? 236f : 150f;
-            Rect dialoguePanel = new Rect(
-                safe.x + (portrait ? 12f : 30f),
-                safe.yMax - panelHeight - (portrait ? 14f : 18f),
-                safe.width - (portrait ? 24f : 60f),
-                panelHeight);
-            DrawOpeningPortraits(width, height, safe, dialoguePanel, portrait);
-
-            WuxiaUiTheme.DrawPanel(dialoguePanel,
-                new Color(0.018f, 0.022f, 0.025f, 0.94f), Gold,
-                WuxiaPanelKind.Paper);
-            FillRect(new Rect(dialoguePanel.x + 18f, dialoguePanel.y + 39f,
-                dialoguePanel.width - 36f, 1f), new Color(Gold.r, Gold.g, Gold.b, 0.38f));
-
-            GUI.Label(new Rect(dialoguePanel.x + 22f, dialoguePanel.y + 8f,
-                dialoguePanel.width - 44f, 28f), gameFlow.CurrentOpeningSpeaker, dialogueSpeakerStyle);
-
-            float buttonWidth = portrait ? dialoguePanel.width - 40f : 150f;
-            float buttonHeight = portrait ? 44f : 40f;
-            Rect buttonRect = new Rect(
-                portrait ? dialoguePanel.x + 20f : dialoguePanel.xMax - buttonWidth - 20f,
-                dialoguePanel.yMax - buttonHeight - 16f,
-                buttonWidth,
-                buttonHeight);
-            float bodyBottom = portrait ? buttonRect.y - 10f : dialoguePanel.yMax - 18f;
-            float bodyWidth = portrait
-                ? dialoguePanel.width - 44f
-                : buttonRect.x - dialoguePanel.x - 42f;
-            Rect bodyRect = new Rect(
-                dialoguePanel.x + 22f,
-                dialoguePanel.y + 48f,
-                bodyWidth,
-                Mathf.Max(48f, bodyBottom - dialoguePanel.y - 48f));
-            GUI.Label(bodyRect, gameFlow.CurrentOpeningDialogue, dialogueBodyStyle);
-
-            string buttonText = gameFlow.OpeningDialogueIndex >= gameFlow.OpeningDialogueCount - 1
-                ? "点燃主香"
-                : "继续";
-            if (GUI.Button(buttonRect, buttonText, dialogueButtonStyle))
-            {
-                gameFlow.AdvanceOpeningIntro();
-            }
-
-            if (!portrait)
-            {
-                GUI.Label(new Rect(dialoguePanel.x + 22f, dialoguePanel.yMax - 28f,
-                    Mathf.Max(120f, bodyWidth), 18f), "点击按钮或按 空格 / 回车 继续", dialogueHintStyle);
-            }
-
-            GUI.matrix = originalGuiMatrix;
-        }
-
-        private void DrawOpeningPortraits(
-            float width,
-            float height,
-            Rect safe,
-            Rect dialoguePanel,
-            bool portrait)
-        {
-            EnemyVisualProfile foxProfile = FindEnemyVisualProfile("fox_demon_boss");
-            Sprite[] foxFrames = foxProfile != null ? foxProfile.idleFrames : null;
-            float portraitSize = portrait
-                ? Mathf.Clamp(safe.width * 0.43f, 150f, 210f)
-                : Mathf.Clamp(height * 0.46f, 190f, 270f);
-            float bottom = dialoguePanel.y + (portrait ? 14f : 8f);
-            Rect playerRect = new Rect(
-                portrait ? safe.x + 6f : width * 0.09f,
-                bottom - portraitSize,
-                portraitSize,
-                portraitSize);
-            Rect foxRect = new Rect(
-                portrait ? safe.xMax - portraitSize * 1.10f - 6f : width * 0.91f - portraitSize * 1.10f,
-                bottom - portraitSize * 1.10f,
-                portraitSize * 1.10f,
-                portraitSize * 1.10f);
-
-            int dialogueIndex = gameFlow.OpeningDialogueIndex;
-            bool playerSpeaking = dialogueIndex == 1 || dialogueIndex == 3;
-            bool foxSpeaking = dialogueIndex == 2;
-            DrawDialoguePortrait(playerRect, playerIdleFrames, false, "侠",
-                playerSpeaking ? 1f : 0.62f, playerSpeaking);
-            DrawDialoguePortrait(foxRect, foxFrames, foxProfile != null && foxProfile.flipHorizontally, "妖",
-                foxSpeaking ? 1f : 0.62f, foxSpeaking);
-        }
-
-        private void DrawDialoguePortrait(
-            Rect rect,
-            Sprite[] frames,
-            bool facesLeft,
-            string fallbackMark,
-            float alpha,
-            bool highlighted)
-        {
-            if (highlighted)
-            {
-                FillRect(new Rect(rect.x - 5f, rect.y - 5f, rect.width + 10f, rect.height + 10f),
-                    new Color(Gold.r, Gold.g, Gold.b, 0.25f));
-            }
-
-            Color previous = GUI.color;
-            GUI.color = new Color(1f, 1f, 1f, alpha);
-            Sprite frame = GetFrame(frames, false, 0f);
-            if (frame != null)
-            {
-                DrawSprite(rect, frame, facesLeft);
-            }
-            else
-            {
-                GUI.DrawTexture(rect, actorTexture != null ? actorTexture : Texture2D.whiteTexture,
-                    ScaleMode.StretchToFill, true);
-                GUI.Label(rect, fallbackMark, actorMarkStyle);
-            }
-
-            GUI.color = previous;
-            FillRect(new Rect(rect.x + rect.width * 0.16f, rect.yMax - 3f,
-                rect.width * 0.68f, 7f), new Color(0f, 0f, 0f, 0.40f));
+            EnsureOpeningStyles();
         }
 
         private void TrackLatestAttack()

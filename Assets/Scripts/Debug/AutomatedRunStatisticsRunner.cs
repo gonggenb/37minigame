@@ -380,7 +380,7 @@ public sealed class AutomatedRunStatisticsRunner : MonoBehaviour
     private void AdvanceOpeningIntro()
     {
         automatedMoveInput = Vector2.zero;
-        for (int i = 0; i < 8 && flow.CurrentPhase == GamePhase.OpeningIntro; i++)
+        for (int i = 0; i < flow.OpeningDialogueCount && flow.CurrentPhase == GamePhase.OpeningIntro; i++)
         {
             flow.AdvanceOpeningIntro();
         }

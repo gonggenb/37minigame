@@ -1,5 +1,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using WuxiaRoguelite.Runtime;
+using WuxiaRoguelite.UI;
 
 namespace WuxiaRoguelite.GameFlow
 {
@@ -14,7 +16,13 @@ namespace WuxiaRoguelite.GameFlow
         public const string LevelTwoSceneName = "MainPrototype";
         public const float TutorialTimeLimitSeconds = 30f;
         private const string TutorialCompletedKey = "WuxiaRoguelite.TutorialCompleted.v1";
-        private const string AutoStartLevelTwoKey = "WuxiaRoguelite.AutoStartLevelTwo.v1";
+        private static bool autoStartLevelTwo;
+
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+        private static void ResetSession()
+        {
+            autoStartLevelTwo = false;
+        }
 
         public static bool IsTutorialScene =>
             SceneManager.GetActiveScene().name == TutorialSceneName;
@@ -30,17 +38,13 @@ namespace WuxiaRoguelite.GameFlow
 
         public static void LoadTutorial()
         {
-            PlayerPrefs.DeleteKey(AutoStartLevelTwoKey);
-            PlayerPrefs.Save();
-            SceneManager.LoadScene(TutorialSceneName);
+            Load(TutorialSceneName, GameTextCatalog.TutorialLevelName, false);
         }
 
         public static void CompleteTutorialAndLoadLevelTwo()
         {
             MarkTutorialCompleted();
-            PlayerPrefs.SetInt(AutoStartLevelTwoKey, 1);
-            PlayerPrefs.Save();
-            SceneManager.LoadScene(LevelTwoSceneName);
+            Load(LevelTwoSceneName, GameTextCatalog.MainLevelName, true, "难度飙升！！！");
         }
 
         public static void LoadLevelTwoFromSelection()
@@ -50,16 +54,20 @@ namespace WuxiaRoguelite.GameFlow
                 return;
             }
 
-            PlayerPrefs.SetInt(AutoStartLevelTwoKey, 1);
-            PlayerPrefs.Save();
-            SceneManager.LoadScene(LevelTwoSceneName);
+            Load(LevelTwoSceneName, GameTextCatalog.MainLevelName, true);
         }
 
         public static void LoadLevelSelection()
         {
-            PlayerPrefs.DeleteKey(AutoStartLevelTwoKey);
-            PlayerPrefs.Save();
-            SceneManager.LoadScene(LevelTwoSceneName);
+            Load(LevelTwoSceneName, GameTextCatalog.GameTitle, false);
+        }
+
+        private static void Load(string scene, string title, bool startRun, string subtitle = null)
+        {
+            // Reject duplicate requests before they can overwrite the destination intent.
+            if (LevelLoadingScreen.IsLoading) return;
+            autoStartLevelTwo = startRun;
+            if (!LevelLoadingScreen.Load(scene, title, subtitle)) autoStartLevelTwo = false;
         }
 
         /// <summary>
@@ -70,13 +78,12 @@ namespace WuxiaRoguelite.GameFlow
         public static bool ConsumeLevelTwoAutoStartRequest()
         {
             if (SceneManager.GetActiveScene().name != LevelTwoSceneName ||
-                PlayerPrefs.GetInt(AutoStartLevelTwoKey, 0) != 1)
+                !autoStartLevelTwo)
             {
                 return false;
             }
 
-            PlayerPrefs.DeleteKey(AutoStartLevelTwoKey);
-            PlayerPrefs.Save();
+            autoStartLevelTwo = false;
             return true;
         }
     }

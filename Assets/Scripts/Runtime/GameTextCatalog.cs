@@ -18,6 +18,7 @@ namespace WuxiaRoguelite.Runtime
         public const string MidBossIronGuardName = "玄甲固守";
         public const string MidBossWardName = "玄甲";
         public const string FinalBossName = "九尾妖狐";
+        public const string FinalBossTempleName = "血月古刹";
         public const string FinalBossVisualId = "fox_demon_boss";
         public const string FinalBossPhaseOneName = "妖狐试锋";
         public const string FinalBossPhaseTwoName = "妖甲护体";
