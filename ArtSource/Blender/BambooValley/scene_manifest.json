@@ -1,0 +1,19 @@
+{
+  "scene": "Bamboo Valley | 竹影幽谷",
+  "objects": 140,
+  "mesh_objects": 99,
+  "vertices": 711605,
+  "polygons": 537295,
+  "bamboo_culms": 935,
+  "cameras": [
+    "CAM 01 • Valley overview",
+    "CAM 02 • Layout top",
+    "CAM 03 • Bridge and pavilion"
+  ],
+  "units": "meters",
+  "bounds_approx_m": [
+    50,
+    44
+  ],
+  "validation": "Blender modeling and render inspection only. Not integrated or playtested in Unity."
+}

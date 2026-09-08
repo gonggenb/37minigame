@@ -1,0 +1,28 @@
+{
+    "success": true,
+    "error": "",
+    "checks": [
+        "third level locked before level two victory",
+        "direct third level: opening choice freezes 60 seconds",
+        "third level begins exploration after choice",
+        "Rigidbody movement crosses bridge at z=-6",
+        "Rigidbody movement crosses bridge at z=7",
+        "Rigidbody cannot cross water away from bridge",
+        "touching authored enemy starts normal combat (phase=NormalBattleRunning, position=(-17.80, 0.00, -13.00))",
+        "normal combat consumes main countdown",
+        "touching authored rock-cave entrance enters cave",
+        "cave combat freezes main countdown",
+        "final boss has independent timer",
+        "third level victory is terminal and does not load nonexistent fourth level",
+        "loaded MainPrototype",
+        "second level regression: opening choice freezes 60 seconds",
+        "actual level two boss completion unlocks third level and Next",
+        "loaded BambooValleyLevel",
+        "second-to-third handoff: opening choice freezes 60 seconds",
+        "third-level auto-start consumed exactly once",
+        "third level remains selectable after returning home",
+        "loaded BambooValleyLevel",
+        "third-level replay from selection: opening choice freezes 60 seconds"
+    ],
+    "scope": "Controlled real Play Mode; not natural-run balance or device performance approval"
+}

@@ -20,6 +20,9 @@ namespace WuxiaRoguelite.Battle
         public float BattleElapsed { get; private set; }
         public float BattleSpeedMultiplier => Mathf.Max(0.1f, battleSpeedMultiplier);
         public int AttackSequence { get; private set; }
+        // Presentation snapshot: enemy hits and periodic poison cannot overwrite a player pose.
+        public int PlayerAttackVisualSequence { get; private set; }
+        public BattleVfxCue PlayerAttackVisualCues { get; private set; }
         public bool LastAttackWasPlayer { get; private set; }
         public bool LastAttackWasCritical { get; private set; }
         public bool LastAttackWasDodged { get; private set; }
@@ -152,6 +155,8 @@ namespace WuxiaRoguelite.Battle
             IsBattleActive = true;
             BattleElapsed = 0f;
             AttackSequence = 0;
+            PlayerAttackVisualSequence = 0;
+            PlayerAttackVisualCues = BattleVfxCue.None;
             LastDamage = 0f;
             LastAttackWasCritical = false;
             LastAttackWasDodged = false;
@@ -189,6 +194,8 @@ namespace WuxiaRoguelite.Battle
 
             IsBattleActive = false;
             currentEnemy = null;
+            PlayerAttackVisualSequence = 0;
+            PlayerAttackVisualCues = BattleVfxCue.None;
             PlayerShield = 0f;
             EnemyPoisonStacks = 0;
             LastPoisonStackDelta = 0;
@@ -351,6 +358,7 @@ namespace WuxiaRoguelite.Battle
                 battleLog = string.IsNullOrEmpty(LastTriggeredEffect)
                     ? dodgeText
                     : $"{dodgeText}（{LastTriggeredEffect}）";
+                RecordPlayerAttackVisual(isPlayerAttack);
                 return 1f;
             }
 
@@ -505,7 +513,15 @@ namespace WuxiaRoguelite.Battle
                     cooldownMultiplier,
                     playerStats.equipment.GetCriticalCooldownMultiplier());
             }
+            RecordPlayerAttackVisual(isPlayerAttack);
             return cooldownMultiplier;
+        }
+
+        private void RecordPlayerAttackVisual(bool isPlayerAttack)
+        {
+            if (!isPlayerAttack) return;
+            PlayerAttackVisualCues = LastVfxCues;
+            PlayerAttackVisualSequence++;
         }
 
         private float CalculateOpeningShield()

@@ -147,7 +147,7 @@ namespace WuxiaRoguelite.UI
                 GUI.Label(new Rect(panel.x + 24f, panel.yMax - 44f, panel.width - 170f, 32f),
                     hint, dialogueHintStyle);
                 GUI.Label(new Rect(panel.xMax - 156f, panel.yMax - 44f, 132f, 32f),
-                    OpeningLineRevealed ? next + "  ▾" : "···", dialogueContinueStyle);
+                    OpeningLineRevealed ? next + "  ▼" : "···", dialogueContinueStyle);
                 bool enabled = GUI.enabled;
                 GUI.enabled = enabled && !PrototypeHUDController.IsSettingsOpen;
                 if (GUI.Button(panel, GUIContent.none, GUIStyle.none)) AdvanceOpeningPresentation();

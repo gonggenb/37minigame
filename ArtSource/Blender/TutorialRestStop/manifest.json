@@ -1,0 +1,26 @@
+{
+  "file": "/Users/gongyuyang/Documents/37minigame/ArtSource/Blender/TutorialRestStop/TutorialRestStop_v01.blend",
+  "scene": "Level 01 | 山脚古道的小歇脚地",
+  "objects": 212,
+  "mesh_objects": 175,
+  "polygons": 592861,
+  "bamboo_culms": 524,
+  "lights": 20,
+  "playable_size_m": [
+    18,
+    18
+  ],
+  "units": "meters",
+  "north": "+Y",
+  "status": "Blender authored and Unity TutorialLevel integrated; controlled Play Mode 34 checks passed; device performance not validated.",
+  "unity_imported": true,
+  "original_user_scene_preserved": true,
+  "renders": [
+    "RestStop_Overview.png",
+    "RestStop_Layout.png",
+    "RestStop_Detail.png"
+  ],
+  "structural_checks_passed": 12,
+  "unity_scene": "Assets/Scenes/TutorialLevel.unity",
+  "unity_validation": "docs/validation/tutorial_reststop/playmode_report.json"
+}

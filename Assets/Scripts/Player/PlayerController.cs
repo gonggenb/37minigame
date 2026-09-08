@@ -1,14 +1,18 @@
 using UnityEngine;
 using WuxiaRoguelite.Map;
 using WuxiaRoguelite.UI;
+using WuxiaRoguelite.Visual;
 
 namespace WuxiaRoguelite.Player
 {
     [RequireComponent(typeof(Rigidbody))]
+    [DefaultExecutionOrder(-50)] // Establish the feet anchor before ActorGroundShadow captures its baseline.
     public class PlayerController : MonoBehaviour
     {
         public PlayerStats stats;
         public float groundY = 0f;
+        public bool followBambooValleyHeight;
+        public bool followTutorialRestStopHeight;
         public Transform movementReference;
         [Header("Main Map Visual")]
         public Transform visualRoot;
@@ -25,6 +29,9 @@ namespace WuxiaRoguelite.Player
 
         public bool IsMoving => canMove && moveInput.sqrMagnitude > 0.01f;
         public float HorizontalInput => canMove ? moveInput.x : 0f;
+        public Vector2 MovementInput => canMove ? moveInput : Vector2.zero;
+        public float AnimationSpeedRatio => MovementInput.magnitude *
+            (stats != null && stats.runtimeStats != null ? Mathf.Max(0f, stats.CurrentMoveSpeed) / 5f : 1f);
 
         public void SetMovementEnabled(bool enabled)
         {
@@ -55,6 +62,18 @@ namespace WuxiaRoguelite.Player
             if (visualRoot != null)
             {
                 visualBaseLocalPosition = visualRoot.localPosition;
+                if (HeroDirectionalArt.Available)
+                {
+                    // The new frame pivot is on the sole, unlike the old centered artwork.
+                    visualBaseLocalPosition.y = 0f;
+                    visualRoot.localPosition = visualBaseLocalPosition;
+                    SpriteRenderer renderer = visualRoot.GetComponent<SpriteRenderer>();
+                    if (renderer != null)
+                    {
+                        renderer.sprite = HeroDirectionalArt.Frame(6, false, 0);
+                        renderer.flipX = false;
+                    }
+                }
             }
 
             ApplyResponsiveVisualScale(true);
@@ -101,7 +120,11 @@ namespace WuxiaRoguelite.Player
             nextPosition.y = groundY;
             body.MovePosition(nextPosition);
 
-            float targetLift = MainMapBridgeSurface.GetVisualLift(nextPosition);
+            float targetLift = followTutorialRestStopHeight
+                ? TutorialRestStopLayout.SurfaceHeight(nextPosition.x, nextPosition.z)
+                : followBambooValleyHeight
+                ? BambooValleyLayout.SurfaceHeight(nextPosition.x, nextPosition.z)
+                : MainMapBridgeSurface.GetVisualLift(nextPosition);
             visualBridgeLift = Mathf.MoveTowards(
                 visualBridgeLift,
                 targetLift,

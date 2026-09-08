@@ -1,0 +1,3854 @@
+{
+  "materials": [
+    {
+      "name": "BV_M00",
+      "source": "Earth \u2022 shaded loam.003",
+      "color": [
+        0.1899999976158142,
+        0.22499999403953552,
+        0.10499999672174454,
+        1.0
+      ],
+      "roughness": 0.699999988079071,
+      "emission": 0.0
+    },
+    {
+      "name": "BV_M01",
+      "source": "Rock \u2022 charcoal cliff.002",
+      "color": [
+        0.20000000298023224,
+        0.25,
+        0.23499999940395355,
+        1.0
+      ],
+      "roughness": 0.699999988079071,
+      "emission": 0.0
+    },
+    {
+      "name": "BV_M02",
+      "source": "Moss \u2022 jade olive.002",
+      "color": [
+        0.20000000298023224,
+        0.28999999165534973,
+        0.07500000298023224,
+        1.0
+      ],
+      "roughness": 0.699999988079071,
+      "emission": 0.0
+    },
+    {
+      "name": "BV_M03",
+      "source": "Water \u2022 deep turquoise.002",
+      "color": [
+        0.02500000037252903,
+        0.20000000298023224,
+        0.20499999821186066,
+        1.0
+      ],
+      "roughness": 0.1899999976158142,
+      "emission": 0.0
+    },
+    {
+      "name": "BV_M04",
+      "source": "Foam \u2022 silver jade.002",
+      "color": [
+        0.49000000953674316,
+        0.7699999809265137,
+        0.7200000286102295,
+        1.0
+      ],
+      "roughness": 0.30000001192092896,
+      "emission": 0.11999999731779099
+    },
+    {
+      "name": "BV_M05",
+      "source": "Stone \u2022 pale worn flags.002",
+      "color": [
+        0.47999998927116394,
+        0.46000000834465027,
+        0.3499999940395355,
+        1.0
+      ],
+      "roughness": 0.699999988079071,
+      "emission": 0.0
+    },
+    {
+      "name": "BV_M06",
+      "source": "Wood \u2022 honey edges.002",
+      "color": [
+        0.41999998688697815,
+        0.24500000476837158,
+        0.10000000149011612,
+        1.0
+      ],
+      "roughness": 0.699999988079071,
+      "emission": 0.0
+    },
+    {
+      "name": "BV_M07",
+      "source": "Wood \u2022 aged cedar.002",
+      "color": [
+        0.23499999940395355,
+        0.1080000028014183,
+        0.04500000178813934,
+        1.0
+      ],
+      "roughness": 0.699999988079071,
+      "emission": 0.0
+    },
+    {
+      "name": "BV_M08",
+      "source": "Stone \u2022 blue limestone.002",
+      "color": [
+        0.3199999928474426,
+        0.3700000047683716,
+        0.3499999940395355,
+        1.0
+      ],
+      "roughness": 0.699999988079071,
+      "emission": 0.0
+    },
+    {
+      "name": "BV_M09",
+      "source": "Lantern \u2022 amber silk.002",
+      "color": [
+        1.0,
+        0.4000000059604645,
+        0.06499999761581421,
+        1.0
+      ],
+      "roughness": 0.4000000059604645,
+      "emission": 4.0
+    },
+    {
+      "name": "BV_M10",
+      "source": "Roof \u2022 midnight ceramic.002",
+      "color": [
+        0.06499999761581421,
+        0.125,
+        0.15000000596046448,
+        1.0
+      ],
+      "roughness": 0.3799999952316284,
+      "emission": 0.0
+    },
+    {
+      "name": "BV_M11",
+      "source": "Roof \u2022 patina ridges.002",
+      "color": [
+        0.1599999964237213,
+        0.23499999940395355,
+        0.23499999940395355,
+        1.0
+      ],
+      "roughness": 0.4399999976158142,
+      "emission": 0.0
+    },
+    {
+      "name": "BV_M12",
+      "source": "Fabric \u2022 worn flax.002",
+      "color": [
+        0.47999998927116394,
+        0.4000000059604645,
+        0.24500000476837158,
+        1.0
+      ],
+      "roughness": 0.699999988079071,
+      "emission": 0.0
+    },
+    {
+      "name": "BV_M13",
+      "source": "Iron \u2022 blackened.002",
+      "color": [
+        0.054999999701976776,
+        0.0729999989271164,
+        0.06499999761581421,
+        1.0
+      ],
+      "roughness": 0.4000000059604645,
+      "emission": 0.0
+    },
+    {
+      "name": "BV_M14",
+      "source": "Fabric \u2022 oxblood.002",
+      "color": [
+        0.38999998569488525,
+        0.054999999701976776,
+        0.02500000037252903,
+        1.0
+      ],
+      "roughness": 0.699999988079071,
+      "emission": 0.0
+    },
+    {
+      "name": "BV_M15",
+      "source": "Fire \u2022 gold.002",
+      "color": [
+        1.0,
+        0.15000000596046448,
+        0.00800000037997961,
+        1.0
+      ],
+      "roughness": 0.699999988079071,
+      "emission": 7.0
+    },
+    {
+      "name": "BV_M16",
+      "source": "Bamboo \u2022 forest green.002",
+      "color": [
+        0.0949999988079071,
+        0.23499999940395355,
+        0.06499999761581421,
+        1.0
+      ],
+      "roughness": 0.699999988079071,
+      "emission": 0.0
+    },
+    {
+      "name": "BV_M17",
+      "source": "Bamboo \u2022 golden nodes.002",
+      "color": [
+        0.30000001192092896,
+        0.38499999046325684,
+        0.11999999731779099,
+        1.0
+      ],
+      "roughness": 0.699999988079071,
+      "emission": 0.0
+    },
+    {
+      "name": "BV_M18",
+      "source": "Foliage 0.002",
+      "color": [
+        0.14000000059604645,
+        0.27000001072883606,
+        0.06499999761581421,
+        1.0
+      ],
+      "roughness": 0.699999988079071,
+      "emission": 0.0
+    },
+    {
+      "name": "BV_M19",
+      "source": "Foliage 1.002",
+      "color": [
+        0.25,
+        0.36000001430511475,
+        0.08500000089406967,
+        1.0
+      ],
+      "roughness": 0.699999988079071,
+      "emission": 0.0
+    },
+    {
+      "name": "BV_M20",
+      "source": "Foliage 2.002",
+      "color": [
+        0.36000001430511475,
+        0.41999998688697815,
+        0.11999999731779099,
+        1.0
+      ],
+      "roughness": 0.699999988079071,
+      "emission": 0.0
+    },
+    {
+      "name": "BV_M21",
+      "source": "Foliage 3.002",
+      "color": [
+        0.07500000298023224,
+        0.1899999976158142,
+        0.06499999761581421,
+        1.0
+      ],
+      "roughness": 0.699999988079071,
+      "emission": 0.0
+    }
+  ],
+  "meshes": [
+    {
+      "name": "BV_01_000_00",
+      "group": 1,
+      "vertices": 8101,
+      "polygons": 7916
+    },
+    {
+      "name": "BV_02_001_00",
+      "group": 2,
+      "vertices": 3444,
+      "polygons": 6560
+    },
+    {
+      "name": "BV_02_002_00",
+      "group": 2,
+      "vertices": 1236,
+      "polygons": 1065
+    },
+    {
+      "name": "BV_03_003_00",
+      "group": 3,
+      "vertices": 222,
+      "polygons": 110
+    },
+    {
+      "name": "BV_03_004_00",
+      "group": 3,
+      "vertices": 5120,
+      "polygons": 3840
+    },
+    {
+      "name": "BV_04_005_00",
+      "group": 4,
+      "vertices": 6930,
+      "polygons": 13200
+    },
+    {
+      "name": "BV_04_006_00",
+      "group": 4,
+      "vertices": 2479,
+      "polygons": 2074
+    },
+    {
+      "name": "BV_05_007_00",
+      "group": 5,
+      "vertices": 3384,
+      "polygons": 2538
+    },
+    {
+      "name": "BV_06_008_00",
+      "group": 6,
+      "vertices": 552,
+      "polygons": 378
+    },
+    {
+      "name": "BV_06_009_00",
+      "group": 6,
+      "vertices": 2208,
+      "polygons": 1468
+    },
+    {
+      "name": "BV_06_010_00",
+      "group": 6,
+      "vertices": 32,
+      "polygons": 24
+    },
+    {
+      "name": "BV_06_011_00",
+      "group": 6,
+      "vertices": 32,
+      "polygons": 24
+    },
+    {
+      "name": "BV_06_012_00",
+      "group": 6,
+      "vertices": 32,
+      "polygons": 24
+    },
+    {
+      "name": "BV_07_013_00",
+      "group": 7,
+      "vertices": 552,
+      "polygons": 378
+    },
+    {
+      "name": "BV_07_014_00",
+      "group": 7,
+      "vertices": 2208,
+      "polygons": 1468
+    },
+    {
+      "name": "BV_07_015_00",
+      "group": 7,
+      "vertices": 32,
+      "polygons": 24
+    },
+    {
+      "name": "BV_07_016_00",
+      "group": 7,
+      "vertices": 32,
+      "polygons": 24
+    },
+    {
+      "name": "BV_07_017_00",
+      "group": 7,
+      "vertices": 32,
+      "polygons": 24
+    },
+    {
+      "name": "BV_08_018_00",
+      "group": 8,
+      "vertices": 52,
+      "polygons": 36
+    },
+    {
+      "name": "BV_08_019_00",
+      "group": 8,
+      "vertices": 112,
+      "polygons": 72
+    },
+    {
+      "name": "BV_08_020_00",
+      "group": 8,
+      "vertices": 600,
+      "polygons": 380
+    },
+    {
+      "name": "BV_08_021_00",
+      "group": 8,
+      "vertices": 594,
+      "polygons": 432
+    },
+    {
+      "name": "BV_08_022_00",
+      "group": 8,
+      "vertices": 1186,
+      "polygons": 1020
+    },
+    {
+      "name": "BV_08_023_00",
+      "group": 8,
+      "vertices": 12336,
+      "polygons": 8580
+    },
+    {
+      "name": "BV_08_024_00",
+      "group": 8,
+      "vertices": 16,
+      "polygons": 12
+    },
+    {
+      "name": "BV_09_025_00",
+      "group": 9,
+      "vertices": 40,
+      "polygons": 30
+    },
+    {
+      "name": "BV_09_026_00",
+      "group": 9,
+      "vertices": 8,
+      "polygons": 6
+    },
+    {
+      "name": "BV_09_027_00",
+      "group": 9,
+      "vertices": 936,
+      "polygons": 598
+    },
+    {
+      "name": "BV_09_028_00",
+      "group": 9,
+      "vertices": 100,
+      "polygons": 172
+    },
+    {
+      "name": "BV_09_029_00",
+      "group": 9,
+      "vertices": 592,
+      "polygons": 404
+    },
+    {
+      "name": "BV_09_030_00",
+      "group": 9,
+      "vertices": 92,
+      "polygons": 80
+    },
+    {
+      "name": "BV_09_031_00",
+      "group": 9,
+      "vertices": 19904,
+      "polygons": 13900
+    },
+    {
+      "name": "BV_09_032_00",
+      "group": 9,
+      "vertices": 16,
+      "polygons": 12
+    },
+    {
+      "name": "BV_09_033_00",
+      "group": 9,
+      "vertices": 32,
+      "polygons": 24
+    },
+    {
+      "name": "BV_11_034_00",
+      "group": 11,
+      "vertices": 1420,
+      "polygons": 2656
+    },
+    {
+      "name": "BV_11_035_00",
+      "group": 11,
+      "vertices": 8,
+      "polygons": 6
+    },
+    {
+      "name": "BV_11_036_00",
+      "group": 11,
+      "vertices": 498,
+      "polygons": 445
+    },
+    {
+      "name": "BV_11_037_00",
+      "group": 11,
+      "vertices": 96,
+      "polygons": 68
+    },
+    {
+      "name": "BV_11_038_00",
+      "group": 11,
+      "vertices": 16,
+      "polygons": 12
+    },
+    {
+      "name": "BV_11_039_00",
+      "group": 11,
+      "vertices": 16,
+      "polygons": 12
+    },
+    {
+      "name": "BV_11_040_00",
+      "group": 11,
+      "vertices": 32,
+      "polygons": 24
+    },
+    {
+      "name": "BV_11_041_00",
+      "group": 11,
+      "vertices": 16,
+      "polygons": 12
+    },
+    {
+      "name": "BV_11_042_00",
+      "group": 11,
+      "vertices": 56,
+      "polygons": 42
+    },
+    {
+      "name": "BV_10_043_00",
+      "group": 10,
+      "vertices": 3120,
+      "polygons": 2184
+    },
+    {
+      "name": "BV_10_044_00",
+      "group": 10,
+      "vertices": 232,
+      "polygons": 144
+    },
+    {
+      "name": "BV_12_045_00",
+      "group": 12,
+      "vertices": 592,
+      "polygons": 428
+    },
+    {
+      "name": "BV_12_046_00",
+      "group": 12,
+      "vertices": 592,
+      "polygons": 428
+    },
+    {
+      "name": "BV_12_047_00",
+      "group": 12,
+      "vertices": 592,
+      "polygons": 428
+    },
+    {
+      "name": "BV_12_048_00",
+      "group": 12,
+      "vertices": 592,
+      "polygons": 428
+    },
+    {
+      "name": "BV_12_049_00",
+      "group": 12,
+      "vertices": 592,
+      "polygons": 428
+    },
+    {
+      "name": "BV_12_050_00",
+      "group": 12,
+      "vertices": 80,
+      "polygons": 50
+    },
+    {
+      "name": "BV_12_051_00",
+      "group": 12,
+      "vertices": 80,
+      "polygons": 50
+    },
+    {
+      "name": "BV_12_052_00",
+      "group": 12,
+      "vertices": 585,
+      "polygons": 480
+    },
+    {
+      "name": "BV_13_053_00",
+      "group": 13,
+      "vertices": 76,
+      "polygons": 54
+    },
+    {
+      "name": "BV_13_054_00",
+      "group": 13,
+      "vertices": 186,
+      "polygons": 123
+    },
+    {
+      "name": "BV_13_055_00",
+      "group": 13,
+      "vertices": 462,
+      "polygons": 880
+    },
+    {
+      "name": "BV_13_056_00",
+      "group": 13,
+      "vertices": 70,
+      "polygons": 49
+    },
+    {
+      "name": "BV_15_057_00",
+      "group": 15,
+      "vertices": 32,
+      "polygons": 24
+    },
+    {
+      "name": "BV_15_058_00",
+      "group": 15,
+      "vertices": 144,
+      "polygons": 98
+    },
+    {
+      "name": "BV_15_059_00",
+      "group": 15,
+      "vertices": 88,
+      "polygons": 62
+    },
+    {
+      "name": "BV_15_060_00",
+      "group": 15,
+      "vertices": 48,
+      "polygons": 40
+    },
+    {
+      "name": "BV_15_061_00",
+      "group": 15,
+      "vertices": 4300,
+      "polygons": 2996
+    },
+    {
+      "name": "BV_15_062_00",
+      "group": 15,
+      "vertices": 16,
+      "polygons": 12
+    },
+    {
+      "name": "BV_17_063_00",
+      "group": 17,
+      "vertices": 624,
+      "polygons": 442
+    },
+    {
+      "name": "BV_17_064_00",
+      "group": 17,
+      "vertices": 104,
+      "polygons": 78
+    },
+    {
+      "name": "BV_17_065_00",
+      "group": 17,
+      "vertices": 104,
+      "polygons": 78
+    },
+    {
+      "name": "BV_17_066_00",
+      "group": 17,
+      "vertices": 208,
+      "polygons": 156
+    },
+    {
+      "name": "BV_17_067_00",
+      "group": 17,
+      "vertices": 104,
+      "polygons": 78
+    },
+    {
+      "name": "BV_14_068_00",
+      "group": 14,
+      "vertices": 700,
+      "polygons": 523
+    },
+    {
+      "name": "BV_14_069_00",
+      "group": 14,
+      "vertices": 1456,
+      "polygons": 996
+    },
+    {
+      "name": "BV_14_070_00",
+      "group": 14,
+      "vertices": 2400,
+      "polygons": 1680
+    },
+    {
+      "name": "BV_16_071_00",
+      "group": 16,
+      "vertices": 1744,
+      "polygons": 1090
+    },
+    {
+      "name": "BV_16_072_00",
+      "group": 16,
+      "vertices": 688,
+      "polygons": 430
+    },
+    {
+      "name": "BV_18_073_00",
+      "group": 18,
+      "vertices": 4532,
+      "polygons": 2941
+    },
+    {
+      "name": "BV_18_074_01",
+      "group": 18,
+      "vertices": 3157,
+      "polygons": 2030
+    },
+    {
+      "name": "BV_18_075_02",
+      "group": 18,
+      "vertices": 4716,
+      "polygons": 3081
+    },
+    {
+      "name": "BV_18_076_03",
+      "group": 18,
+      "vertices": 1653,
+      "polygons": 1021
+    },
+    {
+      "name": "BV_18_077_04",
+      "group": 18,
+      "vertices": 1373,
+      "polygons": 900
+    },
+    {
+      "name": "BV_18_078_05",
+      "group": 18,
+      "vertices": 45,
+      "polygons": 13
+    },
+    {
+      "name": "BV_18_079_06",
+      "group": 18,
+      "vertices": 199,
+      "polygons": 88
+    },
+    {
+      "name": "BV_18_080_07",
+      "group": 18,
+      "vertices": 76,
+      "polygons": 34
+    },
+    {
+      "name": "BV_18_081_08",
+      "group": 18,
+      "vertices": 418,
+      "polygons": 244
+    },
+    {
+      "name": "BV_18_082_09",
+      "group": 18,
+      "vertices": 45,
+      "polygons": 24
+    },
+    {
+      "name": "BV_18_083_10",
+      "group": 18,
+      "vertices": 563,
+      "polygons": 364
+    },
+    {
+      "name": "BV_18_084_11",
+      "group": 18,
+      "vertices": 381,
+      "polygons": 215
+    },
+    {
+      "name": "BV_18_085_12",
+      "group": 18,
+      "vertices": 253,
+      "polygons": 154
+    },
+    {
+      "name": "BV_18_086_00",
+      "group": 18,
+      "vertices": 2382,
+      "polygons": 1515
+    },
+    {
+      "name": "BV_18_087_01",
+      "group": 18,
+      "vertices": 2652,
+      "polygons": 1695
+    },
+    {
+      "name": "BV_18_088_02",
+      "group": 18,
+      "vertices": 840,
+      "polygons": 534
+    },
+    {
+      "name": "BV_18_089_03",
+      "group": 18,
+      "vertices": 798,
+      "polygons": 513
+    },
+    {
+      "name": "BV_18_090_04",
+      "group": 18,
+      "vertices": 1564,
+      "polygons": 1002
+    },
+    {
+      "name": "BV_18_091_05",
+      "group": 18,
+      "vertices": 84,
+      "polygons": 42
+    },
+    {
+      "name": "BV_18_092_06",
+      "group": 18,
+      "vertices": 14,
+      "polygons": 6
+    },
+    {
+      "name": "BV_18_093_07",
+      "group": 18,
+      "vertices": 190,
+      "polygons": 120
+    },
+    {
+      "name": "BV_18_094_08",
+      "group": 18,
+      "vertices": 290,
+      "polygons": 182
+    },
+    {
+      "name": "BV_18_095_09",
+      "group": 18,
+      "vertices": 168,
+      "polygons": 95
+    },
+    {
+      "name": "BV_18_096_10",
+      "group": 18,
+      "vertices": 158,
+      "polygons": 92
+    },
+    {
+      "name": "BV_18_097_00",
+      "group": 18,
+      "vertices": 1752,
+      "polygons": 816
+    },
+    {
+      "name": "BV_18_098_01",
+      "group": 18,
+      "vertices": 1320,
+      "polygons": 620
+    },
+    {
+      "name": "BV_18_099_02",
+      "group": 18,
+      "vertices": 1719,
+      "polygons": 805
+    },
+    {
+      "name": "BV_18_100_03",
+      "group": 18,
+      "vertices": 652,
+      "polygons": 304
+    },
+    {
+      "name": "BV_18_101_04",
+      "group": 18,
+      "vertices": 402,
+      "polygons": 188
+    },
+    {
+      "name": "BV_18_102_05",
+      "group": 18,
+      "vertices": 28,
+      "polygons": 12
+    },
+    {
+      "name": "BV_18_103_06",
+      "group": 18,
+      "vertices": 73,
+      "polygons": 35
+    },
+    {
+      "name": "BV_18_104_07",
+      "group": 18,
+      "vertices": 26,
+      "polygons": 12
+    },
+    {
+      "name": "BV_18_105_08",
+      "group": 18,
+      "vertices": 155,
+      "polygons": 71
+    },
+    {
+      "name": "BV_18_106_09",
+      "group": 18,
+      "vertices": 31,
+      "polygons": 15
+    },
+    {
+      "name": "BV_18_107_10",
+      "group": 18,
+      "vertices": 233,
+      "polygons": 109
+    },
+    {
+      "name": "BV_18_108_11",
+      "group": 18,
+      "vertices": 133,
+      "polygons": 61
+    },
+    {
+      "name": "BV_18_109_12",
+      "group": 18,
+      "vertices": 102,
+      "polygons": 46
+    },
+    {
+      "name": "BV_18_110_00",
+      "group": 18,
+      "vertices": 1698,
+      "polygons": 792
+    },
+    {
+      "name": "BV_18_111_01",
+      "group": 18,
+      "vertices": 1238,
+      "polygons": 588
+    },
+    {
+      "name": "BV_18_112_02",
+      "group": 18,
+      "vertices": 1549,
+      "polygons": 719
+    },
+    {
+      "name": "BV_18_113_03",
+      "group": 18,
+      "vertices": 649,
+      "polygons": 305
+    },
+    {
+      "name": "BV_18_114_04",
+      "group": 18,
+      "vertices": 522,
+      "polygons": 244
+    },
+    {
+      "name": "BV_18_115_05",
+      "group": 18,
+      "vertices": 34,
+      "polygons": 16
+    },
+    {
+      "name": "BV_18_116_06",
+      "group": 18,
+      "vertices": 104,
+      "polygons": 46
+    },
+    {
+      "name": "BV_18_117_07",
+      "group": 18,
+      "vertices": 34,
+      "polygons": 16
+    },
+    {
+      "name": "BV_18_118_08",
+      "group": 18,
+      "vertices": 152,
+      "polygons": 74
+    },
+    {
+      "name": "BV_18_119_09",
+      "group": 18,
+      "vertices": 30,
+      "polygons": 14
+    },
+    {
+      "name": "BV_18_120_10",
+      "group": 18,
+      "vertices": 195,
+      "polygons": 87
+    },
+    {
+      "name": "BV_18_121_11",
+      "group": 18,
+      "vertices": 99,
+      "polygons": 45
+    },
+    {
+      "name": "BV_18_122_12",
+      "group": 18,
+      "vertices": 90,
+      "polygons": 42
+    },
+    {
+      "name": "BV_18_123_00",
+      "group": 18,
+      "vertices": 1579,
+      "polygons": 739
+    },
+    {
+      "name": "BV_18_124_01",
+      "group": 18,
+      "vertices": 1693,
+      "polygons": 793
+    },
+    {
+      "name": "BV_18_125_02",
+      "group": 18,
+      "vertices": 593,
+      "polygons": 279
+    },
+    {
+      "name": "BV_18_126_03",
+      "group": 18,
+      "vertices": 425,
+      "polygons": 201
+    },
+    {
+      "name": "BV_18_127_04",
+      "group": 18,
+      "vertices": 1208,
+      "polygons": 560
+    },
+    {
+      "name": "BV_18_128_05",
+      "group": 18,
+      "vertices": 31,
+      "polygons": 15
+    },
+    {
+      "name": "BV_18_129_06",
+      "group": 18,
+      "vertices": 111,
+      "polygons": 51
+    },
+    {
+      "name": "BV_18_130_07",
+      "group": 18,
+      "vertices": 55,
+      "polygons": 25
+    },
+    {
+      "name": "BV_18_131_08",
+      "group": 18,
+      "vertices": 146,
+      "polygons": 68
+    },
+    {
+      "name": "BV_18_132_09",
+      "group": 18,
+      "vertices": 22,
+      "polygons": 10
+    },
+    {
+      "name": "BV_18_133_10",
+      "group": 18,
+      "vertices": 262,
+      "polygons": 122
+    },
+    {
+      "name": "BV_18_134_11",
+      "group": 18,
+      "vertices": 116,
+      "polygons": 52
+    },
+    {
+      "name": "BV_18_135_12",
+      "group": 18,
+      "vertices": 87,
+      "polygons": 41
+    },
+    {
+      "name": "BV_18_136_00",
+      "group": 18,
+      "vertices": 1744,
+      "polygons": 816
+    },
+    {
+      "name": "BV_18_137_01",
+      "group": 18,
+      "vertices": 1386,
+      "polygons": 648
+    },
+    {
+      "name": "BV_18_138_02",
+      "group": 18,
+      "vertices": 1648,
+      "polygons": 764
+    },
+    {
+      "name": "BV_18_139_03",
+      "group": 18,
+      "vertices": 661,
+      "polygons": 311
+    },
+    {
+      "name": "BV_18_140_04",
+      "group": 18,
+      "vertices": 434,
+      "polygons": 200
+    },
+    {
+      "name": "BV_18_141_05",
+      "group": 18,
+      "vertices": 26,
+      "polygons": 12
+    },
+    {
+      "name": "BV_18_142_06",
+      "group": 18,
+      "vertices": 92,
+      "polygons": 44
+    },
+    {
+      "name": "BV_18_143_07",
+      "group": 18,
+      "vertices": 27,
+      "polygons": 13
+    },
+    {
+      "name": "BV_18_144_08",
+      "group": 18,
+      "vertices": 135,
+      "polygons": 67
+    },
+    {
+      "name": "BV_18_145_09",
+      "group": 18,
+      "vertices": 37,
+      "polygons": 17
+    },
+    {
+      "name": "BV_18_146_10",
+      "group": 18,
+      "vertices": 220,
+      "polygons": 102
+    },
+    {
+      "name": "BV_18_147_11",
+      "group": 18,
+      "vertices": 149,
+      "polygons": 71
+    },
+    {
+      "name": "BV_18_148_12",
+      "group": 18,
+      "vertices": 81,
+      "polygons": 39
+    },
+    {
+      "name": "BV_18_149_00",
+      "group": 18,
+      "vertices": 8943,
+      "polygons": 5748
+    },
+    {
+      "name": "BV_18_150_01",
+      "group": 18,
+      "vertices": 1710,
+      "polygons": 1092
+    },
+    {
+      "name": "BV_18_151_02",
+      "group": 18,
+      "vertices": 7937,
+      "polygons": 5147
+    },
+    {
+      "name": "BV_18_152_03",
+      "group": 18,
+      "vertices": 3015,
+      "polygons": 1942
+    },
+    {
+      "name": "BV_18_153_04",
+      "group": 18,
+      "vertices": 254,
+      "polygons": 139
+    },
+    {
+      "name": "BV_18_154_05",
+      "group": 18,
+      "vertices": 6206,
+      "polygons": 4060
+    },
+    {
+      "name": "BV_18_155_06",
+      "group": 18,
+      "vertices": 3505,
+      "polygons": 2229
+    },
+    {
+      "name": "BV_18_156_07",
+      "group": 18,
+      "vertices": 6024,
+      "polygons": 3929
+    },
+    {
+      "name": "BV_18_157_08",
+      "group": 18,
+      "vertices": 144,
+      "polygons": 61
+    },
+    {
+      "name": "BV_18_158_09",
+      "group": 18,
+      "vertices": 3551,
+      "polygons": 2294
+    },
+    {
+      "name": "BV_18_159_10",
+      "group": 18,
+      "vertices": 3113,
+      "polygons": 2028
+    },
+    {
+      "name": "BV_18_160_11",
+      "group": 18,
+      "vertices": 85,
+      "polygons": 41
+    },
+    {
+      "name": "BV_18_161_12",
+      "group": 18,
+      "vertices": 5,
+      "polygons": 1
+    },
+    {
+      "name": "BV_18_162_13",
+      "group": 18,
+      "vertices": 85,
+      "polygons": 43
+    },
+    {
+      "name": "BV_18_163_14",
+      "group": 18,
+      "vertices": 5,
+      "polygons": 1
+    },
+    {
+      "name": "BV_18_164_00",
+      "group": 18,
+      "vertices": 5508,
+      "polygons": 3504
+    },
+    {
+      "name": "BV_18_165_01",
+      "group": 18,
+      "vertices": 4800,
+      "polygons": 3061
+    },
+    {
+      "name": "BV_18_166_02",
+      "group": 18,
+      "vertices": 1812,
+      "polygons": 1153
+    },
+    {
+      "name": "BV_18_167_03",
+      "group": 18,
+      "vertices": 1092,
+      "polygons": 695
+    },
+    {
+      "name": "BV_18_168_04",
+      "group": 18,
+      "vertices": 3752,
+      "polygons": 2397
+    },
+    {
+      "name": "BV_18_169_05",
+      "group": 18,
+      "vertices": 3850,
+      "polygons": 2463
+    },
+    {
+      "name": "BV_18_170_06",
+      "group": 18,
+      "vertices": 2256,
+      "polygons": 1436
+    },
+    {
+      "name": "BV_18_171_07",
+      "group": 18,
+      "vertices": 2162,
+      "polygons": 1372
+    },
+    {
+      "name": "BV_18_172_08",
+      "group": 18,
+      "vertices": 1906,
+      "polygons": 1220
+    },
+    {
+      "name": "BV_18_173_09",
+      "group": 18,
+      "vertices": 8,
+      "polygons": 3
+    },
+    {
+      "name": "BV_18_174_10",
+      "group": 18,
+      "vertices": 48,
+      "polygons": 25
+    },
+    {
+      "name": "BV_18_175_11",
+      "group": 18,
+      "vertices": 14,
+      "polygons": 7
+    },
+    {
+      "name": "BV_18_176_12",
+      "group": 18,
+      "vertices": 34,
+      "polygons": 16
+    },
+    {
+      "name": "BV_18_177_00",
+      "group": 18,
+      "vertices": 2892,
+      "polygons": 1362
+    },
+    {
+      "name": "BV_18_178_01",
+      "group": 18,
+      "vertices": 397,
+      "polygons": 183
+    },
+    {
+      "name": "BV_18_179_02",
+      "group": 18,
+      "vertices": 2619,
+      "polygons": 1215
+    },
+    {
+      "name": "BV_18_180_03",
+      "group": 18,
+      "vertices": 962,
+      "polygons": 450
+    },
+    {
+      "name": "BV_18_181_04",
+      "group": 18,
+      "vertices": 155,
+      "polygons": 75
+    },
+    {
+      "name": "BV_18_182_05",
+      "group": 18,
+      "vertices": 2144,
+      "polygons": 990
+    },
+    {
+      "name": "BV_18_183_06",
+      "group": 18,
+      "vertices": 1051,
+      "polygons": 489
+    },
+    {
+      "name": "BV_18_184_07",
+      "group": 18,
+      "vertices": 59,
+      "polygons": 27
+    },
+    {
+      "name": "BV_18_185_08",
+      "group": 18,
+      "vertices": 1804,
+      "polygons": 840
+    },
+    {
+      "name": "BV_18_186_09",
+      "group": 18,
+      "vertices": 1056,
+      "polygons": 492
+    },
+    {
+      "name": "BV_18_187_10",
+      "group": 18,
+      "vertices": 939,
+      "polygons": 435
+    },
+    {
+      "name": "BV_18_188_11",
+      "group": 18,
+      "vertices": 58,
+      "polygons": 26
+    },
+    {
+      "name": "BV_18_189_12",
+      "group": 18,
+      "vertices": 106,
+      "polygons": 48
+    },
+    {
+      "name": "BV_18_190_00",
+      "group": 18,
+      "vertices": 2642,
+      "polygons": 1222
+    },
+    {
+      "name": "BV_18_191_01",
+      "group": 18,
+      "vertices": 468,
+      "polygons": 220
+    },
+    {
+      "name": "BV_18_192_02",
+      "group": 18,
+      "vertices": 2644,
+      "polygons": 1234
+    },
+    {
+      "name": "BV_18_193_03",
+      "group": 18,
+      "vertices": 926,
+      "polygons": 438
+    },
+    {
+      "name": "BV_18_194_04",
+      "group": 18,
+      "vertices": 164,
+      "polygons": 78
+    },
+    {
+      "name": "BV_18_195_05",
+      "group": 18,
+      "vertices": 2060,
+      "polygons": 968
+    },
+    {
+      "name": "BV_18_196_06",
+      "group": 18,
+      "vertices": 1039,
+      "polygons": 489
+    },
+    {
+      "name": "BV_18_197_07",
+      "group": 18,
+      "vertices": 4,
+      "polygons": 2
+    },
+    {
+      "name": "BV_18_198_08",
+      "group": 18,
+      "vertices": 1686,
+      "polygons": 788
+    },
+    {
+      "name": "BV_18_199_09",
+      "group": 18,
+      "vertices": 1063,
+      "polygons": 489
+    },
+    {
+      "name": "BV_18_200_10",
+      "group": 18,
+      "vertices": 1068,
+      "polygons": 504
+    },
+    {
+      "name": "BV_18_201_11",
+      "group": 18,
+      "vertices": 80,
+      "polygons": 38
+    },
+    {
+      "name": "BV_18_202_12",
+      "group": 18,
+      "vertices": 115,
+      "polygons": 55
+    },
+    {
+      "name": "BV_18_203_13",
+      "group": 18,
+      "vertices": 64,
+      "polygons": 30
+    },
+    {
+      "name": "BV_18_204_14",
+      "group": 18,
+      "vertices": 3,
+      "polygons": 1
+    },
+    {
+      "name": "BV_18_205_00",
+      "group": 18,
+      "vertices": 2679,
+      "polygons": 1265
+    },
+    {
+      "name": "BV_18_206_01",
+      "group": 18,
+      "vertices": 519,
+      "polygons": 245
+    },
+    {
+      "name": "BV_18_207_02",
+      "group": 18,
+      "vertices": 2591,
+      "polygons": 1215
+    },
+    {
+      "name": "BV_18_208_03",
+      "group": 18,
+      "vertices": 984,
+      "polygons": 460
+    },
+    {
+      "name": "BV_18_209_04",
+      "group": 18,
+      "vertices": 197,
+      "polygons": 91
+    },
+    {
+      "name": "BV_18_210_05",
+      "group": 18,
+      "vertices": 1841,
+      "polygons": 863
+    },
+    {
+      "name": "BV_18_211_06",
+      "group": 18,
+      "vertices": 1010,
+      "polygons": 466
+    },
+    {
+      "name": "BV_18_212_07",
+      "group": 18,
+      "vertices": 1813,
+      "polygons": 853
+    },
+    {
+      "name": "BV_18_213_08",
+      "group": 18,
+      "vertices": 1007,
+      "polygons": 477
+    },
+    {
+      "name": "BV_18_214_09",
+      "group": 18,
+      "vertices": 923,
+      "polygons": 425
+    },
+    {
+      "name": "BV_18_215_10",
+      "group": 18,
+      "vertices": 111,
+      "polygons": 53
+    },
+    {
+      "name": "BV_18_216_11",
+      "group": 18,
+      "vertices": 60,
+      "polygons": 28
+    },
+    {
+      "name": "BV_18_217_12",
+      "group": 18,
+      "vertices": 46,
+      "polygons": 22
+    },
+    {
+      "name": "BV_18_218_13",
+      "group": 18,
+      "vertices": 4,
+      "polygons": 2
+    },
+    {
+      "name": "BV_18_219_00",
+      "group": 18,
+      "vertices": 2662,
+      "polygons": 1246
+    },
+    {
+      "name": "BV_18_220_01",
+      "group": 18,
+      "vertices": 493,
+      "polygons": 235
+    },
+    {
+      "name": "BV_18_221_02",
+      "group": 18,
+      "vertices": 2427,
+      "polygons": 1139
+    },
+    {
+      "name": "BV_18_222_03",
+      "group": 18,
+      "vertices": 916,
+      "polygons": 430
+    },
+    {
+      "name": "BV_18_223_04",
+      "group": 18,
+      "vertices": 171,
+      "polygons": 81
+    },
+    {
+      "name": "BV_18_224_05",
+      "group": 18,
+      "vertices": 1968,
+      "polygons": 920
+    },
+    {
+      "name": "BV_18_225_06",
+      "group": 18,
+      "vertices": 57,
+      "polygons": 27
+    },
+    {
+      "name": "BV_18_226_07",
+      "group": 18,
+      "vertices": 988,
+      "polygons": 452
+    },
+    {
+      "name": "BV_18_227_08",
+      "group": 18,
+      "vertices": 1852,
+      "polygons": 862
+    },
+    {
+      "name": "BV_18_228_09",
+      "group": 18,
+      "vertices": 102,
+      "polygons": 48
+    },
+    {
+      "name": "BV_18_229_10",
+      "group": 18,
+      "vertices": 1042,
+      "polygons": 482
+    },
+    {
+      "name": "BV_18_230_11",
+      "group": 18,
+      "vertices": 981,
+      "polygons": 457
+    },
+    {
+      "name": "BV_18_231_12",
+      "group": 18,
+      "vertices": 57,
+      "polygons": 25
+    },
+    {
+      "name": "BV_18_232_13",
+      "group": 18,
+      "vertices": 11,
+      "polygons": 5
+    },
+    {
+      "name": "BV_18_233_00",
+      "group": 18,
+      "vertices": 16120,
+      "polygons": 10300
+    },
+    {
+      "name": "BV_18_234_01",
+      "group": 18,
+      "vertices": 7571,
+      "polygons": 4866
+    },
+    {
+      "name": "BV_18_235_02",
+      "group": 18,
+      "vertices": 18905,
+      "polygons": 12300
+    },
+    {
+      "name": "BV_18_236_03",
+      "group": 18,
+      "vertices": 11496,
+      "polygons": 7405
+    },
+    {
+      "name": "BV_18_237_04",
+      "group": 18,
+      "vertices": 675,
+      "polygons": 354
+    },
+    {
+      "name": "BV_18_238_05",
+      "group": 18,
+      "vertices": 405,
+      "polygons": 208
+    },
+    {
+      "name": "BV_18_239_06",
+      "group": 18,
+      "vertices": 1408,
+      "polygons": 902
+    },
+    {
+      "name": "BV_18_240_07",
+      "group": 18,
+      "vertices": 1001,
+      "polygons": 652
+    },
+    {
+      "name": "BV_18_241_08",
+      "group": 18,
+      "vertices": 4057,
+      "polygons": 2568
+    },
+    {
+      "name": "BV_18_242_09",
+      "group": 18,
+      "vertices": 1253,
+      "polygons": 786
+    },
+    {
+      "name": "BV_18_243_10",
+      "group": 18,
+      "vertices": 2105,
+      "polygons": 1367
+    },
+    {
+      "name": "BV_18_244_11",
+      "group": 18,
+      "vertices": 577,
+      "polygons": 331
+    },
+    {
+      "name": "BV_18_245_12",
+      "group": 18,
+      "vertices": 5,
+      "polygons": 1
+    },
+    {
+      "name": "BV_18_246_13",
+      "group": 18,
+      "vertices": 15,
+      "polygons": 3
+    },
+    {
+      "name": "BV_18_247_00",
+      "group": 18,
+      "vertices": 9938,
+      "polygons": 6268
+    },
+    {
+      "name": "BV_18_248_01",
+      "group": 18,
+      "vertices": 3836,
+      "polygons": 2446
+    },
+    {
+      "name": "BV_18_249_02",
+      "group": 18,
+      "vertices": 11950,
+      "polygons": 7635
+    },
+    {
+      "name": "BV_18_250_03",
+      "group": 18,
+      "vertices": 6712,
+      "polygons": 4258
+    },
+    {
+      "name": "BV_18_251_04",
+      "group": 18,
+      "vertices": 268,
+      "polygons": 154
+    },
+    {
+      "name": "BV_18_252_05",
+      "group": 18,
+      "vertices": 818,
+      "polygons": 521
+    },
+    {
+      "name": "BV_18_253_06",
+      "group": 18,
+      "vertices": 2130,
+      "polygons": 1355
+    },
+    {
+      "name": "BV_18_254_07",
+      "group": 18,
+      "vertices": 576,
+      "polygons": 366
+    },
+    {
+      "name": "BV_18_255_08",
+      "group": 18,
+      "vertices": 1190,
+      "polygons": 765
+    },
+    {
+      "name": "BV_18_256_09",
+      "group": 18,
+      "vertices": 62,
+      "polygons": 38
+    },
+    {
+      "name": "BV_18_257_10",
+      "group": 18,
+      "vertices": 596,
+      "polygons": 379
+    },
+    {
+      "name": "BV_18_258_11",
+      "group": 18,
+      "vertices": 272,
+      "polygons": 169
+    },
+    {
+      "name": "BV_18_259_00",
+      "group": 18,
+      "vertices": 4969,
+      "polygons": 2309
+    },
+    {
+      "name": "BV_18_260_01",
+      "group": 18,
+      "vertices": 3032,
+      "polygons": 1420
+    },
+    {
+      "name": "BV_18_261_02",
+      "group": 18,
+      "vertices": 5593,
+      "polygons": 2603
+    },
+    {
+      "name": "BV_18_262_03",
+      "group": 18,
+      "vertices": 3728,
+      "polygons": 1736
+    },
+    {
+      "name": "BV_18_263_04",
+      "group": 18,
+      "vertices": 264,
+      "polygons": 120
+    },
+    {
+      "name": "BV_18_264_05",
+      "group": 18,
+      "vertices": 194,
+      "polygons": 88
+    },
+    {
+      "name": "BV_18_265_06",
+      "group": 18,
+      "vertices": 376,
+      "polygons": 176
+    },
+    {
+      "name": "BV_18_266_07",
+      "group": 18,
+      "vertices": 452,
+      "polygons": 212
+    },
+    {
+      "name": "BV_18_267_08",
+      "group": 18,
+      "vertices": 1504,
+      "polygons": 706
+    },
+    {
+      "name": "BV_18_268_09",
+      "group": 18,
+      "vertices": 417,
+      "polygons": 199
+    },
+    {
+      "name": "BV_18_269_10",
+      "group": 18,
+      "vertices": 644,
+      "polygons": 302
+    },
+    {
+      "name": "BV_18_270_11",
+      "group": 18,
+      "vertices": 207,
+      "polygons": 97
+    },
+    {
+      "name": "BV_18_271_12",
+      "group": 18,
+      "vertices": 14,
+      "polygons": 6
+    },
+    {
+      "name": "BV_18_272_13",
+      "group": 18,
+      "vertices": 16,
+      "polygons": 8
+    },
+    {
+      "name": "BV_18_273_00",
+      "group": 18,
+      "vertices": 4975,
+      "polygons": 2319
+    },
+    {
+      "name": "BV_18_274_01",
+      "group": 18,
+      "vertices": 3069,
+      "polygons": 1431
+    },
+    {
+      "name": "BV_18_275_02",
+      "group": 18,
+      "vertices": 5768,
+      "polygons": 2688
+    },
+    {
+      "name": "BV_18_276_03",
+      "group": 18,
+      "vertices": 3849,
+      "polygons": 1813
+    },
+    {
+      "name": "BV_18_277_04",
+      "group": 18,
+      "vertices": 263,
+      "polygons": 125
+    },
+    {
+      "name": "BV_18_278_05",
+      "group": 18,
+      "vertices": 217,
+      "polygons": 101
+    },
+    {
+      "name": "BV_18_279_06",
+      "group": 18,
+      "vertices": 319,
+      "polygons": 149
+    },
+    {
+      "name": "BV_18_280_07",
+      "group": 18,
+      "vertices": 480,
+      "polygons": 226
+    },
+    {
+      "name": "BV_18_281_08",
+      "group": 18,
+      "vertices": 1535,
+      "polygons": 715
+    },
+    {
+      "name": "BV_18_282_09",
+      "group": 18,
+      "vertices": 577,
+      "polygons": 269
+    },
+    {
+      "name": "BV_18_283_10",
+      "group": 18,
+      "vertices": 749,
+      "polygons": 351
+    },
+    {
+      "name": "BV_18_284_11",
+      "group": 18,
+      "vertices": 216,
+      "polygons": 104
+    },
+    {
+      "name": "BV_18_285_12",
+      "group": 18,
+      "vertices": 19,
+      "polygons": 9
+    },
+    {
+      "name": "BV_18_286_00",
+      "group": 18,
+      "vertices": 4851,
+      "polygons": 2271
+    },
+    {
+      "name": "BV_18_287_01",
+      "group": 18,
+      "vertices": 2822,
+      "polygons": 1308
+    },
+    {
+      "name": "BV_18_288_02",
+      "group": 18,
+      "vertices": 5820,
+      "polygons": 2724
+    },
+    {
+      "name": "BV_18_289_03",
+      "group": 18,
+      "vertices": 3921,
+      "polygons": 1833
+    },
+    {
+      "name": "BV_18_290_04",
+      "group": 18,
+      "vertices": 261,
+      "polygons": 119
+    },
+    {
+      "name": "BV_18_291_05",
+      "group": 18,
+      "vertices": 212,
+      "polygons": 98
+    },
+    {
+      "name": "BV_18_292_06",
+      "group": 18,
+      "vertices": 375,
+      "polygons": 179
+    },
+    {
+      "name": "BV_18_293_07",
+      "group": 18,
+      "vertices": 474,
+      "polygons": 222
+    },
+    {
+      "name": "BV_18_294_08",
+      "group": 18,
+      "vertices": 1533,
+      "polygons": 713
+    },
+    {
+      "name": "BV_18_295_09",
+      "group": 18,
+      "vertices": 551,
+      "polygons": 255
+    },
+    {
+      "name": "BV_18_296_10",
+      "group": 18,
+      "vertices": 740,
+      "polygons": 348
+    },
+    {
+      "name": "BV_18_297_11",
+      "group": 18,
+      "vertices": 242,
+      "polygons": 114
+    },
+    {
+      "name": "BV_18_298_12",
+      "group": 18,
+      "vertices": 4,
+      "polygons": 2
+    },
+    {
+      "name": "BV_18_299_13",
+      "group": 18,
+      "vertices": 8,
+      "polygons": 4
+    },
+    {
+      "name": "BV_18_300_00",
+      "group": 18,
+      "vertices": 4753,
+      "polygons": 2221
+    },
+    {
+      "name": "BV_18_301_01",
+      "group": 18,
+      "vertices": 2882,
+      "polygons": 1346
+    },
+    {
+      "name": "BV_18_302_02",
+      "group": 18,
+      "vertices": 5551,
+      "polygons": 2571
+    },
+    {
+      "name": "BV_18_303_03",
+      "group": 18,
+      "vertices": 3940,
+      "polygons": 1848
+    },
+    {
+      "name": "BV_18_304_04",
+      "group": 18,
+      "vertices": 249,
+      "polygons": 117
+    },
+    {
+      "name": "BV_18_305_05",
+      "group": 18,
+      "vertices": 210,
+      "polygons": 98
+    },
+    {
+      "name": "BV_18_306_06",
+      "group": 18,
+      "vertices": 320,
+      "polygons": 146
+    },
+    {
+      "name": "BV_18_307_07",
+      "group": 18,
+      "vertices": 490,
+      "polygons": 228
+    },
+    {
+      "name": "BV_18_308_08",
+      "group": 18,
+      "vertices": 1406,
+      "polygons": 658
+    },
+    {
+      "name": "BV_18_309_09",
+      "group": 18,
+      "vertices": 516,
+      "polygons": 240
+    },
+    {
+      "name": "BV_18_310_10",
+      "group": 18,
+      "vertices": 819,
+      "polygons": 381
+    },
+    {
+      "name": "BV_18_311_11",
+      "group": 18,
+      "vertices": 193,
+      "polygons": 93
+    },
+    {
+      "name": "BV_18_312_12",
+      "group": 18,
+      "vertices": 4,
+      "polygons": 2
+    },
+    {
+      "name": "BV_18_313_13",
+      "group": 18,
+      "vertices": 21,
+      "polygons": 9
+    },
+    {
+      "name": "BV_18_314_00",
+      "group": 18,
+      "vertices": 3992,
+      "polygons": 2553
+    },
+    {
+      "name": "BV_18_315_01",
+      "group": 18,
+      "vertices": 11513,
+      "polygons": 7590
+    },
+    {
+      "name": "BV_18_316_02",
+      "group": 18,
+      "vertices": 5236,
+      "polygons": 3346
+    },
+    {
+      "name": "BV_18_317_03",
+      "group": 18,
+      "vertices": 1266,
+      "polygons": 779
+    },
+    {
+      "name": "BV_18_318_04",
+      "group": 18,
+      "vertices": 20,
+      "polygons": 4
+    },
+    {
+      "name": "BV_18_319_05",
+      "group": 18,
+      "vertices": 2381,
+      "polygons": 1507
+    },
+    {
+      "name": "BV_18_320_06",
+      "group": 18,
+      "vertices": 20,
+      "polygons": 4
+    },
+    {
+      "name": "BV_18_321_07",
+      "group": 18,
+      "vertices": 5103,
+      "polygons": 3270
+    },
+    {
+      "name": "BV_18_322_08",
+      "group": 18,
+      "vertices": 7125,
+      "polygons": 4610
+    },
+    {
+      "name": "BV_18_323_09",
+      "group": 18,
+      "vertices": 511,
+      "polygons": 302
+    },
+    {
+      "name": "BV_18_324_10",
+      "group": 18,
+      "vertices": 3007,
+      "polygons": 1904
+    },
+    {
+      "name": "BV_18_325_11",
+      "group": 18,
+      "vertices": 260,
+      "polygons": 136
+    },
+    {
+      "name": "BV_18_326_12",
+      "group": 18,
+      "vertices": 295,
+      "polygons": 143
+    },
+    {
+      "name": "BV_18_327_13",
+      "group": 18,
+      "vertices": 10,
+      "polygons": 2
+    },
+    {
+      "name": "BV_18_328_00",
+      "group": 18,
+      "vertices": 2194,
+      "polygons": 1402
+    },
+    {
+      "name": "BV_18_329_01",
+      "group": 18,
+      "vertices": 5928,
+      "polygons": 3804
+    },
+    {
+      "name": "BV_18_330_02",
+      "group": 18,
+      "vertices": 754,
+      "polygons": 464
+    },
+    {
+      "name": "BV_18_331_03",
+      "group": 18,
+      "vertices": 1534,
+      "polygons": 967
+    },
+    {
+      "name": "BV_18_332_04",
+      "group": 18,
+      "vertices": 2580,
+      "polygons": 1635
+    },
+    {
+      "name": "BV_18_333_05",
+      "group": 18,
+      "vertices": 2718,
+      "polygons": 1731
+    },
+    {
+      "name": "BV_18_334_06",
+      "group": 18,
+      "vertices": 4444,
+      "polygons": 2846
+    },
+    {
+      "name": "BV_18_335_07",
+      "group": 18,
+      "vertices": 1880,
+      "polygons": 1201
+    },
+    {
+      "name": "BV_18_336_08",
+      "group": 18,
+      "vertices": 72,
+      "polygons": 42
+    },
+    {
+      "name": "BV_18_337_09",
+      "group": 18,
+      "vertices": 336,
+      "polygons": 212
+    },
+    {
+      "name": "BV_18_338_10",
+      "group": 18,
+      "vertices": 88,
+      "polygons": 51
+    },
+    {
+      "name": "BV_18_339_00",
+      "group": 18,
+      "vertices": 1414,
+      "polygons": 654
+    },
+    {
+      "name": "BV_18_340_01",
+      "group": 18,
+      "vertices": 4469,
+      "polygons": 2099
+    },
+    {
+      "name": "BV_18_341_02",
+      "group": 18,
+      "vertices": 1906,
+      "polygons": 888
+    },
+    {
+      "name": "BV_18_342_03",
+      "group": 18,
+      "vertices": 421,
+      "polygons": 195
+    },
+    {
+      "name": "BV_18_343_04",
+      "group": 18,
+      "vertices": 16,
+      "polygons": 8
+    },
+    {
+      "name": "BV_18_344_05",
+      "group": 18,
+      "vertices": 681,
+      "polygons": 315
+    },
+    {
+      "name": "BV_18_345_06",
+      "group": 18,
+      "vertices": 4,
+      "polygons": 2
+    },
+    {
+      "name": "BV_18_346_07",
+      "group": 18,
+      "vertices": 2022,
+      "polygons": 944
+    },
+    {
+      "name": "BV_18_347_08",
+      "group": 18,
+      "vertices": 2009,
+      "polygons": 939
+    },
+    {
+      "name": "BV_18_348_09",
+      "group": 18,
+      "vertices": 82,
+      "polygons": 38
+    },
+    {
+      "name": "BV_18_349_10",
+      "group": 18,
+      "vertices": 966,
+      "polygons": 450
+    },
+    {
+      "name": "BV_18_350_11",
+      "group": 18,
+      "vertices": 116,
+      "polygons": 54
+    },
+    {
+      "name": "BV_18_351_12",
+      "group": 18,
+      "vertices": 16,
+      "polygons": 8
+    },
+    {
+      "name": "BV_18_352_13",
+      "group": 18,
+      "vertices": 146,
+      "polygons": 68
+    },
+    {
+      "name": "BV_18_353_00",
+      "group": 18,
+      "vertices": 1389,
+      "polygons": 645
+    },
+    {
+      "name": "BV_18_354_01",
+      "group": 18,
+      "vertices": 4750,
+      "polygons": 2232
+    },
+    {
+      "name": "BV_18_355_02",
+      "group": 18,
+      "vertices": 1797,
+      "polygons": 837
+    },
+    {
+      "name": "BV_18_356_03",
+      "group": 18,
+      "vertices": 328,
+      "polygons": 148
+    },
+    {
+      "name": "BV_18_357_04",
+      "group": 18,
+      "vertices": 12,
+      "polygons": 6
+    },
+    {
+      "name": "BV_18_358_05",
+      "group": 18,
+      "vertices": 668,
+      "polygons": 310
+    },
+    {
+      "name": "BV_18_359_06",
+      "group": 18,
+      "vertices": 16,
+      "polygons": 8
+    },
+    {
+      "name": "BV_18_360_07",
+      "group": 18,
+      "vertices": 2008,
+      "polygons": 932
+    },
+    {
+      "name": "BV_18_361_08",
+      "group": 18,
+      "vertices": 2010,
+      "polygons": 936
+    },
+    {
+      "name": "BV_18_362_09",
+      "group": 18,
+      "vertices": 923,
+      "polygons": 425
+    },
+    {
+      "name": "BV_18_363_10",
+      "group": 18,
+      "vertices": 162,
+      "polygons": 74
+    },
+    {
+      "name": "BV_18_364_11",
+      "group": 18,
+      "vertices": 7,
+      "polygons": 3
+    },
+    {
+      "name": "BV_18_365_12",
+      "group": 18,
+      "vertices": 158,
+      "polygons": 74
+    },
+    {
+      "name": "BV_18_366_13",
+      "group": 18,
+      "vertices": 97,
+      "polygons": 45
+    },
+    {
+      "name": "BV_18_367_00",
+      "group": 18,
+      "vertices": 1431,
+      "polygons": 669
+    },
+    {
+      "name": "BV_18_368_01",
+      "group": 18,
+      "vertices": 4869,
+      "polygons": 2281
+    },
+    {
+      "name": "BV_18_369_02",
+      "group": 18,
+      "vertices": 2042,
+      "polygons": 956
+    },
+    {
+      "name": "BV_18_370_03",
+      "group": 18,
+      "vertices": 409,
+      "polygons": 189
+    },
+    {
+      "name": "BV_18_371_04",
+      "group": 18,
+      "vertices": 17,
+      "polygons": 7
+    },
+    {
+      "name": "BV_18_372_05",
+      "group": 18,
+      "vertices": 700,
+      "polygons": 326
+    },
+    {
+      "name": "BV_18_373_06",
+      "group": 18,
+      "vertices": 26,
+      "polygons": 12
+    },
+    {
+      "name": "BV_18_374_07",
+      "group": 18,
+      "vertices": 2109,
+      "polygons": 983
+    },
+    {
+      "name": "BV_18_375_08",
+      "group": 18,
+      "vertices": 2112,
+      "polygons": 984
+    },
+    {
+      "name": "BV_18_376_09",
+      "group": 18,
+      "vertices": 122,
+      "polygons": 56
+    },
+    {
+      "name": "BV_18_377_10",
+      "group": 18,
+      "vertices": 904,
+      "polygons": 422
+    },
+    {
+      "name": "BV_18_378_11",
+      "group": 18,
+      "vertices": 130,
+      "polygons": 62
+    },
+    {
+      "name": "BV_18_379_12",
+      "group": 18,
+      "vertices": 143,
+      "polygons": 65
+    },
+    {
+      "name": "BV_18_380_00",
+      "group": 18,
+      "vertices": 1362,
+      "polygons": 630
+    },
+    {
+      "name": "BV_18_381_01",
+      "group": 18,
+      "vertices": 4511,
+      "polygons": 2121
+    },
+    {
+      "name": "BV_18_382_02",
+      "group": 18,
+      "vertices": 1904,
+      "polygons": 892
+    },
+    {
+      "name": "BV_18_383_03",
+      "group": 18,
+      "vertices": 335,
+      "polygons": 151
+    },
+    {
+      "name": "BV_18_384_04",
+      "group": 18,
+      "vertices": 22,
+      "polygons": 10
+    },
+    {
+      "name": "BV_18_385_05",
+      "group": 18,
+      "vertices": 633,
+      "polygons": 293
+    },
+    {
+      "name": "BV_18_386_06",
+      "group": 18,
+      "vertices": 10,
+      "polygons": 4
+    },
+    {
+      "name": "BV_18_387_07",
+      "group": 18,
+      "vertices": 2100,
+      "polygons": 986
+    },
+    {
+      "name": "BV_18_388_08",
+      "group": 18,
+      "vertices": 2102,
+      "polygons": 986
+    },
+    {
+      "name": "BV_18_389_09",
+      "group": 18,
+      "vertices": 117,
+      "polygons": 55
+    },
+    {
+      "name": "BV_18_390_10",
+      "group": 18,
+      "vertices": 766,
+      "polygons": 356
+    },
+    {
+      "name": "BV_18_391_11",
+      "group": 18,
+      "vertices": 123,
+      "polygons": 55
+    },
+    {
+      "name": "BV_18_392_12",
+      "group": 18,
+      "vertices": 140,
+      "polygons": 62
+    },
+    {
+      "name": "BV_18_393_13",
+      "group": 18,
+      "vertices": 16,
+      "polygons": 8
+    },
+    {
+      "name": "BV_19_394_00",
+      "group": 19,
+      "vertices": 119,
+      "polygons": 53
+    },
+    {
+      "name": "BV_19_395_01",
+      "group": 19,
+      "vertices": 26,
+      "polygons": 10
+    },
+    {
+      "name": "BV_19_396_02",
+      "group": 19,
+      "vertices": 111,
+      "polygons": 49
+    },
+    {
+      "name": "BV_19_397_03",
+      "group": 19,
+      "vertices": 65,
+      "polygons": 29
+    },
+    {
+      "name": "BV_19_398_04",
+      "group": 19,
+      "vertices": 79,
+      "polygons": 35
+    },
+    {
+      "name": "BV_19_399_05",
+      "group": 19,
+      "vertices": 71,
+      "polygons": 33
+    },
+    {
+      "name": "BV_19_400_06",
+      "group": 19,
+      "vertices": 220,
+      "polygons": 104
+    },
+    {
+      "name": "BV_19_401_07",
+      "group": 19,
+      "vertices": 192,
+      "polygons": 82
+    },
+    {
+      "name": "BV_19_402_08",
+      "group": 19,
+      "vertices": 75,
+      "polygons": 35
+    },
+    {
+      "name": "BV_19_403_09",
+      "group": 19,
+      "vertices": 61,
+      "polygons": 25
+    },
+    {
+      "name": "BV_19_404_10",
+      "group": 19,
+      "vertices": 153,
+      "polygons": 71
+    },
+    {
+      "name": "BV_19_405_11",
+      "group": 19,
+      "vertices": 88,
+      "polygons": 40
+    },
+    {
+      "name": "BV_19_406_12",
+      "group": 19,
+      "vertices": 124,
+      "polygons": 54
+    },
+    {
+      "name": "BV_19_407_13",
+      "group": 19,
+      "vertices": 47,
+      "polygons": 21
+    },
+    {
+      "name": "BV_19_408_14",
+      "group": 19,
+      "vertices": 187,
+      "polygons": 83
+    },
+    {
+      "name": "BV_19_409_15",
+      "group": 19,
+      "vertices": 128,
+      "polygons": 54
+    },
+    {
+      "name": "BV_19_410_16",
+      "group": 19,
+      "vertices": 64,
+      "polygons": 28
+    },
+    {
+      "name": "BV_19_411_17",
+      "group": 19,
+      "vertices": 89,
+      "polygons": 39
+    },
+    {
+      "name": "BV_19_412_18",
+      "group": 19,
+      "vertices": 114,
+      "polygons": 48
+    },
+    {
+      "name": "BV_19_413_19",
+      "group": 19,
+      "vertices": 107,
+      "polygons": 45
+    },
+    {
+      "name": "BV_19_414_20",
+      "group": 19,
+      "vertices": 20,
+      "polygons": 10
+    },
+    {
+      "name": "BV_19_415_21",
+      "group": 19,
+      "vertices": 61,
+      "polygons": 27
+    },
+    {
+      "name": "BV_19_416_22",
+      "group": 19,
+      "vertices": 48,
+      "polygons": 22
+    },
+    {
+      "name": "BV_19_417_23",
+      "group": 19,
+      "vertices": 82,
+      "polygons": 34
+    },
+    {
+      "name": "BV_19_418_24",
+      "group": 19,
+      "vertices": 84,
+      "polygons": 38
+    },
+    {
+      "name": "BV_19_419_25",
+      "group": 19,
+      "vertices": 95,
+      "polygons": 39
+    },
+    {
+      "name": "BV_19_420_26",
+      "group": 19,
+      "vertices": 97,
+      "polygons": 43
+    },
+    {
+      "name": "BV_19_421_27",
+      "group": 19,
+      "vertices": 77,
+      "polygons": 33
+    },
+    {
+      "name": "BV_19_422_28",
+      "group": 19,
+      "vertices": 75,
+      "polygons": 35
+    },
+    {
+      "name": "BV_19_423_29",
+      "group": 19,
+      "vertices": 49,
+      "polygons": 21
+    },
+    {
+      "name": "BV_19_424_30",
+      "group": 19,
+      "vertices": 22,
+      "polygons": 10
+    },
+    {
+      "name": "BV_19_425_31",
+      "group": 19,
+      "vertices": 32,
+      "polygons": 14
+    },
+    {
+      "name": "BV_19_426_32",
+      "group": 19,
+      "vertices": 36,
+      "polygons": 16
+    },
+    {
+      "name": "BV_19_427_33",
+      "group": 19,
+      "vertices": 81,
+      "polygons": 37
+    },
+    {
+      "name": "BV_19_428_34",
+      "group": 19,
+      "vertices": 3,
+      "polygons": 1
+    },
+    {
+      "name": "BV_19_429_00",
+      "group": 19,
+      "vertices": 133,
+      "polygons": 61
+    },
+    {
+      "name": "BV_19_430_01",
+      "group": 19,
+      "vertices": 33,
+      "polygons": 15
+    },
+    {
+      "name": "BV_19_431_02",
+      "group": 19,
+      "vertices": 127,
+      "polygons": 57
+    },
+    {
+      "name": "BV_19_432_03",
+      "group": 19,
+      "vertices": 169,
+      "polygons": 75
+    },
+    {
+      "name": "BV_19_433_04",
+      "group": 19,
+      "vertices": 77,
+      "polygons": 35
+    },
+    {
+      "name": "BV_19_434_05",
+      "group": 19,
+      "vertices": 115,
+      "polygons": 51
+    },
+    {
+      "name": "BV_19_435_06",
+      "group": 19,
+      "vertices": 159,
+      "polygons": 71
+    },
+    {
+      "name": "BV_19_436_07",
+      "group": 19,
+      "vertices": 60,
+      "polygons": 26
+    },
+    {
+      "name": "BV_19_437_08",
+      "group": 19,
+      "vertices": 60,
+      "polygons": 28
+    },
+    {
+      "name": "BV_19_438_09",
+      "group": 19,
+      "vertices": 55,
+      "polygons": 25
+    },
+    {
+      "name": "BV_19_439_10",
+      "group": 19,
+      "vertices": 138,
+      "polygons": 62
+    },
+    {
+      "name": "BV_19_440_11",
+      "group": 19,
+      "vertices": 89,
+      "polygons": 35
+    },
+    {
+      "name": "BV_19_441_12",
+      "group": 19,
+      "vertices": 77,
+      "polygons": 33
+    },
+    {
+      "name": "BV_19_442_13",
+      "group": 19,
+      "vertices": 93,
+      "polygons": 39
+    },
+    {
+      "name": "BV_19_443_14",
+      "group": 19,
+      "vertices": 137,
+      "polygons": 61
+    },
+    {
+      "name": "BV_19_444_15",
+      "group": 19,
+      "vertices": 103,
+      "polygons": 45
+    },
+    {
+      "name": "BV_19_445_16",
+      "group": 19,
+      "vertices": 139,
+      "polygons": 65
+    },
+    {
+      "name": "BV_19_446_17",
+      "group": 19,
+      "vertices": 89,
+      "polygons": 39
+    },
+    {
+      "name": "BV_19_447_18",
+      "group": 19,
+      "vertices": 45,
+      "polygons": 21
+    },
+    {
+      "name": "BV_19_448_19",
+      "group": 19,
+      "vertices": 15,
+      "polygons": 7
+    },
+    {
+      "name": "BV_19_449_20",
+      "group": 19,
+      "vertices": 51,
+      "polygons": 23
+    },
+    {
+      "name": "BV_19_450_21",
+      "group": 19,
+      "vertices": 74,
+      "polygons": 32
+    },
+    {
+      "name": "BV_19_451_22",
+      "group": 19,
+      "vertices": 37,
+      "polygons": 17
+    },
+    {
+      "name": "BV_19_452_23",
+      "group": 19,
+      "vertices": 47,
+      "polygons": 21
+    },
+    {
+      "name": "BV_19_453_24",
+      "group": 19,
+      "vertices": 166,
+      "polygons": 74
+    },
+    {
+      "name": "BV_19_454_25",
+      "group": 19,
+      "vertices": 70,
+      "polygons": 32
+    },
+    {
+      "name": "BV_19_455_26",
+      "group": 19,
+      "vertices": 49,
+      "polygons": 21
+    },
+    {
+      "name": "BV_19_456_27",
+      "group": 19,
+      "vertices": 50,
+      "polygons": 22
+    },
+    {
+      "name": "BV_19_457_28",
+      "group": 19,
+      "vertices": 94,
+      "polygons": 40
+    },
+    {
+      "name": "BV_19_458_29",
+      "group": 19,
+      "vertices": 45,
+      "polygons": 19
+    },
+    {
+      "name": "BV_19_459_30",
+      "group": 19,
+      "vertices": 11,
+      "polygons": 5
+    },
+    {
+      "name": "BV_19_460_31",
+      "group": 19,
+      "vertices": 61,
+      "polygons": 25
+    },
+    {
+      "name": "BV_19_461_32",
+      "group": 19,
+      "vertices": 56,
+      "polygons": 24
+    },
+    {
+      "name": "BV_19_462_33",
+      "group": 19,
+      "vertices": 18,
+      "polygons": 8
+    },
+    {
+      "name": "BV_19_463_00",
+      "group": 19,
+      "vertices": 94,
+      "polygons": 42
+    },
+    {
+      "name": "BV_19_464_01",
+      "group": 19,
+      "vertices": 41,
+      "polygons": 17
+    },
+    {
+      "name": "BV_19_465_02",
+      "group": 19,
+      "vertices": 119,
+      "polygons": 53
+    },
+    {
+      "name": "BV_19_466_03",
+      "group": 19,
+      "vertices": 94,
+      "polygons": 42
+    },
+    {
+      "name": "BV_19_467_04",
+      "group": 19,
+      "vertices": 130,
+      "polygons": 60
+    },
+    {
+      "name": "BV_19_468_05",
+      "group": 19,
+      "vertices": 162,
+      "polygons": 74
+    },
+    {
+      "name": "BV_19_469_06",
+      "group": 19,
+      "vertices": 46,
+      "polygons": 20
+    },
+    {
+      "name": "BV_19_470_07",
+      "group": 19,
+      "vertices": 50,
+      "polygons": 22
+    },
+    {
+      "name": "BV_19_471_08",
+      "group": 19,
+      "vertices": 86,
+      "polygons": 38
+    },
+    {
+      "name": "BV_19_472_09",
+      "group": 19,
+      "vertices": 84,
+      "polygons": 38
+    },
+    {
+      "name": "BV_19_473_10",
+      "group": 19,
+      "vertices": 80,
+      "polygons": 36
+    },
+    {
+      "name": "BV_19_474_11",
+      "group": 19,
+      "vertices": 48,
+      "polygons": 20
+    },
+    {
+      "name": "BV_19_475_12",
+      "group": 19,
+      "vertices": 116,
+      "polygons": 50
+    },
+    {
+      "name": "BV_19_476_13",
+      "group": 19,
+      "vertices": 114,
+      "polygons": 48
+    },
+    {
+      "name": "BV_19_477_14",
+      "group": 19,
+      "vertices": 118,
+      "polygons": 56
+    },
+    {
+      "name": "BV_19_478_15",
+      "group": 19,
+      "vertices": 83,
+      "polygons": 37
+    },
+    {
+      "name": "BV_19_479_16",
+      "group": 19,
+      "vertices": 32,
+      "polygons": 14
+    },
+    {
+      "name": "BV_19_480_17",
+      "group": 19,
+      "vertices": 61,
+      "polygons": 27
+    },
+    {
+      "name": "BV_19_481_18",
+      "group": 19,
+      "vertices": 53,
+      "polygons": 23
+    },
+    {
+      "name": "BV_19_482_19",
+      "group": 19,
+      "vertices": 89,
+      "polygons": 41
+    },
+    {
+      "name": "BV_19_483_20",
+      "group": 19,
+      "vertices": 72,
+      "polygons": 30
+    },
+    {
+      "name": "BV_19_484_21",
+      "group": 19,
+      "vertices": 43,
+      "polygons": 17
+    },
+    {
+      "name": "BV_19_485_22",
+      "group": 19,
+      "vertices": 95,
+      "polygons": 43
+    },
+    {
+      "name": "BV_19_486_23",
+      "group": 19,
+      "vertices": 98,
+      "polygons": 42
+    },
+    {
+      "name": "BV_19_487_24",
+      "group": 19,
+      "vertices": 79,
+      "polygons": 37
+    },
+    {
+      "name": "BV_19_488_25",
+      "group": 19,
+      "vertices": 73,
+      "polygons": 33
+    },
+    {
+      "name": "BV_19_489_26",
+      "group": 19,
+      "vertices": 46,
+      "polygons": 20
+    },
+    {
+      "name": "BV_19_490_27",
+      "group": 19,
+      "vertices": 42,
+      "polygons": 18
+    },
+    {
+      "name": "BV_19_491_28",
+      "group": 19,
+      "vertices": 23,
+      "polygons": 11
+    },
+    {
+      "name": "BV_19_492_29",
+      "group": 19,
+      "vertices": 81,
+      "polygons": 37
+    },
+    {
+      "name": "BV_19_493_30",
+      "group": 19,
+      "vertices": 65,
+      "polygons": 27
+    },
+    {
+      "name": "BV_19_494_31",
+      "group": 19,
+      "vertices": 90,
+      "polygons": 40
+    },
+    {
+      "name": "BV_19_495_32",
+      "group": 19,
+      "vertices": 24,
+      "polygons": 10
+    },
+    {
+      "name": "BV_19_496_33",
+      "group": 19,
+      "vertices": 3,
+      "polygons": 1
+    },
+    {
+      "name": "BV_19_497_34",
+      "group": 19,
+      "vertices": 54,
+      "polygons": 24
+    },
+    {
+      "name": "BV_19_498_00",
+      "group": 19,
+      "vertices": 125,
+      "polygons": 57
+    },
+    {
+      "name": "BV_19_499_01",
+      "group": 19,
+      "vertices": 17,
+      "polygons": 7
+    },
+    {
+      "name": "BV_19_500_02",
+      "group": 19,
+      "vertices": 127,
+      "polygons": 55
+    },
+    {
+      "name": "BV_19_501_03",
+      "group": 19,
+      "vertices": 68,
+      "polygons": 30
+    },
+    {
+      "name": "BV_19_502_04",
+      "group": 19,
+      "vertices": 51,
+      "polygons": 23
+    },
+    {
+      "name": "BV_19_503_05",
+      "group": 19,
+      "vertices": 144,
+      "polygons": 64
+    },
+    {
+      "name": "BV_19_504_06",
+      "group": 19,
+      "vertices": 102,
+      "polygons": 42
+    },
+    {
+      "name": "BV_19_505_07",
+      "group": 19,
+      "vertices": 32,
+      "polygons": 14
+    },
+    {
+      "name": "BV_19_506_08",
+      "group": 19,
+      "vertices": 96,
+      "polygons": 44
+    },
+    {
+      "name": "BV_19_507_09",
+      "group": 19,
+      "vertices": 96,
+      "polygons": 44
+    },
+    {
+      "name": "BV_19_508_10",
+      "group": 19,
+      "vertices": 59,
+      "polygons": 27
+    },
+    {
+      "name": "BV_19_509_11",
+      "group": 19,
+      "vertices": 100,
+      "polygons": 44
+    },
+    {
+      "name": "BV_19_510_12",
+      "group": 19,
+      "vertices": 100,
+      "polygons": 44
+    },
+    {
+      "name": "BV_19_511_13",
+      "group": 19,
+      "vertices": 16,
+      "polygons": 6
+    },
+    {
+      "name": "BV_19_512_14",
+      "group": 19,
+      "vertices": 24,
+      "polygons": 12
+    },
+    {
+      "name": "BV_19_513_15",
+      "group": 19,
+      "vertices": 142,
+      "polygons": 64
+    },
+    {
+      "name": "BV_19_514_16",
+      "group": 19,
+      "vertices": 89,
+      "polygons": 37
+    },
+    {
+      "name": "BV_19_515_17",
+      "group": 19,
+      "vertices": 45,
+      "polygons": 21
+    },
+    {
+      "name": "BV_19_516_18",
+      "group": 19,
+      "vertices": 40,
+      "polygons": 16
+    },
+    {
+      "name": "BV_19_517_19",
+      "group": 19,
+      "vertices": 62,
+      "polygons": 28
+    },
+    {
+      "name": "BV_19_518_20",
+      "group": 19,
+      "vertices": 80,
+      "polygons": 34
+    },
+    {
+      "name": "BV_19_519_21",
+      "group": 19,
+      "vertices": 90,
+      "polygons": 42
+    },
+    {
+      "name": "BV_19_520_22",
+      "group": 19,
+      "vertices": 41,
+      "polygons": 17
+    },
+    {
+      "name": "BV_19_521_23",
+      "group": 19,
+      "vertices": 107,
+      "polygons": 47
+    },
+    {
+      "name": "BV_19_522_24",
+      "group": 19,
+      "vertices": 80,
+      "polygons": 36
+    },
+    {
+      "name": "BV_19_523_25",
+      "group": 19,
+      "vertices": 93,
+      "polygons": 43
+    },
+    {
+      "name": "BV_19_524_26",
+      "group": 19,
+      "vertices": 26,
+      "polygons": 12
+    },
+    {
+      "name": "BV_19_525_27",
+      "group": 19,
+      "vertices": 48,
+      "polygons": 22
+    },
+    {
+      "name": "BV_19_526_28",
+      "group": 19,
+      "vertices": 49,
+      "polygons": 21
+    },
+    {
+      "name": "BV_19_527_29",
+      "group": 19,
+      "vertices": 28,
+      "polygons": 12
+    },
+    {
+      "name": "BV_19_528_30",
+      "group": 19,
+      "vertices": 27,
+      "polygons": 13
+    },
+    {
+      "name": "BV_19_529_31",
+      "group": 19,
+      "vertices": 43,
+      "polygons": 19
+    },
+    {
+      "name": "BV_19_530_32",
+      "group": 19,
+      "vertices": 53,
+      "polygons": 23
+    },
+    {
+      "name": "BV_19_531_33",
+      "group": 19,
+      "vertices": 88,
+      "polygons": 38
+    },
+    {
+      "name": "BV_19_532_34",
+      "group": 19,
+      "vertices": 8,
+      "polygons": 4
+    },
+    {
+      "name": "BV_20_533_00",
+      "group": 20,
+      "vertices": 167,
+      "polygons": 314
+    },
+    {
+      "name": "BV_20_534_01",
+      "group": 20,
+      "vertices": 97,
+      "polygons": 171
+    },
+    {
+      "name": "BV_20_535_02",
+      "group": 20,
+      "vertices": 31,
+      "polygons": 48
+    },
+    {
+      "name": "BV_20_536_03",
+      "group": 20,
+      "vertices": 178,
+      "polygons": 307
+    },
+    {
+      "name": "BV_20_537_04",
+      "group": 20,
+      "vertices": 203,
+      "polygons": 378
+    },
+    {
+      "name": "BV_20_538_05",
+      "group": 20,
+      "vertices": 266,
+      "polygons": 491
+    },
+    {
+      "name": "BV_20_539_06",
+      "group": 20,
+      "vertices": 107,
+      "polygons": 183
+    },
+    {
+      "name": "BV_20_540_07",
+      "group": 20,
+      "vertices": 218,
+      "polygons": 406
+    },
+    {
+      "name": "BV_20_541_08",
+      "group": 20,
+      "vertices": 168,
+      "polygons": 320
+    },
+    {
+      "name": "BV_20_542_09",
+      "group": 20,
+      "vertices": 209,
+      "polygons": 390
+    },
+    {
+      "name": "BV_20_543_10",
+      "group": 20,
+      "vertices": 218,
+      "polygons": 401
+    },
+    {
+      "name": "BV_20_544_11",
+      "group": 20,
+      "vertices": 49,
+      "polygons": 86
+    },
+    {
+      "name": "BV_20_545_12",
+      "group": 20,
+      "vertices": 126,
+      "polygons": 217
+    },
+    {
+      "name": "BV_20_546_13",
+      "group": 20,
+      "vertices": 168,
+      "polygons": 320
+    },
+    {
+      "name": "BV_20_547_14",
+      "group": 20,
+      "vertices": 126,
+      "polygons": 240
+    },
+    {
+      "name": "BV_20_548_15",
+      "group": 20,
+      "vertices": 42,
+      "polygons": 80
+    },
+    {
+      "name": "BV_20_549_16",
+      "group": 20,
+      "vertices": 91,
+      "polygons": 166
+    },
+    {
+      "name": "BV_20_550_17",
+      "group": 20,
+      "vertices": 168,
+      "polygons": 320
+    },
+    {
+      "name": "BV_20_551_18",
+      "group": 20,
+      "vertices": 122,
+      "polygons": 224
+    },
+    {
+      "name": "BV_20_552_19",
+      "group": 20,
+      "vertices": 42,
+      "polygons": 80
+    },
+    {
+      "name": "BV_20_553_20",
+      "group": 20,
+      "vertices": 209,
+      "polygons": 393
+    },
+    {
+      "name": "BV_20_554_21",
+      "group": 20,
+      "vertices": 126,
+      "polygons": 240
+    },
+    {
+      "name": "BV_20_555_22",
+      "group": 20,
+      "vertices": 84,
+      "polygons": 160
+    },
+    {
+      "name": "BV_20_556_23",
+      "group": 20,
+      "vertices": 122,
+      "polygons": 224
+    },
+    {
+      "name": "BV_20_557_24",
+      "group": 20,
+      "vertices": 56,
+      "polygons": 96
+    },
+    {
+      "name": "BV_20_558_25",
+      "group": 20,
+      "vertices": 14,
+      "polygons": 16
+    },
+    {
+      "name": "BV_20_559_26",
+      "group": 20,
+      "vertices": 168,
+      "polygons": 320
+    },
+    {
+      "name": "BV_20_560_27",
+      "group": 20,
+      "vertices": 83,
+      "polygons": 154
+    },
+    {
+      "name": "BV_20_561_28",
+      "group": 20,
+      "vertices": 123,
+      "polygons": 227
+    },
+    {
+      "name": "BV_20_562_29",
+      "group": 20,
+      "vertices": 42,
+      "polygons": 80
+    },
+    {
+      "name": "BV_20_563_30",
+      "group": 20,
+      "vertices": 83,
+      "polygons": 148
+    },
+    {
+      "name": "BV_20_564_31",
+      "group": 20,
+      "vertices": 84,
+      "polygons": 160
+    },
+    {
+      "name": "BV_20_565_00",
+      "group": 20,
+      "vertices": 63,
+      "polygons": 59
+    },
+    {
+      "name": "BV_20_566_01",
+      "group": 20,
+      "vertices": 33,
+      "polygons": 27
+    },
+    {
+      "name": "BV_20_567_02",
+      "group": 20,
+      "vertices": 10,
+      "polygons": 6
+    },
+    {
+      "name": "BV_20_568_03",
+      "group": 20,
+      "vertices": 55,
+      "polygons": 49
+    },
+    {
+      "name": "BV_20_569_04",
+      "group": 20,
+      "vertices": 74,
+      "polygons": 68
+    },
+    {
+      "name": "BV_20_570_05",
+      "group": 20,
+      "vertices": 92,
+      "polygons": 76
+    },
+    {
+      "name": "BV_20_571_06",
+      "group": 20,
+      "vertices": 34,
+      "polygons": 28
+    },
+    {
+      "name": "BV_20_572_07",
+      "group": 20,
+      "vertices": 78,
+      "polygons": 69
+    },
+    {
+      "name": "BV_20_573_08",
+      "group": 20,
+      "vertices": 62,
+      "polygons": 53
+    },
+    {
+      "name": "BV_20_574_09",
+      "group": 20,
+      "vertices": 74,
+      "polygons": 59
+    },
+    {
+      "name": "BV_20_575_10",
+      "group": 20,
+      "vertices": 79,
+      "polygons": 67
+    },
+    {
+      "name": "BV_20_576_11",
+      "group": 20,
+      "vertices": 15,
+      "polygons": 13
+    },
+    {
+      "name": "BV_20_577_12",
+      "group": 20,
+      "vertices": 43,
+      "polygons": 36
+    },
+    {
+      "name": "BV_20_578_13",
+      "group": 20,
+      "vertices": 60,
+      "polygons": 44
+    },
+    {
+      "name": "BV_20_579_14",
+      "group": 20,
+      "vertices": 45,
+      "polygons": 41
+    },
+    {
+      "name": "BV_20_580_15",
+      "group": 20,
+      "vertices": 15,
+      "polygons": 12
+    },
+    {
+      "name": "BV_20_581_16",
+      "group": 20,
+      "vertices": 59,
+      "polygons": 48
+    },
+    {
+      "name": "BV_20_582_17",
+      "group": 20,
+      "vertices": 29,
+      "polygons": 23
+    },
+    {
+      "name": "BV_20_583_18",
+      "group": 20,
+      "vertices": 42,
+      "polygons": 33
+    },
+    {
+      "name": "BV_20_584_19",
+      "group": 20,
+      "vertices": 15,
+      "polygons": 15
+    },
+    {
+      "name": "BV_20_585_20",
+      "group": 20,
+      "vertices": 78,
+      "polygons": 64
+    },
+    {
+      "name": "BV_20_586_21",
+      "group": 20,
+      "vertices": 44,
+      "polygons": 37
+    },
+    {
+      "name": "BV_20_587_22",
+      "group": 20,
+      "vertices": 32,
+      "polygons": 30
+    },
+    {
+      "name": "BV_20_588_23",
+      "group": 20,
+      "vertices": 20,
+      "polygons": 12
+    },
+    {
+      "name": "BV_20_589_24",
+      "group": 20,
+      "vertices": 45,
+      "polygons": 38
+    },
+    {
+      "name": "BV_20_590_25",
+      "group": 20,
+      "vertices": 4,
+      "polygons": 2
+    },
+    {
+      "name": "BV_20_591_26",
+      "group": 20,
+      "vertices": 64,
+      "polygons": 59
+    },
+    {
+      "name": "BV_20_592_27",
+      "group": 20,
+      "vertices": 29,
+      "polygons": 26
+    },
+    {
+      "name": "BV_20_593_28",
+      "group": 20,
+      "vertices": 46,
+      "polygons": 34
+    },
+    {
+      "name": "BV_20_594_29",
+      "group": 20,
+      "vertices": 15,
+      "polygons": 13
+    },
+    {
+      "name": "BV_20_595_30",
+      "group": 20,
+      "vertices": 31,
+      "polygons": 26
+    },
+    {
+      "name": "BV_20_596_31",
+      "group": 20,
+      "vertices": 29,
+      "polygons": 17
+    }
+  ],
+  "coordinate_system": "Imported FBX anchors are (-X,Z,-Y); prefab Y=180 restores (X,Z,Y)",
+  "source": "ArtSource/Blender/BambooValley/BambooValley.blend"
+}

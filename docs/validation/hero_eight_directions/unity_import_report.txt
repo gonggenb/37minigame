@@ -1,0 +1,16 @@
+Assets/Resources/Characters/HeroEightDirections/spr_hero_idle_down_1f_v01.png: 1 frames; Point; FullRect; PPU160; pivot128,32; no mipmaps/compression
+Assets/Resources/Characters/HeroEightDirections/spr_hero_idle_down_left_1f_v01.png: 1 frames; Point; FullRect; PPU160; pivot128,32; no mipmaps/compression
+Assets/Resources/Characters/HeroEightDirections/spr_hero_idle_down_right_1f_v01.png: 1 frames; Point; FullRect; PPU160; pivot128,32; no mipmaps/compression
+Assets/Resources/Characters/HeroEightDirections/spr_hero_idle_left_1f_v01.png: 1 frames; Point; FullRect; PPU160; pivot128,32; no mipmaps/compression
+Assets/Resources/Characters/HeroEightDirections/spr_hero_idle_right_1f_v01.png: 1 frames; Point; FullRect; PPU160; pivot128,32; no mipmaps/compression
+Assets/Resources/Characters/HeroEightDirections/spr_hero_idle_up_1f_v01.png: 1 frames; Point; FullRect; PPU160; pivot128,32; no mipmaps/compression
+Assets/Resources/Characters/HeroEightDirections/spr_hero_idle_up_left_1f_v01.png: 1 frames; Point; FullRect; PPU160; pivot128,32; no mipmaps/compression
+Assets/Resources/Characters/HeroEightDirections/spr_hero_idle_up_right_1f_v01.png: 1 frames; Point; FullRect; PPU160; pivot128,32; no mipmaps/compression
+Assets/Resources/Characters/HeroEightDirections/spr_hero_run_down_8f_v01.png: 8 frames; Point; FullRect; PPU160; pivot128,32; no mipmaps/compression
+Assets/Resources/Characters/HeroEightDirections/spr_hero_run_down_left_8f_v01.png: 8 frames; Point; FullRect; PPU160; pivot128,32; no mipmaps/compression
+Assets/Resources/Characters/HeroEightDirections/spr_hero_run_down_right_8f_v01.png: 8 frames; Point; FullRect; PPU160; pivot128,32; no mipmaps/compression
+Assets/Resources/Characters/HeroEightDirections/spr_hero_run_left_8f_v01.png: 8 frames; Point; FullRect; PPU160; pivot128,32; no mipmaps/compression
+Assets/Resources/Characters/HeroEightDirections/spr_hero_run_right_8f_v01.png: 8 frames; Point; FullRect; PPU160; pivot128,32; no mipmaps/compression
+Assets/Resources/Characters/HeroEightDirections/spr_hero_run_up_8f_v01.png: 8 frames; Point; FullRect; PPU160; pivot128,32; no mipmaps/compression
+Assets/Resources/Characters/HeroEightDirections/spr_hero_run_up_left_8f_v01.png: 8 frames; Point; FullRect; PPU160; pivot128,32; no mipmaps/compression
+Assets/Resources/Characters/HeroEightDirections/spr_hero_run_up_right_8f_v01.png: 8 frames; Point; FullRect; PPU160; pivot128,32; no mipmaps/compression

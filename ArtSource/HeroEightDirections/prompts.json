@@ -1,0 +1,39 @@
+{
+  "tool": "built-in image_gen",
+  "reference": "reference.jpeg",
+  "base": "Use case: identity-preserve. Asset type: production Unity pixel character movement sprite strip. Reference image is the user's APPROVED eight-direction protagonist turnaround. Create one SINGLE HORIZONTAL ROW with exactly EIGHT equally spaced full-body animation frames of only the indicated view. Preserve his black long high ponytail with small gold tie, youthful face, navy blue gold-trimmed split coat, white overlapping lapels, black trousers, black bracers and gold-trim boots, red waist tassel. Same exact outfit, identity, proportions, crisp pixel clusters and palette as reference. Bare hands, no weapon. Animation: brisk grounded jog-in-place seamless cycle, 1 left-foot contact/opposite arm forward, 2 compression, 3 passing legs, 4 right leg forward lift, 5 right-foot contact/opposite arm forward, 6 compression, 7 passing legs, 8 left leg forward lift into frame 1. Each pose visibly changes both legs and arms; ponytail and coat follow subtly. Same facing direction in ALL 8 frames; never turn around. Fixed camera, consistent body size, body center stays at each cell center, ground soles aligned horizontally, no excessive bobbing. Single row, generous empty margins above and below and clear space between sprites; all eight figures fully visible from ponytail top to boot soles. TRUE TRANSPARENT RGBA background, NOT a checkerboard drawing, no ground, no shadow, no labels, no grid, no text, no watermark. Wide landscape canvas, ideally 3072x1024, eight columns. Render figures ~500 pixels tall so their full silhouette fits within each column. Direction for this strip: ",
+  "directions": [
+    [
+      "down",
+      "top row first character, FRONT facing camera, walking toward viewer"
+    ],
+    [
+      "down_right",
+      "top row second character, FRONT THREE QUARTER facing screen DOWN-RIGHT"
+    ],
+    [
+      "right",
+      "top row third character, EXACT RIGHT PROFILE facing screen RIGHT"
+    ],
+    [
+      "up_right",
+      "top row fourth character, BACK THREE QUARTER facing screen UP-RIGHT"
+    ],
+    [
+      "up",
+      "bottom row first character, DIRECT BACK VIEW facing away from viewer"
+    ],
+    [
+      "up_left",
+      "bottom row second character, BACK THREE QUARTER facing screen UP-LEFT"
+    ],
+    [
+      "left",
+      "bottom row third character, EXACT LEFT PROFILE facing screen LEFT"
+    ],
+    [
+      "down_left",
+      "bottom row fourth character, FRONT THREE QUARTER facing screen DOWN-LEFT"
+    ]
+  ]
+}

@@ -159,51 +159,60 @@ namespace WuxiaRoguelite.UI
             GUI.Label(rect, "择路探索    /    历战成长    /    洞穴寻宝", coverCenter);
         }
 
+        private Vector2 chapterScroll;
+
         private void DrawLevelSelection()
         {
             DrawCoverBackground(true);
             Rect safe = ResponsiveGui.SafeArea;
             bool portrait = ResponsiveGui.IsPortrait;
-            float width = Mathf.Min(portrait ? 432 : 800, safe.width - 64);
-            float height = portrait ? Mathf.Min(688, safe.height - 140) : 384;
+            float width = Mathf.Min(portrait ? 432 : 920, safe.width - 48);
+            float height = Mathf.Min(portrait ? 760 : 396, safe.height - 64);
             Rect area = new Rect(safe.center.x - width * 0.5f, safe.center.y - height * 0.5f, width, height);
             GUI.Label(new Rect(area.x, area.y, width, 24), "江 湖 行 卷", coverCaption);
             GUI.Label(new Rect(area.x, area.y + 28, width, 42), "选择关卡", coverHeading);
             FillRect(new Rect(area.x, area.y + 78, width, 1), WithAlpha(WuxiaUiTheme.Brass, 0.6f));
-            float cardHeight = portrait ? (height - 164) * 0.5f : 220;
-            float cardWidth = portrait ? width : (width - 16) * 0.5f;
-            Rect first = new Rect(area.x, area.y + 94, cardWidth, cardHeight);
-            Rect second = portrait
-                ? new Rect(area.x, first.yMax + 12, cardWidth, cardHeight)
-                : new Rect(first.xMax + 16, first.y, cardWidth, cardHeight);
-            DrawChapterCard(first, false);
-            DrawChapterCard(second, true);
+            Rect viewport = new Rect(area.x, area.y + 94, width, height - 154);
+            if (portrait)
+            {
+                float cardWidth = width - 20;
+                chapterScroll = GUI.BeginScrollView(viewport, chapterScroll, new Rect(0, 0, cardWidth, 672));
+                for (int i = 0; i < 3; i++) DrawChapterCard(new Rect(0, i * 224, cardWidth, 212), i + 1);
+                GUI.EndScrollView();
+            }
+            else
+            {
+                float cardWidth = (width - 24) / 3;
+                for (int i = 0; i < 3; i++)
+                    DrawChapterCard(new Rect(area.x + i * (cardWidth + 12), viewport.y, cardWidth, viewport.height), i + 1);
+            }
             if (GUI.Button(new Rect(area.x, area.yMax - 44, 120, 44), "返回主页", actionButtonStyle))
                 gameFlow.CloseLevelSelection();
         }
 
-        private void DrawChapterCard(Rect rect, bool second)
+        private void DrawChapterCard(Rect rect, int chapter)
         {
-            bool unlocked = !second || gameFlow.IsLevelTwoUnlocked;
+            bool unlocked = chapter == 1 || (chapter == 2 ? gameFlow.IsLevelTwoUnlocked : gameFlow.IsLevelThreeUnlocked);
+            string title = chapter == 1 ? GameTextCatalog.TutorialLevelName :
+                chapter == 2 ? GameTextCatalog.MainLevelName : GameTextCatalog.BambooValleyLevelName;
+            string caption = chapter == 1 ? "卷一  /  三十息教学" : chapter == 2 ? "卷二  /  六十息历练" : "卷三  /  竹谷寻踪";
+            string description = chapter == 1 ? "药草、宝箱、洞穴与对手\n从第一次探索开始" :
+                chapter == 2 ? (unlocked ? "择路探索，搭配武学\n最终迎战" + GameTextCatalog.FinalBossName : "完成或跳过教学后解锁") :
+                (unlocked ? "竹林过桥，武馆历练\n探寻幽谷深处的山洞" : "通关" + GameTextCatalog.MainLevelName + "后解锁");
             Color accent = unlocked ? WuxiaUiTheme.Brass : WuxiaUiTheme.TextDisabled;
             WuxiaUiTheme.DrawPanel(rect, WuxiaUiTheme.BackgroundBrown, accent);
-            GUI.Label(new Rect(rect.x + 20, rect.y + 14, rect.width - 40, 24),
-                second ? "卷二  /  六十息历练" : "卷一  /  三十息教学", coverCaption);
-            GUI.Label(new Rect(rect.x + 20, rect.y + 46, rect.width - 40, 34),
-                second ? GameTextCatalog.MainLevelName : GameTextCatalog.TutorialLevelName, coverHeading);
-            GUI.Label(new Rect(rect.x + 20, rect.y + 84, rect.width - 40, rect.height - 148),
-                second
-                    ? (unlocked ? "择路探索，搭配武学\n最终迎战" + GameTextCatalog.FinalBossName : "完成或跳过教学后解锁")
-                    : "药草、宝箱、洞穴与对手\n从第一次探索开始", coverBody);
+            GUI.Label(new Rect(rect.x + 16, rect.y + 12, rect.width - 32, 24), caption, coverCaption);
+            GUI.Label(new Rect(rect.x + 16, rect.y + 42, rect.width - 32, 34), title, coverHeading);
+            GUI.Label(new Rect(rect.x + 16, rect.y + 80, rect.width - 32, rect.height - 144), description, coverBody);
             bool wasEnabled = GUI.enabled;
             GUI.enabled = wasEnabled && unlocked;
-            string action = second ? (unlocked ? "进入关卡" : "尚未解锁")
-                : (gameFlow.IsLevelTwoUnlocked ? "重温教学" : "开始教学");
-            if (GUI.Button(new Rect(rect.x + 20, rect.yMax - 60, rect.width - 40, 44), action,
-                    second && unlocked || !second && !gameFlow.IsLevelTwoUnlocked ? mainMenuButtonStyle : actionButtonStyle))
+            string action = !unlocked ? "尚未解锁" : chapter == 1 ? "开始教学" : "进入关卡";
+            if (GUI.Button(new Rect(rect.x + 16, rect.yMax - 56, rect.width - 32, 44), action,
+                    unlocked && chapter > 1 ? mainMenuButtonStyle : actionButtonStyle))
             {
-                if (second) gameFlow.SelectLevelTwo();
-                else gameFlow.SelectTutorialLevel();
+                if (chapter == 1) gameFlow.SelectTutorialLevel();
+                else if (chapter == 2) gameFlow.SelectLevelTwo();
+                else gameFlow.SelectLevelThree();
             }
             GUI.enabled = wasEnabled;
         }

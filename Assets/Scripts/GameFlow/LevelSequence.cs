@@ -6,7 +6,7 @@ using WuxiaRoguelite.UI;
 namespace WuxiaRoguelite.GameFlow
 {
     /// <summary>
-    /// Owns the small amount of cross-scene progression needed by the two-level
+    /// Owns the small amount of cross-scene progression needed by the three-level
     /// prototype. Gameplay state remains in GameFlowController; this class only
     /// tracks the tutorial unlock and the requested automatic hand-off.
     /// </summary>
@@ -14,18 +14,31 @@ namespace WuxiaRoguelite.GameFlow
     {
         public const string TutorialSceneName = "TutorialLevel";
         public const string LevelTwoSceneName = "MainPrototype";
+        public const string LevelThreeSceneName = "BambooValleyLevel";
         public const float TutorialTimeLimitSeconds = 30f;
         private const string TutorialCompletedKey = "WuxiaRoguelite.TutorialCompleted.v1";
-        private static bool autoStartLevelTwo;
+        private const string LevelTwoCompletedKey = "WuxiaRoguelite.LevelTwoCompleted.v1";
+        private static string autoStartScene;
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
         private static void ResetSession()
         {
-            autoStartLevelTwo = false;
+            autoStartScene = null;
         }
 
         public static bool IsTutorialScene =>
             SceneManager.GetActiveScene().name == TutorialSceneName;
+
+        public static bool IsLevelThreeScene =>
+            SceneManager.GetActiveScene().name == LevelThreeSceneName;
+
+        public static bool LevelTwoCompleted => PlayerPrefs.GetInt(LevelTwoCompletedKey, 0) == 1;
+
+        public static void MarkLevelTwoCompleted()
+        {
+            PlayerPrefs.SetInt(LevelTwoCompletedKey, 1);
+            PlayerPrefs.Save();
+        }
 
         public static bool TutorialCompleted =>
             PlayerPrefs.GetInt(TutorialCompletedKey, 0) == 1;
@@ -62,12 +75,18 @@ namespace WuxiaRoguelite.GameFlow
             Load(LevelTwoSceneName, GameTextCatalog.GameTitle, false);
         }
 
+        public static void LoadLevelThree()
+        {
+            if (!LevelTwoCompleted) return;
+            Load(LevelThreeSceneName, GameTextCatalog.BambooValleyLevelName, true);
+        }
+
         private static void Load(string scene, string title, bool startRun, string subtitle = null)
         {
             // Reject duplicate requests before they can overwrite the destination intent.
             if (LevelLoadingScreen.IsLoading) return;
-            autoStartLevelTwo = startRun;
-            if (!LevelLoadingScreen.Load(scene, title, subtitle)) autoStartLevelTwo = false;
+            autoStartScene = startRun ? scene : null;
+            if (!LevelLoadingScreen.Load(scene, title, subtitle)) autoStartScene = null;
         }
 
         /// <summary>
@@ -75,16 +94,19 @@ namespace WuxiaRoguelite.GameFlow
         /// finished its own initialization. A sceneLoaded callback fires before
         /// Start and would let Start immediately overwrite the requested level state.
         /// </summary>
-        public static bool ConsumeLevelTwoAutoStartRequest()
+        public static bool ConsumeAutoStartRequest()
         {
-            if (SceneManager.GetActiveScene().name != LevelTwoSceneName ||
-                !autoStartLevelTwo)
+            if (string.IsNullOrEmpty(autoStartScene) ||
+                SceneManager.GetActiveScene().name != autoStartScene)
             {
                 return false;
             }
 
-            autoStartLevelTwo = false;
+            autoStartScene = null;
             return true;
         }
+
+        // Keep the existing transition probe and integrations source-compatible.
+        public static bool ConsumeLevelTwoAutoStartRequest() => ConsumeAutoStartRequest();
     }
 }

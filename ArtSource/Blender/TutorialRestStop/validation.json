@@ -1,0 +1,22 @@
+{
+  "checks": {
+    "metric_units": true,
+    "all_six_layout_anchors": true,
+    "three_cameras": true,
+    "finite_mesh_vertices": true,
+    "meshes_nonempty": true,
+    "all_environment_meshes_have_materials": true,
+    "reference_packed": true,
+    "font_packed": true,
+    "no_missing_external_images": true,
+    "compositor_connected": true,
+    "new_reference_layout": true,
+    "enemy_away_from_cooking_fire": true
+  },
+  "passed": true,
+  "scene": "Level 01 | 山脚古道的小歇脚地",
+  "blend": "/Users/gongyuyang/Documents/37minigame/ArtSource/Blender/TutorialRestStop/TutorialRestStop_v01.blend",
+  "mesh_objects": 175,
+  "polygons": 592861,
+  "scope": "Blender structure and packed dependencies only. No Unity collision, timing or device tests."
+}

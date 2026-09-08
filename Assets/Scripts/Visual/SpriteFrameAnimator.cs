@@ -15,6 +15,8 @@ namespace WuxiaRoguelite.Visual
 
         private SpriteRenderer spriteRenderer;
         private float startOffset;
+        private readonly HeroDirectionalPlayback heroPlayback = new HeroDirectionalPlayback();
+        public HeroDirectionalPlayback HeroPlayback => heroPlayback;
 
         private void Awake()
         {
@@ -24,6 +26,14 @@ namespace WuxiaRoguelite.Visual
 
         private void Update()
         {
+            if (movementSource != null && HeroDirectionalArt.Available)
+            {
+                heroPlayback.Tick(movementSource.MovementInput, Time.deltaTime, movementSource.AnimationSpeedRatio);
+                spriteRenderer.flipX = false;
+                spriteRenderer.sprite = heroPlayback.CurrentSprite;
+                return;
+            }
+
             if (movementSource != null && Mathf.Abs(movementSource.HorizontalInput) > 0.01f)
             {
                 spriteRenderer.flipX = movementSource.HorizontalInput < 0f;

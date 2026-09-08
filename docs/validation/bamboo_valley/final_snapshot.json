@@ -1,0 +1,25 @@
+{
+  "timestamp": "2026-09-07T02:08:36.942687",
+  "unity": "6000.5.4f1",
+  "playmode_checks_passed": 21,
+  "font_validation": "passed",
+  "geometry_validation": "passed",
+  "assets": [
+    {
+      "path": "Assets/Scenes/BambooValleyLevel.unity",
+      "bytes": 323711,
+      "sha256": "6930bec056d4c27e6ed908dd37ce9f058ce361059e6d6ac8bf818f845eb48772"
+    },
+    {
+      "path": "Assets/Prefabs/Environment/BambooValley.prefab",
+      "bytes": 1843286,
+      "sha256": "06314171e73d9af7225105795cf0277eaa6f12baf8a08889ee893c25c48c2a47"
+    },
+    {
+      "path": "Assets/Art/Environment/BambooValley/BambooValley.fbx",
+      "bytes": 23442412,
+      "sha256": "33a07b5c86295ba33801bf679b79a505347c320cdf4011f2dcfe475d84c6d475"
+    }
+  ],
+  "scope": "Source integration; WebGL not rebuilt or republished; mobile performance and natural-run balance not validated."
+}

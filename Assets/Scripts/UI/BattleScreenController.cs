@@ -140,6 +140,7 @@ namespace WuxiaRoguelite.UI
         {
             if (LevelLoadingScreen.IsLoading) return;
             UpdateOpeningPresentation();
+            TrackHeroAttack();
         }
 
         private void OnGUI()
@@ -164,6 +165,7 @@ namespace WuxiaRoguelite.UI
             }
 
             TrackLatestAttack();
+            TrackHeroAttack();
             TrackHealthChanges();
             UpdateBattleBackground();
 
@@ -264,8 +266,7 @@ namespace WuxiaRoguelite.UI
             float enemyX = width * (portrait ? 0.75f : 0.70f) - actorSize * 0.5f;
             if (actionProgress < 1f && !midBossAction && !finalBossAction)
             {
-                playerX += lunge;
-                enemyX -= lunge;
+                if (!battleManager.LastAttackWasPlayer) enemyX -= lunge;
                 if (battleManager.LastAttackWasPlayer)
                 {
                     enemyX += shake;
@@ -276,8 +277,12 @@ namespace WuxiaRoguelite.UI
                 }
             }
 
-            bool playerAttacking = actionProgress < 1f && (!(midBossAction || finalBossAction) || battleManager.LastAttackWasPlayer);
-            bool enemyAttacking = midBossAction || finalBossAction || actionProgress < 1f;
+            bool playerAttacking = IsHeroAttackPlaying;
+            float playerActionProgress = HeroAttackProgress;
+            if (playerAttacking)
+                playerX += Mathf.Sin(playerActionProgress * Mathf.PI) * Mathf.Min(36f, width * 0.035f);
+            bool enemyAttacking = midBossAction || finalBossAction ||
+                                  (actionProgress < 1f && !battleManager.LastAttackWasPlayer);
             Sprite[] currentEnemyActionFrames = midBossAction
                 ? SelectMidBossActionFrames(enemyVisual, currentEnemyAttackFrames)
                 : finalBossAction ? SelectFinalBossActionFrames(enemyVisual, currentEnemyAttackFrames)
@@ -290,10 +295,13 @@ namespace WuxiaRoguelite.UI
                 baseY - enemyActorSize, enemyActorSize, enemyActorSize);
             // Generated fox atlases reserve the bottom eighth for a stable foot pivot.
             if (battleManager.IsBossBattle) enemyRect.y += enemyRect.height * 0.125f;
+            // Hero strips share a foot pivot 32 px above the bottom of each 256 px cell.
+            playerRect.y += playerRect.height * 0.125f;
             DrawPersistentBattleAuras(playerRect, enemyRect);
             DrawMidBossWard(enemyRect);
             DrawFighter(playerRect, PlayerColor, "侠", false,
-                playerAttacking ? playerAttackFrames : playerIdleFrames, playerAttacking, actionProgress);
+                playerAttacking ? CurrentHeroAttackFrames() : playerIdleFrames, playerAttacking, playerActionProgress,
+                null, playerRect.y + playerRect.height * 0.875f);
             Rect enemyPoseRect = finalBossAction ? GetFinalBossPoseRect(enemyRect, enemyVisual) : enemyRect;
             DrawFighter(enemyPoseRect, EnemyColor, "敌", enemyVisual != null ? enemyVisual.flipHorizontally : true,
                 enemyAttacking ? currentEnemyActionFrames : currentEnemyIdleFrames, enemyAttacking, enemyActionProgress,
@@ -304,6 +312,10 @@ namespace WuxiaRoguelite.UI
             DrawFinalBossFoxfire(playerRect, enemyRect);
             DrawBattleSkillVfx(playerRect, enemyRect,
                 enemyVisual != null ? enemyVisual.flipHorizontally : true);
+            GUI.BeginGroup(stageRect);
+            DrawHeroSkillVfx(OffsetRect(playerRect, -stageRect.x, -stageRect.y),
+                OffsetRect(enemyRect, -stageRect.x, -stageRect.y));
+            GUI.EndGroup();
             DrawSkillCallout(playerRect, enemyRect);
             DrawImpactMarker(playerRect, playerDamageAmount, playerDamageStartedAt, playerDamageWasCritical, true);
             DrawImpactMarker(enemyRect, enemyDamageAmount, enemyDamageStartedAt, enemyDamageWasCritical, false);
@@ -1305,7 +1317,7 @@ namespace WuxiaRoguelite.UI
                 }
             }
 
-            if (HasCue(BattleVfxCue.SwordQi) && swordQiEffectFrames != null &&
+            if (debugPreview && HasCue(BattleVfxCue.SwordQi) && swordQiEffectFrames != null &&
                 swordQiEffectFrames.Length > 0)
             {
                 float progress = Mathf.Clamp01(age / 0.54f);
@@ -1323,7 +1335,7 @@ namespace WuxiaRoguelite.UI
                     new Color(0.58f, 0.90f, 0.94f, 0.80f), -18f, 1.16f);
             }
 
-            if (HasCue(BattleVfxCue.SwiftCombo))
+            if (debugPreview && HasCue(BattleVfxCue.SwiftCombo))
             {
                 bool flipSwordQi = ShouldFlipDirectionalEffect(playerRect, enemyRect, sourceFacesLeft: true);
                 DrawBurst(enemyRect, swordQiEffectFrames, age, 0.62f,
@@ -1336,7 +1348,7 @@ namespace WuxiaRoguelite.UI
                     new Color(0.92f, 0.73f, 0.28f, 0.74f), 20f, 1.05f);
             }
 
-            if (HasCue(BattleVfxCue.PoisonApplied) || HasCue(BattleVfxCue.PoisonTick))
+            if ((debugPreview && HasCue(BattleVfxCue.PoisonApplied)) || HasCue(BattleVfxCue.PoisonTick))
             {
                 float scale = HasCue(BattleVfxCue.PoisonMist) ? 1.28f : 0.92f;
                 DrawBurst(enemyRect, poisonEffectFrames, age, 0.66f, Color.white, scale, 0f);
@@ -1347,7 +1359,7 @@ namespace WuxiaRoguelite.UI
                     HasCue(BattleVfxCue.PoisonMist) ? 1f : 0.58f, 0.84f * (1f - progress));
             }
 
-            if (HasCue(BattleVfxCue.ArmorBreak))
+            if (HasCue(BattleVfxCue.ArmorBreak) && (debugPreview || HasCue(BattleVfxCue.PoisonTick)))
             {
                 DrawBurst(enemyRect, impactEffectFrames, age, 0.38f,
                     new Color(0.94f, 0.72f, 0.30f, 0.86f), 0.72f, 0.08f);
@@ -1379,7 +1391,7 @@ namespace WuxiaRoguelite.UI
                     new Color(0.38f, 0.82f, 0.62f, 0.82f));
             }
 
-            if (HasCue(BattleVfxCue.OpeningStrike))
+            if (debugPreview && HasCue(BattleVfxCue.OpeningStrike))
             {
                 DrawBurst(enemyRect, impactEffectFrames, age, 0.42f,
                     new Color(1f, 0.88f, 0.42f, 0.92f), 1.00f, -0.18f);
@@ -1387,7 +1399,7 @@ namespace WuxiaRoguelite.UI
                     new Color(1f, 0.88f, 0.42f, 0.94f), -42f, 1.30f);
             }
 
-            if (HasCue(BattleVfxCue.BloodPower) || HasCue(BattleVfxCue.BloodBurst))
+            if (debugPreview && (HasCue(BattleVfxCue.BloodPower) || HasCue(BattleVfxCue.BloodBurst)))
             {
                 DrawBurst(enemyRect, impactEffectFrames, age, 0.52f,
                     new Color(1f, 0.16f, 0.10f, 0.84f),

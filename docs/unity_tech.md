@@ -69,14 +69,15 @@ Assets/
 
 ## 4. 场景建议
 
-当前有两个可运行场景：
+当前有三个可运行场景：
 
 ```text
 Assets/Scenes/TutorialLevel.unity
 Assets/Scenes/MainPrototype.unity
+Assets/Scenes/BambooValleyLevel.unity
 ```
 
-`TutorialLevel` 是关卡1教学，`MainPrototype` 是关卡2正式主地图；两者均加入 Build Settings。
+`TutorialLevel` 是关卡1教学，`MainPrototype` 是关卡2正式主地图，`BambooValleyLevel` 是关卡3竹影幽谷；三者均加入 Build Settings。
 跨场景的教学解锁与自动衔接由 `LevelSequence` 管理，场景内战斗、洞穴与计时仍由
 `GameFlowController` 管理。
 关卡2自动启动请求由新场景中的 `GameFlowController.Start()` 在初始化完成后消费，避免
@@ -84,7 +85,8 @@ Assets/Scenes/MainPrototype.unity
 教学关卡使用独立的 30 秒时限；关卡2仍使用 60 秒主地图规则。完成教学后选择“下一关”，或点击“跳过”，直接调用 `LevelSequence` 的异步场景加载；难度提示合入加载页，不再进入 `Ready` 等待二次点击。
 `LevelLoadingScreen` 运行时自动创建并跨场景保留，复用随包字体、首页山景、共享九宫格与主题色。加载页至少显示 5 个真实秒，进度单调递增，场景完成且新场景 `Start()` 初始化完成后显示 100%，再揭示关卡。加载期间冻结计时并拦截底层界面与重复请求。
 关卡2自动开局意图使用本次运行中的一次性状态，不写 PlayerPrefs；只有教学完成解锁持久保存。明确返回主页的请求不会携带自动开局意图。无需新增场景或手动绑定。
-教学守关胜利后进入 `Result` 总结；当前场景序列没有关卡3，因此关卡2总结中的下一关入口禁用。
+教学守关胜利后进入 `Result` 总结；关卡2最终 Boss 胜利时持久化第三关解锁，结算“下一关”进入 `BambooValleyLevel`。关卡3胜利后的下一关禁用。
+第三关模型、碰撞、材质和验证说明见 [竹影幽谷第三关](bamboo_valley_level3.md)。
 
 第一关采用首次接触教学：首次触碰药草、宝箱、普通敌人或洞穴时，先显示用途与操作说明，点击主按钮后才执行原互动；首次升级时先解释修为与武学选择，再展示三选一。每种内容每次教学只提示一次，重玩教学会重置，关卡2不显示。阅读使用独立的 `TutorialLearning` 阶段，停止教学计时和移动，不提前消耗物品或开始战斗；确认后的普通战斗仍继续主时间，洞穴仍暂停主时间。开场补充移动与互动方式，弹窗保留设置和跳过入口。
 
@@ -219,3 +221,7 @@ Debug 功能不得破坏正式玩法逻辑。
 这三条是硬规则。
 
 第一关 Boss 数值由 `TutorialBossTuning` 集中提供，进入教学场景时仅替换该场景的运行时 Boss 配置。`GameFlowController.Tutorial` 负责说明和开战，复用 `BossBattle` 阶段的独立计时及既有角色动画，不需要重建场景或手动绑定。
+
+### 教学歇脚地地图接入
+
+`TutorialLevel.unity` 使用 `Assets/Prefabs/Environment/TutorialRestStop.prefab`，由 `TutorialRestStopBuilder` 在现有教学场景上适配。流程与验证见 [tutorial_rest_stop.md](tutorial_rest_stop.md)。不要用旧 `Build Tutorial Level` 覆盖已适配场景；重新生成旧教学壳后须再执行 `37 MiniGame/Adapt Tutorial Rest Stop`。

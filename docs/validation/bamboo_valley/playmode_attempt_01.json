@@ -1,0 +1,13 @@
+{
+    "success": false,
+    "error": "System.Exception: touching authored enemy starts normal combat\n  at BambooValleyPlayModeProbe.Check (System.Boolean ok, System.String message) [0x00016] in /Users/gongyuyang/Documents/37minigame/Assets/Scripts/Debug/BambooValleyPlayModeProbe.cs:69 \n  at BambooValleyPlayModeProbe+<Suite>d__25.MoveNext () [0x0044d] in /Users/gongyuyang/Documents/37minigame/Assets/Scripts/Debug/BambooValleyPlayModeProbe.cs:119 \n  at BambooValleyPlayModeProbe+<Start>d__15.MoveNext () [0x00096] in /Users/gongyuyang/Documents/37minigame/Assets/Scripts/Debug/BambooValleyPlayModeProbe.cs:53 ",
+    "checks": [
+        "third level locked before level two victory",
+        "direct third level: opening choice freezes 60 seconds",
+        "third level begins exploration after choice",
+        "Rigidbody movement crosses bridge at z=-6",
+        "Rigidbody movement crosses bridge at z=7",
+        "Rigidbody cannot cross water away from bridge"
+    ],
+    "scope": "Controlled real Play Mode; not natural-run balance or device performance approval"
+}

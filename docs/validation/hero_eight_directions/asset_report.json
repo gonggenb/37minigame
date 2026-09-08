@@ -1,0 +1,838 @@
+{
+  "success": true,
+  "spriteCount": 72,
+  "sheets": [
+    {
+      "file": "spr_hero_idle_down_1f_v01.png",
+      "width": 256,
+      "height": 256,
+      "frames": [
+        {
+          "box": [
+            84,
+            32,
+            171,
+            223
+          ],
+          "opaque": 11428,
+          "sha256": "4bdf19eafc54ee1974afca19e337b8787347df6da7f85455dbd206c8a916972f"
+        }
+      ]
+    },
+    {
+      "file": "spr_hero_idle_down_left_1f_v01.png",
+      "width": 256,
+      "height": 256,
+      "frames": [
+        {
+          "box": [
+            83,
+            32,
+            177,
+            223
+          ],
+          "opaque": 12182,
+          "sha256": "df0d5d3810e233807a94776ff8dd029f600609ea69f1122e9a2baf6c62a080e8"
+        }
+      ]
+    },
+    {
+      "file": "spr_hero_idle_down_right_1f_v01.png",
+      "width": 256,
+      "height": 256,
+      "frames": [
+        {
+          "box": [
+            77,
+            32,
+            173,
+            223
+          ],
+          "opaque": 12557,
+          "sha256": "e4784521042d3aecf2e62c896aa52d63c2dff1e5f9e1893d4c1db09f1512e6e9"
+        }
+      ]
+    },
+    {
+      "file": "spr_hero_idle_left_1f_v01.png",
+      "width": 256,
+      "height": 256,
+      "frames": [
+        {
+          "box": [
+            99,
+            32,
+            181,
+            223
+          ],
+          "opaque": 8935,
+          "sha256": "e47dd7cceb7ec41aaf4db97bff07dd69e85e6fb3dd5fc46b61363c08696d04d2"
+        }
+      ]
+    },
+    {
+      "file": "spr_hero_idle_right_1f_v01.png",
+      "width": 256,
+      "height": 256,
+      "frames": [
+        {
+          "box": [
+            73,
+            32,
+            157,
+            223
+          ],
+          "opaque": 9231,
+          "sha256": "6f08e63226854fdf95bd19761bfdcd4ee20c2589f949beedf0ca3487a04876ff"
+        }
+      ]
+    },
+    {
+      "file": "spr_hero_idle_up_1f_v01.png",
+      "width": 256,
+      "height": 256,
+      "frames": [
+        {
+          "box": [
+            85,
+            32,
+            171,
+            223
+          ],
+          "opaque": 11300,
+          "sha256": "6e736bd14ebcdaee0373522d591a0afbb3f1b1deb3670c3acefbfb773cdcd5bd"
+        }
+      ]
+    },
+    {
+      "file": "spr_hero_idle_up_left_1f_v01.png",
+      "width": 256,
+      "height": 256,
+      "frames": [
+        {
+          "box": [
+            87,
+            32,
+            175,
+            223
+          ],
+          "opaque": 11459,
+          "sha256": "ec0c24e318a1ad625086fcbf695533a9a01530fcd2ddcf0f6502c9b650bafe07"
+        }
+      ]
+    },
+    {
+      "file": "spr_hero_idle_up_right_1f_v01.png",
+      "width": 256,
+      "height": 256,
+      "frames": [
+        {
+          "box": [
+            76,
+            32,
+            166,
+            223
+          ],
+          "opaque": 11479,
+          "sha256": "a316f766c88bf6bbf3ec82278ef7bb787bb4766d01464a1cefd91f46e6b22c38"
+        }
+      ]
+    },
+    {
+      "file": "spr_hero_run_down_8f_v01.png",
+      "width": 2048,
+      "height": 256,
+      "frames": [
+        {
+          "box": [
+            82,
+            26,
+            166,
+            223
+          ],
+          "opaque": 10202,
+          "sha256": "6d315acf60c80e690cad0f00bb0615ad0c7456e9ac73125616339da3d7769af1"
+        },
+        {
+          "box": [
+            85,
+            36,
+            174,
+            223
+          ],
+          "opaque": 9981,
+          "sha256": "af839fcaab8f4d52ab114f231c53fc456cc664941345a4c3b7ed9eed9eb4cd80"
+        },
+        {
+          "box": [
+            80,
+            32,
+            167,
+            223
+          ],
+          "opaque": 10097,
+          "sha256": "6477145201baca690f27b99ad0f3c5bc0b7bcc8c573123b2eb198922b99c6326"
+        },
+        {
+          "box": [
+            84,
+            34,
+            168,
+            223
+          ],
+          "opaque": 10115,
+          "sha256": "db52941df4d633b613c1f86790cb06408ff7f9026b829e9bd3dc59adf2c4ebfd"
+        },
+        {
+          "box": [
+            90,
+            28,
+            171,
+            223
+          ],
+          "opaque": 10048,
+          "sha256": "6255102f1279b29fd7cc8d270880883de8ed649ce8399bab3a630753a98243c3"
+        },
+        {
+          "box": [
+            81,
+            34,
+            167,
+            223
+          ],
+          "opaque": 9908,
+          "sha256": "8ba1a146afd7590f51d2b0017019dcf0ce54b8da97d8885295ec23fbec744f4c"
+        },
+        {
+          "box": [
+            87,
+            29,
+            169,
+            223
+          ],
+          "opaque": 10031,
+          "sha256": "7b615ffe1de9cd2cd91cd99413f6b6d44e2674a8849a830c706a42604fd437d0"
+        },
+        {
+          "box": [
+            91,
+            32,
+            176,
+            223
+          ],
+          "opaque": 10241,
+          "sha256": "940e79fb9e7d1f4e59aa9676641cfedf8d762307eb5423aacf690a0079627316"
+        }
+      ]
+    },
+    {
+      "file": "spr_hero_run_down_left_8f_v01.png",
+      "width": 2048,
+      "height": 256,
+      "frames": [
+        {
+          "box": [
+            69,
+            31,
+            184,
+            223
+          ],
+          "opaque": 12519,
+          "sha256": "f724f64453a271c0d5e8d6e5a988e00aa97a2f63ae029fa6d02a6f9357628607"
+        },
+        {
+          "box": [
+            71,
+            47,
+            177,
+            223
+          ],
+          "opaque": 11926,
+          "sha256": "4fc9b8bfab9e3c029e56c7108378f7491f3a71efbde8722a3301a83e963d8dcf"
+        },
+        {
+          "box": [
+            76,
+            27,
+            182,
+            223
+          ],
+          "opaque": 11713,
+          "sha256": "b17afa3958776d766fb012bf8037bfc4d3575bf1551337aa32ca8441dff92feb"
+        },
+        {
+          "box": [
+            76,
+            30,
+            183,
+            223
+          ],
+          "opaque": 12490,
+          "sha256": "c3289cc641c3fe077fcb77321bfc42ff1ce621b1c405b5e1c3e795a163e07cba"
+        },
+        {
+          "box": [
+            71,
+            32,
+            183,
+            223
+          ],
+          "opaque": 11604,
+          "sha256": "8de2c17f265dc324540a9c0393569aa52026750e0d74b074675538502a2246af"
+        },
+        {
+          "box": [
+            68,
+            48,
+            172,
+            223
+          ],
+          "opaque": 11244,
+          "sha256": "4b424e15b802f21303a716680d1986b3857b456b0dfc463a6aff442f42592b9c"
+        },
+        {
+          "box": [
+            69,
+            40,
+            180,
+            223
+          ],
+          "opaque": 11099,
+          "sha256": "972096b2f616756fa0fdaa76c85003db441261e809b9a0e5d5250d3553c2c9d3"
+        },
+        {
+          "box": [
+            79,
+            34,
+            179,
+            223
+          ],
+          "opaque": 11383,
+          "sha256": "dbe4e35b6212d378ff3c14f0ea2ab2975101e84862f1e0d66ccbf61a8ce09d48"
+        }
+      ]
+    },
+    {
+      "file": "spr_hero_run_down_right_8f_v01.png",
+      "width": 2048,
+      "height": 256,
+      "frames": [
+        {
+          "box": [
+            75,
+            34,
+            184,
+            223
+          ],
+          "opaque": 11822,
+          "sha256": "29f559afe4d6009dbdbab791470c320041c52d34299bacba1bc61a8065edc4fe"
+        },
+        {
+          "box": [
+            76,
+            32,
+            183,
+            223
+          ],
+          "opaque": 11884,
+          "sha256": "64c22aaf307de75f51f6f4af03c95001376b6c6d0da196c8a41ea58db7c44ab1"
+        },
+        {
+          "box": [
+            75,
+            35,
+            185,
+            223
+          ],
+          "opaque": 11548,
+          "sha256": "69586c4f3eb5ecfea8e680008e2c50d46297256e3f5593dba32a0858a418ee4d"
+        },
+        {
+          "box": [
+            78,
+            32,
+            182,
+            223
+          ],
+          "opaque": 12308,
+          "sha256": "7dd5f1672fb62af30f69639fb0e67dff6dcd8c4546f99b9206c3b92355b25760"
+        },
+        {
+          "box": [
+            78,
+            32,
+            183,
+            223
+          ],
+          "opaque": 12318,
+          "sha256": "85a550fa9426a6add04fedab1639fadf34772c5f2f0e7f663ebf8b3c8d32dd28"
+        },
+        {
+          "box": [
+            79,
+            30,
+            181,
+            223
+          ],
+          "opaque": 11545,
+          "sha256": "3c35fb8f11ecba829adb13ec19025f2f9b81c56ab995147a09953fab0014db0e"
+        },
+        {
+          "box": [
+            84,
+            30,
+            191,
+            223
+          ],
+          "opaque": 12456,
+          "sha256": "3391d8a6e2aaf08fd1a0075c8d34f41f6f8279430d253da476580bf51cca048e"
+        },
+        {
+          "box": [
+            72,
+            29,
+            168,
+            223
+          ],
+          "opaque": 11816,
+          "sha256": "14719a02d60ebb7eff45aeec1e34a80b13d6dc8407466d7f79d84a8dc2b64c18"
+        }
+      ]
+    },
+    {
+      "file": "spr_hero_run_left_8f_v01.png",
+      "width": 2048,
+      "height": 256,
+      "frames": [
+        {
+          "box": [
+            70,
+            30,
+            181,
+            223
+          ],
+          "opaque": 12707,
+          "sha256": "06732d051ed65c65f68680e6fc3d4656232d65941516adcaa95e0eb4a35975e3"
+        },
+        {
+          "box": [
+            86,
+            36,
+            189,
+            223
+          ],
+          "opaque": 11374,
+          "sha256": "491afcca29fa5e00d23454fb6d32ca386b1a841fe64e8cea87e722851a34a9d8"
+        },
+        {
+          "box": [
+            83,
+            34,
+            195,
+            223
+          ],
+          "opaque": 12208,
+          "sha256": "fe3d7f276790626e2446abb2ce27bda780fc1737932fa82426aa9e0ed4c73ae5"
+        },
+        {
+          "box": [
+            80,
+            30,
+            193,
+            223
+          ],
+          "opaque": 12458,
+          "sha256": "bfa37bbe9d04d6fe1d8338333b5392b73c1d6b4a8da143157deb1bc43150bb91"
+        },
+        {
+          "box": [
+            85,
+            34,
+            202,
+            223
+          ],
+          "opaque": 12336,
+          "sha256": "ad83d3303465a219b81640a76c5ba1acf791e6b4bb2feca508744e849554353e"
+        },
+        {
+          "box": [
+            80,
+            44,
+            185,
+            223
+          ],
+          "opaque": 10924,
+          "sha256": "411c4aff2ebd18fb920e5286e5435bfd746d2a2de9c2e593e2413d02e874f625"
+        },
+        {
+          "box": [
+            80,
+            32,
+            200,
+            223
+          ],
+          "opaque": 12451,
+          "sha256": "2265864d00006ab5453f3334a4da8f738dce5d9fd3be6c0e348787185138e86a"
+        },
+        {
+          "box": [
+            78,
+            32,
+            187,
+            223
+          ],
+          "opaque": 12066,
+          "sha256": "32562e7ffe0b93eddef9a97a74ff646cda7fe93224e44054dfc7fd65c010b037"
+        }
+      ]
+    },
+    {
+      "file": "spr_hero_run_right_8f_v01.png",
+      "width": 2048,
+      "height": 256,
+      "frames": [
+        {
+          "box": [
+            65,
+            32,
+            182,
+            223
+          ],
+          "opaque": 11848,
+          "sha256": "9bc6436d2aa81f3c94896c119f3eb0cfc6a664f304674a5ecab24677bfc40fc9"
+        },
+        {
+          "box": [
+            69,
+            32,
+            165,
+            223
+          ],
+          "opaque": 11134,
+          "sha256": "b0bf5aeb4614bc7d9d884e5ca650374ffac40c5f556934cbd5997506eb49cbae"
+        },
+        {
+          "box": [
+            68,
+            32,
+            167,
+            223
+          ],
+          "opaque": 10271,
+          "sha256": "9cfd7a456a932d695fa94eb3cbc8925039cd697be443294c5d72bcf734e84106"
+        },
+        {
+          "box": [
+            76,
+            36,
+            166,
+            223
+          ],
+          "opaque": 10369,
+          "sha256": "939a56fe351849f367856da6d730a0de7bacd801c7b3b608ceb0ba49e9de5164"
+        },
+        {
+          "box": [
+            70,
+            32,
+            165,
+            223
+          ],
+          "opaque": 10514,
+          "sha256": "e99eca5dac89566d219a4afa1f49fef3a7c372e4dab5725b3b1683271b2b609a"
+        },
+        {
+          "box": [
+            71,
+            30,
+            180,
+            223
+          ],
+          "opaque": 11102,
+          "sha256": "4b1d2db2b25389207e323c3bae72517561fe93704e6f34891a0f3f74ddaf1555"
+        },
+        {
+          "box": [
+            67,
+            31,
+            178,
+            223
+          ],
+          "opaque": 11243,
+          "sha256": "c285d9764f65ae2de3c8ae06ecdb0dec388d687b3ac026acba4f2b61a2034255"
+        },
+        {
+          "box": [
+            73,
+            32,
+            167,
+            223
+          ],
+          "opaque": 10598,
+          "sha256": "773c706d96a504fbdd6ab509d749cbc4c0f3b4feb14c563e696931af2f911cf8"
+        }
+      ]
+    },
+    {
+      "file": "spr_hero_run_up_8f_v01.png",
+      "width": 2048,
+      "height": 256,
+      "frames": [
+        {
+          "box": [
+            86,
+            32,
+            164,
+            223
+          ],
+          "opaque": 8752,
+          "sha256": "23277096faf8525fc76ab2c4d4cd36afcaad3d05b99b0e61d5c8325a702ba2f6"
+        },
+        {
+          "box": [
+            85,
+            32,
+            163,
+            223
+          ],
+          "opaque": 8744,
+          "sha256": "100fd37b208430ed9a8e226a721d3e604afd731a0e816edeba872d9542f83cd2"
+        },
+        {
+          "box": [
+            86,
+            32,
+            163,
+            223
+          ],
+          "opaque": 8859,
+          "sha256": "fbe0ff370c506630831218ccc25ea9b1de1df59e40b3448a27053160ac47d5b1"
+        },
+        {
+          "box": [
+            85,
+            43,
+            166,
+            223
+          ],
+          "opaque": 8585,
+          "sha256": "0edfee514bc3b096fe7b2656750482fd7ea1e127fec4dd56ff29286b9e3ca47a"
+        },
+        {
+          "box": [
+            86,
+            32,
+            164,
+            223
+          ],
+          "opaque": 8818,
+          "sha256": "8ca2f8f01becb4f5b80d5ded8a0e3098901499f68ffe8863df54a32b3a26bbf8"
+        },
+        {
+          "box": [
+            86,
+            32,
+            162,
+            223
+          ],
+          "opaque": 8834,
+          "sha256": "1a35c12a302996e3eb7ca4f3c1e44f105f128f58b90d8957f9e1a0d4ad82025d"
+        },
+        {
+          "box": [
+            85,
+            34,
+            166,
+            223
+          ],
+          "opaque": 8835,
+          "sha256": "c8a1347cf869011ad7568b93a146ea8924ffc583d3dd3f213dd66a701599740b"
+        },
+        {
+          "box": [
+            86,
+            32,
+            163,
+            223
+          ],
+          "opaque": 8688,
+          "sha256": "4a44a63b8c62b85efd4c6b01ccf2f08ec3950a76f4661791646f48259350cfb3"
+        }
+      ]
+    },
+    {
+      "file": "spr_hero_run_up_left_8f_v01.png",
+      "width": 2048,
+      "height": 256,
+      "frames": [
+        {
+          "box": [
+            78,
+            30,
+            181,
+            223
+          ],
+          "opaque": 10552,
+          "sha256": "1f7334ffaddb55eb7b22c49df9710fd47a1ec064d15c18e2e4de202c6e91cab9"
+        },
+        {
+          "box": [
+            82,
+            34,
+            175,
+            223
+          ],
+          "opaque": 10697,
+          "sha256": "abae3be97e1284862c6dfb3506daf5ce808ff9036ea300b64fc51242bb982021"
+        },
+        {
+          "box": [
+            90,
+            32,
+            184,
+            223
+          ],
+          "opaque": 10725,
+          "sha256": "0398ae9fcc000344b195cb60697464329bab5bd7a117b70ca0717521cd8a88a8"
+        },
+        {
+          "box": [
+            80,
+            31,
+            182,
+            223
+          ],
+          "opaque": 10655,
+          "sha256": "be3127f3ede5e04b7f04a409cb15bb95760c383d85021949bd1ed15c7b9949d1"
+        },
+        {
+          "box": [
+            84,
+            30,
+            178,
+            223
+          ],
+          "opaque": 10542,
+          "sha256": "66d90bf8c481d0e305f784f642534f9b28c94cbdfc8f93f0d63d62ad8aa08867"
+        },
+        {
+          "box": [
+            80,
+            34,
+            177,
+            223
+          ],
+          "opaque": 10766,
+          "sha256": "eb3f4e99023ca6a885e17ea7ca597950c012eaf5687e6fef0e295b407b9a850b"
+        },
+        {
+          "box": [
+            86,
+            32,
+            184,
+            223
+          ],
+          "opaque": 10459,
+          "sha256": "6922dd1f8be24951cf8bedbd343edd2f157a4eb29558792fd9c79b0dbf0cc2d7"
+        },
+        {
+          "box": [
+            84,
+            37,
+            179,
+            223
+          ],
+          "opaque": 10796,
+          "sha256": "45369fe34fd883c27d858a5df6866a335a172056752f7a88da6ed27551a9e79c"
+        }
+      ]
+    },
+    {
+      "file": "spr_hero_run_up_right_8f_v01.png",
+      "width": 2048,
+      "height": 256,
+      "frames": [
+        {
+          "box": [
+            83,
+            34,
+            184,
+            223
+          ],
+          "opaque": 11914,
+          "sha256": "5d42abeb17e24aba29e3e38f089e0afd063dd022e39ece58ce398a4c24e72b06"
+        },
+        {
+          "box": [
+            79,
+            32,
+            169,
+            223
+          ],
+          "opaque": 11161,
+          "sha256": "375e4b649691066d9c2df9292e468bae8ec58cb69909ee8ee8555774a7d7298c"
+        },
+        {
+          "box": [
+            81,
+            28,
+            177,
+            223
+          ],
+          "opaque": 11899,
+          "sha256": "9c68ddb70e267c623386db2fae65fd5363f3a6c3299addde733b036910cff998"
+        },
+        {
+          "box": [
+            91,
+            30,
+            189,
+            223
+          ],
+          "opaque": 11495,
+          "sha256": "14df0bf758a41c2572ba49351ed9385b35ee069a7292bbe96d31afa487a24bab"
+        },
+        {
+          "box": [
+            78,
+            35,
+            182,
+            223
+          ],
+          "opaque": 11978,
+          "sha256": "4fe7691215cf6a8b0756f53e0ac231eee44c9de059a1c2fdc26a15b782b5d9ec"
+        },
+        {
+          "box": [
+            83,
+            30,
+            184,
+            223
+          ],
+          "opaque": 11428,
+          "sha256": "bcb1449b5b345d8c5d93ca56b2906c225a0592ed4745f23c230520b973769cf8"
+        },
+        {
+          "box": [
+            73,
+            34,
+            178,
+            223
+          ],
+          "opaque": 10835,
+          "sha256": "e03d3b6eb946cfe9f6c293e74dd421e467d4d590c39418435b5f58395bb61a87"
+        },
+        {
+          "box": [
+            83,
+            37,
+            182,
+            223
+          ],
+          "opaque": 11382,
+          "sha256": "6ccc02eee0e462fd956a1610bfecb60abdd224cb85f15ca7c52cb060a41a1c59"
+        }
+      ]
+    }
+  ]
+}

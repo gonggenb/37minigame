@@ -84,6 +84,7 @@ namespace WuxiaRoguelite.GameFlow
         public bool IsTutorialCompletionSummary { get; private set; }
         public bool IsTutorialLevel => LevelSequence.IsTutorialScene;
         public bool IsLevelTwoUnlocked => LevelSequence.TutorialCompleted;
+        public bool IsLevelThreeUnlocked => LevelSequence.LevelTwoCompleted;
         public bool IsMidBossEncounterEnabled =>
             !IsTutorialLevel && midBossTriggerElapsedTime > 0f &&
             midBossTriggerElapsedTime < mainTimeLimit;
@@ -97,9 +98,13 @@ namespace WuxiaRoguelite.GameFlow
              ((CurrentPhase == GamePhase.MainMapRunning || CurrentPhase == GamePhase.NormalBattleRunning) &&
               MidBossCountdownRemaining <= midBossWarningDuration));
         public bool CanContinueToNextLevel =>
-            CurrentPhase == GamePhase.Result && IsTutorialCompletionSummary;
+            CurrentPhase == GamePhase.Result &&
+            (IsTutorialCompletionSummary ||
+             (bossDefeated && UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == LevelSequence.LevelTwoSceneName));
         public string CurrentLevelDisplayName =>
-            IsTutorialLevel ? "关卡1 · 初入江湖" : "关卡2 · 驿路风云";
+            IsTutorialLevel ? $"关卡1 · {GameTextCatalog.TutorialLevelName}" :
+            LevelSequence.IsLevelThreeScene ? $"关卡3 · {GameTextCatalog.BambooValleyLevelName}" :
+            $"关卡2 · {GameTextCatalog.MainLevelName}";
         public int OpeningDialogueIndex { get; private set; }
         public int OpeningDialogueCount => OpeningDialogueCatalog.Count(launchTutorialAfterOpeningIntro);
         public string OpeningPlayerName =>
@@ -238,6 +243,8 @@ namespace WuxiaRoguelite.GameFlow
             {
                 mainTimeLimit = LevelSequence.TutorialTimeLimitSeconds;
                 bossStats = TutorialBossTuning.CreateStats();
+                // Direct tutorial entry must initialize starting equipment and stats just like replay.
+                playerStats?.ResetRun();
             }
 
             cameraFollow = cameraFollow == null ? FindFirstObjectByType<CameraFollow>() : cameraFollow;
@@ -257,7 +264,7 @@ namespace WuxiaRoguelite.GameFlow
             pendingMidBoss = null;
             ClearOpeningIntro();
             SetPhase(GamePhase.Ready);
-            if (!IsTutorialLevel && LevelSequence.ConsumeLevelTwoAutoStartRequest())
+            if (!IsTutorialLevel && LevelSequence.ConsumeAutoStartRequest())
             {
                 BeginLevelTwoAfterTransition();
                 return;
@@ -447,6 +454,17 @@ namespace WuxiaRoguelite.GameFlow
             LevelSequence.LoadLevelTwoFromSelection();
         }
 
+        public void SelectLevelThree()
+        {
+            if (!IsLevelThreeUnlocked)
+            {
+                statusMessage = $"先通关{GameTextCatalog.MainLevelName}。";
+                return;
+            }
+            IsLevelSelectionOpen = false;
+            LevelSequence.LoadLevelThree();
+        }
+
         public void DismissTutorialNotice()
         {
             if (!IsTutorialLevel || !IsTutorialNoticeActive ||
@@ -492,7 +510,8 @@ namespace WuxiaRoguelite.GameFlow
                 return;
             }
 
-            TransitionFromTutorialToLevelTwo(skipped: false);
+            if (IsTutorialCompletionSummary) TransitionFromTutorialToLevelTwo(skipped: false);
+            else LevelSequence.LoadLevelThree();
         }
 
         public void ReturnToMainMenu()
@@ -1114,6 +1133,8 @@ namespace WuxiaRoguelite.GameFlow
                 return;
             }
             bossDefeated = playerWon;
+            if (playerWon && UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == LevelSequence.LevelTwoSceneName)
+                LevelSequence.MarkLevelTwoCompleted();
             EndRun(playerWon, playerWon ? $"击败{bossStats.displayName}" : "决战落败");
         }
 
@@ -1430,7 +1451,7 @@ namespace WuxiaRoguelite.GameFlow
             isOpeningMartialArtChoice = true;
             GenerateMartialArtChoices();
             SetPhase(GamePhase.LevelUpPaused);
-            statusMessage = "关卡2·驿路风云：选择起手流派后，六十息开始。";
+            statusMessage = $"{CurrentLevelDisplayName}：选择起手流派后，六十息开始。";
         }
 
         private void CompleteTutorial()
@@ -1473,6 +1494,8 @@ namespace WuxiaRoguelite.GameFlow
 
         private static string GetOpeningRouteHint(string martialArt)
         {
+            if (LevelSequence.IsLevelThreeScene)
+                return "沿石路前往营地或过桥成长，东侧山洞可寻奇遇。";
             return martialArt switch
             {
                 "剑气诀" => "可循东侧路牌前往机关庄，先试高防目标。",

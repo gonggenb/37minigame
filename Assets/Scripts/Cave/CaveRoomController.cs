@@ -75,6 +75,7 @@ namespace WuxiaRoguelite.Cave
         private bool merchantAwaitingReapproach;
         private bool facingLeft;
         private Vector2 currentMoveInput;
+        private readonly HeroDirectionalPlayback heroPlayback = new HeroDirectionalPlayback();
         private string roomMessage = string.Empty;
         private readonly List<MerchantOffer> merchantOffers = new List<MerchantOffer>();
         private readonly Dictionary<string, Texture2D> caveSceneTextures = new Dictionary<string, Texture2D>();
@@ -119,6 +120,8 @@ namespace WuxiaRoguelite.Cave
             merchantOpen = false;
             merchantAwaitingReapproach = false;
             facingLeft = false;
+            currentMoveInput = Vector2.zero;
+            heroPlayback.Reset();
             roomMessage = ObjectiveText();
             merchantRefreshed = false;
             merchantScroll = Vector2.zero;
@@ -132,6 +135,8 @@ namespace WuxiaRoguelite.Cave
 
         public void ResetRoom()
         {
+            currentMoveInput = Vector2.zero;
+            heroPlayback.Reset();
             IsRoomActive = false;
             entrance = null;
             merchantOpen = false;
@@ -142,6 +147,7 @@ namespace WuxiaRoguelite.Cave
 
         private void Update()
         {
+            currentMoveInput = Vector2.zero;
             if (PrototypeHUDController.BlocksGameplayEscape)
             {
                 return;
@@ -178,9 +184,12 @@ namespace WuxiaRoguelite.Cave
                 facingLeft = input.x < 0f;
             }
 
+            Vector2 previousPosition = playerPosition;
             playerPosition += input * (caveMoveSpeed * Time.unscaledDeltaTime);
             playerPosition.x = Mathf.Clamp(playerPosition.x, 0.09f, 0.91f);
             playerPosition.y = Mathf.Clamp(playerPosition.y, 0.12f, 0.88f);
+            if ((playerPosition - previousPosition).sqrMagnitude < 0.00000001f)
+                currentMoveInput = Vector2.zero;
 
             float eventDistance = Vector2.Distance(playerPosition, CurrentEventPosition);
             if (merchantAwaitingReapproach && eventDistance >= EventRearmDistance)
@@ -198,6 +207,13 @@ namespace WuxiaRoguelite.Cave
             {
                 LeaveCave();
             }
+        }
+
+        private void LateUpdate()
+        {
+            // IMGUI draws several times per frame; advance the clock only once here.
+            heroPlayback.Tick(new Vector2(currentMoveInput.x, -currentMoveInput.y),
+                Time.unscaledDeltaTime, currentMoveInput.magnitude * caveMoveSpeed / 0.52f);
         }
 
         public bool TryUseExitAction()
@@ -431,13 +447,25 @@ namespace WuxiaRoguelite.Cave
 
             float actorSize = Mathf.Clamp(Mathf.Min(width * 0.15f, floor.height * 0.32f), 62f, 128f) *
                               caveActorScale;
-            Vector2 playerCenter = RoomPoint(floor, playerPosition);
-            Vector2 targetCenter = RoomPoint(floor, CurrentEventPosition);
-            Vector2 exitCenter = RoomPoint(floor, CurrentExitPosition);
+            actorSize = Mathf.Min(actorSize, floor.height * 0.36f);
+            float playerActorSize = actorSize * playerSpriteScale;
+            // All interaction markers share the same inset area. Reserve the footer,
+            // captions and silhouette margins in both orientations, including at the edges.
+            float largestActor = Mathf.Max(actorSize, playerActorSize);
+            Rect actorArea = Rect.MinMaxRect(
+                floor.xMin + largestActor * 0.36f,
+                floor.yMin + largestActor * 0.5f,
+                floor.xMax - largestActor * 0.36f,
+                Mathf.Min(floor.yMax, safe.yMax - 78f) - largestActor * 0.43f - 22f);
+            Vector2 playerCenter = RoomPoint(actorArea, playerPosition);
+            Vector2 targetCenter = RoomPoint(actorArea, CurrentEventPosition);
+            Vector2 exitCenter = RoomPoint(actorArea, CurrentExitPosition);
             bool moving = currentMoveInput.sqrMagnitude > 0.01f;
             DrawExit(exitCenter, actorSize * 1.05f);
-            float playerActorSize = actorSize * playerSpriteScale;
-            DrawSpriteCentered(playerCenter, playerActorSize, moving ? playerRunFrames : playerIdleFrames, facingLeft);
+            if (HeroDirectionalArt.Available)
+                DrawHeroCentered(playerCenter, playerActorSize, heroPlayback.CurrentSprite);
+            else
+                DrawSpriteCentered(playerCenter, playerActorSize, moving ? playerRunFrames : playerIdleFrames, facingLeft);
             ResponsiveGui.DrawSingleLineLabel(
                 new Rect(playerCenter.x - 60f, playerCenter.y + playerActorSize * 0.43f, 120f, 22f),
                 "无名少侠", centeredStyle, 10);
@@ -452,19 +480,13 @@ namespace WuxiaRoguelite.Cave
             float preferredMessageWidth =
                 ResponsiveGui.PreferredSingleLineWidth(roomMessage, bodyStyle, 30f);
             float messageWidth = Mathf.Clamp(preferredMessageWidth, width * 0.58f, width - 28f);
-            float messageX = (width - messageWidth) * 0.5f;
-            float messageY = height - 112f;
-            if (ResponsiveGui.IsPortrait)
-            {
-                const float edgePadding = 18f;
-                const float exitButtonWidth = 156f;
-                const float columnGap = 12f;
-                messageWidth = Mathf.Min(
-                    messageWidth,
-                    Mathf.Max(180f, safe.width - exitButtonWidth - edgePadding * 2f - columnGap));
-                messageX = safe.x + edgePadding;
-                messageY = safe.yMax - 52f;
-            }
+            const float edgePadding = 18f;
+            const float columnGap = 12f;
+            float exitButtonWidth = portraitLayout ? 156f : 148f;
+            messageWidth = Mathf.Min(messageWidth,
+                Mathf.Max(180f, safe.width - exitButtonWidth - edgePadding * 2f - columnGap));
+            float messageX = safe.x + edgePadding;
+            float messageY = safe.yMax - 52f;
 
             Rect message = new Rect(messageX, messageY, messageWidth, 34f);
             WuxiaUiTheme.DrawPanel(message,
@@ -1097,6 +1119,17 @@ namespace WuxiaRoguelite.Cave
         private static Vector2 RoomPoint(Rect room, Vector2 normalized)
         {
             return new Vector2(room.x + room.width * normalized.x, room.y + room.height * normalized.y);
+        }
+
+        private static void DrawHeroCentered(Vector2 center, float size, Sprite sprite)
+        {
+            if (sprite == null) return;
+            // Fixed canvas keeps the soles at center.y + 0.375 * size, above the caption.
+            Rect rect = new Rect(center.x - size * 0.5f, center.y - size * 0.5f, size, size);
+            Rect source = sprite.rect;
+            GUI.DrawTextureWithTexCoords(rect, sprite.texture,
+                new Rect(source.x / sprite.texture.width, source.y / sprite.texture.height,
+                    source.width / sprite.texture.width, source.height / sprite.texture.height), true);
         }
 
         private void DrawSpriteCentered(Vector2 center, float size, Sprite[] frames, bool flip)

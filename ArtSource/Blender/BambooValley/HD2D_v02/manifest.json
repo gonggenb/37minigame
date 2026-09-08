@@ -1,0 +1,14 @@
+{
+  "source": "/Users/gongyuyang/Documents/37minigame/ArtSource/Blender/BambooValley/BambooValley.blend",
+  "output": "/Users/gongyuyang/Documents/37minigame/ArtSource/Blender/BambooValley/HD2D_v02/BambooValley_HD2D_v02.blend",
+  "mesh_objects": 104,
+  "polygons": 560746,
+  "lights": 38,
+  "units": "meters",
+  "bounds": [
+    50,
+    44
+  ],
+  "unity_integrated": false,
+  "validation": "Pending render inspection"
+}

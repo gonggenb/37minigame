@@ -25,6 +25,15 @@ namespace WuxiaRoguelite.EditorTools
     public static partial class PrototypeSceneBuilder
     {
         private const string ScenePath = "Assets/Scenes/MainPrototype.unity";
+        private static void RegisterBuildScene(string path)
+        {
+            // Rebuilding an earlier chapter must preserve later chapters in the player build.
+            var scenes = EditorBuildSettings.scenes.ToList();
+            var existing = scenes.FirstOrDefault(scene => scene.path == path);
+            if (existing == null) scenes.Add(new EditorBuildSettingsScene(path, true));
+            else existing.enabled = true;
+            EditorBuildSettings.scenes = scenes.ToArray();
+        }
         private const string SpritePath = "Assets/Art/Generated/prototype_square.png";
         private const string GroundTexturePath = "Assets/Art/Generated/Environment/tex_env_mainmap_grass_albedo_1024_v02.png";
         private const string GroundMaterialPath = "Assets/Art/Generated/Environment/mat_mainmap_grass.mat";
@@ -440,7 +449,7 @@ namespace WuxiaRoguelite.EditorTools
                 LoadHerbFrames(MysteryHerbPath, fallbackSprite));
             ValidateEquipmentModel();
             EditorSceneManager.SaveScene(scene, ScenePath);
-            EditorBuildSettings.scenes = new[] { new EditorBuildSettingsScene(ScenePath, true) };
+            RegisterBuildScene(ScenePath);
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
 
@@ -1135,11 +1144,8 @@ namespace WuxiaRoguelite.EditorTools
 
             EditorSceneManager.MarkSceneDirty(tutorialScene);
             EditorSceneManager.SaveScene(tutorialScene);
-            EditorBuildSettings.scenes = new[]
-            {
-                new EditorBuildSettingsScene(ScenePath, true),
-                new EditorBuildSettingsScene(tutorialPath, true)
-            };
+            RegisterBuildScene(ScenePath);
+            RegisterBuildScene(tutorialPath);
             AssetDatabase.SaveAssets();
             EditorSceneManager.OpenScene(ScenePath, OpenSceneMode.Single);
             Debug.Log("Tutorial level built: four interactive targets, one-click 30-second notice, and automatic Level 2 hand-off.");

@@ -1,0 +1,5336 @@
+{
+  "materials": [
+    {
+      "name": "TR_M00",
+      "source": "RestStop \u2022 loam",
+      "color": [
+        0.20000000298023224,
+        0.2199999988079071,
+        0.12999999523162842,
+        1.0
+      ],
+      "roughness": 0.800000011920929,
+      "emission": 0.0
+    },
+    {
+      "name": "TR_M01",
+      "source": "RestStop \u2022 water",
+      "color": [
+        0.02800000086426735,
+        0.1599999964237213,
+        0.18000000715255737,
+        1.0
+      ],
+      "roughness": 0.20999999344348907,
+      "emission": 0.0
+    },
+    {
+      "name": "TR_M02",
+      "source": "RestStop \u2022 cliff",
+      "color": [
+        0.23000000417232513,
+        0.2800000011920929,
+        0.2800000011920929,
+        1.0
+      ],
+      "roughness": 0.800000011920929,
+      "emission": 0.0
+    },
+    {
+      "name": "TR_M03",
+      "source": "RestStop \u2022 moss",
+      "color": [
+        0.11999999731779099,
+        0.18000000715255737,
+        0.054999999701976776,
+        1.0
+      ],
+      "roughness": 0.800000011920929,
+      "emission": 0.0
+    },
+    {
+      "name": "TR_M04",
+      "source": "RestStop \u2022 foam",
+      "color": [
+        0.4300000071525574,
+        0.6399999856948853,
+        0.6200000047683716,
+        1.0
+      ],
+      "roughness": 0.550000011920929,
+      "emission": 0.0
+    },
+    {
+      "name": "TR_M05",
+      "source": "RestStop \u2022 stone_light",
+      "color": [
+        0.4300000071525574,
+        0.4300000071525574,
+        0.3400000035762787,
+        1.0
+      ],
+      "roughness": 0.800000011920929,
+      "emission": 0.0
+    },
+    {
+      "name": "TR_M06",
+      "source": "RestStop \u2022 stone",
+      "color": [
+        0.30000001192092896,
+        0.3499999940395355,
+        0.3400000035762787,
+        1.0
+      ],
+      "roughness": 0.800000011920929,
+      "emission": 0.0
+    },
+    {
+      "name": "TR_M07",
+      "source": "RestStop \u2022 wood",
+      "color": [
+        0.20000000298023224,
+        0.10499999672174454,
+        0.04600000008940697,
+        1.0
+      ],
+      "roughness": 0.800000011920929,
+      "emission": 0.0
+    },
+    {
+      "name": "TR_M08",
+      "source": "RestStop \u2022 paper",
+      "color": [
+        0.9200000166893005,
+        0.4699999988079071,
+        0.10999999940395355,
+        1.0
+      ],
+      "roughness": 0.5,
+      "emission": 3.5
+    },
+    {
+      "name": "TR_M09",
+      "source": "RestStop \u2022 iron",
+      "color": [
+        0.05000000074505806,
+        0.06499999761581421,
+        0.05900000035762787,
+        1.0
+      ],
+      "roughness": 0.49000000953674316,
+      "emission": 0.0
+    },
+    {
+      "name": "TR_M10",
+      "source": "RestStop \u2022 wood_edge",
+      "color": [
+        0.3499999940395355,
+        0.23000000417232513,
+        0.11500000208616257,
+        1.0
+      ],
+      "roughness": 0.800000011920929,
+      "emission": 0.0
+    },
+    {
+      "name": "TR_M11",
+      "source": "RestStop \u2022 roof",
+      "color": [
+        0.06499999761581421,
+        0.10000000149011612,
+        0.125,
+        1.0
+      ],
+      "roughness": 0.6399999856948853,
+      "emission": 0.0
+    },
+    {
+      "name": "TR_M12",
+      "source": "RestStop \u2022 brass",
+      "color": [
+        0.4300000071525574,
+        0.2800000011920929,
+        0.09000000357627869,
+        1.0
+      ],
+      "roughness": 0.4000000059604645,
+      "emission": 0.0
+    },
+    {
+      "name": "TR_M13",
+      "source": "RestStop \u2022 roof_alt",
+      "color": [
+        0.11999999731779099,
+        0.17000000178813934,
+        0.1899999976158142,
+        1.0
+      ],
+      "roughness": 0.6700000166893005,
+      "emission": 0.0
+    },
+    {
+      "name": "TR_M14",
+      "source": "RestStop \u2022 rope",
+      "color": [
+        0.3799999952316284,
+        0.30000001192092896,
+        0.15000000596046448,
+        1.0
+      ],
+      "roughness": 0.800000011920929,
+      "emission": 0.0
+    },
+    {
+      "name": "TR_M15",
+      "source": "RestStop \u2022 ink",
+      "color": [
+        0.017999999225139618,
+        0.02199999988079071,
+        0.014999999664723873,
+        1.0
+      ],
+      "roughness": 0.800000011920929,
+      "emission": 0.0
+    },
+    {
+      "name": "TR_M16",
+      "source": "RestStop \u2022 bark",
+      "color": [
+        0.18000000715255737,
+        0.14000000059604645,
+        0.0820000022649765,
+        1.0
+      ],
+      "roughness": 0.800000011920929,
+      "emission": 0.0
+    },
+    {
+      "name": "TR_M17",
+      "source": "RestStop \u2022 flame",
+      "color": [
+        0.9900000095367432,
+        0.23000000417232513,
+        0.017999999225139618,
+        1.0
+      ],
+      "roughness": 0.800000011920929,
+      "emission": 5.0
+    },
+    {
+      "name": "TR_M18",
+      "source": "RestStop \u2022 flame_core",
+      "color": [
+        1.0,
+        0.6299999952316284,
+        0.12999999523162842,
+        1.0
+      ],
+      "roughness": 0.800000011920929,
+      "emission": 7.0
+    },
+    {
+      "name": "TR_M19",
+      "source": "RestStop \u2022 pottery",
+      "color": [
+        0.12999999523162842,
+        0.1899999976158142,
+        0.18000000715255737,
+        1.0
+      ],
+      "roughness": 0.47999998927116394,
+      "emission": 0.0
+    },
+    {
+      "name": "TR_M20",
+      "source": "RestStop \u2022 cloth",
+      "color": [
+        0.3499999940395355,
+        0.3199999928474426,
+        0.23999999463558197,
+        1.0
+      ],
+      "roughness": 0.800000011920929,
+      "emission": 0.0
+    },
+    {
+      "name": "TR_M21",
+      "source": "RestStop \u2022 red_cloth",
+      "color": [
+        0.30000001192092896,
+        0.04500000178813934,
+        0.019999999552965164,
+        1.0
+      ],
+      "roughness": 0.800000011920929,
+      "emission": 0.0
+    },
+    {
+      "name": "TR_M22",
+      "source": "RestStop \u2022 leaf3",
+      "color": [
+        0.11999999731779099,
+        0.2199999988079071,
+        0.14000000059604645,
+        1.0
+      ],
+      "roughness": 0.800000011920929,
+      "emission": 0.0
+    },
+    {
+      "name": "TR_M23",
+      "source": "RestStop \u2022 leaf2",
+      "color": [
+        0.23000000417232513,
+        0.28999999165534973,
+        0.09000000357627869,
+        1.0
+      ],
+      "roughness": 0.800000011920929,
+      "emission": 0.0
+    },
+    {
+      "name": "TR_M24",
+      "source": "RestStop \u2022 leaf0",
+      "color": [
+        0.10000000149011612,
+        0.18000000715255737,
+        0.05999999865889549,
+        1.0
+      ],
+      "roughness": 0.800000011920929,
+      "emission": 0.0
+    },
+    {
+      "name": "TR_M25",
+      "source": "RestStop \u2022 leaf1",
+      "color": [
+        0.1599999964237213,
+        0.25,
+        0.07500000298023224,
+        1.0
+      ],
+      "roughness": 0.800000011920929,
+      "emission": 0.0
+    },
+    {
+      "name": "TR_M26",
+      "source": "RestStop \u2022 herb_leaf",
+      "color": [
+        0.18000000715255737,
+        0.3700000047683716,
+        0.1599999964237213,
+        1.0
+      ],
+      "roughness": 0.75,
+      "emission": 0.0
+    },
+    {
+      "name": "TR_M27",
+      "source": "RestStop \u2022 berry",
+      "color": [
+        0.6399999856948853,
+        0.05000000074505806,
+        0.019999999552965164,
+        1.0
+      ],
+      "roughness": 0.550000011920929,
+      "emission": 0.0
+    },
+    {
+      "name": "TR_M28",
+      "source": "RestStop \u2022 flower",
+      "color": [
+        0.8100000023841858,
+        0.8199999928474426,
+        0.5799999833106995,
+        1.0
+      ],
+      "roughness": 0.800000011920929,
+      "emission": 0.0
+    },
+    {
+      "name": "TR_M29",
+      "source": "RestStop \u2022 bamboo",
+      "color": [
+        0.12999999523162842,
+        0.23999999463558197,
+        0.06700000166893005,
+        1.0
+      ],
+      "roughness": 0.800000011920929,
+      "emission": 0.0
+    },
+    {
+      "name": "TR_M30",
+      "source": "RestStop \u2022 bamboo_node",
+      "color": [
+        0.27000001072883606,
+        0.3400000035762787,
+        0.11999999731779099,
+        1.0
+      ],
+      "roughness": 0.7799999713897705,
+      "emission": 0.0
+    },
+    {
+      "name": "TR_M31",
+      "source": "RestStop \u2022 fallen_leaf",
+      "color": [
+        0.27000001072883606,
+        0.2199999988079071,
+        0.0949999988079071,
+        1.0
+      ],
+      "roughness": 0.949999988079071,
+      "emission": 0.0
+    }
+  ],
+  "meshes": [
+    {
+      "name": "TR_01_000_00",
+      "group": 1,
+      "vertices": 14641,
+      "polygons": 14400,
+      "source_object": "01 Terrain \u2022 continuous ground / loam",
+      "role": "0"
+    },
+    {
+      "name": "TR_02_001_00",
+      "group": 2,
+      "vertices": 242,
+      "polygons": 120,
+      "source_object": "02 Stream \u2022 entry water / water",
+      "role": "0"
+    },
+    {
+      "name": "TR_02_002_00",
+      "group": 2,
+      "vertices": 16038,
+      "polygons": 31680,
+      "source_object": "02 Stream \u2022 bank rocks / cliff",
+      "role": "0"
+    },
+    {
+      "name": "TR_02_003_00",
+      "group": 2,
+      "vertices": 4977,
+      "polygons": 5543,
+      "source_object": "02 Stream \u2022 bank rocks / moss",
+      "role": "0"
+    },
+    {
+      "name": "TR_02_004_00",
+      "group": 2,
+      "vertices": 4032,
+      "polygons": 3024,
+      "source_object": "02 Stream \u2022 soft ripples / foam",
+      "role": "0"
+    },
+    {
+      "name": "TR_03_005_00",
+      "group": 3,
+      "vertices": 7072,
+      "polygons": 4420,
+      "source_object": "03 Paths \u2022 hand laid flagstones / stone_light",
+      "role": "0"
+    },
+    {
+      "name": "TR_03_006_00",
+      "group": 3,
+      "vertices": 3648,
+      "polygons": 2280,
+      "source_object": "03 Paths \u2022 hand laid flagstones / stone",
+      "role": "0"
+    },
+    {
+      "name": "TR_04_007_00",
+      "group": 4,
+      "vertices": 496,
+      "polygons": 310,
+      "source_object": "04 Rest nook \u2022 low stone edging / stone",
+      "role": "0"
+    },
+    {
+      "name": "TR_05_008_00",
+      "group": 5,
+      "vertices": 480,
+      "polygons": 308,
+      "source_object": "05 Entry \u2022 stone footbridge / stone",
+      "role": "0"
+    },
+    {
+      "name": "TR_05_009_00",
+      "group": 5,
+      "vertices": 136,
+      "polygons": 96,
+      "source_object": "05 Entry \u2022 stone footbridge / stone_light",
+      "role": "0"
+    },
+    {
+      "name": "TR_05_010_00",
+      "group": 5,
+      "vertices": 32,
+      "polygons": 20,
+      "source_object": "05 Entry \u2022 stone footbridge / wood",
+      "role": "0"
+    },
+    {
+      "name": "TR_05_011_00",
+      "group": 5,
+      "vertices": 32,
+      "polygons": 20,
+      "source_object": "05 Entry \u2022 stone footbridge / paper",
+      "role": "0"
+    },
+    {
+      "name": "TR_05_012_00",
+      "group": 5,
+      "vertices": 448,
+      "polygons": 304,
+      "source_object": "05 Entry \u2022 stone footbridge / iron",
+      "role": "0"
+    },
+    {
+      "name": "TR_05_013_00",
+      "group": 5,
+      "vertices": 64,
+      "polygons": 40,
+      "source_object": "05 Entry \u2022 stone footbridge / wood_edge",
+      "role": "0"
+    },
+    {
+      "name": "TR_05_014_00",
+      "group": 5,
+      "vertices": 32,
+      "polygons": 20,
+      "source_object": "05 Entry \u2022 stone footbridge / roof",
+      "role": "0"
+    },
+    {
+      "name": "TR_05_015_00",
+      "group": 5,
+      "vertices": 32,
+      "polygons": 20,
+      "source_object": "05 Entry \u2022 stone footbridge / brass",
+      "role": "0"
+    },
+    {
+      "name": "TR_06_016_00",
+      "group": 6,
+      "vertices": 24,
+      "polygons": 18,
+      "source_object": "06 Reward \u2022 old roadside pavilion / stone",
+      "role": "0"
+    },
+    {
+      "name": "TR_06_017_00",
+      "group": 6,
+      "vertices": 864,
+      "polygons": 544,
+      "source_object": "06 Reward \u2022 old roadside pavilion / stone_light",
+      "role": "0"
+    },
+    {
+      "name": "TR_06_018_00",
+      "group": 6,
+      "vertices": 440,
+      "polygons": 290,
+      "source_object": "06 Reward \u2022 old roadside pavilion / wood",
+      "role": "0"
+    },
+    {
+      "name": "TR_06_019_00",
+      "group": 6,
+      "vertices": 736,
+      "polygons": 498,
+      "source_object": "06 Reward \u2022 old roadside pavilion / wood_edge",
+      "role": "0"
+    },
+    {
+      "name": "TR_06_020_00",
+      "group": 6,
+      "vertices": 13472,
+      "polygons": 8980,
+      "source_object": "06 Reward \u2022 old roadside pavilion / roof",
+      "role": "0"
+    },
+    {
+      "name": "TR_06_021_00",
+      "group": 6,
+      "vertices": 6108,
+      "polygons": 3996,
+      "source_object": "06 Reward \u2022 old roadside pavilion / roof_alt",
+      "role": "0"
+    },
+    {
+      "name": "TR_06_022_00",
+      "group": 6,
+      "vertices": 6336,
+      "polygons": 4224,
+      "source_object": "06 Reward \u2022 old roadside pavilion / rope",
+      "role": "0"
+    },
+    {
+      "name": "TR_06_023_00",
+      "group": 6,
+      "vertices": 32,
+      "polygons": 20,
+      "source_object": "06 Reward \u2022 old roadside pavilion / paper",
+      "role": "0"
+    },
+    {
+      "name": "TR_06_024_00",
+      "group": 6,
+      "vertices": 448,
+      "polygons": 304,
+      "source_object": "06 Reward \u2022 old roadside pavilion / iron",
+      "role": "0"
+    },
+    {
+      "name": "TR_06_025_00",
+      "group": 6,
+      "vertices": 32,
+      "polygons": 20,
+      "source_object": "06 Reward \u2022 old roadside pavilion / brass",
+      "role": "0"
+    },
+    {
+      "name": "TR_08_026_00",
+      "group": 8,
+      "vertices": 6360,
+      "polygons": 12500,
+      "source_object": "08 Cave \u2022 rock mouth and tunnel / cliff",
+      "role": "0"
+    },
+    {
+      "name": "TR_08_027_00",
+      "group": 8,
+      "vertices": 22,
+      "polygons": 20,
+      "source_object": "08 Cave \u2022 rock mouth and tunnel / ink",
+      "role": "0"
+    },
+    {
+      "name": "TR_08_028_00",
+      "group": 8,
+      "vertices": 1956,
+      "polygons": 2213,
+      "source_object": "08 Cave \u2022 rock mouth and tunnel / moss",
+      "role": "0"
+    },
+    {
+      "name": "TR_08_029_00",
+      "group": 8,
+      "vertices": 80,
+      "polygons": 50,
+      "source_object": "08 Cave \u2022 rock mouth and tunnel / stone_light",
+      "role": "0"
+    },
+    {
+      "name": "TR_08_030_00",
+      "group": 8,
+      "vertices": 32,
+      "polygons": 20,
+      "source_object": "08 Cave \u2022 rock mouth and tunnel / wood",
+      "role": "0"
+    },
+    {
+      "name": "TR_08_031_00",
+      "group": 8,
+      "vertices": 32,
+      "polygons": 20,
+      "source_object": "08 Cave \u2022 rock mouth and tunnel / stone",
+      "role": "0"
+    },
+    {
+      "name": "TR_08_032_00",
+      "group": 8,
+      "vertices": 32,
+      "polygons": 20,
+      "source_object": "08 Cave \u2022 rock mouth and tunnel / paper",
+      "role": "0"
+    },
+    {
+      "name": "TR_08_033_00",
+      "group": 8,
+      "vertices": 448,
+      "polygons": 304,
+      "source_object": "08 Cave \u2022 rock mouth and tunnel / iron",
+      "role": "0"
+    },
+    {
+      "name": "TR_08_034_00",
+      "group": 8,
+      "vertices": 64,
+      "polygons": 40,
+      "source_object": "08 Cave \u2022 rock mouth and tunnel / wood_edge",
+      "role": "0"
+    },
+    {
+      "name": "TR_08_035_00",
+      "group": 8,
+      "vertices": 32,
+      "polygons": 20,
+      "source_object": "08 Cave \u2022 rock mouth and tunnel / roof",
+      "role": "0"
+    },
+    {
+      "name": "TR_08_036_00",
+      "group": 8,
+      "vertices": 32,
+      "polygons": 20,
+      "source_object": "08 Cave \u2022 rock mouth and tunnel / brass",
+      "role": "0"
+    },
+    {
+      "name": "TR_07_037_00",
+      "group": 7,
+      "vertices": 156,
+      "polygons": 72,
+      "source_object": "07 Reward \u2022 chest and supplies / wood",
+      "role": "supply"
+    },
+    {
+      "name": "TR_07_038_01",
+      "group": 7,
+      "vertices": 16,
+      "polygons": 4,
+      "source_object": "07 Reward \u2022 chest and supplies / wood",
+      "role": "chest"
+    },
+    {
+      "name": "TR_07_039_00",
+      "group": 7,
+      "vertices": 180,
+      "polygons": 72,
+      "source_object": "07 Reward \u2022 chest and supplies / wood_edge",
+      "role": "supply"
+    },
+    {
+      "name": "TR_07_040_01",
+      "group": 7,
+      "vertices": 88,
+      "polygons": 50,
+      "source_object": "07 Reward \u2022 chest and supplies / wood_edge",
+      "role": "chest"
+    },
+    {
+      "name": "TR_07_041_00",
+      "group": 7,
+      "vertices": 4112,
+      "polygons": 2748,
+      "source_object": "07 Reward \u2022 chest and supplies / iron",
+      "role": "supply"
+    },
+    {
+      "name": "TR_07_042_01",
+      "group": 7,
+      "vertices": 2160,
+      "polygons": 3988,
+      "source_object": "07 Reward \u2022 chest and supplies / iron",
+      "role": "chest"
+    },
+    {
+      "name": "TR_07_043_00",
+      "group": 7,
+      "vertices": 616,
+      "polygons": 414,
+      "source_object": "07 Reward \u2022 chest and supplies / brass",
+      "role": "chest"
+    },
+    {
+      "name": "TR_07_044_00",
+      "group": 7,
+      "vertices": 36,
+      "polygons": 32,
+      "source_object": "07 Reward \u2022 chest lid closed end caps",
+      "role": "chest"
+    },
+    {
+      "name": "TR_09_045_00",
+      "group": 9,
+      "vertices": 210,
+      "polygons": 126,
+      "source_object": "09 Cave \u2022 entrance supplies / wood_edge",
+      "role": "0"
+    },
+    {
+      "name": "TR_09_046_00",
+      "group": 9,
+      "vertices": 198,
+      "polygons": 126,
+      "source_object": "09 Cave \u2022 entrance supplies / wood",
+      "role": "0"
+    },
+    {
+      "name": "TR_09_047_00",
+      "group": 9,
+      "vertices": 2152,
+      "polygons": 1438,
+      "source_object": "09 Cave \u2022 entrance supplies / iron",
+      "role": "0"
+    },
+    {
+      "name": "TR_13_048_00",
+      "group": 13,
+      "vertices": 16,
+      "polygons": 10,
+      "source_object": "13 Herb \u2022 stone wayside lamp / wood",
+      "role": "0"
+    },
+    {
+      "name": "TR_13_049_00",
+      "group": 13,
+      "vertices": 16,
+      "polygons": 10,
+      "source_object": "13 Herb \u2022 stone wayside lamp / stone",
+      "role": "0"
+    },
+    {
+      "name": "TR_13_050_00",
+      "group": 13,
+      "vertices": 16,
+      "polygons": 10,
+      "source_object": "13 Herb \u2022 stone wayside lamp / paper",
+      "role": "0"
+    },
+    {
+      "name": "TR_13_051_00",
+      "group": 13,
+      "vertices": 224,
+      "polygons": 152,
+      "source_object": "13 Herb \u2022 stone wayside lamp / iron",
+      "role": "0"
+    },
+    {
+      "name": "TR_13_052_00",
+      "group": 13,
+      "vertices": 32,
+      "polygons": 20,
+      "source_object": "13 Herb \u2022 stone wayside lamp / wood_edge",
+      "role": "0"
+    },
+    {
+      "name": "TR_13_053_00",
+      "group": 13,
+      "vertices": 16,
+      "polygons": 10,
+      "source_object": "13 Herb \u2022 stone wayside lamp / roof",
+      "role": "0"
+    },
+    {
+      "name": "TR_13_054_00",
+      "group": 13,
+      "vertices": 16,
+      "polygons": 10,
+      "source_object": "13 Herb \u2022 stone wayside lamp / brass",
+      "role": "0"
+    },
+    {
+      "name": "TR_16_055_00",
+      "group": 16,
+      "vertices": 1944,
+      "polygons": 3840,
+      "source_object": "16 Camp \u2022 cooking fire / stone",
+      "role": "0"
+    },
+    {
+      "name": "TR_16_056_00",
+      "group": 16,
+      "vertices": 48,
+      "polygons": 30,
+      "source_object": "16 Camp \u2022 cooking fire / bark",
+      "role": "0"
+    },
+    {
+      "name": "TR_16_057_00",
+      "group": 16,
+      "vertices": 168,
+      "polygons": 108,
+      "source_object": "16 Camp \u2022 cooking fire / flame",
+      "role": "0"
+    },
+    {
+      "name": "TR_16_058_00",
+      "group": 16,
+      "vertices": 14,
+      "polygons": 9,
+      "source_object": "16 Camp \u2022 cooking fire / flame_core",
+      "role": "0"
+    },
+    {
+      "name": "TR_16_059_00",
+      "group": 16,
+      "vertices": 36,
+      "polygons": 24,
+      "source_object": "16 Camp \u2022 cooking fire / iron",
+      "role": "0"
+    },
+    {
+      "name": "TR_16_060_00",
+      "group": 16,
+      "vertices": 320,
+      "polygons": 224,
+      "source_object": "16 Camp \u2022 cooking fire / pottery",
+      "role": "0"
+    },
+    {
+      "name": "TR_16_061_00",
+      "group": 16,
+      "vertices": 32,
+      "polygons": 18,
+      "source_object": "16 Camp \u2022 cooking fire / ink",
+      "role": "0"
+    },
+    {
+      "name": "TR_18_062_00",
+      "group": 18,
+      "vertices": 1008,
+      "polygons": 744,
+      "source_object": "Sign \u2022 \u8336",
+      "role": "0"
+    },
+    {
+      "name": "TR_18_063_00",
+      "group": 18,
+      "vertices": 16,
+      "polygons": 10,
+      "source_object": "18 Signs \u2022 tea rest stop / wood",
+      "role": "0"
+    },
+    {
+      "name": "TR_18_064_00",
+      "group": 18,
+      "vertices": 16,
+      "polygons": 10,
+      "source_object": "18 Signs \u2022 tea rest stop / wood_edge",
+      "role": "0"
+    },
+    {
+      "name": "TR_18_065_00",
+      "group": 18,
+      "vertices": 153,
+      "polygons": 128,
+      "source_object": "18 Signs \u2022 tea rest stop / cloth",
+      "role": "0"
+    },
+    {
+      "name": "TR_18_066_00",
+      "group": 18,
+      "vertices": 692,
+      "polygons": 497,
+      "source_object": "Sign \u2022 \u5c71\n\u6d1e",
+      "role": "0"
+    },
+    {
+      "name": "TR_18_067_00",
+      "group": 18,
+      "vertices": 16,
+      "polygons": 10,
+      "source_object": "18 Signs \u2022 cave pennant / wood",
+      "role": "0"
+    },
+    {
+      "name": "TR_18_068_00",
+      "group": 18,
+      "vertices": 16,
+      "polygons": 10,
+      "source_object": "18 Signs \u2022 cave pennant / wood_edge",
+      "role": "0"
+    },
+    {
+      "name": "TR_18_069_00",
+      "group": 18,
+      "vertices": 153,
+      "polygons": 128,
+      "source_object": "18 Signs \u2022 cave pennant / red_cloth",
+      "role": "0"
+    },
+    {
+      "name": "TR_18_070_00",
+      "group": 18,
+      "vertices": 592,
+      "polygons": 428,
+      "source_object": "Sign \u2022 \u6b66",
+      "role": "0"
+    },
+    {
+      "name": "TR_18_071_00",
+      "group": 18,
+      "vertices": 16,
+      "polygons": 10,
+      "source_object": "18 Signs \u2022 camp pennant / wood",
+      "role": "0"
+    },
+    {
+      "name": "TR_18_072_00",
+      "group": 18,
+      "vertices": 16,
+      "polygons": 10,
+      "source_object": "18 Signs \u2022 camp pennant / wood_edge",
+      "role": "0"
+    },
+    {
+      "name": "TR_18_073_00",
+      "group": 18,
+      "vertices": 153,
+      "polygons": 128,
+      "source_object": "18 Signs \u2022 camp pennant / red_cloth",
+      "role": "0"
+    },
+    {
+      "name": "TR_18_074_00",
+      "group": 18,
+      "vertices": 880,
+      "polygons": 656,
+      "source_object": "Sign \u2022 \u5c71\u9053",
+      "role": "0"
+    },
+    {
+      "name": "TR_18_075_00",
+      "group": 18,
+      "vertices": 1700,
+      "polygons": 1251,
+      "source_object": "Sign \u2022 \u9a7f\u4ead",
+      "role": "0"
+    },
+    {
+      "name": "TR_18_076_00",
+      "group": 18,
+      "vertices": 692,
+      "polygons": 497,
+      "source_object": "Sign \u2022 \u5c71\u6d1e",
+      "role": "0"
+    },
+    {
+      "name": "TR_18_077_00",
+      "group": 18,
+      "vertices": 16,
+      "polygons": 10,
+      "source_object": "18 Signs \u2022 entry wooden waypost / wood",
+      "role": "0"
+    },
+    {
+      "name": "TR_18_078_00",
+      "group": 18,
+      "vertices": 24,
+      "polygons": 18,
+      "source_object": "18 Signs \u2022 entry wooden waypost / wood_edge",
+      "role": "0"
+    },
+    {
+      "name": "TR_19_079_00",
+      "group": 19,
+      "vertices": 96,
+      "polygons": 60,
+      "source_object": "19 Boundaries \u2022 pathway lanterns / wood",
+      "role": "0"
+    },
+    {
+      "name": "TR_19_080_00",
+      "group": 19,
+      "vertices": 96,
+      "polygons": 60,
+      "source_object": "19 Boundaries \u2022 pathway lanterns / stone",
+      "role": "0"
+    },
+    {
+      "name": "TR_19_081_00",
+      "group": 19,
+      "vertices": 96,
+      "polygons": 60,
+      "source_object": "19 Boundaries \u2022 pathway lanterns / paper",
+      "role": "0"
+    },
+    {
+      "name": "TR_19_082_00",
+      "group": 19,
+      "vertices": 1344,
+      "polygons": 912,
+      "source_object": "19 Boundaries \u2022 pathway lanterns / iron",
+      "role": "0"
+    },
+    {
+      "name": "TR_19_083_00",
+      "group": 19,
+      "vertices": 192,
+      "polygons": 120,
+      "source_object": "19 Boundaries \u2022 pathway lanterns / wood_edge",
+      "role": "0"
+    },
+    {
+      "name": "TR_19_084_00",
+      "group": 19,
+      "vertices": 96,
+      "polygons": 60,
+      "source_object": "19 Boundaries \u2022 pathway lanterns / roof",
+      "role": "0"
+    },
+    {
+      "name": "TR_19_085_00",
+      "group": 19,
+      "vertices": 96,
+      "polygons": 60,
+      "source_object": "19 Boundaries \u2022 pathway lanterns / brass",
+      "role": "0"
+    },
+    {
+      "name": "TR_10_086_00",
+      "group": 10,
+      "vertices": 1336,
+      "polygons": 838,
+      "source_object": "10 Rest \u2022 old pine trunk / bark",
+      "role": "0"
+    },
+    {
+      "name": "TR_10_087_00",
+      "group": 10,
+      "vertices": 560,
+      "polygons": 392,
+      "source_object": "10 Rest \u2022 old pine trunk / wood",
+      "role": "0"
+    },
+    {
+      "name": "TR_11_088_00",
+      "group": 11,
+      "vertices": 9180,
+      "polygons": 6426,
+      "source_object": "11 Rest \u2022 pine canopy twigs / bark",
+      "role": "0"
+    },
+    {
+      "name": "TR_11_089_00",
+      "group": 11,
+      "vertices": 6892,
+      "polygons": 4166,
+      "source_object": "11 Rest \u2022 pine needle fans / leaf3",
+      "role": "0"
+    },
+    {
+      "name": "TR_11_090_00",
+      "group": 11,
+      "vertices": 6755,
+      "polygons": 4084,
+      "source_object": "11 Rest \u2022 pine needle fans / leaf2",
+      "role": "0"
+    },
+    {
+      "name": "TR_11_091_00",
+      "group": 11,
+      "vertices": 7021,
+      "polygons": 4244,
+      "source_object": "11 Rest \u2022 pine needle fans / leaf0",
+      "role": "0"
+    },
+    {
+      "name": "TR_11_092_00",
+      "group": 11,
+      "vertices": 6961,
+      "polygons": 4208,
+      "source_object": "11 Rest \u2022 pine needle fans / leaf1",
+      "role": "0"
+    },
+    {
+      "name": "TR_12_093_00",
+      "group": 12,
+      "vertices": 112,
+      "polygons": 84,
+      "source_object": "12 Rest \u2022 tea tables and stools / wood_edge",
+      "role": "0"
+    },
+    {
+      "name": "TR_12_094_00",
+      "group": 12,
+      "vertices": 184,
+      "polygons": 136,
+      "source_object": "12 Rest \u2022 tea tables and stools / wood",
+      "role": "0"
+    },
+    {
+      "name": "TR_12_095_00",
+      "group": 12,
+      "vertices": 1280,
+      "polygons": 896,
+      "source_object": "12 Rest \u2022 tea tables and stools / pottery",
+      "role": "0"
+    },
+    {
+      "name": "TR_12_096_00",
+      "group": 12,
+      "vertices": 128,
+      "polygons": 72,
+      "source_object": "12 Rest \u2022 tea tables and stools / ink",
+      "role": "0"
+    },
+    {
+      "name": "TR_12_097_00",
+      "group": 12,
+      "vertices": 324,
+      "polygons": 640,
+      "source_object": "12 Rest \u2022 mossy seat stones / stone",
+      "role": "0"
+    },
+    {
+      "name": "TR_12_098_00",
+      "group": 12,
+      "vertices": 102,
+      "polygons": 114,
+      "source_object": "12 Rest \u2022 mossy seat stones / moss",
+      "role": "0"
+    },
+    {
+      "name": "TR_13_099_00",
+      "group": 13,
+      "vertices": 149,
+      "polygons": 139,
+      "source_object": "13 Herb \u2022 medicinal plant / herb_leaf",
+      "role": "0"
+    },
+    {
+      "name": "TR_13_100_00",
+      "group": 13,
+      "vertices": 1134,
+      "polygons": 2240,
+      "source_object": "13 Herb \u2022 medicinal plant / berry",
+      "role": "0"
+    },
+    {
+      "name": "TR_13_101_00",
+      "group": 13,
+      "vertices": 3180,
+      "polygons": 6240,
+      "source_object": "13 Herb \u2022 medicinal plant / flower",
+      "role": "0"
+    },
+    {
+      "name": "TR_13_102_00",
+      "group": 13,
+      "vertices": 486,
+      "polygons": 960,
+      "source_object": "13 Herb \u2022 moss rock garden / cliff",
+      "role": "0"
+    },
+    {
+      "name": "TR_13_103_00",
+      "group": 13,
+      "vertices": 153,
+      "polygons": 168,
+      "source_object": "13 Herb \u2022 moss rock garden / moss",
+      "role": "0"
+    },
+    {
+      "name": "TR_14_104_00",
+      "group": 14,
+      "vertices": 223,
+      "polygons": 185,
+      "source_object": "14 Camp \u2022 patched canvas shelter / cloth",
+      "role": "0"
+    },
+    {
+      "name": "TR_14_105_00",
+      "group": 14,
+      "vertices": 104,
+      "polygons": 68,
+      "source_object": "14 Camp \u2022 patched canvas shelter / wood",
+      "role": "0"
+    },
+    {
+      "name": "TR_14_106_00",
+      "group": 14,
+      "vertices": 112,
+      "polygons": 78,
+      "source_object": "14 Camp \u2022 patched canvas shelter / rope",
+      "role": "0"
+    },
+    {
+      "name": "TR_15_107_00",
+      "group": 15,
+      "vertices": 750,
+      "polygons": 468,
+      "source_object": "15 Camp \u2022 stacked supplies / wood_edge",
+      "role": "0"
+    },
+    {
+      "name": "TR_15_108_00",
+      "group": 15,
+      "vertices": 714,
+      "polygons": 468,
+      "source_object": "15 Camp \u2022 stacked supplies / wood",
+      "role": "0"
+    },
+    {
+      "name": "TR_15_109_00",
+      "group": 15,
+      "vertices": 6552,
+      "polygons": 4378,
+      "source_object": "15 Camp \u2022 stacked supplies / iron",
+      "role": "0"
+    },
+    {
+      "name": "TR_15_110_00",
+      "group": 15,
+      "vertices": 16,
+      "polygons": 12,
+      "source_object": "15 Camp \u2022 workbench / wood_edge",
+      "role": "0"
+    },
+    {
+      "name": "TR_15_111_00",
+      "group": 15,
+      "vertices": 44,
+      "polygons": 32,
+      "source_object": "15 Camp \u2022 workbench / wood",
+      "role": "0"
+    },
+    {
+      "name": "TR_15_112_00",
+      "group": 15,
+      "vertices": 320,
+      "polygons": 224,
+      "source_object": "15 Camp \u2022 cooking pots / pottery",
+      "role": "0"
+    },
+    {
+      "name": "TR_15_113_00",
+      "group": 15,
+      "vertices": 32,
+      "polygons": 18,
+      "source_object": "15 Camp \u2022 cooking pots / ink",
+      "role": "0"
+    },
+    {
+      "name": "TR_15_114_00",
+      "group": 15,
+      "vertices": 92,
+      "polygons": 62,
+      "source_object": "15 Camp \u2022 weapon rack / wood",
+      "role": "0"
+    },
+    {
+      "name": "TR_15_115_00",
+      "group": 15,
+      "vertices": 40,
+      "polygons": 28,
+      "source_object": "15 Camp \u2022 weapon rack / iron",
+      "role": "0"
+    },
+    {
+      "name": "TR_15_116_00",
+      "group": 15,
+      "vertices": 16,
+      "polygons": 12,
+      "source_object": "15 Camp \u2022 weapon rack / wood_edge",
+      "role": "0"
+    },
+    {
+      "name": "TR_15_117_00",
+      "group": 15,
+      "vertices": 1152,
+      "polygons": 768,
+      "source_object": "15 Camp \u2022 weapon rack / rope",
+      "role": "0"
+    },
+    {
+      "name": "TR_17_118_00",
+      "group": 17,
+      "vertices": 504,
+      "polygons": 360,
+      "source_object": "17 Camp \u2022 wooden handcart / wood_edge",
+      "role": "0"
+    },
+    {
+      "name": "TR_17_119_00",
+      "group": 17,
+      "vertices": 852,
+      "polygons": 580,
+      "source_object": "17 Camp \u2022 wooden handcart / wood",
+      "role": "0"
+    },
+    {
+      "name": "TR_17_120_00",
+      "group": 17,
+      "vertices": 768,
+      "polygons": 512,
+      "source_object": "17 Camp \u2022 wooden handcart / iron",
+      "role": "0"
+    },
+    {
+      "name": "TR_19_121_00",
+      "group": 19,
+      "vertices": 284,
+      "polygons": 192,
+      "source_object": "19 Boundaries \u2022 roadside rails / wood",
+      "role": "0"
+    },
+    {
+      "name": "TR_19_122_00",
+      "group": 19,
+      "vertices": 88,
+      "polygons": 66,
+      "source_object": "19 Boundaries \u2022 roadside rails / wood_edge",
+      "role": "0"
+    },
+    {
+      "name": "TR_19_123_00",
+      "group": 19,
+      "vertices": 6336,
+      "polygons": 4224,
+      "source_object": "19 Boundaries \u2022 roadside rails / rope",
+      "role": "0"
+    },
+    {
+      "name": "TR_19_124_00",
+      "group": 19,
+      "vertices": 80,
+      "polygons": 54,
+      "source_object": "19 Boundaries \u2022 cave rails / wood",
+      "role": "0"
+    },
+    {
+      "name": "TR_19_125_00",
+      "group": 19,
+      "vertices": 24,
+      "polygons": 18,
+      "source_object": "19 Boundaries \u2022 cave rails / wood_edge",
+      "role": "0"
+    },
+    {
+      "name": "TR_19_126_00",
+      "group": 19,
+      "vertices": 1728,
+      "polygons": 1152,
+      "source_object": "19 Boundaries \u2022 cave rails / rope",
+      "role": "0"
+    },
+    {
+      "name": "TR_19_127_00",
+      "group": 19,
+      "vertices": 196,
+      "polygons": 132,
+      "source_object": "19 Boundaries \u2022 herb rails / wood",
+      "role": "0"
+    },
+    {
+      "name": "TR_19_128_00",
+      "group": 19,
+      "vertices": 56,
+      "polygons": 42,
+      "source_object": "19 Boundaries \u2022 herb rails / wood_edge",
+      "role": "0"
+    },
+    {
+      "name": "TR_19_129_00",
+      "group": 19,
+      "vertices": 4032,
+      "polygons": 2688,
+      "source_object": "19 Boundaries \u2022 herb rails / rope",
+      "role": "0"
+    },
+    {
+      "name": "TR_20_130_00",
+      "group": 20,
+      "vertices": 1568,
+      "polygons": 2980,
+      "source_object": "20 Nature \u2022 perimeter rock shelves / cliff",
+      "role": "1"
+    },
+    {
+      "name": "TR_20_131_01",
+      "group": 20,
+      "vertices": 1750,
+      "polygons": 3313,
+      "source_object": "20 Nature \u2022 perimeter rock shelves / cliff",
+      "role": "1"
+    },
+    {
+      "name": "TR_20_132_02",
+      "group": 20,
+      "vertices": 369,
+      "polygons": 595,
+      "source_object": "20 Nature \u2022 perimeter rock shelves / cliff",
+      "role": "1"
+    },
+    {
+      "name": "TR_20_133_03",
+      "group": 20,
+      "vertices": 63,
+      "polygons": 73,
+      "source_object": "20 Nature \u2022 perimeter rock shelves / cliff",
+      "role": "0"
+    },
+    {
+      "name": "TR_20_134_04",
+      "group": 20,
+      "vertices": 1722,
+      "polygons": 3316,
+      "source_object": "20 Nature \u2022 perimeter rock shelves / cliff",
+      "role": "0"
+    },
+    {
+      "name": "TR_20_135_05",
+      "group": 20,
+      "vertices": 1717,
+      "polygons": 3301,
+      "source_object": "20 Nature \u2022 perimeter rock shelves / cliff",
+      "role": "-1"
+    },
+    {
+      "name": "TR_20_136_06",
+      "group": 20,
+      "vertices": 363,
+      "polygons": 585,
+      "source_object": "20 Nature \u2022 perimeter rock shelves / cliff",
+      "role": "-2"
+    },
+    {
+      "name": "TR_20_137_07",
+      "group": 20,
+      "vertices": 63,
+      "polygons": 67,
+      "source_object": "20 Nature \u2022 perimeter rock shelves / cliff",
+      "role": "-1"
+    },
+    {
+      "name": "TR_20_138_08",
+      "group": 20,
+      "vertices": 1588,
+      "polygons": 3025,
+      "source_object": "20 Nature \u2022 perimeter rock shelves / cliff",
+      "role": "-2"
+    },
+    {
+      "name": "TR_20_139_09",
+      "group": 20,
+      "vertices": 1755,
+      "polygons": 3341,
+      "source_object": "20 Nature \u2022 perimeter rock shelves / cliff",
+      "role": "-2"
+    },
+    {
+      "name": "TR_20_140_10",
+      "group": 20,
+      "vertices": 441,
+      "polygons": 688,
+      "source_object": "20 Nature \u2022 perimeter rock shelves / cliff",
+      "role": "-1"
+    },
+    {
+      "name": "TR_20_141_11",
+      "group": 20,
+      "vertices": 1250,
+      "polygons": 2349,
+      "source_object": "20 Nature \u2022 perimeter rock shelves / cliff",
+      "role": "-1"
+    },
+    {
+      "name": "TR_20_142_12",
+      "group": 20,
+      "vertices": 70,
+      "polygons": 84,
+      "source_object": "20 Nature \u2022 perimeter rock shelves / cliff",
+      "role": "-2"
+    },
+    {
+      "name": "TR_20_143_13",
+      "group": 20,
+      "vertices": 1277,
+      "polygons": 2388,
+      "source_object": "20 Nature \u2022 perimeter rock shelves / cliff",
+      "role": "0"
+    },
+    {
+      "name": "TR_20_144_14",
+      "group": 20,
+      "vertices": 425,
+      "polygons": 644,
+      "source_object": "20 Nature \u2022 perimeter rock shelves / cliff",
+      "role": "0"
+    },
+    {
+      "name": "TR_20_145_15",
+      "group": 20,
+      "vertices": 103,
+      "polygons": 131,
+      "source_object": "20 Nature \u2022 perimeter rock shelves / cliff",
+      "role": "1"
+    },
+    {
+      "name": "TR_20_146_00",
+      "group": 20,
+      "vertices": 488,
+      "polygons": 539,
+      "source_object": "20 Nature \u2022 perimeter rock shelves / moss",
+      "role": "1"
+    },
+    {
+      "name": "TR_20_147_01",
+      "group": 20,
+      "vertices": 541,
+      "polygons": 601,
+      "source_object": "20 Nature \u2022 perimeter rock shelves / moss",
+      "role": "1"
+    },
+    {
+      "name": "TR_20_148_02",
+      "group": 20,
+      "vertices": 117,
+      "polygons": 110,
+      "source_object": "20 Nature \u2022 perimeter rock shelves / moss",
+      "role": "1"
+    },
+    {
+      "name": "TR_20_149_03",
+      "group": 20,
+      "vertices": 14,
+      "polygons": 7,
+      "source_object": "20 Nature \u2022 perimeter rock shelves / moss",
+      "role": "0"
+    },
+    {
+      "name": "TR_20_150_04",
+      "group": 20,
+      "vertices": 527,
+      "polygons": 586,
+      "source_object": "20 Nature \u2022 perimeter rock shelves / moss",
+      "role": "0"
+    },
+    {
+      "name": "TR_20_151_05",
+      "group": 20,
+      "vertices": 535,
+      "polygons": 599,
+      "source_object": "20 Nature \u2022 perimeter rock shelves / moss",
+      "role": "-1"
+    },
+    {
+      "name": "TR_20_152_06",
+      "group": 20,
+      "vertices": 109,
+      "polygons": 112,
+      "source_object": "20 Nature \u2022 perimeter rock shelves / moss",
+      "role": "-2"
+    },
+    {
+      "name": "TR_20_153_07",
+      "group": 20,
+      "vertices": 490,
+      "polygons": 538,
+      "source_object": "20 Nature \u2022 perimeter rock shelves / moss",
+      "role": "-2"
+    },
+    {
+      "name": "TR_20_154_08",
+      "group": 20,
+      "vertices": 9,
+      "polygons": 5,
+      "source_object": "20 Nature \u2022 perimeter rock shelves / moss",
+      "role": "-1"
+    },
+    {
+      "name": "TR_20_155_09",
+      "group": 20,
+      "vertices": 541,
+      "polygons": 592,
+      "source_object": "20 Nature \u2022 perimeter rock shelves / moss",
+      "role": "-2"
+    },
+    {
+      "name": "TR_20_156_10",
+      "group": 20,
+      "vertices": 127,
+      "polygons": 116,
+      "source_object": "20 Nature \u2022 perimeter rock shelves / moss",
+      "role": "-1"
+    },
+    {
+      "name": "TR_20_157_11",
+      "group": 20,
+      "vertices": 17,
+      "polygons": 9,
+      "source_object": "20 Nature \u2022 perimeter rock shelves / moss",
+      "role": "-2"
+    },
+    {
+      "name": "TR_20_158_12",
+      "group": 20,
+      "vertices": 393,
+      "polygons": 442,
+      "source_object": "20 Nature \u2022 perimeter rock shelves / moss",
+      "role": "-1"
+    },
+    {
+      "name": "TR_20_159_13",
+      "group": 20,
+      "vertices": 398,
+      "polygons": 430,
+      "source_object": "20 Nature \u2022 perimeter rock shelves / moss",
+      "role": "0"
+    },
+    {
+      "name": "TR_20_160_14",
+      "group": 20,
+      "vertices": 116,
+      "polygons": 104,
+      "source_object": "20 Nature \u2022 perimeter rock shelves / moss",
+      "role": "0"
+    },
+    {
+      "name": "TR_20_161_15",
+      "group": 20,
+      "vertices": 25,
+      "polygons": 16,
+      "source_object": "20 Nature \u2022 perimeter rock shelves / moss",
+      "role": "1"
+    },
+    {
+      "name": "TR_20_162_00",
+      "group": 20,
+      "vertices": 347,
+      "polygons": 644,
+      "source_object": "20 Nature \u2022 interior moss shelves / cliff",
+      "role": "-1"
+    },
+    {
+      "name": "TR_20_163_01",
+      "group": 20,
+      "vertices": 51,
+      "polygons": 79,
+      "source_object": "20 Nature \u2022 interior moss shelves / cliff",
+      "role": "-2"
+    },
+    {
+      "name": "TR_20_164_02",
+      "group": 20,
+      "vertices": 162,
+      "polygons": 320,
+      "source_object": "20 Nature \u2022 interior moss shelves / cliff",
+      "role": "0"
+    },
+    {
+      "name": "TR_20_165_03",
+      "group": 20,
+      "vertices": 162,
+      "polygons": 320,
+      "source_object": "20 Nature \u2022 interior moss shelves / cliff",
+      "role": "1"
+    },
+    {
+      "name": "TR_20_166_04",
+      "group": 20,
+      "vertices": 292,
+      "polygons": 557,
+      "source_object": "20 Nature \u2022 interior moss shelves / cliff",
+      "role": "-1"
+    },
+    {
+      "name": "TR_20_167_00",
+      "group": 20,
+      "vertices": 108,
+      "polygons": 115,
+      "source_object": "20 Nature \u2022 interior moss shelves / moss",
+      "role": "-1"
+    },
+    {
+      "name": "TR_20_168_01",
+      "group": 20,
+      "vertices": 13,
+      "polygons": 10,
+      "source_object": "20 Nature \u2022 interior moss shelves / moss",
+      "role": "-2"
+    },
+    {
+      "name": "TR_20_169_02",
+      "group": 20,
+      "vertices": 50,
+      "polygons": 50,
+      "source_object": "20 Nature \u2022 interior moss shelves / moss",
+      "role": "0"
+    },
+    {
+      "name": "TR_20_170_03",
+      "group": 20,
+      "vertices": 50,
+      "polygons": 53,
+      "source_object": "20 Nature \u2022 interior moss shelves / moss",
+      "role": "1"
+    },
+    {
+      "name": "TR_20_171_04",
+      "group": 20,
+      "vertices": 94,
+      "polygons": 103,
+      "source_object": "20 Nature \u2022 interior moss shelves / moss",
+      "role": "-1"
+    },
+    {
+      "name": "TR_21_172_00",
+      "group": 21,
+      "vertices": 7516,
+      "polygons": 4819,
+      "source_object": "21 Bamboo \u2022 left / bamboo",
+      "role": "-2"
+    },
+    {
+      "name": "TR_21_173_01",
+      "group": 21,
+      "vertices": 6244,
+      "polygons": 4056,
+      "source_object": "21 Bamboo \u2022 left / bamboo",
+      "role": "-2"
+    },
+    {
+      "name": "TR_21_174_02",
+      "group": 21,
+      "vertices": 1525,
+      "polygons": 998,
+      "source_object": "21 Bamboo \u2022 left / bamboo",
+      "role": "-1"
+    },
+    {
+      "name": "TR_21_175_03",
+      "group": 21,
+      "vertices": 1827,
+      "polygons": 1146,
+      "source_object": "21 Bamboo \u2022 left / bamboo",
+      "role": "-1"
+    },
+    {
+      "name": "TR_21_176_04",
+      "group": 21,
+      "vertices": 400,
+      "polygons": 264,
+      "source_object": "21 Bamboo \u2022 left / bamboo",
+      "role": "-2"
+    },
+    {
+      "name": "TR_21_177_05",
+      "group": 21,
+      "vertices": 5,
+      "polygons": 1,
+      "source_object": "21 Bamboo \u2022 left / bamboo",
+      "role": "0"
+    },
+    {
+      "name": "TR_21_178_00",
+      "group": 21,
+      "vertices": 5738,
+      "polygons": 3656,
+      "source_object": "21 Bamboo \u2022 left / bamboo_node",
+      "role": "-2"
+    },
+    {
+      "name": "TR_21_179_01",
+      "group": 21,
+      "vertices": 4718,
+      "polygons": 3018,
+      "source_object": "21 Bamboo \u2022 left / bamboo_node",
+      "role": "-2"
+    },
+    {
+      "name": "TR_21_180_02",
+      "group": 21,
+      "vertices": 1242,
+      "polygons": 787,
+      "source_object": "21 Bamboo \u2022 left / bamboo_node",
+      "role": "-1"
+    },
+    {
+      "name": "TR_21_181_03",
+      "group": 21,
+      "vertices": 1050,
+      "polygons": 675,
+      "source_object": "21 Bamboo \u2022 left / bamboo_node",
+      "role": "-1"
+    },
+    {
+      "name": "TR_21_182_04",
+      "group": 21,
+      "vertices": 280,
+      "polygons": 180,
+      "source_object": "21 Bamboo \u2022 left / bamboo_node",
+      "role": "-2"
+    },
+    {
+      "name": "TR_21_183_00",
+      "group": 21,
+      "vertices": 1394,
+      "polygons": 844,
+      "source_object": "21 Bamboo \u2022 left / leaf1",
+      "role": "-2"
+    },
+    {
+      "name": "TR_21_184_01",
+      "group": 21,
+      "vertices": 1189,
+      "polygons": 718,
+      "source_object": "21 Bamboo \u2022 left / leaf1",
+      "role": "-2"
+    },
+    {
+      "name": "TR_21_185_02",
+      "group": 21,
+      "vertices": 464,
+      "polygons": 274,
+      "source_object": "21 Bamboo \u2022 left / leaf1",
+      "role": "-1"
+    },
+    {
+      "name": "TR_21_186_03",
+      "group": 21,
+      "vertices": 368,
+      "polygons": 214,
+      "source_object": "21 Bamboo \u2022 left / leaf1",
+      "role": "-1"
+    },
+    {
+      "name": "TR_21_187_04",
+      "group": 21,
+      "vertices": 77,
+      "polygons": 52,
+      "source_object": "21 Bamboo \u2022 left / leaf1",
+      "role": "-2"
+    },
+    {
+      "name": "TR_21_188_00",
+      "group": 21,
+      "vertices": 1434,
+      "polygons": 858,
+      "source_object": "21 Bamboo \u2022 left / leaf0",
+      "role": "-2"
+    },
+    {
+      "name": "TR_21_189_01",
+      "group": 21,
+      "vertices": 1161,
+      "polygons": 686,
+      "source_object": "21 Bamboo \u2022 left / leaf0",
+      "role": "-2"
+    },
+    {
+      "name": "TR_21_190_02",
+      "group": 21,
+      "vertices": 449,
+      "polygons": 275,
+      "source_object": "21 Bamboo \u2022 left / leaf0",
+      "role": "-1"
+    },
+    {
+      "name": "TR_21_191_03",
+      "group": 21,
+      "vertices": 442,
+      "polygons": 279,
+      "source_object": "21 Bamboo \u2022 left / leaf0",
+      "role": "-1"
+    },
+    {
+      "name": "TR_21_192_04",
+      "group": 21,
+      "vertices": 124,
+      "polygons": 74,
+      "source_object": "21 Bamboo \u2022 left / leaf0",
+      "role": "-2"
+    },
+    {
+      "name": "TR_21_193_00",
+      "group": 21,
+      "vertices": 1458,
+      "polygons": 863,
+      "source_object": "21 Bamboo \u2022 left / leaf2",
+      "role": "-2"
+    },
+    {
+      "name": "TR_21_194_01",
+      "group": 21,
+      "vertices": 1413,
+      "polygons": 859,
+      "source_object": "21 Bamboo \u2022 left / leaf2",
+      "role": "-2"
+    },
+    {
+      "name": "TR_21_195_02",
+      "group": 21,
+      "vertices": 458,
+      "polygons": 264,
+      "source_object": "21 Bamboo \u2022 left / leaf2",
+      "role": "-1"
+    },
+    {
+      "name": "TR_21_196_03",
+      "group": 21,
+      "vertices": 416,
+      "polygons": 268,
+      "source_object": "21 Bamboo \u2022 left / leaf2",
+      "role": "-1"
+    },
+    {
+      "name": "TR_21_197_04",
+      "group": 21,
+      "vertices": 125,
+      "polygons": 70,
+      "source_object": "21 Bamboo \u2022 left / leaf2",
+      "role": "-2"
+    },
+    {
+      "name": "TR_21_198_05",
+      "group": 21,
+      "vertices": 4,
+      "polygons": 2,
+      "source_object": "21 Bamboo \u2022 left / leaf2",
+      "role": "0"
+    },
+    {
+      "name": "TR_21_199_00",
+      "group": 21,
+      "vertices": 1378,
+      "polygons": 836,
+      "source_object": "21 Bamboo \u2022 left / leaf3",
+      "role": "-2"
+    },
+    {
+      "name": "TR_21_200_01",
+      "group": 21,
+      "vertices": 1303,
+      "polygons": 783,
+      "source_object": "21 Bamboo \u2022 left / leaf3",
+      "role": "-2"
+    },
+    {
+      "name": "TR_21_201_02",
+      "group": 21,
+      "vertices": 433,
+      "polygons": 266,
+      "source_object": "21 Bamboo \u2022 left / leaf3",
+      "role": "-1"
+    },
+    {
+      "name": "TR_21_202_03",
+      "group": 21,
+      "vertices": 475,
+      "polygons": 275,
+      "source_object": "21 Bamboo \u2022 left / leaf3",
+      "role": "-1"
+    },
+    {
+      "name": "TR_21_203_04",
+      "group": 21,
+      "vertices": 85,
+      "polygons": 50,
+      "source_object": "21 Bamboo \u2022 left / leaf3",
+      "role": "-2"
+    },
+    {
+      "name": "TR_21_204_05",
+      "group": 21,
+      "vertices": 5,
+      "polygons": 4,
+      "source_object": "21 Bamboo \u2022 left / leaf3",
+      "role": "0"
+    },
+    {
+      "name": "TR_21_205_00",
+      "group": 21,
+      "vertices": 2154,
+      "polygons": 1409,
+      "source_object": "21 Bamboo \u2022 rear / bamboo",
+      "role": "-2"
+    },
+    {
+      "name": "TR_21_206_01",
+      "group": 21,
+      "vertices": 7879,
+      "polygons": 5131,
+      "source_object": "21 Bamboo \u2022 rear / bamboo",
+      "role": "-1"
+    },
+    {
+      "name": "TR_21_207_02",
+      "group": 21,
+      "vertices": 3210,
+      "polygons": 2104,
+      "source_object": "21 Bamboo \u2022 rear / bamboo",
+      "role": "1"
+    },
+    {
+      "name": "TR_21_208_03",
+      "group": 21,
+      "vertices": 6107,
+      "polygons": 3998,
+      "source_object": "21 Bamboo \u2022 rear / bamboo",
+      "role": "0"
+    },
+    {
+      "name": "TR_21_209_04",
+      "group": 21,
+      "vertices": 22,
+      "polygons": 5,
+      "source_object": "21 Bamboo \u2022 rear / bamboo",
+      "role": "0"
+    },
+    {
+      "name": "TR_21_210_05",
+      "group": 21,
+      "vertices": 1228,
+      "polygons": 754,
+      "source_object": "21 Bamboo \u2022 rear / bamboo",
+      "role": "-1"
+    },
+    {
+      "name": "TR_21_211_06",
+      "group": 21,
+      "vertices": 887,
+      "polygons": 516,
+      "source_object": "21 Bamboo \u2022 rear / bamboo",
+      "role": "-2"
+    },
+    {
+      "name": "TR_21_212_07",
+      "group": 21,
+      "vertices": 1939,
+      "polygons": 1264,
+      "source_object": "21 Bamboo \u2022 rear / bamboo",
+      "role": "1"
+    },
+    {
+      "name": "TR_21_213_00",
+      "group": 21,
+      "vertices": 1554,
+      "polygons": 999,
+      "source_object": "21 Bamboo \u2022 rear / bamboo_node",
+      "role": "-2"
+    },
+    {
+      "name": "TR_21_214_01",
+      "group": 21,
+      "vertices": 2450,
+      "polygons": 1575,
+      "source_object": "21 Bamboo \u2022 rear / bamboo_node",
+      "role": "1"
+    },
+    {
+      "name": "TR_21_215_02",
+      "group": 21,
+      "vertices": 4592,
+      "polygons": 2952,
+      "source_object": "21 Bamboo \u2022 rear / bamboo_node",
+      "role": "0"
+    },
+    {
+      "name": "TR_21_216_03",
+      "group": 21,
+      "vertices": 5922,
+      "polygons": 3807,
+      "source_object": "21 Bamboo \u2022 rear / bamboo_node",
+      "role": "-1"
+    },
+    {
+      "name": "TR_21_217_04",
+      "group": 21,
+      "vertices": 670,
+      "polygons": 394,
+      "source_object": "21 Bamboo \u2022 rear / bamboo_node",
+      "role": "-2"
+    },
+    {
+      "name": "TR_21_218_05",
+      "group": 21,
+      "vertices": 1484,
+      "polygons": 954,
+      "source_object": "21 Bamboo \u2022 rear / bamboo_node",
+      "role": "1"
+    },
+    {
+      "name": "TR_21_219_06",
+      "group": 21,
+      "vertices": 858,
+      "polygons": 524,
+      "source_object": "21 Bamboo \u2022 rear / bamboo_node",
+      "role": "-1"
+    },
+    {
+      "name": "TR_21_220_00",
+      "group": 21,
+      "vertices": 428,
+      "polygons": 250,
+      "source_object": "21 Bamboo \u2022 rear / leaf2",
+      "role": "-2"
+    },
+    {
+      "name": "TR_21_221_01",
+      "group": 21,
+      "vertices": 1598,
+      "polygons": 970,
+      "source_object": "21 Bamboo \u2022 rear / leaf2",
+      "role": "-1"
+    },
+    {
+      "name": "TR_21_222_02",
+      "group": 21,
+      "vertices": 610,
+      "polygons": 364,
+      "source_object": "21 Bamboo \u2022 rear / leaf2",
+      "role": "1"
+    },
+    {
+      "name": "TR_21_223_03",
+      "group": 21,
+      "vertices": 1340,
+      "polygons": 826,
+      "source_object": "21 Bamboo \u2022 rear / leaf2",
+      "role": "0"
+    },
+    {
+      "name": "TR_21_224_04",
+      "group": 21,
+      "vertices": 16,
+      "polygons": 9,
+      "source_object": "21 Bamboo \u2022 rear / leaf2",
+      "role": "0"
+    },
+    {
+      "name": "TR_21_225_05",
+      "group": 21,
+      "vertices": 284,
+      "polygons": 161,
+      "source_object": "21 Bamboo \u2022 rear / leaf2",
+      "role": "-1"
+    },
+    {
+      "name": "TR_21_226_06",
+      "group": 21,
+      "vertices": 188,
+      "polygons": 111,
+      "source_object": "21 Bamboo \u2022 rear / leaf2",
+      "role": "-2"
+    },
+    {
+      "name": "TR_21_227_07",
+      "group": 21,
+      "vertices": 400,
+      "polygons": 233,
+      "source_object": "21 Bamboo \u2022 rear / leaf2",
+      "role": "1"
+    },
+    {
+      "name": "TR_21_228_00",
+      "group": 21,
+      "vertices": 518,
+      "polygons": 321,
+      "source_object": "21 Bamboo \u2022 rear / leaf3",
+      "role": "-2"
+    },
+    {
+      "name": "TR_21_229_01",
+      "group": 21,
+      "vertices": 1600,
+      "polygons": 969,
+      "source_object": "21 Bamboo \u2022 rear / leaf3",
+      "role": "-1"
+    },
+    {
+      "name": "TR_21_230_02",
+      "group": 21,
+      "vertices": 688,
+      "polygons": 405,
+      "source_object": "21 Bamboo \u2022 rear / leaf3",
+      "role": "1"
+    },
+    {
+      "name": "TR_21_231_03",
+      "group": 21,
+      "vertices": 1215,
+      "polygons": 721,
+      "source_object": "21 Bamboo \u2022 rear / leaf3",
+      "role": "0"
+    },
+    {
+      "name": "TR_21_232_04",
+      "group": 21,
+      "vertices": 27,
+      "polygons": 17,
+      "source_object": "21 Bamboo \u2022 rear / leaf3",
+      "role": "0"
+    },
+    {
+      "name": "TR_21_233_05",
+      "group": 21,
+      "vertices": 343,
+      "polygons": 206,
+      "source_object": "21 Bamboo \u2022 rear / leaf3",
+      "role": "-1"
+    },
+    {
+      "name": "TR_21_234_06",
+      "group": 21,
+      "vertices": 171,
+      "polygons": 109,
+      "source_object": "21 Bamboo \u2022 rear / leaf3",
+      "role": "-2"
+    },
+    {
+      "name": "TR_21_235_07",
+      "group": 21,
+      "vertices": 416,
+      "polygons": 246,
+      "source_object": "21 Bamboo \u2022 rear / leaf3",
+      "role": "1"
+    },
+    {
+      "name": "TR_21_236_00",
+      "group": 21,
+      "vertices": 590,
+      "polygons": 360,
+      "source_object": "21 Bamboo \u2022 rear / leaf1",
+      "role": "-2"
+    },
+    {
+      "name": "TR_21_237_01",
+      "group": 21,
+      "vertices": 1710,
+      "polygons": 1026,
+      "source_object": "21 Bamboo \u2022 rear / leaf1",
+      "role": "-1"
+    },
+    {
+      "name": "TR_21_238_02",
+      "group": 21,
+      "vertices": 675,
+      "polygons": 414,
+      "source_object": "21 Bamboo \u2022 rear / leaf1",
+      "role": "1"
+    },
+    {
+      "name": "TR_21_239_03",
+      "group": 21,
+      "vertices": 1315,
+      "polygons": 787,
+      "source_object": "21 Bamboo \u2022 rear / leaf1",
+      "role": "0"
+    },
+    {
+      "name": "TR_21_240_04",
+      "group": 21,
+      "vertices": 12,
+      "polygons": 7,
+      "source_object": "21 Bamboo \u2022 rear / leaf1",
+      "role": "0"
+    },
+    {
+      "name": "TR_21_241_05",
+      "group": 21,
+      "vertices": 250,
+      "polygons": 152,
+      "source_object": "21 Bamboo \u2022 rear / leaf1",
+      "role": "-1"
+    },
+    {
+      "name": "TR_21_242_06",
+      "group": 21,
+      "vertices": 187,
+      "polygons": 110,
+      "source_object": "21 Bamboo \u2022 rear / leaf1",
+      "role": "-2"
+    },
+    {
+      "name": "TR_21_243_07",
+      "group": 21,
+      "vertices": 318,
+      "polygons": 192,
+      "source_object": "21 Bamboo \u2022 rear / leaf1",
+      "role": "1"
+    },
+    {
+      "name": "TR_21_244_00",
+      "group": 21,
+      "vertices": 420,
+      "polygons": 253,
+      "source_object": "21 Bamboo \u2022 rear / leaf0",
+      "role": "-2"
+    },
+    {
+      "name": "TR_21_245_01",
+      "group": 21,
+      "vertices": 1589,
+      "polygons": 953,
+      "source_object": "21 Bamboo \u2022 rear / leaf0",
+      "role": "-1"
+    },
+    {
+      "name": "TR_21_246_02",
+      "group": 21,
+      "vertices": 635,
+      "polygons": 394,
+      "source_object": "21 Bamboo \u2022 rear / leaf0",
+      "role": "1"
+    },
+    {
+      "name": "TR_21_247_03",
+      "group": 21,
+      "vertices": 1248,
+      "polygons": 743,
+      "source_object": "21 Bamboo \u2022 rear / leaf0",
+      "role": "0"
+    },
+    {
+      "name": "TR_21_248_04",
+      "group": 21,
+      "vertices": 26,
+      "polygons": 16,
+      "source_object": "21 Bamboo \u2022 rear / leaf0",
+      "role": "0"
+    },
+    {
+      "name": "TR_21_249_05",
+      "group": 21,
+      "vertices": 239,
+      "polygons": 139,
+      "source_object": "21 Bamboo \u2022 rear / leaf0",
+      "role": "-1"
+    },
+    {
+      "name": "TR_21_250_06",
+      "group": 21,
+      "vertices": 166,
+      "polygons": 104,
+      "source_object": "21 Bamboo \u2022 rear / leaf0",
+      "role": "-2"
+    },
+    {
+      "name": "TR_21_251_07",
+      "group": 21,
+      "vertices": 400,
+      "polygons": 242,
+      "source_object": "21 Bamboo \u2022 rear / leaf0",
+      "role": "1"
+    },
+    {
+      "name": "TR_21_252_00",
+      "group": 21,
+      "vertices": 1132,
+      "polygons": 737,
+      "source_object": "21 Bamboo \u2022 right / bamboo",
+      "role": "0"
+    },
+    {
+      "name": "TR_21_253_01",
+      "group": 21,
+      "vertices": 1640,
+      "polygons": 1084,
+      "source_object": "21 Bamboo \u2022 right / bamboo",
+      "role": "0"
+    },
+    {
+      "name": "TR_21_254_02",
+      "group": 21,
+      "vertices": 3443,
+      "polygons": 2221,
+      "source_object": "21 Bamboo \u2022 right / bamboo",
+      "role": "1"
+    },
+    {
+      "name": "TR_21_255_03",
+      "group": 21,
+      "vertices": 2815,
+      "polygons": 1831,
+      "source_object": "21 Bamboo \u2022 right / bamboo",
+      "role": "1"
+    },
+    {
+      "name": "TR_21_256_04",
+      "group": 21,
+      "vertices": 992,
+      "polygons": 656,
+      "source_object": "21 Bamboo \u2022 right / bamboo",
+      "role": "1"
+    },
+    {
+      "name": "TR_21_257_05",
+      "group": 21,
+      "vertices": 379,
+      "polygons": 233,
+      "source_object": "21 Bamboo \u2022 right / bamboo",
+      "role": "0"
+    },
+    {
+      "name": "TR_21_258_00",
+      "group": 21,
+      "vertices": 882,
+      "polygons": 567,
+      "source_object": "21 Bamboo \u2022 right / bamboo_node",
+      "role": "0"
+    },
+    {
+      "name": "TR_21_259_01",
+      "group": 21,
+      "vertices": 1120,
+      "polygons": 720,
+      "source_object": "21 Bamboo \u2022 right / bamboo_node",
+      "role": "0"
+    },
+    {
+      "name": "TR_21_260_02",
+      "group": 21,
+      "vertices": 2640,
+      "polygons": 1684,
+      "source_object": "21 Bamboo \u2022 right / bamboo_node",
+      "role": "1"
+    },
+    {
+      "name": "TR_21_261_03",
+      "group": 21,
+      "vertices": 2144,
+      "polygons": 1373,
+      "source_object": "21 Bamboo \u2022 right / bamboo_node",
+      "role": "1"
+    },
+    {
+      "name": "TR_21_262_04",
+      "group": 21,
+      "vertices": 672,
+      "polygons": 432,
+      "source_object": "21 Bamboo \u2022 right / bamboo_node",
+      "role": "1"
+    },
+    {
+      "name": "TR_21_263_05",
+      "group": 21,
+      "vertices": 226,
+      "polygons": 138,
+      "source_object": "21 Bamboo \u2022 right / bamboo_node",
+      "role": "0"
+    },
+    {
+      "name": "TR_21_264_00",
+      "group": 21,
+      "vertices": 203,
+      "polygons": 124,
+      "source_object": "21 Bamboo \u2022 right / leaf0",
+      "role": "0"
+    },
+    {
+      "name": "TR_21_265_01",
+      "group": 21,
+      "vertices": 412,
+      "polygons": 248,
+      "source_object": "21 Bamboo \u2022 right / leaf0",
+      "role": "0"
+    },
+    {
+      "name": "TR_21_266_02",
+      "group": 21,
+      "vertices": 646,
+      "polygons": 391,
+      "source_object": "21 Bamboo \u2022 right / leaf0",
+      "role": "1"
+    },
+    {
+      "name": "TR_21_267_03",
+      "group": 21,
+      "vertices": 583,
+      "polygons": 350,
+      "source_object": "21 Bamboo \u2022 right / leaf0",
+      "role": "1"
+    },
+    {
+      "name": "TR_21_268_04",
+      "group": 21,
+      "vertices": 281,
+      "polygons": 166,
+      "source_object": "21 Bamboo \u2022 right / leaf0",
+      "role": "1"
+    },
+    {
+      "name": "TR_21_269_05",
+      "group": 21,
+      "vertices": 110,
+      "polygons": 65,
+      "source_object": "21 Bamboo \u2022 right / leaf0",
+      "role": "0"
+    },
+    {
+      "name": "TR_21_270_00",
+      "group": 21,
+      "vertices": 209,
+      "polygons": 130,
+      "source_object": "21 Bamboo \u2022 right / leaf2",
+      "role": "0"
+    },
+    {
+      "name": "TR_21_271_01",
+      "group": 21,
+      "vertices": 450,
+      "polygons": 282,
+      "source_object": "21 Bamboo \u2022 right / leaf2",
+      "role": "0"
+    },
+    {
+      "name": "TR_21_272_02",
+      "group": 21,
+      "vertices": 674,
+      "polygons": 384,
+      "source_object": "21 Bamboo \u2022 right / leaf2",
+      "role": "1"
+    },
+    {
+      "name": "TR_21_273_03",
+      "group": 21,
+      "vertices": 541,
+      "polygons": 338,
+      "source_object": "21 Bamboo \u2022 right / leaf2",
+      "role": "1"
+    },
+    {
+      "name": "TR_21_274_04",
+      "group": 21,
+      "vertices": 259,
+      "polygons": 152,
+      "source_object": "21 Bamboo \u2022 right / leaf2",
+      "role": "1"
+    },
+    {
+      "name": "TR_21_275_05",
+      "group": 21,
+      "vertices": 110,
+      "polygons": 66,
+      "source_object": "21 Bamboo \u2022 right / leaf2",
+      "role": "0"
+    },
+    {
+      "name": "TR_21_276_00",
+      "group": 21,
+      "vertices": 224,
+      "polygons": 136,
+      "source_object": "21 Bamboo \u2022 right / leaf3",
+      "role": "0"
+    },
+    {
+      "name": "TR_21_277_01",
+      "group": 21,
+      "vertices": 474,
+      "polygons": 295,
+      "source_object": "21 Bamboo \u2022 right / leaf3",
+      "role": "0"
+    },
+    {
+      "name": "TR_21_278_02",
+      "group": 21,
+      "vertices": 557,
+      "polygons": 328,
+      "source_object": "21 Bamboo \u2022 right / leaf3",
+      "role": "1"
+    },
+    {
+      "name": "TR_21_279_03",
+      "group": 21,
+      "vertices": 614,
+      "polygons": 364,
+      "source_object": "21 Bamboo \u2022 right / leaf3",
+      "role": "1"
+    },
+    {
+      "name": "TR_21_280_04",
+      "group": 21,
+      "vertices": 230,
+      "polygons": 135,
+      "source_object": "21 Bamboo \u2022 right / leaf3",
+      "role": "1"
+    },
+    {
+      "name": "TR_21_281_05",
+      "group": 21,
+      "vertices": 97,
+      "polygons": 68,
+      "source_object": "21 Bamboo \u2022 right / leaf3",
+      "role": "0"
+    },
+    {
+      "name": "TR_21_282_00",
+      "group": 21,
+      "vertices": 209,
+      "polygons": 119,
+      "source_object": "21 Bamboo \u2022 right / leaf1",
+      "role": "0"
+    },
+    {
+      "name": "TR_21_283_01",
+      "group": 21,
+      "vertices": 468,
+      "polygons": 282,
+      "source_object": "21 Bamboo \u2022 right / leaf1",
+      "role": "0"
+    },
+    {
+      "name": "TR_21_284_02",
+      "group": 21,
+      "vertices": 751,
+      "polygons": 452,
+      "source_object": "21 Bamboo \u2022 right / leaf1",
+      "role": "1"
+    },
+    {
+      "name": "TR_21_285_03",
+      "group": 21,
+      "vertices": 539,
+      "polygons": 329,
+      "source_object": "21 Bamboo \u2022 right / leaf1",
+      "role": "1"
+    },
+    {
+      "name": "TR_21_286_04",
+      "group": 21,
+      "vertices": 323,
+      "polygons": 196,
+      "source_object": "21 Bamboo \u2022 right / leaf1",
+      "role": "1"
+    },
+    {
+      "name": "TR_21_287_05",
+      "group": 21,
+      "vertices": 147,
+      "polygons": 90,
+      "source_object": "21 Bamboo \u2022 right / leaf1",
+      "role": "0"
+    },
+    {
+      "name": "TR_22_288_00",
+      "group": 22,
+      "vertices": 664,
+      "polygons": 404,
+      "source_object": "22 Groundcover \u2022 grasses and ferns / leaf2",
+      "role": "-1"
+    },
+    {
+      "name": "TR_22_289_01",
+      "group": 22,
+      "vertices": 358,
+      "polygons": 212,
+      "source_object": "22 Groundcover \u2022 grasses and ferns / leaf2",
+      "role": "1"
+    },
+    {
+      "name": "TR_22_290_02",
+      "group": 22,
+      "vertices": 307,
+      "polygons": 182,
+      "source_object": "22 Groundcover \u2022 grasses and ferns / leaf2",
+      "role": "-1"
+    },
+    {
+      "name": "TR_22_291_03",
+      "group": 22,
+      "vertices": 568,
+      "polygons": 333,
+      "source_object": "22 Groundcover \u2022 grasses and ferns / leaf2",
+      "role": "0"
+    },
+    {
+      "name": "TR_22_292_04",
+      "group": 22,
+      "vertices": 473,
+      "polygons": 279,
+      "source_object": "22 Groundcover \u2022 grasses and ferns / leaf2",
+      "role": "-1"
+    },
+    {
+      "name": "TR_22_293_05",
+      "group": 22,
+      "vertices": 292,
+      "polygons": 173,
+      "source_object": "22 Groundcover \u2022 grasses and ferns / leaf2",
+      "role": "-2"
+    },
+    {
+      "name": "TR_22_294_06",
+      "group": 22,
+      "vertices": 174,
+      "polygons": 102,
+      "source_object": "22 Groundcover \u2022 grasses and ferns / leaf2",
+      "role": "0"
+    },
+    {
+      "name": "TR_22_295_07",
+      "group": 22,
+      "vertices": 360,
+      "polygons": 222,
+      "source_object": "22 Groundcover \u2022 grasses and ferns / leaf2",
+      "role": "-2"
+    },
+    {
+      "name": "TR_22_296_08",
+      "group": 22,
+      "vertices": 278,
+      "polygons": 172,
+      "source_object": "22 Groundcover \u2022 grasses and ferns / leaf2",
+      "role": "0"
+    },
+    {
+      "name": "TR_22_297_09",
+      "group": 22,
+      "vertices": 151,
+      "polygons": 92,
+      "source_object": "22 Groundcover \u2022 grasses and ferns / leaf2",
+      "role": "-1"
+    },
+    {
+      "name": "TR_22_298_10",
+      "group": 22,
+      "vertices": 303,
+      "polygons": 187,
+      "source_object": "22 Groundcover \u2022 grasses and ferns / leaf2",
+      "role": "1"
+    },
+    {
+      "name": "TR_22_299_11",
+      "group": 22,
+      "vertices": 418,
+      "polygons": 260,
+      "source_object": "22 Groundcover \u2022 grasses and ferns / leaf2",
+      "role": "0"
+    },
+    {
+      "name": "TR_22_300_12",
+      "group": 22,
+      "vertices": 40,
+      "polygons": 26,
+      "source_object": "22 Groundcover \u2022 grasses and ferns / leaf2",
+      "role": "-2"
+    },
+    {
+      "name": "TR_22_301_13",
+      "group": 22,
+      "vertices": 24,
+      "polygons": 18,
+      "source_object": "22 Groundcover \u2022 grasses and ferns / leaf2",
+      "role": "1"
+    },
+    {
+      "name": "TR_22_302_14",
+      "group": 22,
+      "vertices": 118,
+      "polygons": 74,
+      "source_object": "22 Groundcover \u2022 grasses and ferns / leaf2",
+      "role": "1"
+    },
+    {
+      "name": "TR_22_303_15",
+      "group": 22,
+      "vertices": 138,
+      "polygons": 78,
+      "source_object": "22 Groundcover \u2022 grasses and ferns / leaf2",
+      "role": "-2"
+    },
+    {
+      "name": "TR_22_304_00",
+      "group": 22,
+      "vertices": 650,
+      "polygons": 394,
+      "source_object": "22 Groundcover \u2022 grasses and ferns / leaf1",
+      "role": "-1"
+    },
+    {
+      "name": "TR_22_305_01",
+      "group": 22,
+      "vertices": 362,
+      "polygons": 221,
+      "source_object": "22 Groundcover \u2022 grasses and ferns / leaf1",
+      "role": "1"
+    },
+    {
+      "name": "TR_22_306_02",
+      "group": 22,
+      "vertices": 274,
+      "polygons": 171,
+      "source_object": "22 Groundcover \u2022 grasses and ferns / leaf1",
+      "role": "-1"
+    },
+    {
+      "name": "TR_22_307_03",
+      "group": 22,
+      "vertices": 544,
+      "polygons": 331,
+      "source_object": "22 Groundcover \u2022 grasses and ferns / leaf1",
+      "role": "0"
+    },
+    {
+      "name": "TR_22_308_04",
+      "group": 22,
+      "vertices": 372,
+      "polygons": 228,
+      "source_object": "22 Groundcover \u2022 grasses and ferns / leaf1",
+      "role": "-2"
+    },
+    {
+      "name": "TR_22_309_05",
+      "group": 22,
+      "vertices": 341,
+      "polygons": 208,
+      "source_object": "22 Groundcover \u2022 grasses and ferns / leaf1",
+      "role": "-2"
+    },
+    {
+      "name": "TR_22_310_06",
+      "group": 22,
+      "vertices": 579,
+      "polygons": 348,
+      "source_object": "22 Groundcover \u2022 grasses and ferns / leaf1",
+      "role": "-1"
+    },
+    {
+      "name": "TR_22_311_07",
+      "group": 22,
+      "vertices": 366,
+      "polygons": 211,
+      "source_object": "22 Groundcover \u2022 grasses and ferns / leaf1",
+      "role": "0"
+    },
+    {
+      "name": "TR_22_312_08",
+      "group": 22,
+      "vertices": 122,
+      "polygons": 76,
+      "source_object": "22 Groundcover \u2022 grasses and ferns / leaf1",
+      "role": "-1"
+    },
+    {
+      "name": "TR_22_313_09",
+      "group": 22,
+      "vertices": 35,
+      "polygons": 22,
+      "source_object": "22 Groundcover \u2022 grasses and ferns / leaf1",
+      "role": "1"
+    },
+    {
+      "name": "TR_22_314_10",
+      "group": 22,
+      "vertices": 174,
+      "polygons": 108,
+      "source_object": "22 Groundcover \u2022 grasses and ferns / leaf1",
+      "role": "0"
+    },
+    {
+      "name": "TR_22_315_11",
+      "group": 22,
+      "vertices": 433,
+      "polygons": 255,
+      "source_object": "22 Groundcover \u2022 grasses and ferns / leaf1",
+      "role": "0"
+    },
+    {
+      "name": "TR_22_316_12",
+      "group": 22,
+      "vertices": 270,
+      "polygons": 157,
+      "source_object": "22 Groundcover \u2022 grasses and ferns / leaf1",
+      "role": "1"
+    },
+    {
+      "name": "TR_22_317_13",
+      "group": 22,
+      "vertices": 50,
+      "polygons": 28,
+      "source_object": "22 Groundcover \u2022 grasses and ferns / leaf1",
+      "role": "-2"
+    },
+    {
+      "name": "TR_22_318_14",
+      "group": 22,
+      "vertices": 116,
+      "polygons": 70,
+      "source_object": "22 Groundcover \u2022 grasses and ferns / leaf1",
+      "role": "-2"
+    },
+    {
+      "name": "TR_22_319_15",
+      "group": 22,
+      "vertices": 96,
+      "polygons": 60,
+      "source_object": "22 Groundcover \u2022 grasses and ferns / leaf1",
+      "role": "1"
+    },
+    {
+      "name": "TR_22_320_00",
+      "group": 22,
+      "vertices": 615,
+      "polygons": 374,
+      "source_object": "22 Groundcover \u2022 grasses and ferns / leaf3",
+      "role": "-1"
+    },
+    {
+      "name": "TR_22_321_01",
+      "group": 22,
+      "vertices": 424,
+      "polygons": 249,
+      "source_object": "22 Groundcover \u2022 grasses and ferns / leaf3",
+      "role": "0"
+    },
+    {
+      "name": "TR_22_322_02",
+      "group": 22,
+      "vertices": 355,
+      "polygons": 218,
+      "source_object": "22 Groundcover \u2022 grasses and ferns / leaf3",
+      "role": "-2"
+    },
+    {
+      "name": "TR_22_323_03",
+      "group": 22,
+      "vertices": 315,
+      "polygons": 192,
+      "source_object": "22 Groundcover \u2022 grasses and ferns / leaf3",
+      "role": "-2"
+    },
+    {
+      "name": "TR_22_324_04",
+      "group": 22,
+      "vertices": 167,
+      "polygons": 99,
+      "source_object": "22 Groundcover \u2022 grasses and ferns / leaf3",
+      "role": "0"
+    },
+    {
+      "name": "TR_22_325_05",
+      "group": 22,
+      "vertices": 113,
+      "polygons": 65,
+      "source_object": "22 Groundcover \u2022 grasses and ferns / leaf3",
+      "role": "-1"
+    },
+    {
+      "name": "TR_22_326_06",
+      "group": 22,
+      "vertices": 276,
+      "polygons": 174,
+      "source_object": "22 Groundcover \u2022 grasses and ferns / leaf3",
+      "role": "1"
+    },
+    {
+      "name": "TR_22_327_07",
+      "group": 22,
+      "vertices": 31,
+      "polygons": 20,
+      "source_object": "22 Groundcover \u2022 grasses and ferns / leaf3",
+      "role": "1"
+    },
+    {
+      "name": "TR_22_328_08",
+      "group": 22,
+      "vertices": 561,
+      "polygons": 336,
+      "source_object": "22 Groundcover \u2022 grasses and ferns / leaf3",
+      "role": "-1"
+    },
+    {
+      "name": "TR_22_329_09",
+      "group": 22,
+      "vertices": 353,
+      "polygons": 210,
+      "source_object": "22 Groundcover \u2022 grasses and ferns / leaf3",
+      "role": "-1"
+    },
+    {
+      "name": "TR_22_330_10",
+      "group": 22,
+      "vertices": 379,
+      "polygons": 231,
+      "source_object": "22 Groundcover \u2022 grasses and ferns / leaf3",
+      "role": "0"
+    },
+    {
+      "name": "TR_22_331_11",
+      "group": 22,
+      "vertices": 297,
+      "polygons": 186,
+      "source_object": "22 Groundcover \u2022 grasses and ferns / leaf3",
+      "role": "0"
+    },
+    {
+      "name": "TR_22_332_12",
+      "group": 22,
+      "vertices": 291,
+      "polygons": 174,
+      "source_object": "22 Groundcover \u2022 grasses and ferns / leaf3",
+      "role": "1"
+    },
+    {
+      "name": "TR_22_333_13",
+      "group": 22,
+      "vertices": 57,
+      "polygons": 30,
+      "source_object": "22 Groundcover \u2022 grasses and ferns / leaf3",
+      "role": "-2"
+    },
+    {
+      "name": "TR_22_334_14",
+      "group": 22,
+      "vertices": 86,
+      "polygons": 52,
+      "source_object": "22 Groundcover \u2022 grasses and ferns / leaf3",
+      "role": "1"
+    },
+    {
+      "name": "TR_22_335_15",
+      "group": 22,
+      "vertices": 115,
+      "polygons": 62,
+      "source_object": "22 Groundcover \u2022 grasses and ferns / leaf3",
+      "role": "-2"
+    },
+    {
+      "name": "TR_22_336_00",
+      "group": 22,
+      "vertices": 576,
+      "polygons": 354,
+      "source_object": "22 Groundcover \u2022 grasses and ferns / leaf0",
+      "role": "-1"
+    },
+    {
+      "name": "TR_22_337_01",
+      "group": 22,
+      "vertices": 303,
+      "polygons": 186,
+      "source_object": "22 Groundcover \u2022 grasses and ferns / leaf0",
+      "role": "1"
+    },
+    {
+      "name": "TR_22_338_02",
+      "group": 22,
+      "vertices": 345,
+      "polygons": 215,
+      "source_object": "22 Groundcover \u2022 grasses and ferns / leaf0",
+      "role": "-1"
+    },
+    {
+      "name": "TR_22_339_03",
+      "group": 22,
+      "vertices": 507,
+      "polygons": 294,
+      "source_object": "22 Groundcover \u2022 grasses and ferns / leaf0",
+      "role": "0"
+    },
+    {
+      "name": "TR_22_340_04",
+      "group": 22,
+      "vertices": 370,
+      "polygons": 224,
+      "source_object": "22 Groundcover \u2022 grasses and ferns / leaf0",
+      "role": "-2"
+    },
+    {
+      "name": "TR_22_341_05",
+      "group": 22,
+      "vertices": 422,
+      "polygons": 245,
+      "source_object": "22 Groundcover \u2022 grasses and ferns / leaf0",
+      "role": "-2"
+    },
+    {
+      "name": "TR_22_342_06",
+      "group": 22,
+      "vertices": 578,
+      "polygons": 354,
+      "source_object": "22 Groundcover \u2022 grasses and ferns / leaf0",
+      "role": "-1"
+    },
+    {
+      "name": "TR_22_343_07",
+      "group": 22,
+      "vertices": 47,
+      "polygons": 28,
+      "source_object": "22 Groundcover \u2022 grasses and ferns / leaf0",
+      "role": "1"
+    },
+    {
+      "name": "TR_22_344_08",
+      "group": 22,
+      "vertices": 182,
+      "polygons": 112,
+      "source_object": "22 Groundcover \u2022 grasses and ferns / leaf0",
+      "role": "0"
+    },
+    {
+      "name": "TR_22_345_09",
+      "group": 22,
+      "vertices": 286,
+      "polygons": 176,
+      "source_object": "22 Groundcover \u2022 grasses and ferns / leaf0",
+      "role": "1"
+    },
+    {
+      "name": "TR_22_346_10",
+      "group": 22,
+      "vertices": 402,
+      "polygons": 240,
+      "source_object": "22 Groundcover \u2022 grasses and ferns / leaf0",
+      "role": "0"
+    },
+    {
+      "name": "TR_22_347_11",
+      "group": 22,
+      "vertices": 301,
+      "polygons": 182,
+      "source_object": "22 Groundcover \u2022 grasses and ferns / leaf0",
+      "role": "0"
+    },
+    {
+      "name": "TR_22_348_12",
+      "group": 22,
+      "vertices": 123,
+      "polygons": 72,
+      "source_object": "22 Groundcover \u2022 grasses and ferns / leaf0",
+      "role": "-1"
+    },
+    {
+      "name": "TR_22_349_13",
+      "group": 22,
+      "vertices": 87,
+      "polygons": 48,
+      "source_object": "22 Groundcover \u2022 grasses and ferns / leaf0",
+      "role": "1"
+    },
+    {
+      "name": "TR_22_350_14",
+      "group": 22,
+      "vertices": 99,
+      "polygons": 60,
+      "source_object": "22 Groundcover \u2022 grasses and ferns / leaf0",
+      "role": "-2"
+    },
+    {
+      "name": "TR_22_351_15",
+      "group": 22,
+      "vertices": 41,
+      "polygons": 22,
+      "source_object": "22 Groundcover \u2022 grasses and ferns / leaf0",
+      "role": "-2"
+    },
+    {
+      "name": "TR_22_352_00",
+      "group": 22,
+      "vertices": 4398,
+      "polygons": 8602,
+      "source_object": "22 Groundcover \u2022 pebbles / stone",
+      "role": "-1"
+    },
+    {
+      "name": "TR_22_353_01",
+      "group": 22,
+      "vertices": 2374,
+      "polygons": 4661,
+      "source_object": "22 Groundcover \u2022 pebbles / stone",
+      "role": "-2"
+    },
+    {
+      "name": "TR_22_354_02",
+      "group": 22,
+      "vertices": 2192,
+      "polygons": 4289,
+      "source_object": "22 Groundcover \u2022 pebbles / stone",
+      "role": "-2"
+    },
+    {
+      "name": "TR_22_355_03",
+      "group": 22,
+      "vertices": 3275,
+      "polygons": 6398,
+      "source_object": "22 Groundcover \u2022 pebbles / stone",
+      "role": "-1"
+    },
+    {
+      "name": "TR_22_356_04",
+      "group": 22,
+      "vertices": 1296,
+      "polygons": 2560,
+      "source_object": "22 Groundcover \u2022 pebbles / stone",
+      "role": "0"
+    },
+    {
+      "name": "TR_22_357_05",
+      "group": 22,
+      "vertices": 1156,
+      "polygons": 2265,
+      "source_object": "22 Groundcover \u2022 pebbles / stone",
+      "role": "0"
+    },
+    {
+      "name": "TR_22_358_06",
+      "group": 22,
+      "vertices": 2105,
+      "polygons": 4150,
+      "source_object": "22 Groundcover \u2022 pebbles / stone",
+      "role": "0"
+    },
+    {
+      "name": "TR_22_359_07",
+      "group": 22,
+      "vertices": 2201,
+      "polygons": 4295,
+      "source_object": "22 Groundcover \u2022 pebbles / stone",
+      "role": "1"
+    },
+    {
+      "name": "TR_22_360_08",
+      "group": 22,
+      "vertices": 810,
+      "polygons": 1600,
+      "source_object": "22 Groundcover \u2022 pebbles / stone",
+      "role": "-1"
+    },
+    {
+      "name": "TR_22_361_09",
+      "group": 22,
+      "vertices": 1145,
+      "polygons": 2250,
+      "source_object": "22 Groundcover \u2022 pebbles / stone",
+      "role": "1"
+    },
+    {
+      "name": "TR_22_362_10",
+      "group": 22,
+      "vertices": 1356,
+      "polygons": 2633,
+      "source_object": "22 Groundcover \u2022 pebbles / stone",
+      "role": "-1"
+    },
+    {
+      "name": "TR_22_363_11",
+      "group": 22,
+      "vertices": 162,
+      "polygons": 320,
+      "source_object": "22 Groundcover \u2022 pebbles / stone",
+      "role": "1"
+    },
+    {
+      "name": "TR_22_364_12",
+      "group": 22,
+      "vertices": 632,
+      "polygons": 1232,
+      "source_object": "22 Groundcover \u2022 pebbles / stone",
+      "role": "-2"
+    },
+    {
+      "name": "TR_22_365_13",
+      "group": 22,
+      "vertices": 3522,
+      "polygons": 6905,
+      "source_object": "22 Groundcover \u2022 pebbles / stone",
+      "role": "0"
+    },
+    {
+      "name": "TR_22_366_14",
+      "group": 22,
+      "vertices": 648,
+      "polygons": 1280,
+      "source_object": "22 Groundcover \u2022 pebbles / stone",
+      "role": "1"
+    },
+    {
+      "name": "TR_22_367_15",
+      "group": 22,
+      "vertices": 162,
+      "polygons": 320,
+      "source_object": "22 Groundcover \u2022 pebbles / stone",
+      "role": "-2"
+    },
+    {
+      "name": "TR_22_368_00",
+      "group": 22,
+      "vertices": 1366,
+      "polygons": 1526,
+      "source_object": "22 Groundcover \u2022 pebbles / moss",
+      "role": "-1"
+    },
+    {
+      "name": "TR_22_369_01",
+      "group": 22,
+      "vertices": 735,
+      "polygons": 804,
+      "source_object": "22 Groundcover \u2022 pebbles / moss",
+      "role": "-2"
+    },
+    {
+      "name": "TR_22_370_02",
+      "group": 22,
+      "vertices": 672,
+      "polygons": 731,
+      "source_object": "22 Groundcover \u2022 pebbles / moss",
+      "role": "-2"
+    },
+    {
+      "name": "TR_22_371_03",
+      "group": 22,
+      "vertices": 1013,
+      "polygons": 1120,
+      "source_object": "22 Groundcover \u2022 pebbles / moss",
+      "role": "-1"
+    },
+    {
+      "name": "TR_22_372_04",
+      "group": 22,
+      "vertices": 404,
+      "polygons": 450,
+      "source_object": "22 Groundcover \u2022 pebbles / moss",
+      "role": "0"
+    },
+    {
+      "name": "TR_22_373_05",
+      "group": 22,
+      "vertices": 348,
+      "polygons": 389,
+      "source_object": "22 Groundcover \u2022 pebbles / moss",
+      "role": "0"
+    },
+    {
+      "name": "TR_22_374_06",
+      "group": 22,
+      "vertices": 652,
+      "polygons": 733,
+      "source_object": "22 Groundcover \u2022 pebbles / moss",
+      "role": "0"
+    },
+    {
+      "name": "TR_22_375_07",
+      "group": 22,
+      "vertices": 676,
+      "polygons": 779,
+      "source_object": "22 Groundcover \u2022 pebbles / moss",
+      "role": "1"
+    },
+    {
+      "name": "TR_22_376_08",
+      "group": 22,
+      "vertices": 251,
+      "polygons": 276,
+      "source_object": "22 Groundcover \u2022 pebbles / moss",
+      "role": "-1"
+    },
+    {
+      "name": "TR_22_377_09",
+      "group": 22,
+      "vertices": 415,
+      "polygons": 456,
+      "source_object": "22 Groundcover \u2022 pebbles / moss",
+      "role": "-1"
+    },
+    {
+      "name": "TR_22_378_10",
+      "group": 22,
+      "vertices": 50,
+      "polygons": 54,
+      "source_object": "22 Groundcover \u2022 pebbles / moss",
+      "role": "1"
+    },
+    {
+      "name": "TR_22_379_11",
+      "group": 22,
+      "vertices": 197,
+      "polygons": 214,
+      "source_object": "22 Groundcover \u2022 pebbles / moss",
+      "role": "-2"
+    },
+    {
+      "name": "TR_22_380_12",
+      "group": 22,
+      "vertices": 1092,
+      "polygons": 1212,
+      "source_object": "22 Groundcover \u2022 pebbles / moss",
+      "role": "0"
+    },
+    {
+      "name": "TR_22_381_13",
+      "group": 22,
+      "vertices": 348,
+      "polygons": 383,
+      "source_object": "22 Groundcover \u2022 pebbles / moss",
+      "role": "1"
+    },
+    {
+      "name": "TR_22_382_14",
+      "group": 22,
+      "vertices": 202,
+      "polygons": 231,
+      "source_object": "22 Groundcover \u2022 pebbles / moss",
+      "role": "1"
+    },
+    {
+      "name": "TR_22_383_15",
+      "group": 22,
+      "vertices": 50,
+      "polygons": 58,
+      "source_object": "22 Groundcover \u2022 pebbles / moss",
+      "role": "-2"
+    },
+    {
+      "name": "TR_22_384_00",
+      "group": 22,
+      "vertices": 1628,
+      "polygons": 994,
+      "source_object": "22 Groundcover \u2022 fallen bamboo leaves / fallen_leaf",
+      "role": "-1"
+    },
+    {
+      "name": "TR_22_385_01",
+      "group": 22,
+      "vertices": 842,
+      "polygons": 495,
+      "source_object": "22 Groundcover \u2022 fallen bamboo leaves / fallen_leaf",
+      "role": "1"
+    },
+    {
+      "name": "TR_22_386_02",
+      "group": 22,
+      "vertices": 852,
+      "polygons": 505,
+      "source_object": "22 Groundcover \u2022 fallen bamboo leaves / fallen_leaf",
+      "role": "-1"
+    },
+    {
+      "name": "TR_22_387_03",
+      "group": 22,
+      "vertices": 1385,
+      "polygons": 826,
+      "source_object": "22 Groundcover \u2022 fallen bamboo leaves / fallen_leaf",
+      "role": "0"
+    },
+    {
+      "name": "TR_22_388_04",
+      "group": 22,
+      "vertices": 981,
+      "polygons": 606,
+      "source_object": "22 Groundcover \u2022 fallen bamboo leaves / fallen_leaf",
+      "role": "-2"
+    },
+    {
+      "name": "TR_22_389_05",
+      "group": 22,
+      "vertices": 879,
+      "polygons": 516,
+      "source_object": "22 Groundcover \u2022 fallen bamboo leaves / fallen_leaf",
+      "role": "-2"
+    },
+    {
+      "name": "TR_22_390_06",
+      "group": 22,
+      "vertices": 1434,
+      "polygons": 876,
+      "source_object": "22 Groundcover \u2022 fallen bamboo leaves / fallen_leaf",
+      "role": "-1"
+    },
+    {
+      "name": "TR_22_391_07",
+      "group": 22,
+      "vertices": 441,
+      "polygons": 258,
+      "source_object": "22 Groundcover \u2022 fallen bamboo leaves / fallen_leaf",
+      "role": "0"
+    },
+    {
+      "name": "TR_22_392_08",
+      "group": 22,
+      "vertices": 860,
+      "polygons": 525,
+      "source_object": "22 Groundcover \u2022 fallen bamboo leaves / fallen_leaf",
+      "role": "0"
+    },
+    {
+      "name": "TR_22_393_09",
+      "group": 22,
+      "vertices": 340,
+      "polygons": 206,
+      "source_object": "22 Groundcover \u2022 fallen bamboo leaves / fallen_leaf",
+      "role": "-1"
+    },
+    {
+      "name": "TR_22_394_10",
+      "group": 22,
+      "vertices": 92,
+      "polygons": 58,
+      "source_object": "22 Groundcover \u2022 fallen bamboo leaves / fallen_leaf",
+      "role": "1"
+    },
+    {
+      "name": "TR_22_395_11",
+      "group": 22,
+      "vertices": 800,
+      "polygons": 478,
+      "source_object": "22 Groundcover \u2022 fallen bamboo leaves / fallen_leaf",
+      "role": "1"
+    },
+    {
+      "name": "TR_22_396_12",
+      "group": 22,
+      "vertices": 1106,
+      "polygons": 689,
+      "source_object": "22 Groundcover \u2022 fallen bamboo leaves / fallen_leaf",
+      "role": "0"
+    },
+    {
+      "name": "TR_22_397_13",
+      "group": 22,
+      "vertices": 128,
+      "polygons": 76,
+      "source_object": "22 Groundcover \u2022 fallen bamboo leaves / fallen_leaf",
+      "role": "-2"
+    },
+    {
+      "name": "TR_22_398_14",
+      "group": 22,
+      "vertices": 262,
+      "polygons": 164,
+      "source_object": "22 Groundcover \u2022 fallen bamboo leaves / fallen_leaf",
+      "role": "1"
+    },
+    {
+      "name": "TR_22_399_15",
+      "group": 22,
+      "vertices": 334,
+      "polygons": 200,
+      "source_object": "22 Groundcover \u2022 fallen bamboo leaves / fallen_leaf",
+      "role": "-2"
+    },
+    {
+      "name": "TR_11_400_00",
+      "group": 11,
+      "vertices": 2862,
+      "polygons": 5616,
+      "source_object": "11 Rest \u2022 dense pine boughs / leaf0",
+      "role": "0"
+    },
+    {
+      "name": "TR_11_401_00",
+      "group": 11,
+      "vertices": 2862,
+      "polygons": 5616,
+      "source_object": "11 Rest \u2022 dense pine boughs / leaf1",
+      "role": "0"
+    },
+    {
+      "name": "TR_11_402_00",
+      "group": 11,
+      "vertices": 2862,
+      "polygons": 5616,
+      "source_object": "11 Rest \u2022 dense pine boughs / leaf2",
+      "role": "0"
+    },
+    {
+      "name": "TR_11_403_00",
+      "group": 11,
+      "vertices": 22153,
+      "polygons": 13394,
+      "source_object": "11 Rest \u2022 dense pine bough needles / leaf0",
+      "role": "0"
+    },
+    {
+      "name": "TR_11_404_00",
+      "group": 11,
+      "vertices": 22273,
+      "polygons": 13466,
+      "source_object": "11 Rest \u2022 dense pine bough needles / leaf2",
+      "role": "0"
+    },
+    {
+      "name": "TR_11_405_00",
+      "group": 11,
+      "vertices": 22445,
+      "polygons": 13570,
+      "source_object": "11 Rest \u2022 dense pine bough needles / leaf1",
+      "role": "0"
+    },
+    {
+      "name": "TR_23_406_00",
+      "group": 23,
+      "vertices": 3950,
+      "polygons": 2565,
+      "source_object": "23 Scenic \u2022 outer bamboo curtain / bamboo",
+      "role": "-2"
+    },
+    {
+      "name": "TR_23_407_01",
+      "group": 23,
+      "vertices": 2960,
+      "polygons": 1914,
+      "source_object": "23 Scenic \u2022 outer bamboo curtain / bamboo",
+      "role": "-2"
+    },
+    {
+      "name": "TR_23_408_02",
+      "group": 23,
+      "vertices": 4611,
+      "polygons": 2995,
+      "source_object": "23 Scenic \u2022 outer bamboo curtain / bamboo",
+      "role": "0"
+    },
+    {
+      "name": "TR_23_409_03",
+      "group": 23,
+      "vertices": 2861,
+      "polygons": 1817,
+      "source_object": "23 Scenic \u2022 outer bamboo curtain / bamboo",
+      "role": "1"
+    },
+    {
+      "name": "TR_23_410_04",
+      "group": 23,
+      "vertices": 1254,
+      "polygons": 808,
+      "source_object": "23 Scenic \u2022 outer bamboo curtain / bamboo",
+      "role": "-2"
+    },
+    {
+      "name": "TR_23_411_05",
+      "group": 23,
+      "vertices": 1419,
+      "polygons": 906,
+      "source_object": "23 Scenic \u2022 outer bamboo curtain / bamboo",
+      "role": "-1"
+    },
+    {
+      "name": "TR_23_412_06",
+      "group": 23,
+      "vertices": 2327,
+      "polygons": 1489,
+      "source_object": "23 Scenic \u2022 outer bamboo curtain / bamboo",
+      "role": "1"
+    },
+    {
+      "name": "TR_23_413_07",
+      "group": 23,
+      "vertices": 3212,
+      "polygons": 2092,
+      "source_object": "23 Scenic \u2022 outer bamboo curtain / bamboo",
+      "role": "-2"
+    },
+    {
+      "name": "TR_23_414_08",
+      "group": 23,
+      "vertices": 3386,
+      "polygons": 2213,
+      "source_object": "23 Scenic \u2022 outer bamboo curtain / bamboo",
+      "role": "1"
+    },
+    {
+      "name": "TR_23_415_09",
+      "group": 23,
+      "vertices": 326,
+      "polygons": 171,
+      "source_object": "23 Scenic \u2022 outer bamboo curtain / bamboo",
+      "role": "-3"
+    },
+    {
+      "name": "TR_23_416_10",
+      "group": 23,
+      "vertices": 850,
+      "polygons": 513,
+      "source_object": "23 Scenic \u2022 outer bamboo curtain / bamboo",
+      "role": "-3"
+    },
+    {
+      "name": "TR_23_417_11",
+      "group": 23,
+      "vertices": 1023,
+      "polygons": 654,
+      "source_object": "23 Scenic \u2022 outer bamboo curtain / bamboo",
+      "role": "2"
+    },
+    {
+      "name": "TR_23_418_12",
+      "group": 23,
+      "vertices": 1228,
+      "polygons": 810,
+      "source_object": "23 Scenic \u2022 outer bamboo curtain / bamboo",
+      "role": "1"
+    },
+    {
+      "name": "TR_23_419_13",
+      "group": 23,
+      "vertices": 2511,
+      "polygons": 1624,
+      "source_object": "23 Scenic \u2022 outer bamboo curtain / bamboo",
+      "role": "1"
+    },
+    {
+      "name": "TR_23_420_14",
+      "group": 23,
+      "vertices": 1282,
+      "polygons": 809,
+      "source_object": "23 Scenic \u2022 outer bamboo curtain / bamboo",
+      "role": "-1"
+    },
+    {
+      "name": "TR_23_421_15",
+      "group": 23,
+      "vertices": 686,
+      "polygons": 441,
+      "source_object": "23 Scenic \u2022 outer bamboo curtain / bamboo",
+      "role": "2"
+    },
+    {
+      "name": "TR_23_422_16",
+      "group": 23,
+      "vertices": 593,
+      "polygons": 377,
+      "source_object": "23 Scenic \u2022 outer bamboo curtain / bamboo",
+      "role": "0"
+    },
+    {
+      "name": "TR_23_423_17",
+      "group": 23,
+      "vertices": 557,
+      "polygons": 331,
+      "source_object": "23 Scenic \u2022 outer bamboo curtain / bamboo",
+      "role": "-3"
+    },
+    {
+      "name": "TR_23_424_18",
+      "group": 23,
+      "vertices": 428,
+      "polygons": 282,
+      "source_object": "23 Scenic \u2022 outer bamboo curtain / bamboo",
+      "role": "-2"
+    },
+    {
+      "name": "TR_23_425_19",
+      "group": 23,
+      "vertices": 777,
+      "polygons": 493,
+      "source_object": "23 Scenic \u2022 outer bamboo curtain / bamboo",
+      "role": "2"
+    },
+    {
+      "name": "TR_23_426_00",
+      "group": 23,
+      "vertices": 3010,
+      "polygons": 1933,
+      "source_object": "23 Scenic \u2022 outer bamboo curtain / bamboo_node",
+      "role": "-2"
+    },
+    {
+      "name": "TR_23_427_01",
+      "group": 23,
+      "vertices": 2380,
+      "polygons": 1530,
+      "source_object": "23 Scenic \u2022 outer bamboo curtain / bamboo_node",
+      "role": "-2"
+    },
+    {
+      "name": "TR_23_428_02",
+      "group": 23,
+      "vertices": 3560,
+      "polygons": 2286,
+      "source_object": "23 Scenic \u2022 outer bamboo curtain / bamboo_node",
+      "role": "0"
+    },
+    {
+      "name": "TR_23_429_03",
+      "group": 23,
+      "vertices": 916,
+      "polygons": 587,
+      "source_object": "23 Scenic \u2022 outer bamboo curtain / bamboo_node",
+      "role": "-2"
+    },
+    {
+      "name": "TR_23_430_04",
+      "group": 23,
+      "vertices": 1064,
+      "polygons": 683,
+      "source_object": "23 Scenic \u2022 outer bamboo curtain / bamboo_node",
+      "role": "-1"
+    },
+    {
+      "name": "TR_23_431_05",
+      "group": 23,
+      "vertices": 1708,
+      "polygons": 1098,
+      "source_object": "23 Scenic \u2022 outer bamboo curtain / bamboo_node",
+      "role": "1"
+    },
+    {
+      "name": "TR_23_432_06",
+      "group": 23,
+      "vertices": 2146,
+      "polygons": 1374,
+      "source_object": "23 Scenic \u2022 outer bamboo curtain / bamboo_node",
+      "role": "1"
+    },
+    {
+      "name": "TR_23_433_07",
+      "group": 23,
+      "vertices": 2156,
+      "polygons": 1380,
+      "source_object": "23 Scenic \u2022 outer bamboo curtain / bamboo_node",
+      "role": "-2"
+    },
+    {
+      "name": "TR_23_434_08",
+      "group": 23,
+      "vertices": 2464,
+      "polygons": 1584,
+      "source_object": "23 Scenic \u2022 outer bamboo curtain / bamboo_node",
+      "role": "1"
+    },
+    {
+      "name": "TR_23_435_09",
+      "group": 23,
+      "vertices": 250,
+      "polygons": 129,
+      "source_object": "23 Scenic \u2022 outer bamboo curtain / bamboo_node",
+      "role": "-3"
+    },
+    {
+      "name": "TR_23_436_10",
+      "group": 23,
+      "vertices": 654,
+      "polygons": 393,
+      "source_object": "23 Scenic \u2022 outer bamboo curtain / bamboo_node",
+      "role": "-3"
+    },
+    {
+      "name": "TR_23_437_11",
+      "group": 23,
+      "vertices": 798,
+      "polygons": 513,
+      "source_object": "23 Scenic \u2022 outer bamboo curtain / bamboo_node",
+      "role": "2"
+    },
+    {
+      "name": "TR_23_438_12",
+      "group": 23,
+      "vertices": 868,
+      "polygons": 558,
+      "source_object": "23 Scenic \u2022 outer bamboo curtain / bamboo_node",
+      "role": "1"
+    },
+    {
+      "name": "TR_23_439_13",
+      "group": 23,
+      "vertices": 2010,
+      "polygons": 1290,
+      "source_object": "23 Scenic \u2022 outer bamboo curtain / bamboo_node",
+      "role": "1"
+    },
+    {
+      "name": "TR_23_440_14",
+      "group": 23,
+      "vertices": 972,
+      "polygons": 620,
+      "source_object": "23 Scenic \u2022 outer bamboo curtain / bamboo_node",
+      "role": "-1"
+    },
+    {
+      "name": "TR_23_441_15",
+      "group": 23,
+      "vertices": 574,
+      "polygons": 369,
+      "source_object": "23 Scenic \u2022 outer bamboo curtain / bamboo_node",
+      "role": "2"
+    },
+    {
+      "name": "TR_23_442_16",
+      "group": 23,
+      "vertices": 414,
+      "polygons": 262,
+      "source_object": "23 Scenic \u2022 outer bamboo curtain / bamboo_node",
+      "role": "0"
+    },
+    {
+      "name": "TR_23_443_17",
+      "group": 23,
+      "vertices": 396,
+      "polygons": 249,
+      "source_object": "23 Scenic \u2022 outer bamboo curtain / bamboo_node",
+      "role": "-3"
+    },
+    {
+      "name": "TR_23_444_18",
+      "group": 23,
+      "vertices": 308,
+      "polygons": 198,
+      "source_object": "23 Scenic \u2022 outer bamboo curtain / bamboo_node",
+      "role": "-2"
+    },
+    {
+      "name": "TR_23_445_19",
+      "group": 23,
+      "vertices": 606,
+      "polygons": 388,
+      "source_object": "23 Scenic \u2022 outer bamboo curtain / bamboo_node",
+      "role": "2"
+    },
+    {
+      "name": "TR_23_446_00",
+      "group": 23,
+      "vertices": 836,
+      "polygons": 512,
+      "source_object": "23 Scenic \u2022 outer bamboo curtain / leaf2",
+      "role": "-2"
+    },
+    {
+      "name": "TR_23_447_01",
+      "group": 23,
+      "vertices": 411,
+      "polygons": 240,
+      "source_object": "23 Scenic \u2022 outer bamboo curtain / leaf2",
+      "role": "-2"
+    },
+    {
+      "name": "TR_23_448_02",
+      "group": 23,
+      "vertices": 555,
+      "polygons": 326,
+      "source_object": "23 Scenic \u2022 outer bamboo curtain / leaf2",
+      "role": "1"
+    },
+    {
+      "name": "TR_23_449_03",
+      "group": 23,
+      "vertices": 877,
+      "polygons": 515,
+      "source_object": "23 Scenic \u2022 outer bamboo curtain / leaf2",
+      "role": "0"
+    },
+    {
+      "name": "TR_23_450_04",
+      "group": 23,
+      "vertices": 256,
+      "polygons": 149,
+      "source_object": "23 Scenic \u2022 outer bamboo curtain / leaf2",
+      "role": "-2"
+    },
+    {
+      "name": "TR_23_451_05",
+      "group": 23,
+      "vertices": 335,
+      "polygons": 203,
+      "source_object": "23 Scenic \u2022 outer bamboo curtain / leaf2",
+      "role": "-1"
+    },
+    {
+      "name": "TR_23_452_06",
+      "group": 23,
+      "vertices": 536,
+      "polygons": 330,
+      "source_object": "23 Scenic \u2022 outer bamboo curtain / leaf2",
+      "role": "1"
+    },
+    {
+      "name": "TR_23_453_07",
+      "group": 23,
+      "vertices": 891,
+      "polygons": 546,
+      "source_object": "23 Scenic \u2022 outer bamboo curtain / leaf2",
+      "role": "-2"
+    },
+    {
+      "name": "TR_23_454_08",
+      "group": 23,
+      "vertices": 777,
+      "polygons": 462,
+      "source_object": "23 Scenic \u2022 outer bamboo curtain / leaf2",
+      "role": "1"
+    },
+    {
+      "name": "TR_23_455_09",
+      "group": 23,
+      "vertices": 137,
+      "polygons": 79,
+      "source_object": "23 Scenic \u2022 outer bamboo curtain / leaf2",
+      "role": "-3"
+    },
+    {
+      "name": "TR_23_456_10",
+      "group": 23,
+      "vertices": 80,
+      "polygons": 47,
+      "source_object": "23 Scenic \u2022 outer bamboo curtain / leaf2",
+      "role": "-3"
+    },
+    {
+      "name": "TR_23_457_11",
+      "group": 23,
+      "vertices": 165,
+      "polygons": 96,
+      "source_object": "23 Scenic \u2022 outer bamboo curtain / leaf2",
+      "role": "2"
+    },
+    {
+      "name": "TR_23_458_12",
+      "group": 23,
+      "vertices": 309,
+      "polygons": 180,
+      "source_object": "23 Scenic \u2022 outer bamboo curtain / leaf2",
+      "role": "1"
+    },
+    {
+      "name": "TR_23_459_13",
+      "group": 23,
+      "vertices": 503,
+      "polygons": 311,
+      "source_object": "23 Scenic \u2022 outer bamboo curtain / leaf2",
+      "role": "1"
+    },
+    {
+      "name": "TR_23_460_14",
+      "group": 23,
+      "vertices": 191,
+      "polygons": 113,
+      "source_object": "23 Scenic \u2022 outer bamboo curtain / leaf2",
+      "role": "-1"
+    },
+    {
+      "name": "TR_23_461_15",
+      "group": 23,
+      "vertices": 81,
+      "polygons": 49,
+      "source_object": "23 Scenic \u2022 outer bamboo curtain / leaf2",
+      "role": "2"
+    },
+    {
+      "name": "TR_23_462_16",
+      "group": 23,
+      "vertices": 212,
+      "polygons": 120,
+      "source_object": "23 Scenic \u2022 outer bamboo curtain / leaf2",
+      "role": "0"
+    },
+    {
+      "name": "TR_23_463_17",
+      "group": 23,
+      "vertices": 80,
+      "polygons": 48,
+      "source_object": "23 Scenic \u2022 outer bamboo curtain / leaf2",
+      "role": "-3"
+    },
+    {
+      "name": "TR_23_464_18",
+      "group": 23,
+      "vertices": 123,
+      "polygons": 78,
+      "source_object": "23 Scenic \u2022 outer bamboo curtain / leaf2",
+      "role": "-2"
+    },
+    {
+      "name": "TR_23_465_19",
+      "group": 23,
+      "vertices": 177,
+      "polygons": 108,
+      "source_object": "23 Scenic \u2022 outer bamboo curtain / leaf2",
+      "role": "2"
+    },
+    {
+      "name": "TR_23_466_00",
+      "group": 23,
+      "vertices": 753,
+      "polygons": 458,
+      "source_object": "23 Scenic \u2022 outer bamboo curtain / leaf0",
+      "role": "-2"
+    },
+    {
+      "name": "TR_23_467_01",
+      "group": 23,
+      "vertices": 514,
+      "polygons": 302,
+      "source_object": "23 Scenic \u2022 outer bamboo curtain / leaf0",
+      "role": "-2"
+    },
+    {
+      "name": "TR_23_468_02",
+      "group": 23,
+      "vertices": 904,
+      "polygons": 549,
+      "source_object": "23 Scenic \u2022 outer bamboo curtain / leaf0",
+      "role": "0"
+    },
+    {
+      "name": "TR_23_469_03",
+      "group": 23,
+      "vertices": 566,
+      "polygons": 337,
+      "source_object": "23 Scenic \u2022 outer bamboo curtain / leaf0",
+      "role": "1"
+    },
+    {
+      "name": "TR_23_470_04",
+      "group": 23,
+      "vertices": 274,
+      "polygons": 160,
+      "source_object": "23 Scenic \u2022 outer bamboo curtain / leaf0",
+      "role": "-2"
+    },
+    {
+      "name": "TR_23_471_05",
+      "group": 23,
+      "vertices": 312,
+      "polygons": 181,
+      "source_object": "23 Scenic \u2022 outer bamboo curtain / leaf0",
+      "role": "-1"
+    },
+    {
+      "name": "TR_23_472_06",
+      "group": 23,
+      "vertices": 478,
+      "polygons": 285,
+      "source_object": "23 Scenic \u2022 outer bamboo curtain / leaf0",
+      "role": "1"
+    },
+    {
+      "name": "TR_23_473_07",
+      "group": 23,
+      "vertices": 813,
+      "polygons": 482,
+      "source_object": "23 Scenic \u2022 outer bamboo curtain / leaf0",
+      "role": "-2"
+    },
+    {
+      "name": "TR_23_474_08",
+      "group": 23,
+      "vertices": 685,
+      "polygons": 416,
+      "source_object": "23 Scenic \u2022 outer bamboo curtain / leaf0",
+      "role": "1"
+    },
+    {
+      "name": "TR_23_475_09",
+      "group": 23,
+      "vertices": 115,
+      "polygons": 68,
+      "source_object": "23 Scenic \u2022 outer bamboo curtain / leaf0",
+      "role": "-3"
+    },
+    {
+      "name": "TR_23_476_10",
+      "group": 23,
+      "vertices": 62,
+      "polygons": 40,
+      "source_object": "23 Scenic \u2022 outer bamboo curtain / leaf0",
+      "role": "-3"
+    },
+    {
+      "name": "TR_23_477_11",
+      "group": 23,
+      "vertices": 182,
+      "polygons": 108,
+      "source_object": "23 Scenic \u2022 outer bamboo curtain / leaf0",
+      "role": "2"
+    },
+    {
+      "name": "TR_23_478_12",
+      "group": 23,
+      "vertices": 255,
+      "polygons": 156,
+      "source_object": "23 Scenic \u2022 outer bamboo curtain / leaf0",
+      "role": "1"
+    },
+    {
+      "name": "TR_23_479_13",
+      "group": 23,
+      "vertices": 436,
+      "polygons": 261,
+      "source_object": "23 Scenic \u2022 outer bamboo curtain / leaf0",
+      "role": "1"
+    },
+    {
+      "name": "TR_23_480_14",
+      "group": 23,
+      "vertices": 205,
+      "polygons": 123,
+      "source_object": "23 Scenic \u2022 outer bamboo curtain / leaf0",
+      "role": "-1"
+    },
+    {
+      "name": "TR_23_481_15",
+      "group": 23,
+      "vertices": 52,
+      "polygons": 32,
+      "source_object": "23 Scenic \u2022 outer bamboo curtain / leaf0",
+      "role": "2"
+    },
+    {
+      "name": "TR_23_482_16",
+      "group": 23,
+      "vertices": 119,
+      "polygons": 70,
+      "source_object": "23 Scenic \u2022 outer bamboo curtain / leaf0",
+      "role": "0"
+    },
+    {
+      "name": "TR_23_483_17",
+      "group": 23,
+      "vertices": 109,
+      "polygons": 64,
+      "source_object": "23 Scenic \u2022 outer bamboo curtain / leaf0",
+      "role": "-3"
+    },
+    {
+      "name": "TR_23_484_18",
+      "group": 23,
+      "vertices": 93,
+      "polygons": 54,
+      "source_object": "23 Scenic \u2022 outer bamboo curtain / leaf0",
+      "role": "-2"
+    },
+    {
+      "name": "TR_23_485_19",
+      "group": 23,
+      "vertices": 194,
+      "polygons": 124,
+      "source_object": "23 Scenic \u2022 outer bamboo curtain / leaf0",
+      "role": "2"
+    },
+    {
+      "name": "TR_23_486_00",
+      "group": 23,
+      "vertices": 777,
+      "polygons": 470,
+      "source_object": "23 Scenic \u2022 outer bamboo curtain / leaf1",
+      "role": "-2"
+    },
+    {
+      "name": "TR_23_487_01",
+      "group": 23,
+      "vertices": 475,
+      "polygons": 290,
+      "source_object": "23 Scenic \u2022 outer bamboo curtain / leaf1",
+      "role": "-2"
+    },
+    {
+      "name": "TR_23_488_02",
+      "group": 23,
+      "vertices": 756,
+      "polygons": 450,
+      "source_object": "23 Scenic \u2022 outer bamboo curtain / leaf1",
+      "role": "0"
+    },
+    {
+      "name": "TR_23_489_03",
+      "group": 23,
+      "vertices": 508,
+      "polygons": 307,
+      "source_object": "23 Scenic \u2022 outer bamboo curtain / leaf1",
+      "role": "1"
+    },
+    {
+      "name": "TR_23_490_04",
+      "group": 23,
+      "vertices": 309,
+      "polygons": 180,
+      "source_object": "23 Scenic \u2022 outer bamboo curtain / leaf1",
+      "role": "-2"
+    },
+    {
+      "name": "TR_23_491_05",
+      "group": 23,
+      "vertices": 271,
+      "polygons": 164,
+      "source_object": "23 Scenic \u2022 outer bamboo curtain / leaf1",
+      "role": "-1"
+    },
+    {
+      "name": "TR_23_492_06",
+      "group": 23,
+      "vertices": 480,
+      "polygons": 297,
+      "source_object": "23 Scenic \u2022 outer bamboo curtain / leaf1",
+      "role": "1"
+    },
+    {
+      "name": "TR_23_493_07",
+      "group": 23,
+      "vertices": 857,
+      "polygons": 514,
+      "source_object": "23 Scenic \u2022 outer bamboo curtain / leaf1",
+      "role": "-2"
+    },
+    {
+      "name": "TR_23_494_08",
+      "group": 23,
+      "vertices": 830,
+      "polygons": 509,
+      "source_object": "23 Scenic \u2022 outer bamboo curtain / leaf1",
+      "role": "1"
+    },
+    {
+      "name": "TR_23_495_09",
+      "group": 23,
+      "vertices": 137,
+      "polygons": 78,
+      "source_object": "23 Scenic \u2022 outer bamboo curtain / leaf1",
+      "role": "-3"
+    },
+    {
+      "name": "TR_23_496_10",
+      "group": 23,
+      "vertices": 44,
+      "polygons": 28,
+      "source_object": "23 Scenic \u2022 outer bamboo curtain / leaf1",
+      "role": "-3"
+    },
+    {
+      "name": "TR_23_497_11",
+      "group": 23,
+      "vertices": 148,
+      "polygons": 86,
+      "source_object": "23 Scenic \u2022 outer bamboo curtain / leaf1",
+      "role": "2"
+    },
+    {
+      "name": "TR_23_498_12",
+      "group": 23,
+      "vertices": 342,
+      "polygons": 210,
+      "source_object": "23 Scenic \u2022 outer bamboo curtain / leaf1",
+      "role": "1"
+    },
+    {
+      "name": "TR_23_499_13",
+      "group": 23,
+      "vertices": 368,
+      "polygons": 220,
+      "source_object": "23 Scenic \u2022 outer bamboo curtain / leaf1",
+      "role": "1"
+    },
+    {
+      "name": "TR_23_500_14",
+      "group": 23,
+      "vertices": 193,
+      "polygons": 117,
+      "source_object": "23 Scenic \u2022 outer bamboo curtain / leaf1",
+      "role": "-1"
+    },
+    {
+      "name": "TR_23_501_15",
+      "group": 23,
+      "vertices": 93,
+      "polygons": 54,
+      "source_object": "23 Scenic \u2022 outer bamboo curtain / leaf1",
+      "role": "2"
+    },
+    {
+      "name": "TR_23_502_16",
+      "group": 23,
+      "vertices": 167,
+      "polygons": 95,
+      "source_object": "23 Scenic \u2022 outer bamboo curtain / leaf1",
+      "role": "0"
+    },
+    {
+      "name": "TR_23_503_17",
+      "group": 23,
+      "vertices": 118,
+      "polygons": 68,
+      "source_object": "23 Scenic \u2022 outer bamboo curtain / leaf1",
+      "role": "-3"
+    },
+    {
+      "name": "TR_23_504_18",
+      "group": 23,
+      "vertices": 123,
+      "polygons": 72,
+      "source_object": "23 Scenic \u2022 outer bamboo curtain / leaf1",
+      "role": "-2"
+    },
+    {
+      "name": "TR_23_505_19",
+      "group": 23,
+      "vertices": 90,
+      "polygons": 49,
+      "source_object": "23 Scenic \u2022 outer bamboo curtain / leaf1",
+      "role": "2"
+    },
+    {
+      "name": "TR_23_506_00",
+      "group": 23,
+      "vertices": 852,
+      "polygons": 505,
+      "source_object": "23 Scenic \u2022 outer bamboo curtain / leaf3",
+      "role": "-2"
+    },
+    {
+      "name": "TR_23_507_01",
+      "group": 23,
+      "vertices": 440,
+      "polygons": 261,
+      "source_object": "23 Scenic \u2022 outer bamboo curtain / leaf3",
+      "role": "-2"
+    },
+    {
+      "name": "TR_23_508_02",
+      "group": 23,
+      "vertices": 991,
+      "polygons": 587,
+      "source_object": "23 Scenic \u2022 outer bamboo curtain / leaf3",
+      "role": "-2"
+    },
+    {
+      "name": "TR_23_509_03",
+      "group": 23,
+      "vertices": 634,
+      "polygons": 381,
+      "source_object": "23 Scenic \u2022 outer bamboo curtain / leaf3",
+      "role": "1"
+    },
+    {
+      "name": "TR_23_510_04",
+      "group": 23,
+      "vertices": 856,
+      "polygons": 501,
+      "source_object": "23 Scenic \u2022 outer bamboo curtain / leaf3",
+      "role": "0"
+    },
+    {
+      "name": "TR_23_511_05",
+      "group": 23,
+      "vertices": 271,
+      "polygons": 176,
+      "source_object": "23 Scenic \u2022 outer bamboo curtain / leaf3",
+      "role": "-2"
+    },
+    {
+      "name": "TR_23_512_06",
+      "group": 23,
+      "vertices": 275,
+      "polygons": 160,
+      "source_object": "23 Scenic \u2022 outer bamboo curtain / leaf3",
+      "role": "-1"
+    },
+    {
+      "name": "TR_23_513_07",
+      "group": 23,
+      "vertices": 509,
+      "polygons": 307,
+      "source_object": "23 Scenic \u2022 outer bamboo curtain / leaf3",
+      "role": "1"
+    },
+    {
+      "name": "TR_23_514_08",
+      "group": 23,
+      "vertices": 790,
+      "polygons": 494,
+      "source_object": "23 Scenic \u2022 outer bamboo curtain / leaf3",
+      "role": "1"
+    },
+    {
+      "name": "TR_23_515_09",
+      "group": 23,
+      "vertices": 100,
+      "polygons": 51,
+      "source_object": "23 Scenic \u2022 outer bamboo curtain / leaf3",
+      "role": "-3"
+    },
+    {
+      "name": "TR_23_516_10",
+      "group": 23,
+      "vertices": 64,
+      "polygons": 38,
+      "source_object": "23 Scenic \u2022 outer bamboo curtain / leaf3",
+      "role": "-3"
+    },
+    {
+      "name": "TR_23_517_11",
+      "group": 23,
+      "vertices": 140,
+      "polygons": 81,
+      "source_object": "23 Scenic \u2022 outer bamboo curtain / leaf3",
+      "role": "2"
+    },
+    {
+      "name": "TR_23_518_12",
+      "group": 23,
+      "vertices": 328,
+      "polygons": 194,
+      "source_object": "23 Scenic \u2022 outer bamboo curtain / leaf3",
+      "role": "1"
+    },
+    {
+      "name": "TR_23_519_13",
+      "group": 23,
+      "vertices": 383,
+      "polygons": 232,
+      "source_object": "23 Scenic \u2022 outer bamboo curtain / leaf3",
+      "role": "1"
+    },
+    {
+      "name": "TR_23_520_14",
+      "group": 23,
+      "vertices": 172,
+      "polygons": 99,
+      "source_object": "23 Scenic \u2022 outer bamboo curtain / leaf3",
+      "role": "-1"
+    },
+    {
+      "name": "TR_23_521_15",
+      "group": 23,
+      "vertices": 116,
+      "polygons": 76,
+      "source_object": "23 Scenic \u2022 outer bamboo curtain / leaf3",
+      "role": "2"
+    },
+    {
+      "name": "TR_23_522_16",
+      "group": 23,
+      "vertices": 160,
+      "polygons": 99,
+      "source_object": "23 Scenic \u2022 outer bamboo curtain / leaf3",
+      "role": "0"
+    },
+    {
+      "name": "TR_23_523_17",
+      "group": 23,
+      "vertices": 124,
+      "polygons": 70,
+      "source_object": "23 Scenic \u2022 outer bamboo curtain / leaf3",
+      "role": "-3"
+    },
+    {
+      "name": "TR_23_524_18",
+      "group": 23,
+      "vertices": 71,
+      "polygons": 40,
+      "source_object": "23 Scenic \u2022 outer bamboo curtain / leaf3",
+      "role": "-2"
+    },
+    {
+      "name": "TR_23_525_19",
+      "group": 23,
+      "vertices": 118,
+      "polygons": 74,
+      "source_object": "23 Scenic \u2022 outer bamboo curtain / leaf3",
+      "role": "2"
+    },
+    {
+      "name": "TR_23_526_00",
+      "group": 23,
+      "vertices": 309,
+      "polygons": 530,
+      "source_object": "23 Scenic \u2022 distant wooded ridge / cliff",
+      "role": "-1"
+    },
+    {
+      "name": "TR_23_527_01",
+      "group": 23,
+      "vertices": 991,
+      "polygons": 1718,
+      "source_object": "23 Scenic \u2022 distant wooded ridge / cliff",
+      "role": "0"
+    },
+    {
+      "name": "TR_23_528_02",
+      "group": 23,
+      "vertices": 1297,
+      "polygons": 2326,
+      "source_object": "23 Scenic \u2022 distant wooded ridge / cliff",
+      "role": "0"
+    },
+    {
+      "name": "TR_23_529_03",
+      "group": 23,
+      "vertices": 1112,
+      "polygons": 1997,
+      "source_object": "23 Scenic \u2022 distant wooded ridge / cliff",
+      "role": "1"
+    },
+    {
+      "name": "TR_23_530_04",
+      "group": 23,
+      "vertices": 600,
+      "polygons": 1075,
+      "source_object": "23 Scenic \u2022 distant wooded ridge / cliff",
+      "role": "-2"
+    },
+    {
+      "name": "TR_23_531_05",
+      "group": 23,
+      "vertices": 300,
+      "polygons": 563,
+      "source_object": "23 Scenic \u2022 distant wooded ridge / cliff",
+      "role": "-3"
+    },
+    {
+      "name": "TR_23_532_06",
+      "group": 23,
+      "vertices": 704,
+      "polygons": 1268,
+      "source_object": "23 Scenic \u2022 distant wooded ridge / cliff",
+      "role": "-2"
+    },
+    {
+      "name": "TR_23_533_07",
+      "group": 23,
+      "vertices": 325,
+      "polygons": 558,
+      "source_object": "23 Scenic \u2022 distant wooded ridge / cliff",
+      "role": "-1"
+    },
+    {
+      "name": "TR_23_534_08",
+      "group": 23,
+      "vertices": 377,
+      "polygons": 592,
+      "source_object": "23 Scenic \u2022 distant wooded ridge / cliff",
+      "role": "1"
+    },
+    {
+      "name": "TR_23_535_09",
+      "group": 23,
+      "vertices": 305,
+      "polygons": 542,
+      "source_object": "23 Scenic \u2022 distant wooded ridge / cliff",
+      "role": "2"
+    },
+    {
+      "name": "TR_23_536_10",
+      "group": 23,
+      "vertices": 505,
+      "polygons": 922,
+      "source_object": "23 Scenic \u2022 distant wooded ridge / cliff",
+      "role": "2"
+    },
+    {
+      "name": "TR_23_537_11",
+      "group": 23,
+      "vertices": 48,
+      "polygons": 69,
+      "source_object": "23 Scenic \u2022 distant wooded ridge / cliff",
+      "role": "-3"
+    },
+    {
+      "name": "TR_23_538_00",
+      "group": 23,
+      "vertices": 92,
+      "polygons": 102,
+      "source_object": "23 Scenic \u2022 distant wooded ridge / moss",
+      "role": "-1"
+    },
+    {
+      "name": "TR_23_539_01",
+      "group": 23,
+      "vertices": 281,
+      "polygons": 260,
+      "source_object": "23 Scenic \u2022 distant wooded ridge / moss",
+      "role": "0"
+    },
+    {
+      "name": "TR_23_540_02",
+      "group": 23,
+      "vertices": 405,
+      "polygons": 420,
+      "source_object": "23 Scenic \u2022 distant wooded ridge / moss",
+      "role": "0"
+    },
+    {
+      "name": "TR_23_541_03",
+      "group": 23,
+      "vertices": 333,
+      "polygons": 352,
+      "source_object": "23 Scenic \u2022 distant wooded ridge / moss",
+      "role": "1"
+    },
+    {
+      "name": "TR_23_542_04",
+      "group": 23,
+      "vertices": 182,
+      "polygons": 182,
+      "source_object": "23 Scenic \u2022 distant wooded ridge / moss",
+      "role": "-2"
+    },
+    {
+      "name": "TR_23_543_05",
+      "group": 23,
+      "vertices": 96,
+      "polygons": 107,
+      "source_object": "23 Scenic \u2022 distant wooded ridge / moss",
+      "role": "-3"
+    },
+    {
+      "name": "TR_23_544_06",
+      "group": 23,
+      "vertices": 228,
+      "polygons": 256,
+      "source_object": "23 Scenic \u2022 distant wooded ridge / moss",
+      "role": "-2"
+    },
+    {
+      "name": "TR_23_545_07",
+      "group": 23,
+      "vertices": 88,
+      "polygons": 84,
+      "source_object": "23 Scenic \u2022 distant wooded ridge / moss",
+      "role": "-1"
+    },
+    {
+      "name": "TR_23_546_08",
+      "group": 23,
+      "vertices": 105,
+      "polygons": 92,
+      "source_object": "23 Scenic \u2022 distant wooded ridge / moss",
+      "role": "1"
+    },
+    {
+      "name": "TR_23_547_09",
+      "group": 23,
+      "vertices": 93,
+      "polygons": 98,
+      "source_object": "23 Scenic \u2022 distant wooded ridge / moss",
+      "role": "2"
+    },
+    {
+      "name": "TR_23_548_10",
+      "group": 23,
+      "vertices": 162,
+      "polygons": 171,
+      "source_object": "23 Scenic \u2022 distant wooded ridge / moss",
+      "role": "2"
+    },
+    {
+      "name": "TR_23_549_11",
+      "group": 23,
+      "vertices": 8,
+      "polygons": 5,
+      "source_object": "23 Scenic \u2022 distant wooded ridge / moss",
+      "role": "-3"
+    },
+    {
+      "name": "TR_24_550_00",
+      "group": 24,
+      "vertices": 794,
+      "polygons": 577,
+      "source_object": "24 Nature \u2022 broadleaf shrubs / wood",
+      "role": "-1"
+    },
+    {
+      "name": "TR_24_551_01",
+      "group": 24,
+      "vertices": 360,
+      "polygons": 270,
+      "source_object": "24 Nature \u2022 broadleaf shrubs / wood",
+      "role": "0"
+    },
+    {
+      "name": "TR_24_552_02",
+      "group": 24,
+      "vertices": 360,
+      "polygons": 270,
+      "source_object": "24 Nature \u2022 broadleaf shrubs / wood",
+      "role": "1"
+    },
+    {
+      "name": "TR_24_553_03",
+      "group": 24,
+      "vertices": 1108,
+      "polygons": 795,
+      "source_object": "24 Nature \u2022 broadleaf shrubs / wood",
+      "role": "-1"
+    },
+    {
+      "name": "TR_24_554_04",
+      "group": 24,
+      "vertices": 360,
+      "polygons": 270,
+      "source_object": "24 Nature \u2022 broadleaf shrubs / wood",
+      "role": "0"
+    },
+    {
+      "name": "TR_24_555_05",
+      "group": 24,
+      "vertices": 360,
+      "polygons": 270,
+      "source_object": "24 Nature \u2022 broadleaf shrubs / wood",
+      "role": "1"
+    },
+    {
+      "name": "TR_24_556_06",
+      "group": 24,
+      "vertices": 360,
+      "polygons": 270,
+      "source_object": "24 Nature \u2022 broadleaf shrubs / wood",
+      "role": "-2"
+    },
+    {
+      "name": "TR_24_557_07",
+      "group": 24,
+      "vertices": 360,
+      "polygons": 270,
+      "source_object": "24 Nature \u2022 broadleaf shrubs / wood",
+      "role": "0"
+    },
+    {
+      "name": "TR_24_558_08",
+      "group": 24,
+      "vertices": 348,
+      "polygons": 248,
+      "source_object": "24 Nature \u2022 broadleaf shrubs / wood",
+      "role": "-2"
+    },
+    {
+      "name": "TR_24_559_00",
+      "group": 24,
+      "vertices": 235,
+      "polygons": 145,
+      "source_object": "24 Nature \u2022 broadleaf shrubs / leaf0",
+      "role": "-1"
+    },
+    {
+      "name": "TR_24_560_01",
+      "group": 24,
+      "vertices": 77,
+      "polygons": 46,
+      "source_object": "24 Nature \u2022 broadleaf shrubs / leaf0",
+      "role": "0"
+    },
+    {
+      "name": "TR_24_561_02",
+      "group": 24,
+      "vertices": 92,
+      "polygons": 52,
+      "source_object": "24 Nature \u2022 broadleaf shrubs / leaf0",
+      "role": "1"
+    },
+    {
+      "name": "TR_24_562_03",
+      "group": 24,
+      "vertices": 263,
+      "polygons": 156,
+      "source_object": "24 Nature \u2022 broadleaf shrubs / leaf0",
+      "role": "-1"
+    },
+    {
+      "name": "TR_24_563_04",
+      "group": 24,
+      "vertices": 100,
+      "polygons": 62,
+      "source_object": "24 Nature \u2022 broadleaf shrubs / leaf0",
+      "role": "0"
+    },
+    {
+      "name": "TR_24_564_05",
+      "group": 24,
+      "vertices": 103,
+      "polygons": 62,
+      "source_object": "24 Nature \u2022 broadleaf shrubs / leaf0",
+      "role": "1"
+    },
+    {
+      "name": "TR_24_565_06",
+      "group": 24,
+      "vertices": 86,
+      "polygons": 58,
+      "source_object": "24 Nature \u2022 broadleaf shrubs / leaf0",
+      "role": "-2"
+    },
+    {
+      "name": "TR_24_566_07",
+      "group": 24,
+      "vertices": 105,
+      "polygons": 60,
+      "source_object": "24 Nature \u2022 broadleaf shrubs / leaf0",
+      "role": "0"
+    },
+    {
+      "name": "TR_24_567_08",
+      "group": 24,
+      "vertices": 62,
+      "polygons": 35,
+      "source_object": "24 Nature \u2022 broadleaf shrubs / leaf0",
+      "role": "-2"
+    },
+    {
+      "name": "TR_24_568_00",
+      "group": 24,
+      "vertices": 225,
+      "polygons": 139,
+      "source_object": "24 Nature \u2022 broadleaf shrubs / leaf2",
+      "role": "-1"
+    },
+    {
+      "name": "TR_24_569_01",
+      "group": 24,
+      "vertices": 92,
+      "polygons": 52,
+      "source_object": "24 Nature \u2022 broadleaf shrubs / leaf2",
+      "role": "0"
+    },
+    {
+      "name": "TR_24_570_02",
+      "group": 24,
+      "vertices": 85,
+      "polygons": 56,
+      "source_object": "24 Nature \u2022 broadleaf shrubs / leaf2",
+      "role": "1"
+    },
+    {
+      "name": "TR_24_571_03",
+      "group": 24,
+      "vertices": 312,
+      "polygons": 176,
+      "source_object": "24 Nature \u2022 broadleaf shrubs / leaf2",
+      "role": "-1"
+    },
+    {
+      "name": "TR_24_572_04",
+      "group": 24,
+      "vertices": 108,
+      "polygons": 66,
+      "source_object": "24 Nature \u2022 broadleaf shrubs / leaf2",
+      "role": "0"
+    },
+    {
+      "name": "TR_24_573_05",
+      "group": 24,
+      "vertices": 85,
+      "polygons": 56,
+      "source_object": "24 Nature \u2022 broadleaf shrubs / leaf2",
+      "role": "1"
+    },
+    {
+      "name": "TR_24_574_06",
+      "group": 24,
+      "vertices": 88,
+      "polygons": 56,
+      "source_object": "24 Nature \u2022 broadleaf shrubs / leaf2",
+      "role": "-2"
+    },
+    {
+      "name": "TR_24_575_07",
+      "group": 24,
+      "vertices": 93,
+      "polygons": 54,
+      "source_object": "24 Nature \u2022 broadleaf shrubs / leaf2",
+      "role": "0"
+    },
+    {
+      "name": "TR_24_576_08",
+      "group": 24,
+      "vertices": 89,
+      "polygons": 53,
+      "source_object": "24 Nature \u2022 broadleaf shrubs / leaf2",
+      "role": "-2"
+    },
+    {
+      "name": "TR_24_577_00",
+      "group": 24,
+      "vertices": 206,
+      "polygons": 124,
+      "source_object": "24 Nature \u2022 broadleaf shrubs / leaf3",
+      "role": "-1"
+    },
+    {
+      "name": "TR_24_578_01",
+      "group": 24,
+      "vertices": 116,
+      "polygons": 70,
+      "source_object": "24 Nature \u2022 broadleaf shrubs / leaf3",
+      "role": "0"
+    },
+    {
+      "name": "TR_24_579_02",
+      "group": 24,
+      "vertices": 106,
+      "polygons": 68,
+      "source_object": "24 Nature \u2022 broadleaf shrubs / leaf3",
+      "role": "1"
+    },
+    {
+      "name": "TR_24_580_03",
+      "group": 24,
+      "vertices": 243,
+      "polygons": 140,
+      "source_object": "24 Nature \u2022 broadleaf shrubs / leaf3",
+      "role": "-1"
+    },
+    {
+      "name": "TR_24_581_04",
+      "group": 24,
+      "vertices": 97,
+      "polygons": 56,
+      "source_object": "24 Nature \u2022 broadleaf shrubs / leaf3",
+      "role": "0"
+    },
+    {
+      "name": "TR_24_582_05",
+      "group": 24,
+      "vertices": 108,
+      "polygons": 66,
+      "source_object": "24 Nature \u2022 broadleaf shrubs / leaf3",
+      "role": "1"
+    },
+    {
+      "name": "TR_24_583_06",
+      "group": 24,
+      "vertices": 112,
+      "polygons": 68,
+      "source_object": "24 Nature \u2022 broadleaf shrubs / leaf3",
+      "role": "-2"
+    },
+    {
+      "name": "TR_24_584_07",
+      "group": 24,
+      "vertices": 93,
+      "polygons": 54,
+      "source_object": "24 Nature \u2022 broadleaf shrubs / leaf3",
+      "role": "0"
+    },
+    {
+      "name": "TR_24_585_08",
+      "group": 24,
+      "vertices": 89,
+      "polygons": 58,
+      "source_object": "24 Nature \u2022 broadleaf shrubs / leaf3",
+      "role": "-2"
+    },
+    {
+      "name": "TR_24_586_00",
+      "group": 24,
+      "vertices": 242,
+      "polygons": 137,
+      "source_object": "24 Nature \u2022 broadleaf shrubs / leaf1",
+      "role": "-1"
+    },
+    {
+      "name": "TR_24_587_01",
+      "group": 24,
+      "vertices": 98,
+      "polygons": 58,
+      "source_object": "24 Nature \u2022 broadleaf shrubs / leaf1",
+      "role": "0"
+    },
+    {
+      "name": "TR_24_588_02",
+      "group": 24,
+      "vertices": 110,
+      "polygons": 70,
+      "source_object": "24 Nature \u2022 broadleaf shrubs / leaf1",
+      "role": "1"
+    },
+    {
+      "name": "TR_24_589_03",
+      "group": 24,
+      "vertices": 301,
+      "polygons": 172,
+      "source_object": "24 Nature \u2022 broadleaf shrubs / leaf1",
+      "role": "-1"
+    },
+    {
+      "name": "TR_24_590_04",
+      "group": 24,
+      "vertices": 81,
+      "polygons": 48,
+      "source_object": "24 Nature \u2022 broadleaf shrubs / leaf1",
+      "role": "0"
+    },
+    {
+      "name": "TR_24_591_05",
+      "group": 24,
+      "vertices": 97,
+      "polygons": 62,
+      "source_object": "24 Nature \u2022 broadleaf shrubs / leaf1",
+      "role": "1"
+    },
+    {
+      "name": "TR_24_592_06",
+      "group": 24,
+      "vertices": 111,
+      "polygons": 72,
+      "source_object": "24 Nature \u2022 broadleaf shrubs / leaf1",
+      "role": "-2"
+    },
+    {
+      "name": "TR_24_593_07",
+      "group": 24,
+      "vertices": 91,
+      "polygons": 56,
+      "source_object": "24 Nature \u2022 broadleaf shrubs / leaf1",
+      "role": "0"
+    },
+    {
+      "name": "TR_24_594_08",
+      "group": 24,
+      "vertices": 62,
+      "polygons": 41,
+      "source_object": "24 Nature \u2022 broadleaf shrubs / leaf1",
+      "role": "-2"
+    },
+    {
+      "name": "TR_24_595_00",
+      "group": 24,
+      "vertices": 145,
+      "polygons": 95,
+      "source_object": "24 Nature \u2022 fine fern fronds / bamboo",
+      "role": "0"
+    },
+    {
+      "name": "TR_24_596_01",
+      "group": 24,
+      "vertices": 650,
+      "polygons": 443,
+      "source_object": "24 Nature \u2022 fine fern fronds / bamboo",
+      "role": "0"
+    },
+    {
+      "name": "TR_24_597_02",
+      "group": 24,
+      "vertices": 70,
+      "polygons": 49,
+      "source_object": "24 Nature \u2022 fine fern fronds / bamboo",
+      "role": "1"
+    },
+    {
+      "name": "TR_24_598_03",
+      "group": 24,
+      "vertices": 140,
+      "polygons": 91,
+      "source_object": "24 Nature \u2022 fine fern fronds / bamboo",
+      "role": "0"
+    },
+    {
+      "name": "TR_24_599_04",
+      "group": 24,
+      "vertices": 335,
+      "polygons": 204,
+      "source_object": "24 Nature \u2022 fine fern fronds / bamboo",
+      "role": "-1"
+    },
+    {
+      "name": "TR_24_600_05",
+      "group": 24,
+      "vertices": 110,
+      "polygons": 72,
+      "source_object": "24 Nature \u2022 fine fern fronds / bamboo",
+      "role": "-2"
+    },
+    {
+      "name": "TR_24_601_06",
+      "group": 24,
+      "vertices": 5,
+      "polygons": 1,
+      "source_object": "24 Nature \u2022 fine fern fronds / bamboo",
+      "role": "-2"
+    },
+    {
+      "name": "TR_24_602_07",
+      "group": 24,
+      "vertices": 285,
+      "polygons": 194,
+      "source_object": "24 Nature \u2022 fine fern fronds / bamboo",
+      "role": "-1"
+    },
+    {
+      "name": "TR_24_603_08",
+      "group": 24,
+      "vertices": 40,
+      "polygons": 20,
+      "source_object": "24 Nature \u2022 fine fern fronds / bamboo",
+      "role": "-1"
+    },
+    {
+      "name": "TR_24_604_09",
+      "group": 24,
+      "vertices": 160,
+      "polygons": 105,
+      "source_object": "24 Nature \u2022 fine fern fronds / bamboo",
+      "role": "1"
+    },
+    {
+      "name": "TR_24_605_00",
+      "group": 24,
+      "vertices": 789,
+      "polygons": 487,
+      "source_object": "24 Nature \u2022 fine fern fronds / leaf1",
+      "role": "0"
+    },
+    {
+      "name": "TR_24_606_01",
+      "group": 24,
+      "vertices": 3835,
+      "polygons": 2308,
+      "source_object": "24 Nature \u2022 fine fern fronds / leaf1",
+      "role": "0"
+    },
+    {
+      "name": "TR_24_607_02",
+      "group": 24,
+      "vertices": 421,
+      "polygons": 254,
+      "source_object": "24 Nature \u2022 fine fern fronds / leaf1",
+      "role": "1"
+    },
+    {
+      "name": "TR_24_608_03",
+      "group": 24,
+      "vertices": 754,
+      "polygons": 464,
+      "source_object": "24 Nature \u2022 fine fern fronds / leaf1",
+      "role": "0"
+    },
+    {
+      "name": "TR_24_609_04",
+      "group": 24,
+      "vertices": 1759,
+      "polygons": 1053,
+      "source_object": "24 Nature \u2022 fine fern fronds / leaf1",
+      "role": "-1"
+    },
+    {
+      "name": "TR_24_610_05",
+      "group": 24,
+      "vertices": 634,
+      "polygons": 380,
+      "source_object": "24 Nature \u2022 fine fern fronds / leaf1",
+      "role": "-2"
+    },
+    {
+      "name": "TR_24_611_06",
+      "group": 24,
+      "vertices": 16,
+      "polygons": 8,
+      "source_object": "24 Nature \u2022 fine fern fronds / leaf1",
+      "role": "-2"
+    },
+    {
+      "name": "TR_24_612_07",
+      "group": 24,
+      "vertices": 1641,
+      "polygons": 996,
+      "source_object": "24 Nature \u2022 fine fern fronds / leaf1",
+      "role": "-1"
+    },
+    {
+      "name": "TR_24_613_08",
+      "group": 24,
+      "vertices": 202,
+      "polygons": 118,
+      "source_object": "24 Nature \u2022 fine fern fronds / leaf1",
+      "role": "-1"
+    },
+    {
+      "name": "TR_24_614_09",
+      "group": 24,
+      "vertices": 932,
+      "polygons": 556,
+      "source_object": "24 Nature \u2022 fine fern fronds / leaf1",
+      "role": "1"
+    },
+    {
+      "name": "TR_08_615_00",
+      "group": 8,
+      "vertices": 486,
+      "polygons": 960,
+      "source_object": "08 Cave \u2022 rear hill integration / cliff",
+      "role": "0"
+    },
+    {
+      "name": "TR_08_616_00",
+      "group": 8,
+      "vertices": 152,
+      "polygons": 176,
+      "source_object": "08 Cave \u2022 rear hill integration / moss",
+      "role": "0"
+    },
+    {
+      "name": "TR_06_617_00",
+      "group": 6,
+      "vertices": 2400,
+      "polygons": 1680,
+      "source_object": "06 Reward \u2022 ceramic tile end caps / roof_alt",
+      "role": "0"
+    }
+  ],
+  "coordinate_system": "Imported FBX anchors are (-X,Z,-Y); prefab Y=180 restores (X,Z,Y)",
+  "source": "ArtSource/Blender/TutorialRestStop/TutorialRestStop_v01.blend"
+}

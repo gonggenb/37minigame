@@ -1,0 +1,14 @@
+{
+  "scene": "Assets/Scenes/TutorialLevel.unity",
+  "playmode_checks_passed": 34,
+  "chinese_font_validation": {
+    "passed": true,
+    "non_ascii_characters": 898
+  },
+  "visual_reviews": [
+    "playmode_portrait.png",
+    "playmode_landscape.png"
+  ],
+  "device_performance_approved": false,
+  "scope": "Controlled Unity Editor Play Mode and screenshots; no player build published"
+}
