@@ -1,0 +1,16 @@
+{
+  "functional_checks": 44,
+  "regression_checks": 46,
+  "runtime_errors": 0,
+  "font_validation": "passed via Unity menu and direct validator",
+  "balance_rounds": 3,
+  "total_scene_runs": 45,
+  "final_wins": {
+    "0": 3,
+    "1": 4,
+    "2": 1
+  },
+  "runs_per_tier": 5,
+  "device_acceptance": false,
+  "stable_win_rate_curve_established": false
+}

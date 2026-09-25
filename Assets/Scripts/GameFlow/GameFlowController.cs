@@ -101,6 +101,25 @@ namespace WuxiaRoguelite.GameFlow
             CurrentPhase == GamePhase.Result &&
             (IsTutorialCompletionSummary ||
              (bossDefeated && UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == LevelSequence.LevelTwoSceneName));
+        public bool IsGameCompleted =>
+            CurrentPhase == GamePhase.Result && bossDefeated && LevelSequence.IsLevelThreeScene;
+        public bool IsEndingOpen => IsGameCompleted && !endingDismissed;
+        public bool IsCreditsVisible => IsEndingOpen && Time.unscaledTime - endingStartedAt >= 3f;
+        private bool endingDismissed;
+        private float endingStartedAt;
+
+        public void DismissEnding()
+        {
+            if (IsGameCompleted) endingDismissed = true;
+        }
+
+        public void ShowEndingCredits()
+        {
+            if (!IsGameCompleted) return;
+            endingDismissed = false;
+            endingStartedAt = Time.unscaledTime - 3f;
+        }
+
         public string CurrentLevelDisplayName =>
             IsTutorialLevel ? $"关卡1 · {GameTextCatalog.TutorialLevelName}" :
             LevelSequence.IsLevelThreeScene ? $"关卡3 · {GameTextCatalog.BambooValleyLevelName}" :
@@ -264,6 +283,12 @@ namespace WuxiaRoguelite.GameFlow
             pendingMidBoss = null;
             ClearOpeningIntro();
             SetPhase(GamePhase.Ready);
+            if (LevelSequence.IsMenuScene)
+            {
+                IsLevelSelectionOpen = LevelSequence.ConsumeMenuSelectionRequest();
+                statusMessage = "按开始进入江湖";
+                return;
+            }
             if (!IsTutorialLevel && LevelSequence.ConsumeAutoStartRequest())
             {
                 BeginLevelTwoAfterTransition();
@@ -285,7 +310,7 @@ namespace WuxiaRoguelite.GameFlow
 
         private void Update()
         {
-            if (WuxiaRoguelite.UI.LevelLoadingScreen.IsLoading) return;
+            if (WuxiaRoguelite.UI.LevelLoadingScreen.IsLoading || WuxiaRoguelite.UI.StudioSplashScreen.IsBlocking) return;
             if (CurrentPhase == GamePhase.MainMapRunning && playerStats != null)
             {
                 playerStats.AdvanceTemporaryMoveSpeedBuffs(Time.deltaTime);
@@ -361,6 +386,7 @@ namespace WuxiaRoguelite.GameFlow
 
         public void StartRun()
         {
+            ResetRouteProgress();
             ResetTutorialLessons();
             if (battleManager != null)
             {
@@ -408,6 +434,7 @@ namespace WuxiaRoguelite.GameFlow
             currentChoices.Clear();
             martialArtRerollsRemaining = 1;
             phaseBeforeLevelUp = GamePhase.MainMapRunning;
+            PrepareRunChallenge();
             BeginOpeningIntro();
         }
 
@@ -517,6 +544,15 @@ namespace WuxiaRoguelite.GameFlow
         public void ReturnToMainMenu()
         {
             if (WuxiaRoguelite.UI.LevelLoadingScreen.IsLoading) return;
+            // A menu visit must not retain a gameplay scene and its serialized assets.
+            if (!LevelSequence.IsMenuScene && Application.CanStreamedLevelBeLoaded(LevelSequence.MenuSceneName))
+            {
+                LevelSequence.LoadMainMenu();
+                return;
+            }
+            ChallengeRun = null;
+            IsChallengeBriefingActive = false;
+            pendingBountyEncounter = null;
             if (IsTutorialLevel)
             {
                 Time.timeScale = 1f;
@@ -617,11 +653,13 @@ namespace WuxiaRoguelite.GameFlow
             {
                 case EncounterType.NormalEnemy:
                 case EncounterType.EliteEnemy:
+                    pendingRouteEncounter = encounter;
+                    pendingBountyEncounter = encounter;
                     encounter.Consume();
                     BeginNormalBattle(
                         encounter.CreateEnemyStats(),
-                        encounter.cultivationReward,
-                        encounter.copperReward,
+                        encounter.GrantedCultivationReward,
+                        encounter.GrantedCopperReward,
                         encounter.encounterType);
                     break;
                 case EncounterType.HiddenCave:
@@ -630,11 +668,17 @@ namespace WuxiaRoguelite.GameFlow
                     break;
                 case EncounterType.Treasure:
                     encounter.Consume();
-                    GiveRewards(encounter.cultivationReward, encounter.copperReward);
+                    // Resolve the upgrade before generating XP choices, so max-rank arts cannot
+                    // remain in a choice list that was generated against the previous ranks.
+                    string upgrade = encounter.GrantsMartialArtUpgrade ? playerStats.UpgradeRandomMartialArt() : string.Empty;
+                    int treasureCopper = encounter.GrantedCopperReward;
+                    if (encounter.GrantsMartialArtUpgrade && string.IsNullOrEmpty(upgrade))
+                        treasureCopper += ExplorationRewardTuning.MaxRankFallbackCopper;
+                    GiveRewards(encounter.GrantedCultivationReward, treasureCopper);
                     string equipmentName = playerStats.GrantTreasureEquipment();
-                    statusMessage = string.IsNullOrEmpty(equipmentName)
-                        ? $"打开宝箱：修为 +{encounter.cultivationReward}，铜钱 +{encounter.copperReward}"
-                        : $"打开宝箱：获得 {equipmentName}，修为 +{encounter.cultivationReward}";
+                    statusMessage = $"打开宝箱：修为 +{encounter.GrantedCultivationReward}，铜钱 +{treasureCopper}";
+                    if (!string.IsNullOrEmpty(equipmentName)) statusMessage += $"，获得 {equipmentName}";
+                    if (!string.IsNullOrEmpty(upgrade)) statusMessage += $"，武学精进：{upgrade}";
                     break;
                 case EncounterType.Herb:
                     encounter.Consume();
@@ -663,6 +707,7 @@ namespace WuxiaRoguelite.GameFlow
             }
 
             string art = currentChoices[index];
+            ConfirmChallengeBriefing();
             int rank = playerStats.ApplyMartialArt(art);
             currentChoices.Clear();
             bool wasOpeningChoice = isOpeningMartialArtChoice;
@@ -740,6 +785,7 @@ namespace WuxiaRoguelite.GameFlow
                 return;
             }
 
+            currentRouteCave = null;
             playerStats.caveEntries += 1;
             SetPhase(GamePhase.CaveRunning);
             statusMessage = "调试进入隐藏洞穴：主地图倒数暂停。";
@@ -827,6 +873,8 @@ namespace WuxiaRoguelite.GameFlow
                 pendingEnemyLevel,
                 ref cultivationReward,
                 ref copperReward);
+            string bountyReward = ResolveBountyVictory();
+            string routeReward = ResolveRouteVictory();
             bool leveledUp = GiveRewards(cultivationReward, copperReward);
             string enemyName = string.IsNullOrEmpty(pendingEnemyName) ? "敌人" : pendingEnemyName;
             string rewardSummary =
@@ -835,6 +883,8 @@ namespace WuxiaRoguelite.GameFlow
             {
                 rewardSummary += $"，掉落 {dropText}";
             }
+            if (!string.IsNullOrEmpty(routeReward)) rewardSummary = routeReward + "；" + rewardSummary;
+            if (!string.IsNullOrEmpty(bountyReward)) rewardSummary = bountyReward + "；" + rewardSummary;
             if (grantedMovementBoost)
             {
                 rewardSummary +=
@@ -897,6 +947,7 @@ namespace WuxiaRoguelite.GameFlow
                 return;
             }
 
+            currentRouteCave = encounter;
             playerStats.caveEntries += 1;
             SetPhase(GamePhase.CaveRunning);
             statusMessage = "进入隐藏洞穴：主地图 60 秒倒计时暂停。";
@@ -1005,10 +1056,12 @@ namespace WuxiaRoguelite.GameFlow
                 return;
             }
 
+            string routeReward = ResolveRouteCave(completed);
             SetPhase(GamePhase.MainMapRunning);
             statusMessage = completed
                 ? "离开隐藏洞穴，主地图时间恢复流逝。"
                 : "暂时撤离洞穴，入口仍可再次进入。主地图时间恢复流逝。";
+            if (!string.IsNullOrEmpty(routeReward)) statusMessage = routeReward + "。" + statusMessage;
         }
 
         private bool ShouldTriggerMidBoss()
@@ -1043,6 +1096,8 @@ namespace WuxiaRoguelite.GameFlow
             ClearOpeningIntro();
             midBossBattleTime = 0f;
             pendingMidBoss = midBossStats.Clone();
+            pendingMidBoss.bossTalent = MidBossTalent;
+            if (HasRunChallenge) RunChallengeCatalog.ApplyBoss(pendingMidBoss, ChallengeRun.tier, ChallengeRun.approach, false);
             pendingMidBoss.ResetHealth();
             SetPhase(GamePhase.MidBossBattle);
             statusMessage = $"中期战力检验：{midBossStats.displayName}镇守前路，主香暂停。";
@@ -1096,6 +1151,8 @@ namespace WuxiaRoguelite.GameFlow
 
             bossBattleTime = 0f;
             pendingBoss = bossStats.Clone();
+            pendingBoss.bossTalent = FinalBossTalent;
+            if (HasRunChallenge) RunChallengeCatalog.ApplyBoss(pendingBoss, ChallengeRun.tier, ChallengeRun.approach, true);
             pendingMidBoss = null;
             pendingBoss.ResetHealth();
             SetPhase(GamePhase.BossBattle);
@@ -1120,6 +1177,7 @@ namespace WuxiaRoguelite.GameFlow
             BossIntroTimeRemaining = 0f;
             CombatantStats boss = pendingBoss ?? bossStats.Clone();
             pendingBoss = null;
+            boss.bossTalent = IsTutorialLevel ? BossTalent.None : FinalBossTalent;
             boss.ResetHealth();
             statusMessage = "气血已恢复，最终决战开始：不再消耗主地图六十息。";
             battleManager.BeginBossBattle(boss, OnBossBattleFinished);
@@ -1133,6 +1191,7 @@ namespace WuxiaRoguelite.GameFlow
                 return;
             }
             bossDefeated = playerWon;
+            if (playerWon) RecordChallengeVictory();
             if (playerWon && UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == LevelSequence.LevelTwoSceneName)
                 LevelSequence.MarkLevelTwoCompleted();
             EndRun(playerWon, playerWon ? $"击败{bossStats.displayName}" : "决战落败");
@@ -1356,6 +1415,8 @@ namespace WuxiaRoguelite.GameFlow
 
         private void EndRun(bool victory, string reason)
         {
+            IsChallengeBriefingActive = false;
+            battleManager?.CaptureFinalEnemy();
             IsBossTransitionPending = false;
             IsMidBossTransitionPending = false;
             IsBossIntroActive = false;
@@ -1397,6 +1458,11 @@ namespace WuxiaRoguelite.GameFlow
                 SetCharacterMenuPaused(false);
             }
 
+            if (phase != CurrentPhase)
+            {
+                endingDismissed = false;
+                endingStartedAt = Time.unscaledTime;
+            }
             CurrentPhase = phase;
 
             bool canMove = phase == GamePhase.MainMapRunning;
@@ -1406,6 +1472,11 @@ namespace WuxiaRoguelite.GameFlow
             }
         }
 
+        private void OnDestroy()
+        {
+            if (Instance == this) Instance = null;
+        }
+
         private void ClearOpeningIntro()
         {
             OpeningDialogueIndex = 0;
@@ -1413,6 +1484,11 @@ namespace WuxiaRoguelite.GameFlow
 
         private void BeginLevelTwoAfterTransition()
         {
+            ResetTutorialLessons();
+            ResetRouteProgress();
+            IsBossIntroActive = false;
+            BossIntroTimeRemaining = 0;
+            pendingBoss = pendingMidBoss = null;
             if (battleManager != null)
             {
                 battleManager.CancelBattle();
@@ -1443,6 +1519,7 @@ namespace WuxiaRoguelite.GameFlow
             currentChoices.Clear();
             martialArtRerollsRemaining = 1;
             phaseBeforeLevelUp = GamePhase.MainMapRunning;
+            PrepareRunChallenge();
             BeginLevelTwoOpeningChoice();
         }
 
@@ -1465,6 +1542,7 @@ namespace WuxiaRoguelite.GameFlow
             IsTutorialNoticeActive = false;
             IsLevelTwoDifficultyNoticeActive = false;
             IsTutorialCompletionSummary = true;
+            battleManager?.CaptureFinalEnemy();
             IsBossTransitionPending = false;
             IsMidBossTransitionPending = false;
             battleManager?.CancelBattle();
@@ -1492,10 +1570,12 @@ namespace WuxiaRoguelite.GameFlow
             LevelSequence.CompleteTutorialAndLoadLevelTwo();
         }
 
-        private static string GetOpeningRouteHint(string martialArt)
+        private string GetOpeningRouteHint(string martialArt)
         {
             if (LevelSequence.IsLevelThreeScene)
                 return "沿石路前往营地或过桥成长，东侧山洞可寻奇遇。";
+            if (playerController != null && playerController.followPingchuanTownHeight)
+                return "沿古道进镇补给，东行练武场交锋，北上或西行寻找山洞。";
             return martialArt switch
             {
                 "剑气诀" => "可循东侧路牌前往机关庄，先试高防目标。",

@@ -1,0 +1,159 @@
+{
+  "frameSize": 256,
+  "framesPerClip": 6,
+  "pivot": [
+    0.5,
+    0.5
+  ],
+  "ppu": 256,
+  "normalization": "3x2 equal cells; common 224px scale centered in 256px; nearest neighbor; alpha preserved",
+  "clips": [
+    {
+      "id": "sword_qi",
+      "source": "ArtSource/HeroExternalVfx/raw/sword_qi.png",
+      "output": "spr_vfx_hero_sword_qi_6f_v01.png",
+      "frames": [
+        {
+          "frame": 0,
+          "transparent": 239061,
+          "visible": 14000,
+          "clippedEdgePixels": 0,
+          "sha256": "5579949b534f363446d0ed020f02596759f24a75c4283ddde50580db1aacd5f3"
+        },
+        {
+          "frame": 1,
+          "transparent": 215728,
+          "visible": 31163,
+          "clippedEdgePixels": 0,
+          "sha256": "16fe04c046776cd0e48e79222a8f617ba19ca40cceffa15c62dbfecbe93c2ffc"
+        },
+        {
+          "frame": 2,
+          "transparent": 198297,
+          "visible": 42878,
+          "clippedEdgePixels": 0,
+          "sha256": "041745b672d6ac70c7a5bad37a251105f24fd8897e3e549cd2c2536498275366"
+        },
+        {
+          "frame": 3,
+          "transparent": 198163,
+          "visible": 43923,
+          "clippedEdgePixels": 0,
+          "sha256": "fd6251e706a0edf5a7070b8cd72e65beb949af0eb8f8ebb735062d2d46eccc97"
+        },
+        {
+          "frame": 4,
+          "transparent": 218095,
+          "visible": 28885,
+          "clippedEdgePixels": 0,
+          "sha256": "307effffad4abc00a3bc6bba6930d866b1f4c015e87cb0d776886b9895138a73"
+        },
+        {
+          "frame": 5,
+          "transparent": 243828,
+          "visible": 9390,
+          "clippedEdgePixels": 0,
+          "sha256": "6adbf2a50aa17778bb875f61bb10f5669a735f093ab5f30132335d36bb604165"
+        }
+      ]
+    },
+    {
+      "id": "palm_force",
+      "source": "ArtSource/HeroExternalVfx/raw/palm_force.png",
+      "output": "spr_vfx_hero_palm_force_6f_v01.png",
+      "frames": [
+        {
+          "frame": 0,
+          "transparent": 215977,
+          "visible": 29234,
+          "clippedEdgePixels": 0,
+          "sha256": "6051a02ebeab31b28268f984cf191ccca396ffdea1a8dd84172534e8db5c2c40"
+        },
+        {
+          "frame": 1,
+          "transparent": 188140,
+          "visible": 51031,
+          "clippedEdgePixels": 0,
+          "sha256": "4d52062e7691fad1037d94be73f98d303ef436cb323c91adac6f3dfa3085b26d"
+        },
+        {
+          "frame": 2,
+          "transparent": 162781,
+          "visible": 72607,
+          "clippedEdgePixels": 0,
+          "sha256": "92a6dd96b5817a51e7e3ab7bddadf441af81e9a14bd63ee4b92fb1f4b65194bb"
+        },
+        {
+          "frame": 3,
+          "transparent": 155602,
+          "visible": 79403,
+          "clippedEdgePixels": 0,
+          "sha256": "b3d496f240a8d0883667773738837293f9ec65f5c678aba6610eda6b7f4fc3c6"
+        },
+        {
+          "frame": 4,
+          "transparent": 181632,
+          "visible": 52850,
+          "clippedEdgePixels": 0,
+          "sha256": "5c6d6c5127aecf4edd11b1ef0b933e3db41177a7878c2add5477903c5f1adeca"
+        },
+        {
+          "frame": 5,
+          "transparent": 227175,
+          "visible": 16762,
+          "clippedEdgePixels": 0,
+          "sha256": "b44b7a1b03a8cf173199fc7725e1c734944d50ff8d7e58fd71820b943cc04e9d"
+        }
+      ]
+    },
+    {
+      "id": "heavy_cleave",
+      "source": "ArtSource/HeroExternalVfx/raw/heavy_cleave.png",
+      "output": "spr_vfx_hero_heavy_cleave_6f_v01.png",
+      "frames": [
+        {
+          "frame": 0,
+          "transparent": 222987,
+          "visible": 25018,
+          "clippedEdgePixels": 0,
+          "sha256": "614ff8c32cb193bbf3b78767968f10eb8f1d0da7db1866857f3b8c6ddc2699f0"
+        },
+        {
+          "frame": 1,
+          "transparent": 194591,
+          "visible": 46533,
+          "clippedEdgePixels": 0,
+          "sha256": "19441fc3f0a23cbf11e604ffe58cfd6c0b0266a494beae7fc0721d62f3cb33a8"
+        },
+        {
+          "frame": 2,
+          "transparent": 171766,
+          "visible": 66969,
+          "clippedEdgePixels": 0,
+          "sha256": "bb416e141b43c01ae4f1c2645949eec5749f7e3068449edde21fdff54a3758b9"
+        },
+        {
+          "frame": 3,
+          "transparent": 165191,
+          "visible": 72624,
+          "clippedEdgePixels": 0,
+          "sha256": "44c73e0f90c0dc3bf092e3fb776012fde872853ea8881ed66c0087e3e8d62ac5"
+        },
+        {
+          "frame": 4,
+          "transparent": 198775,
+          "visible": 42642,
+          "clippedEdgePixels": 0,
+          "sha256": "cbd9919eb68874610bb1ebcbd20087f500e67820d933b394c1b59d55ea026185"
+        },
+        {
+          "frame": 5,
+          "transparent": 236841,
+          "visible": 11690,
+          "clippedEdgePixels": 0,
+          "sha256": "5db1811caebc02e6082521b41c9e91f3ede5271538fd557742a65f0312c75cd6"
+        }
+      ]
+    }
+  ]
+}

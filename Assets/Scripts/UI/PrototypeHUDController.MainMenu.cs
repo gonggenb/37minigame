@@ -172,12 +172,12 @@ namespace WuxiaRoguelite.UI
             GUI.Label(new Rect(area.x, area.y, width, 24), "江 湖 行 卷", coverCaption);
             GUI.Label(new Rect(area.x, area.y + 28, width, 42), "选择关卡", coverHeading);
             FillRect(new Rect(area.x, area.y + 78, width, 1), WithAlpha(WuxiaUiTheme.Brass, 0.6f));
-            Rect viewport = new Rect(area.x, area.y + 94, width, height - 154);
+            Rect viewport = new Rect(area.x, area.y + 94, width, height - (portrait ? 174 : 154));
             if (portrait)
             {
                 float cardWidth = width - 20;
-                chapterScroll = GUI.BeginScrollView(viewport, chapterScroll, new Rect(0, 0, cardWidth, 672));
-                for (int i = 0; i < 3; i++) DrawChapterCard(new Rect(0, i * 224, cardWidth, 212), i + 1);
+                chapterScroll = GUI.BeginScrollView(viewport, chapterScroll, new Rect(0, 0, cardWidth, 720));
+                for (int i = 0; i < 3; i++) DrawChapterCard(new Rect(0, i * 240, cardWidth, 228), i + 1);
                 GUI.EndScrollView();
             }
             else
@@ -186,7 +186,8 @@ namespace WuxiaRoguelite.UI
                 for (int i = 0; i < 3; i++)
                     DrawChapterCard(new Rect(area.x + i * (cardWidth + 12), viewport.y, cardWidth, viewport.height), i + 1);
             }
-            if (GUI.Button(new Rect(area.x, area.yMax - 44, 120, 44), "返回主页", actionButtonStyle))
+            if (GUI.Button(new Rect(area.x, area.yMax - (portrait ? PortraitUiLayout.ActionHeight : 44),
+                portrait ? width : 120, portrait ? PortraitUiLayout.ActionHeight : 44), "返回主页", actionButtonStyle))
                 gameFlow.CloseLevelSelection();
         }
 
@@ -203,11 +204,12 @@ namespace WuxiaRoguelite.UI
             WuxiaUiTheme.DrawPanel(rect, WuxiaUiTheme.BackgroundBrown, accent);
             GUI.Label(new Rect(rect.x + 16, rect.y + 12, rect.width - 32, 24), caption, coverCaption);
             GUI.Label(new Rect(rect.x + 16, rect.y + 42, rect.width - 32, 34), title, coverHeading);
-            GUI.Label(new Rect(rect.x + 16, rect.y + 80, rect.width - 32, rect.height - 144), description, coverBody);
+            GUI.Label(new Rect(rect.x + 16, rect.y + 80, rect.width - 32, rect.height - (ResponsiveGui.IsPortrait ? 164 : 144)), description, coverBody);
             bool wasEnabled = GUI.enabled;
             GUI.enabled = wasEnabled && unlocked;
             string action = !unlocked ? "尚未解锁" : chapter == 1 ? "开始教学" : "进入关卡";
-            if (GUI.Button(new Rect(rect.x + 16, rect.yMax - 56, rect.width - 32, 44), action,
+            if (GUI.Button(new Rect(rect.x + 16, rect.yMax - (ResponsiveGui.IsPortrait ? 76 : 56), rect.width - 32,
+                ResponsiveGui.IsPortrait ? PortraitUiLayout.ActionHeight : 44), action,
                     unlocked && chapter > 1 ? mainMenuButtonStyle : actionButtonStyle))
             {
                 if (chapter == 1) gameFlow.SelectTutorialLevel();

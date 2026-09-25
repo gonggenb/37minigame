@@ -1,0 +1,15 @@
+secret rank 1 preview matches 2+2 threshold
+preview does not mutate build
+applying previewed art really unlocks secret
+secret rank 2 preview matches 4+4 threshold
+applying previewed art really raises secret to rank 2
+max rank has no fake gain
+shield preview equals actual opening shield gain
+dodged bite emits no poison feedback
+landed bite emits exactly one feedback event
+paused poison emits no tick feedback
+poison feedback advances only on real ticks
+next encounter clears poison event state
+exact shield depletion emits armor break
+later health damage does not repeat armor break
+cancel clears armor break event

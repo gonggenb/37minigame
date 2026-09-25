@@ -8,6 +8,10 @@ namespace WuxiaRoguelite.Runtime
     {
         public string displayName = "少侠";
         public string visualId = string.Empty;
+        public WuxiaRoguelite.Battle.EnemyTrait enemyTrait;
+        public BossApproach bossApproach;
+        public WuxiaRoguelite.Battle.BossTalent bossTalent;
+        public int challengeTier;
         [Min(0)] public int level;
         public float maxHealth = 100f;
         public float currentHealth = 100f;
@@ -43,6 +47,10 @@ namespace WuxiaRoguelite.Runtime
             {
                 displayName = displayName,
                 visualId = visualId,
+                enemyTrait = enemyTrait,
+                bossApproach = bossApproach,
+                bossTalent = bossTalent,
+                challengeTier = challengeTier,
                 level = level,
                 maxHealth = maxHealth,
                 currentHealth = currentHealth,

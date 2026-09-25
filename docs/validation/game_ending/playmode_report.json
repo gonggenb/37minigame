@@ -1,0 +1,24 @@
+{
+    "success": true,
+    "error": "",
+    "checks": [
+        "Level two victory retains Next and does not show ending",
+        "Tutorial result does not show ending",
+        "Normal combat continues main countdown",
+        "Cave combat pauses main countdown",
+        "Boss combat uses independent timer",
+        "Actual third boss victory first shows completion notice and has no fourth level",
+        "Credits open automatically after three real seconds even with timeScale zero",
+        "Ending does not advance either gameplay timer",
+        "Orientation change preserves credits state",
+        "Closing credits returns to the completed run review",
+        "Review can reopen credits immediately",
+        "Retry resets ending state",
+        "A replay victory shows the notice again",
+        "Actual third boss defeat does not trigger ending",
+        "Defeat cannot reopen credits",
+        "Return home clears ending presentation"
+    ],
+    "runtimeErrors": [],
+    "scope": "Controlled Unity Editor Play Mode in both orientations; not natural-route balance or device acceptance."
+}

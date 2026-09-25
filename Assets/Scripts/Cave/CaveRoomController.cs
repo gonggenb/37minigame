@@ -48,6 +48,8 @@ namespace WuxiaRoguelite.Cave
         [Header("山洞角色展示")]
         [Tooltip("统一放大山洞探索中的玩家、守洞人、商人和宝箱，不影响碰撞或移动。")]
         [Range(1f, 2f)] public float caveActorScale = 1.55f;
+        [Tooltip("出口可用时播放轻微呼吸缩放；关闭后仍保留静态高亮。")]
+        public bool animateExitButton = true;
         [Header("随机洞穴内容权重")]
         [Min(0f)] public float enemyWeight = 45f;
         [Min(0f)] public float merchantWeight = 25f;
@@ -67,6 +69,8 @@ namespace WuxiaRoguelite.Cave
         private EncounterTrigger entrance;
         private Vector2 playerPosition;
         private const float ExitInteractionDistance = 0.12f;
+        private const float ExitButtonPulseDuration = 1.4f;
+        private float exitButtonPulseTime;
         private const float EventInteractionDistance = 0.115f;
         private const float EventRearmDistance = 0.16f;
         private bool eventStarted;
@@ -96,6 +100,7 @@ namespace WuxiaRoguelite.Cave
         private GUIStyle centeredStyle;
         private GUIStyle hintStyle;
         private GUIStyle buttonStyle;
+        private GUIStyle exitButtonReadyStyle;
 
         private static readonly Color CaveBlack = new Color(0.025f, 0.03f, 0.035f, 1f);
         private static readonly Color Wall = new Color(0.11f, 0.13f, 0.14f, 1f);
@@ -211,6 +216,12 @@ namespace WuxiaRoguelite.Cave
 
         private void LateUpdate()
         {
+            // Keep UI animation independent of the paused cave countdown and IMGUI event count.
+            exitButtonPulseTime = animateExitButton && CanUseExitAction &&
+                                  !PrototypeHUDController.BlocksGameplayEscape
+                ? Mathf.Repeat(exitButtonPulseTime + Time.unscaledDeltaTime, ExitButtonPulseDuration)
+                : 0f;
+
             // IMGUI draws several times per frame; advance the clock only once here.
             heroPlayback.Tick(new Vector2(currentMoveInput.x, -currentMoveInput.y),
                 Time.unscaledDeltaTime, currentMoveInput.magnitude * caveMoveSpeed / 0.52f);
@@ -509,7 +520,7 @@ namespace WuxiaRoguelite.Cave
         {
             Rect safe = ResponsiveGui.SafeArea;
             float buttonWidth = ResponsiveGui.IsPortrait ? 156f : 148f;
-            const float buttonHeight = 52f;
+            float buttonHeight = ResponsiveGui.IsPortrait ? PortraitUiLayout.ActionHeight : 52f;
             const float edgePadding = 18f;
             Rect buttonRect = new Rect(
                 safe.xMax - buttonWidth - edgePadding,
@@ -518,7 +529,8 @@ namespace WuxiaRoguelite.Cave
                 buttonHeight);
 
             bool wasEnabled = GUI.enabled;
-            GUI.enabled = CanUseExitAction;
+            bool canExit = wasEnabled && CanUseExitAction && !PrototypeHUDController.BlocksGameplayEscape;
+            GUI.enabled = canExit;
             string label;
             if (!CanUseExitAction)
             {
@@ -529,7 +541,22 @@ namespace WuxiaRoguelite.Cave
                 label = eventCompleted ? "返回江湖" : "撤离洞穴";
             }
 
-            if (GUI.Button(buttonRect, label, buttonStyle))
+            if (canExit)
+            {
+                float pulse = animateExitButton
+                    ? 0.5f - 0.5f * Mathf.Cos(exitButtonPulseTime * Mathf.PI * 2f / ExitButtonPulseDuration)
+                    : 0f;
+                // Grow inward from the safe-area corner; never shrink the original touch target.
+                float growth = 0.02f * pulse;
+                buttonRect.xMin -= buttonWidth * growth;
+                buttonRect.yMin -= buttonHeight * growth;
+                Rect outline = new Rect(buttonRect.x - 2f, buttonRect.y - 2f,
+                    buttonRect.width + 4f, buttonRect.height + 4f);
+                WuxiaUiTheme.DrawOutline(outline,
+                    Color.Lerp(WuxiaUiTheme.Brass, WuxiaUiTheme.Gold, pulse), 2f);
+            }
+
+            if (GUI.Button(buttonRect, label, canExit ? exitButtonReadyStyle : buttonStyle))
             {
                 TryUseExitAction();
             }
@@ -712,7 +739,7 @@ namespace WuxiaRoguelite.Cave
             WuxiaUiComponents.Text(new Rect(p.x + 24, p.y + 18, p.width - 160, 38), "云游商人", 28);
             WuxiaUiComponents.Text(new Rect(p.xMax - 138, p.y + 20, 114, 34), $"铜钱 {playerStats.copper}", 18, Gold, TextAnchor.MiddleRight);
             WuxiaUiComponents.Text(new Rect(p.x + 24, p.y + 62, p.width - 48, 28), "主时间暂停 · 云游货架", 16, WuxiaUiTheme.Paused);
-            Rect view = new Rect(p.x + 24, p.y + 102, p.width - 48, p.height - 340);
+            Rect view = new Rect(p.x + 24, p.y + 102, p.width - 48, p.height - 378);
             float cw = (view.width - 28) / 2;
             const float ch = 184;
             int rows = Mathf.CeilToInt(merchantOffers.Count / 2f);
@@ -740,7 +767,7 @@ namespace WuxiaRoguelite.Cave
             if (merchantOffers.Count > 0)
             {
                 MerchantOffer selected = merchantOffers[portraitMerchantSelection];
-                Rect detail = new Rect(p.x + 24, p.yMax - 226, p.width - 48, 88);
+                Rect detail = new Rect(p.x + 24, p.yMax - 264, p.width - 48, 88);
                 WuxiaUiTheme.DrawCompactSurface(detail, WuxiaUiTheme.BackgroundInk, Gold);
                 string description = selected.displayName + " · " + selected.description;
                 string comparison = EquipmentComparison(selected);
@@ -755,17 +782,16 @@ namespace WuxiaRoguelite.Cave
                 bool oldEnabled = GUI.enabled;
                 GUI.enabled = !selected.sold && playerStats.copper >= selected.price;
                 string label = selected.sold ? "已售罄" : playerStats.copper < selected.price ? "铜钱不足" : $"购买 {selected.displayName} · {selected.price} 铜";
-                if (GUI.Button(new Rect(p.x + 24, p.yMax - 126, p.width - 48, 50), label, WuxiaUiComponents.TouchButton(true))) PurchaseOffer(selected);
+                if (GUI.Button(PortraitUiLayout.BottomAction(p, 1), label, WuxiaUiComponents.TouchButton(true))) PurchaseOffer(selected);
                 GUI.enabled = oldEnabled;
             }
-            float bw = (p.width - 60) / 2;
             GUI.enabled = !merchantRefreshed && playerStats.copper >= 5;
-            if (GUI.Button(new Rect(p.x + 24, p.yMax - 64, bw, 44), merchantRefreshed ? "本洞已刷新" : "刷新 · 5 铜钱", touchStyle))
+            if (GUI.Button(PortraitUiLayout.BottomAction(p, 0, 0, 2), merchantRefreshed ? "本洞已刷新" : "刷新 · 5 铜钱", touchStyle))
             {
                 if (playerStats.TrySpendCopper(5)) { merchantRefreshed = true; BuildMerchantStock(); portraitMerchantSelection = 0; }
             }
             GUI.enabled = true;
-            if (GUI.Button(new Rect(p.xMax - 24 - bw, p.yMax - 64, bw, 44), "结束交易", touchStyle)) FinishMerchantEvent();
+            if (GUI.Button(PortraitUiLayout.BottomAction(p, 0, 1, 2), "结束交易", touchStyle)) FinishMerchantEvent();
         }
 
         private void FinishMerchantEvent()
@@ -1166,7 +1192,9 @@ namespace WuxiaRoguelite.Cave
 
         private void EnsureStyles()
         {
-            if (titleStyle != null)
+            // Native IMGUI styles can be cleared by an Editor reload while wrappers survive.
+            if (titleStyle != null && titleStyle.fontSize > 0 &&
+                exitButtonReadyStyle != null && exitButtonReadyStyle.fontSize > 0)
             {
                 return;
             }
@@ -1178,6 +1206,8 @@ namespace WuxiaRoguelite.Cave
             hintStyle = Style(14, FontStyle.Bold, TextAnchor.MiddleCenter, new Color(0.92f, 0.79f, 0.48f));
             buttonStyle = WuxiaUiTheme.CreateButtonStyle(
                 13, WuxiaButtonKind.Secondary);
+            exitButtonReadyStyle = WuxiaUiTheme.CreateButtonStyle(
+                16, WuxiaButtonKind.Primary, selected: true);
         }
 
         private static GUIStyle Style(int size, FontStyle fontStyle, TextAnchor alignment, Color color)

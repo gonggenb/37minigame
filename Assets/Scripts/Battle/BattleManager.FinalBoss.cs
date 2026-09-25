@@ -91,7 +91,7 @@ namespace WuxiaRoguelite.Battle
             int shadowInterval = shadowRank <= 0 ? int.MaxValue : 7 - shadowRank;
             bool forcedShadowDodge = shadowInterval < int.MaxValue && EnemyAttackAttempts % shadowInterval == 0;
             int lightnessRank = playerStats.GetMartialArtRank("踏雪无痕");
-            float dodgeChance = Mathf.Clamp01(player.dodgeChance +
+            float dodgeChance = PlayerDodgeChance(
                 lightnessRank * BossV2Tuning.FoxfireLightnessDodgeBonusPerRank);
             bool dodged = forcedShadowDodge || UnityEngine.Random.value < dodgeChance;
             float damage = 0f;
@@ -103,12 +103,13 @@ namespace WuxiaRoguelite.Battle
             else
             {
                 damage = Mathf.Max(1f, currentEnemy.attack * BossV2Tuning.FoxfireAttackRatioPerHit -
-                    player.defense * BossV2Tuning.FoxfireDefenseRatioPerHit);
+                    EffectivePlayerDefense * BossV2Tuning.FoxfireDefenseRatioPerHit);
                 damage *= GetPlayerIncomingDamageMultiplier(player);
                 damage = RollDamage(damage);
+                float shieldBefore = PlayerShield;
                 damage = AbsorbWithShield(damage);
                 player.TakeDamage(damage);
-                if (damage > 0f) ApplyRetaliation(currentEnemy);
+                if (damage > 0f || PlayerShield < shieldBefore) ApplyRetaliation(currentEnemy);
             }
             FoxfireImpactSequence++;
             FoxfireImpactIndex = index;

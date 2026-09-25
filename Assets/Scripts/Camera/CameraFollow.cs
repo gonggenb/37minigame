@@ -24,15 +24,25 @@ namespace WuxiaRoguelite.CameraTools
 
         private Vector3 velocity;
         private Camera attachedCamera;
+        private TiltShiftEffect tiltShift;
 
         private void Awake()
         {
             attachedCamera = GetComponent<Camera>();
+            if (attachedCamera != null)
+            {
+                tiltShift = GetComponent<TiltShiftEffect>();
+                if (tiltShift == null) tiltShift = gameObject.AddComponent<TiltShiftEffect>();
+                tiltShift.RefreshEnabledState();
+                if (GetComponent<ForegroundOcclusion>() == null)
+                    gameObject.AddComponent<ForegroundOcclusion>();
+            }
             ResetVision();
         }
 
         private void LateUpdate()
         {
+            if (tiltShift != null) tiltShift.RefreshEnabledState();
             if (target == null)
             {
                 return;

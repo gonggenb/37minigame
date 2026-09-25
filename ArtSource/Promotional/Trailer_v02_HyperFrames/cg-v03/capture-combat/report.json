@@ -1,0 +1,46 @@
+{
+    "success": true,
+    "error": "",
+    "runtimeErrors": [],
+    "fps": 30,
+    "width": 720,
+    "height": 1280,
+    "samples": [
+        {
+            "shot": "combat",
+            "phase": "NormalBattleRunning",
+            "frame": 0,
+            "mainTime": 60.0,
+            "bossTime": 0.0
+        },
+        {
+            "shot": "combat",
+            "phase": "NormalBattleRunning",
+            "frame": 30,
+            "mainTime": 59.033348083496097,
+            "bossTime": 0.0
+        },
+        {
+            "shot": "combat",
+            "phase": "NormalBattleRunning",
+            "frame": 60,
+            "mainTime": 58.033363342285159,
+            "bossTime": 0.0
+        },
+        {
+            "shot": "combat",
+            "phase": "NormalBattleRunning",
+            "frame": 90,
+            "mainTime": 57.03337860107422,
+            "bossTime": 0.0
+        },
+        {
+            "shot": "combat",
+            "phase": "NormalBattleRunning",
+            "frame": 120,
+            "mainTime": 56.03339385986328,
+            "bossTime": 0.0
+        }
+    ],
+    "scope": "Unity Editor Play Mode, controlled inputs and staged legal martial-art build; not an uninterrupted natural run. No damage or enemy-stat overrides."
+}

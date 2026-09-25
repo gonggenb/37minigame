@@ -1,0 +1,42 @@
+{
+    "unity": "6000.5.4f1",
+    "profile": "Assets/Settings/Build Profiles/Web Mobile.asset",
+    "textureSubtarget": "ASTC",
+    "compression": "Gzip",
+    "initialMemoryMiB": 64,
+    "maximumMemoryMiB": 2048,
+    "growthCapMiB": 32,
+    "growthFactor": 0.10000000149011612,
+    "fallback": true,
+    "wasm2023": true,
+    "scenes": [
+        {
+            "path": "Assets/Scenes/BootMenu.unity",
+            "dependencies": 6,
+            "textures": 0,
+            "audio": 0,
+            "models": 0
+        },
+        {
+            "path": "Assets/Scenes/MainPrototype.unity",
+            "dependencies": 174,
+            "textures": 92,
+            "audio": 15,
+            "models": 1
+        },
+        {
+            "path": "Assets/Scenes/TutorialLevel.unity",
+            "dependencies": 129,
+            "textures": 57,
+            "audio": 14,
+            "models": 1
+        },
+        {
+            "path": "Assets/Scenes/BambooValleyLevel.unity",
+            "dependencies": 142,
+            "textures": 76,
+            "audio": 14,
+            "models": 1
+        }
+    ]
+}

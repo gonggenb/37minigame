@@ -1,0 +1,67 @@
+[
+  {
+    "id": "swift_sword",
+    "sourceSize": [
+      1254,
+      1254
+    ],
+    "outputSize": [
+      512,
+      512
+    ],
+    "safeMargin": 32,
+    "alpha": true
+  },
+  {
+    "id": "venom_mist",
+    "sourceSize": [
+      1254,
+      1254
+    ],
+    "outputSize": [
+      512,
+      512
+    ],
+    "safeMargin": 32,
+    "alpha": true
+  },
+  {
+    "id": "iron_guard",
+    "sourceSize": [
+      1254,
+      1254
+    ],
+    "outputSize": [
+      512,
+      512
+    ],
+    "safeMargin": 32,
+    "alpha": true
+  },
+  {
+    "id": "shadow_moon",
+    "sourceSize": [
+      1254,
+      1254
+    ],
+    "outputSize": [
+      512,
+      512
+    ],
+    "safeMargin": 32,
+    "alpha": true
+  },
+  {
+    "id": "blood_domain",
+    "sourceSize": [
+      1254,
+      1254
+    ],
+    "outputSize": [
+      512,
+      512
+    ],
+    "safeMargin": 32,
+    "alpha": true
+  }
+]

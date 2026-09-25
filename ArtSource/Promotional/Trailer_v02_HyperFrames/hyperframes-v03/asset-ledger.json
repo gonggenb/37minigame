@@ -1,0 +1,122 @@
+[
+  {
+    "file": "assets/gsap.min.js",
+    "provenance": "local project dependency",
+    "sha256": "c174bfce53a729418d57a8ad8625e7247c793a22fef8e2851e3cfa3de9cd8280",
+    "bytes": 72779
+  },
+  {
+    "file": "assets/audio-report.json",
+    "provenance": "local project dependency",
+    "sha256": "bc089e0dd01e4da8d2e433c4e9738c453cabfb9ecaf1642c55ddbcb1320d15d3",
+    "bytes": 229
+  },
+  {
+    "file": "assets/endcard-art.png",
+    "provenance": "AI-generated keyframe",
+    "sha256": "cd145c85185cbe47cb0bd2a6fe0098b1fd378e560695182c7744fbd8a3dd6757",
+    "bytes": 2756074
+  },
+  {
+    "file": "assets/cg-03-sword_closeup.png",
+    "provenance": "AI-generated keyframe",
+    "sha256": "393e18229b882a63c8e6e3b6c1ae84a938c688365993a7e5b64eff059405eba2",
+    "bytes": 2167355
+  },
+  {
+    "file": "assets/explore.mp4",
+    "provenance": "real Unity Play Mode capture",
+    "sha256": "40923f2d623a99ba07d79284ca1df0514be50af3c10a8bfd1a06e674b0422d8e",
+    "bytes": 7583732
+  },
+  {
+    "file": "assets/cg-06-clash.png",
+    "provenance": "AI-generated keyframe",
+    "sha256": "cd145c85185cbe47cb0bd2a6fe0098b1fd378e560695182c7744fbd8a3dd6757",
+    "bytes": 2756074
+  },
+  {
+    "file": "assets/cg-07-hero_resolve.png",
+    "provenance": "AI-generated keyframe",
+    "sha256": "8a5600ff212c8ef5f8266c69dc3593df33837498fe57912a91cc20b5a679fa39",
+    "bytes": 2432136
+  },
+  {
+    "file": "assets/choice.mp4",
+    "provenance": "real Unity Play Mode capture",
+    "sha256": "e8430706e457d50d7c278dd967eb2c103209b7cb35b88f49e0e9deee5092a839",
+    "bytes": 3928399
+  },
+  {
+    "file": "assets/cg-04-hero_rooftop.png",
+    "provenance": "AI-generated keyframe",
+    "sha256": "de946c19034bce902da641389a98bd7dfe4d5ab3f5cdcd318ac41aaa51f68484",
+    "bytes": 2433876
+  },
+  {
+    "file": "assets/effects.wav",
+    "provenance": "original procedural audio",
+    "sha256": "1056e07fbefc79db86faafe5e593de28a4b2ddc5859e940f464726601b43c527",
+    "bytes": 15876044
+  },
+  {
+    "file": "assets/cg-01-incense.png",
+    "provenance": "AI-generated keyframe",
+    "sha256": "542968340977b27e8165155e55c004bfee3707d01bf844794d9c64ebb3732326",
+    "bytes": 1810147
+  },
+  {
+    "file": "assets/combat.mp4",
+    "provenance": "real Unity Play Mode capture",
+    "sha256": "f999d5b080696677d8e2bbdabcb6e11fc0990131224d0bf015ba5b8657816f50",
+    "bytes": 3245443
+  },
+  {
+    "file": "assets/boss.mp4",
+    "provenance": "real Unity Play Mode capture",
+    "sha256": "afdd2d2c0be6c68344e09cd686dcebf97da75784bb8d02efc6759343adc2ccb6",
+    "bytes": 6941024
+  },
+  {
+    "file": "assets/cg-02-mountain_city.png",
+    "provenance": "AI-generated keyframe",
+    "sha256": "45822fc408830ed4ecc75034b10a7c918fab8eeba764ccf60900957e0c35e2e4",
+    "bytes": 2498928
+  },
+  {
+    "file": "assets/score.wav",
+    "provenance": "original procedural audio",
+    "sha256": "c14f093144282e4ecd913d1d3d44ca993262eea2a0ceddd29f78a07770cad82b",
+    "bytes": 15876044
+  },
+  {
+    "file": "assets/chinese.ttf",
+    "provenance": "local project dependency",
+    "sha256": "15a0e73c3a224323913c79d91a45ba36a05055de1f6c76f068ede9739735c4f4",
+    "bytes": 3607796
+  },
+  {
+    "file": "assets/cg-05-fox_reveal.png",
+    "provenance": "AI-generated keyframe",
+    "sha256": "1026a59528cb890fbd4bb627bf3ff26d9754c3235e7e582b3e9201dd959cac91",
+    "bytes": 2322999
+  },
+  {
+    "file": "assets/combat-a.mp4",
+    "provenance": "real Unity Play Mode capture",
+    "sha256": "9963cd9e1c83cd2241f85cf4f562ca9455ce43eb7d6cf1a881a360412dca6c75",
+    "bytes": 1841931
+  },
+  {
+    "file": "assets/cg-08-foxfire_assault.png",
+    "provenance": "AI-generated keyframe",
+    "sha256": "4c2bf557cd3be0b30c8c6457dcf30a244c8075c807c7446f9724483c907c25d7",
+    "bytes": 2838270
+  },
+  {
+    "file": "assets/combat-b.mp4",
+    "provenance": "real Unity Play Mode capture",
+    "sha256": "8cfb477f3d4f11f8757daae93b6a0b92913b67b14448c5a3728c47dc6cd34c59",
+    "bytes": 1404273
+  }
+]

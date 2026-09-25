@@ -1,0 +1,3 @@
+NormalBattleRunning: 60 -> 31.95403 PASS
+CaveRunning with active battle: 31.95403 -> 31.95403 PASS
+BossBattle: main 0 -> 0, independent 0 -> 224.1974 PASS

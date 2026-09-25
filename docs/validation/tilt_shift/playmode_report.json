@@ -1,0 +1,26 @@
+{
+    "success": true,
+    "error": "",
+    "checks": [
+        "Startup splash completed before validation",
+        "CameraFollow automatically attaches and enables effect in exploration",
+        "Packaged shader supported by current graphics device",
+        "Player sprites render after opaque scenery effect",
+        "960x540 MSAA 1: sharp band mean difference 0.0018/255",
+        "960x540 MSAA 1: scenery edges actually blurred, difference 5.7715/255",
+        "960x540 MSAA 4: sharp band mean difference 0.0018/255",
+        "960x540 MSAA 4: scenery edges actually blurred, difference 5.7715/255",
+        "landscape: preference disables image effect entirely",
+        "540x960 MSAA 1: sharp band mean difference 0.0032/255",
+        "540x960 MSAA 1: scenery edges actually blurred, difference 4.1835/255",
+        "540x960 MSAA 4: sharp band mean difference 0.0032/255",
+        "540x960 MSAA 4: scenery edges actually blurred, difference 4.1835/255",
+        "portrait: preference disables image effect entirely",
+        "Ordinary battle disables effect and keeps consuming main time",
+        "Active cave battle disables effect and pauses main time",
+        "Returning from cave restores effect",
+        "Boss disables effect and uses independent time"
+    ],
+    "runtimeErrors": [],
+    "scope": "Unity Editor rendered images and controlled play; not mobile GPU or WebGL device acceptance."
+}

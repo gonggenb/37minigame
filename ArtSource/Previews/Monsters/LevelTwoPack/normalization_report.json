@@ -1,0 +1,104 @@
+[
+  {
+    "id": "iron_tusk_boar",
+    "idle_mode": "eight_pose",
+    "shared_scale": 0.5045615026126253,
+    "attack_source_scale_ratio": 1.2597402597402598,
+    "frames": 16,
+    "size": [
+      2048,
+      256
+    ],
+    "status": "Normalized",
+    "alpha": "RGBA",
+    "anchor": [
+      128,
+      224
+    ]
+  },
+  {
+    "id": "scarlet_viper",
+    "idle_mode": "neutral_pair",
+    "shared_scale": 0.4393939393939394,
+    "attack_source_scale_ratio": 1.0,
+    "frames": 16,
+    "size": [
+      2048,
+      256
+    ],
+    "status": "Normalized",
+    "alpha": "RGBA",
+    "anchor": [
+      128,
+      224
+    ]
+  },
+  {
+    "id": "strawhat_bandit",
+    "idle_mode": "eight_pose",
+    "shared_scale": 0.5317919075144508,
+    "attack_source_scale_ratio": 0.9010416666666666,
+    "frames": 16,
+    "size": [
+      2048,
+      256
+    ],
+    "status": "Normalized",
+    "alpha": "RGBA",
+    "anchor": [
+      128,
+      224
+    ]
+  },
+  {
+    "id": "gourd_rogue_monk",
+    "idle_mode": "eight_pose",
+    "shared_scale": 0.4765866231148085,
+    "attack_source_scale_ratio": 0.9254658385093167,
+    "frames": 16,
+    "size": [
+      2048,
+      256
+    ],
+    "status": "Normalized",
+    "alpha": "RGBA",
+    "anchor": [
+      128,
+      224
+    ]
+  },
+  {
+    "id": "lantern_wraith",
+    "idle_mode": "neutral_pair",
+    "shared_scale": 0.4804177545691906,
+    "attack_source_scale_ratio": 1.0,
+    "frames": 16,
+    "size": [
+      2048,
+      256
+    ],
+    "status": "Normalized",
+    "alpha": "RGBA",
+    "anchor": [
+      128,
+      224
+    ]
+  },
+  {
+    "id": "moss_mushroom_imp",
+    "idle_mode": "neutral_pair",
+    "shared_scale": 0.5032537960954447,
+    "attack_source_scale_ratio": 1.0,
+    "frames": 16,
+    "size": [
+      2048,
+      256
+    ],
+    "status": "Normalized",
+    "alpha": "RGBA",
+    "anchor": [
+      128,
+      224
+    ]
+  }
+]

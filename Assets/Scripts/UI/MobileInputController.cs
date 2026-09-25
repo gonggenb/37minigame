@@ -93,7 +93,7 @@ namespace WuxiaRoguelite.UI
         private bool? appliedPortraitLayout;
 
         private bool ShouldShow =>
-            !LevelLoadingScreen.IsLoading &&
+            !LevelLoadingScreen.IsLoading && !StudioSplashScreen.IsBlocking &&
             gameFlow != null &&
             !PrototypeHUDController.IsSettingsOpen &&
             !gameFlow.IsCharacterMenuPaused &&
@@ -299,7 +299,8 @@ namespace WuxiaRoguelite.UI
             float scale = ResponsiveGui.Scale;
             Vector2 guiPosition = ResponsiveGui.ScreenPointToGui(pointerPosition, scale);
             Rect safe = ResponsiveGui.SafeArea;
-            Rect shortcutRail = new Rect(safe.xMax - 76f, safe.y, 76f, 184f);
+            Rect shortcutRail = new Rect(safe.xMax - 76f, safe.y, 76f,
+                gameFlow.HasRunChallenge && gameFlow.CurrentPhase == GamePhase.MainMapRunning ? 246f : 184f);
             if (shortcutRail.Contains(guiPosition))
             {
                 return true;

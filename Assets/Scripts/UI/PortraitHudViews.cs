@@ -14,6 +14,7 @@ namespace WuxiaRoguelite.UI
         private EquipmentItem portraitSelectedEquipment;
         private Vector2 resultBuildScroll;
         private Vector2 portraitChoiceScroll;
+        private Vector2 portraitSettingsScroll;
         private bool explorationNoticeStarted;
         private float levelNoticeRemaining;
         private int observedMomentumRank;
@@ -115,37 +116,40 @@ namespace WuxiaRoguelite.UI
         private void DrawPortraitLevelUp()
         {
             PortraitBackdrop();
-            Rect p = PortraitUiLayout.Modal(700);
+            Rect p = PortraitUiLayout.Modal(880);
             DrawPanel(p, Ink, Gold);
             WuxiaUiComponents.Text(new Rect(p.x + 24, p.y + 20, p.width - 48, 40), "修为突破", 28);
             WuxiaUiComponents.Text(new Rect(p.x + 24, p.y + 65, p.width - 48, 24),
-                "选择一门武学 · 选择期间暂停", 16, WuxiaUiTheme.Paused);
+                string.IsNullOrEmpty(gameFlow.RouteOpeningHint) ? "选择一门武学 · 选择期间暂停" : gameFlow.RouteOpeningHint, 14, WuxiaUiTheme.Paused);
             if (!gameFlow.currentChoices.Contains(portraitSelectedArt))
                 portraitSelectedArt = gameFlow.currentChoices.FirstOrDefault();
-            const float cardHeight = 140;
-            Rect choiceView = new Rect(p.x + 24, p.y + 106, p.width - 48, p.height - 248);
-            float choicesHeight = gameFlow.currentChoices.Count * (cardHeight + 10) - 10;
+            const float expandedHeight = 368, collapsedHeight = 128;
+            Rect choiceView = new Rect(p.x + 24, p.y + 106, p.width - 48, p.height - 282);
+            float choicesHeight = expandedHeight + Mathf.Max(0, gameFlow.currentChoices.Count - 1) * (collapsedHeight + 10);
             bool scrollChoices = choicesHeight > choiceView.height;
+            string nextSelection = null;
+            float cardY = 0;
             portraitChoiceScroll = GUI.BeginScrollView(choiceView, portraitChoiceScroll,
                 new Rect(0, 0, choiceView.width - (scrollChoices ? 20 : 0), Mathf.Max(choiceView.height, choicesHeight)));
             for (int i = 0; i < gameFlow.currentChoices.Count; i++)
             {
                 string id = gameFlow.currentChoices[i];
-                MartialArtDefinition art = MartialArtCatalog.Get(id);
-                Rect card = new Rect(0, i * (cardHeight + 10), choiceView.width - (scrollChoices ? 20 : 0), cardHeight);
                 bool selected = portraitSelectedArt == id;
-                if (GUI.Button(card, GUIContent.none, selected ? activeTabStyle : actionButtonStyle)) portraitSelectedArt = id;
+                float cardHeight = selected ? expandedHeight : collapsedHeight;
+                Rect card = new Rect(0, cardY, choiceView.width - (scrollChoices ? 20 : 0), cardHeight);
+                if (GUI.Button(card, GUIContent.none, selected ? activeTabStyle : actionButtonStyle)) nextSelection = id;
                 if (selected) WuxiaUiTheme.DrawOutline(new Rect(card.x + 3, card.y + 3, card.width - 6, card.height - 6), Gold, 2);
-                DrawIcon(new Rect(card.x + 12, card.y + 14, 60, 60), FindMartialArtIcon(id), MartialArtIconRenderer.Accent(id));
-                WuxiaUiComponents.Text(new Rect(card.x + 86, card.y + 10, card.width - 100, 30), id, 22);
-                int current = playerStats.GetMartialArtRank(id);
-                WuxiaUiComponents.Text(new Rect(card.x + 86, card.y + 42, card.width - 100, 24),
-                    $"{(current == 0 ? "未习得" : RankName(current))} → {RankName(current + 1)}", 16, Gold);
-                WuxiaUiComponents.Text(new Rect(card.x + 14, card.y + 78, card.width - 28, card.height - 84),
-                    art?.GetEffectSummary(current + 1) ?? string.Empty, 14, Paper, TextAnchor.UpperLeft, true);
+                DrawFusionChoiceCard(card, id, selected);
+                cardY += cardHeight + 10;
             }
             GUI.EndScrollView();
-            if (GUI.Button(new Rect(p.x + 24, p.yMax - 126, p.width - 48, 50), "领悟此诀", mainMenuButtonStyle))
+            if (nextSelection != null)
+            {
+                portraitSelectedArt = nextSelection;
+                portraitChoiceScroll.y = Mathf.Clamp(gameFlow.currentChoices.IndexOf(nextSelection) * (collapsedHeight + 10),
+                    0, Mathf.Max(0, choicesHeight - choiceView.height));
+            }
+            if (GUI.Button(PortraitUiLayout.BottomAction(p, 1), "领悟此诀", mainMenuButtonStyle))
             {
                 int index = gameFlow.currentChoices.IndexOf(portraitSelectedArt);
                 portraitSelectedArt = null;
@@ -153,7 +157,7 @@ namespace WuxiaRoguelite.UI
                 return;
             }
             GUI.enabled = gameFlow.martialArtRerollsRemaining > 0;
-            if (GUI.Button(new Rect(p.x + 24, p.yMax - 66, p.width - 48, 44),
+            if (GUI.Button(PortraitUiLayout.BottomAction(p),
                 $"重观残页 · 剩余 {gameFlow.martialArtRerollsRemaining}", WuxiaUiComponents.TouchButton()))
             {
                 portraitSelectedArt = null;
@@ -168,29 +172,38 @@ namespace WuxiaRoguelite.UI
             if (onCover) FillRect(new Rect(0, 0, ResponsiveGui.Width, ResponsiveGui.Height),
                 WithAlpha(WuxiaUiTheme.BackgroundInk, 0.60f));
             else PortraitBackdrop();
-            Rect p = PortraitUiLayout.Modal(560, 456);
+            Rect p = PortraitUiLayout.Modal(720, 456);
             DrawPanel(p, Ink, Gold);
             WuxiaUiComponents.Text(new Rect(p.x + 24, p.y + 24, p.width - 48, 40), onCover ? "设置" : "暂停", 30, Paper, TextAnchor.MiddleCenter);
             WuxiaUiComponents.Text(new Rect(p.x + 24, p.y + 70, p.width - 48, 28),
                 onCover ? GameTextCatalog.GameTitle : gameFlow.CurrentLevelDisplayName, 16, Muted, TextAnchor.MiddleCenter);
-            if (GUI.Button(new Rect(p.x + 24, p.y + 118, p.width - 48, 54), onCover ? "返回主页" : "继续游戏", mainMenuButtonStyle)) SetSettingsOpen(false);
-            Rect music = new Rect(p.x + 24, p.y + 194, p.width - 48, 64);
+            if (GUI.Button(new Rect(p.x + 24, p.y + 118, p.width - 48, PortraitUiLayout.ActionHeight), onCover ? "返回主页" : "继续游戏", mainMenuButtonStyle)) SetSettingsOpen(false);
+            Rect settingsView = new Rect(p.x + 24, p.y + 198, p.width - 48, p.height - 298);
+            const float settingsHeight = 380;
+            float settingsWidth = settingsView.width - (settingsHeight > settingsView.height ? 20 : 0);
+            portraitSettingsScroll = GUI.BeginScrollView(settingsView, portraitSettingsScroll,
+                new Rect(0, 0, settingsWidth, Mathf.Max(settingsView.height, settingsHeight)));
+            Rect music = new Rect(0, 0, settingsWidth, 88);
             WuxiaUiTheme.DrawCompactSurface(music, Panel, Gold);
-            WuxiaUiComponents.Text(new Rect(music.x + 14, music.y, music.width - 132, 64), "背景音乐", 18);
+            WuxiaUiComponents.Text(new Rect(music.x + 14, music.y, music.width - 132, music.height), "背景音乐", 18);
             bool on = musicController == null || musicController.MusicEnabled;
-            if (GUI.Button(new Rect(music.xMax - 112, music.y + 10, 98, 44), on ? "已开启" : "已关闭", WuxiaUiComponents.TouchButton()))
+            if (GUI.Button(new Rect(music.xMax - 112, music.y + 12, 98, PortraitUiLayout.ActionHeight), on ? "已开启" : "已关闭", WuxiaUiComponents.TouchButton()))
             {
                 musicController ??= FindAnyObjectByType<MainMapMusicController>();
                 musicController?.SetMusicEnabled(!on);
             }
-            Rect orientation = new Rect(music.x, music.yMax + 16, music.width, 64);
+            Rect orientation = new Rect(music.x, music.yMax + 16, music.width, 112);
             WuxiaUiTheme.DrawCompactSurface(orientation, Panel, Gold);
-            WuxiaUiComponents.Text(new Rect(orientation.x + 14, orientation.y, 120, 64), "画面方向", 18);
-            if (GUI.Button(new Rect(orientation.xMax - 178, orientation.y + 10, 76, 44), "竖屏", MobileDisplaySettings.PrefersPortrait ? activeTabStyle : tabStyle)) MobileDisplaySettings.SetPortrait(true);
-            if (GUI.Button(new Rect(orientation.xMax - 92, orientation.y + 10, 76, 44), "横屏", !MobileDisplaySettings.PrefersPortrait ? activeTabStyle : tabStyle)) MobileDisplaySettings.SetPortrait(false);
-            WuxiaUiComponents.Text(new Rect(p.x + 24, orientation.yMax + 12, p.width - 48, 48),
+            WuxiaUiComponents.Text(new Rect(orientation.x + 14, orientation.y + 4, orientation.width - 28, 28), "画面方向", 18);
+            float directionWidth = (orientation.width - 40) / 2;
+            if (GUI.Button(new Rect(orientation.x + 14, orientation.y + 36, directionWidth, PortraitUiLayout.ActionHeight), "竖屏", MobileDisplaySettings.PrefersPortrait ? activeTabStyle : tabStyle)) MobileDisplaySettings.SetPortrait(true);
+            if (GUI.Button(new Rect(orientation.xMax - 14 - directionWidth, orientation.y + 36, directionWidth, PortraitUiLayout.ActionHeight), "横屏", !MobileDisplaySettings.PrefersPortrait ? activeTabStyle : tabStyle)) MobileDisplaySettings.SetPortrait(false);
+            Rect tiltShift = new Rect(music.x, orientation.yMax + 16, music.width, 88);
+            DrawTiltShiftSetting(tiltShift);
+            WuxiaUiComponents.Text(new Rect(0, tiltShift.yMax + 12, settingsWidth, 48),
                 "布局跟随实际画面方向\n滑动移动 · 自动战斗", 14, Muted, TextAnchor.MiddleCenter, true);
-            if (GUI.Button(new Rect(p.x + 24, p.yMax - 92, p.width - 48, 50), "返回主页", WuxiaUiComponents.TouchButton()))
+            GUI.EndScrollView();
+            if (GUI.Button(PortraitUiLayout.BottomAction(p), "返回主页", WuxiaUiComponents.TouchButton()))
             {
                 SetSettingsOpen(false);
                 gameFlow.ReturnToMainMenu();
@@ -201,27 +214,28 @@ namespace WuxiaRoguelite.UI
         {
             PlayerEquipment equipment = playerStats.equipment;
             if (equipment == null) return;
+            const float detailHeight = 204;
+            Rect viewport = new Rect(rect.x, rect.y, rect.width, Mathf.Max(64, rect.height - detailHeight - 12));
+            float listWidth = viewport.width - 20;
+            inventoryScroll = GUI.BeginScrollView(viewport, inventoryScroll,
+                new Rect(0, 0, listWidth, Mathf.Max(viewport.height, 248 + equipment.inventory.Count * 68)));
             EquipmentSlot[] slots = { EquipmentSlot.Weapon, EquipmentSlot.Armor, EquipmentSlot.Accessory };
             for (int i = 0; i < slots.Length; i++)
             {
-                Rect row = new Rect(rect.x, rect.y + i * 60, rect.width, 54);
+                Rect row = new Rect(0, i * 80, listWidth, 72);
                 WuxiaUiTheme.DrawCompactSurface(row, Ink, Gold);
                 EquipmentItem item = equipment.GetEquipped(slots[i]);
                 WuxiaUiComponents.Text(new Rect(row.x + 10, row.y, 46, row.height), SlotName(slots[i]), 14, Muted);
-                DrawIcon(new Rect(row.x + 58, row.y + 6, 42, 42), item == null ? null : FindEquipmentIcon(item.id), Gold);
-                WuxiaUiComponents.Text(new Rect(row.x + 112, row.y, row.width - 196, row.height), item?.displayName ?? "未装备", 16);
-                if (item != null && GUI.Button(new Rect(row.xMax - 78, row.y + 5, 70, 44), "卸下", WuxiaUiComponents.TouchButton())) equipment.Unequip(slots[i]);
+                DrawIcon(new Rect(row.x + 58, row.y + 15, 42, 42), item == null ? null : FindEquipmentIcon(item.id), Gold);
+                WuxiaUiComponents.Text(new Rect(row.x + 112, row.y, row.width - 216, row.height), item?.displayName ?? "未装备", 16, null, TextAnchor.MiddleLeft, true);
+                if (item != null && GUI.Button(new Rect(row.xMax - 96, row.y + 4, 88, PortraitUiLayout.ActionHeight), "卸下", WuxiaUiComponents.TouchButton())) equipment.Unequip(slots[i]);
             }
             if (portraitSelectedEquipment == null || !equipment.inventory.Contains(portraitSelectedEquipment))
                 portraitSelectedEquipment = equipment.inventory.FirstOrDefault();
-            float detailHeight = 176;
-            Rect viewport = new Rect(rect.x, rect.y + 194, rect.width, Mathf.Max(72, rect.height - 194 - detailHeight - 12));
-            inventoryScroll = GUI.BeginScrollView(viewport, inventoryScroll,
-                new Rect(0, 0, viewport.width - 20, equipment.inventory.Count * 68));
             for (int i = 0; i < equipment.inventory.Count; i++)
             {
                 EquipmentItem item = equipment.inventory[i];
-                Rect row = new Rect(0, i * 68, viewport.width - 24, 60);
+                Rect row = new Rect(0, 248 + i * 68, listWidth, 60);
                 if (GUI.Button(row, GUIContent.none, item == portraitSelectedEquipment ? activeTabStyle : actionButtonStyle)) portraitSelectedEquipment = item;
                 DrawIcon(new Rect(8, row.y + 8, 44, 44), FindEquipmentIcon(item.id), RarityColor(item.rarity));
                 WuxiaUiComponents.Text(new Rect(64, row.y + 4, row.width - 150, 28), item.displayName, 18);
@@ -242,38 +256,11 @@ namespace WuxiaRoguelite.UI
             WuxiaUiComponents.Text(new Rect(detail.x + 14, detail.y + 92, detail.width - 28, 24),
                 $"装备差值  攻击 {CombatNumberDisplay.FormatSigned(attackDelta)}  ·  防御 {CombatNumberDisplay.FormatSigned(defenseDelta)}", 14, Gold);
             GUI.enabled = !equipment.IsEquipped(selected);
-            if (GUI.Button(new Rect(detail.x + 14, detail.yMax - 52, detail.width - 28, 44),
+            if (GUI.Button(new Rect(detail.x + 14, detail.yMax - 76, detail.width - 28, PortraitUiLayout.ActionHeight),
                 equipment.IsEquipped(selected) ? "已装备" : "装备", mainMenuButtonStyle)) equipment.Equip(selected);
             GUI.enabled = true;
         }
 
-        private void DrawPortraitResult()
-        {
-            PortraitBackdrop();
-            Rect p = PortraitUiLayout.Modal(760);
-            bool won = gameFlow.IsTutorialCompletionSummary || gameFlow.bossDefeated;
-            DrawPanel(p, Ink, won ? Gold : Crimson, WuxiaPanelKind.Boss);
-            WuxiaUiComponents.Text(new Rect(p.x + 24, p.y + 18, p.width - 48, 36), "此行战果", 28);
-            WuxiaUiComponents.Text(new Rect(p.x + 24, p.y + 62, p.width - 48, 36),
-                gameFlow.IsTutorialCompletionSummary ? "教学完成" : won ? $"击败{GameTextCatalog.FinalBossName}" : "江湖路断", 24, won ? Gold : Crimson);
-            WuxiaUiComponents.Text(new Rect(p.x + 24, p.y + 104, p.width - 48, 44), gameFlow.statusMessage, 14, Muted, TextAnchor.UpperLeft, true);
-            string[] names = { "决战用时", "击杀敌人", "探索洞穴", "连战磨砺" };
-            string[] values = { $"{gameFlow.bossBattleTime:0.0} 秒", playerStats.killCount.ToString(), playerStats.caveEntries.ToString(), $"{playerStats.combatMomentumRank} / {PlayerStats.MaxCombatMomentumRank}" };
-            for (int i = 0; i < names.Length; i++) WuxiaUiComponents.ReportRow(new Rect(p.x + 24, p.y + 150 + i * 54, p.width - 48, 46), names[i], values[i]);
-            WuxiaUiComponents.Text(new Rect(p.x + 24, p.y + 372, p.width - 48, 28), $"本局武学 · 等级 {playerStats.level}", 18);
-            Rect v = new Rect(p.x + 24, p.y + 408, p.width - 48, Mathf.Max(48, p.height - 554));
-            resultBuildScroll = GUI.BeginScrollView(v, resultBuildScroll, new Rect(0, 0, v.width - 20, Mathf.Max(v.height, playerStats.learnedMartialArts.Count * 48)));
-            for (int i = 0; i < playerStats.learnedMartialArts.Count; i++)
-            {
-                string id = playerStats.learnedMartialArts[i];
-                DrawIcon(new Rect(0, i * 48, 40, 40), FindMartialArtIcon(id), MartialArtIconRenderer.Accent(id));
-                WuxiaUiComponents.Text(new Rect(54, i * 48, v.width - 84, 40), $"{id} · {RankName(playerStats.GetMartialArtRank(id))}", 16);
-            }
-            GUI.EndScrollView();
-            GUI.enabled = gameFlow.CanContinueToNextLevel;
-            if (GUI.Button(new Rect(p.x + 24, p.yMax - 124, p.width - 48, 48), gameFlow.CanContinueToNextLevel ? "下一关" : "下一关尚未开放", mainMenuButtonStyle)) gameFlow.ContinueToNextLevel();
-            GUI.enabled = true;
-            if (GUI.Button(new Rect(p.x + 24, p.yMax - 64, p.width - 48, 44), "返回主页", WuxiaUiComponents.TouchButton())) gameFlow.ReturnToMainMenu();
-        }
+        private void DrawPortraitResult() => DrawRunReview();
     }
 }

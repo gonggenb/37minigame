@@ -1,0 +1,109 @@
+{
+    "success": true,
+    "error": "",
+    "runtimeErrors": [],
+    "fps": 30,
+    "width": 720,
+    "height": 1280,
+    "samples": [
+        {
+            "shot": "boss",
+            "phase": "BossBattle",
+            "frame": 0,
+            "mainTime": 60.0,
+            "bossTime": 0.0
+        },
+        {
+            "shot": "boss",
+            "phase": "BossBattle",
+            "frame": 30,
+            "mainTime": 60.0,
+            "bossTime": 0.9666670560836792
+        },
+        {
+            "shot": "boss",
+            "phase": "BossBattle",
+            "frame": 60,
+            "mainTime": 60.0,
+            "bossTime": 1.9666661024093629
+        },
+        {
+            "shot": "boss",
+            "phase": "BossBattle",
+            "frame": 90,
+            "mainTime": 60.0,
+            "bossTime": 2.966665267944336
+        },
+        {
+            "shot": "boss",
+            "phase": "BossBattle",
+            "frame": 120,
+            "mainTime": 60.0,
+            "bossTime": 3.9666643142700197
+        },
+        {
+            "shot": "boss",
+            "phase": "BossBattle",
+            "frame": 150,
+            "mainTime": 60.0,
+            "bossTime": 4.966663360595703
+        },
+        {
+            "shot": "boss",
+            "phase": "BossBattle",
+            "frame": 180,
+            "mainTime": 60.0,
+            "bossTime": 5.966662406921387
+        },
+        {
+            "shot": "boss",
+            "phase": "BossBattle",
+            "frame": 210,
+            "mainTime": 60.0,
+            "bossTime": 6.96666145324707
+        },
+        {
+            "shot": "boss",
+            "phase": "BossBattle",
+            "frame": 240,
+            "mainTime": 60.0,
+            "bossTime": 7.966660499572754
+        },
+        {
+            "shot": "boss",
+            "phase": "BossBattle",
+            "frame": 270,
+            "mainTime": 60.0,
+            "bossTime": 8.966672897338868
+        },
+        {
+            "shot": "boss",
+            "phase": "BossBattle",
+            "frame": 300,
+            "mainTime": 60.0,
+            "bossTime": 9.966686248779297
+        },
+        {
+            "shot": "boss",
+            "phase": "BossBattle",
+            "frame": 330,
+            "mainTime": 60.0,
+            "bossTime": 10.966699600219727
+        },
+        {
+            "shot": "boss",
+            "phase": "BossBattle",
+            "frame": 360,
+            "mainTime": 60.0,
+            "bossTime": 11.966712951660157
+        },
+        {
+            "shot": "boss",
+            "phase": "BossBattle",
+            "frame": 390,
+            "mainTime": 60.0,
+            "bossTime": 12.966726303100586
+        }
+    ],
+    "scope": "Unity Editor Play Mode, controlled inputs and staged legal martial-art build; not an uninterrupted natural run. No damage or enemy-stat overrides."
+}

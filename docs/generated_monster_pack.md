@@ -1,5 +1,31 @@
 # 生成怪物包 v01 + v02
 
+## 第二关小怪扩展（2026-09-09）
+
+第二关平川山镇的 40 个普通遭遇采用新老混合：22 个点位保留原有小怪，18 个点位加入新怪。
+铁獠山猪、赤练蛇妖、斗笠刀匪、酒葫芦恶僧、灯笼怨灵、菌甲小妖各 3 处。
+入口与外围加入山猪、菌妖，镇区与营地加入刀匪、恶僧，洞区和北关加入怨灵、蛇妖；各区同时保留老怪。
+老怪从原遭遇模板恢复名称、地图待机与战斗视觉配置。10 个精英及中期/最终 Boss 保留原配置。
+
+每种包含 8 帧待机与 8 帧攻击，单帧 256×256，条带 2048×256，160 PPU，
+Point、Full Rect、无压缩/无 Mipmap、脚底 Pivot `(0.5,0.125)`。战斗中朝向左侧玩家。
+蛇妖、怨灵和菌妖的待机条带由两个原始中立姿势按 8 格循环排列，保留已认可造型；
+不是八张独立呼吸绘制。部分重生成候选有造型漂移或伪透明背景，未用于交付。
+小怪仍复用普通自动攻击动作。后续玩法优化已为第二关普通山猪加入首击重撞、蛇妖加入短时毒伤、老机关类加入开场护甲；
+详见 `docs/validation/route_combat_review/README.md`。不增加位移、弹道或范围伤害。
+点位、原有战斗数值、修为、铜钱与三条计时规则保持不变。
+
+资源位于 `Assets/Art/Generated/Characters/Enemies/LevelTwoPack/`；
+源图及提示词位于 `ArtSource/Raw/Monsters/LevelTwoPack/`；
+归一化工具为 `Tools/ArtPipeline/prepare_level2_monster_pack.py`。
+
+在 MainPrototype 中运行 `37 MiniGame/Apply Level 2 Monster Pack` 可重复导入和绑定；
+平川山镇重建工具也会自动应用同一分布。该菜单拒绝在其他关卡或 Play Mode 中应用。
+此批不修改关卡1/关卡3，也不替换共用遭遇模板。
+
+验证入口：`37 MiniGame/Validate Level 2 Monster Pack Play Mode`。
+当前实测状态及截图以 `docs/validation/level2_monster_pack/README.md` 为准。
+
 ## 内容
 
 | 怪物 | 视觉 ID | 地图角色 | 攻击动作 |

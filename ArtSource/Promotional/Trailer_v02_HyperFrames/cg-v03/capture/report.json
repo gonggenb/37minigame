@@ -1,0 +1,333 @@
+{
+    "success": true,
+    "error": "",
+    "runtimeErrors": [],
+    "fps": 30,
+    "width": 720,
+    "height": 1280,
+    "samples": [
+        {
+            "shot": "choice",
+            "phase": "LevelUpPaused",
+            "frame": 0,
+            "mainTime": 60.0,
+            "bossTime": 0.0
+        },
+        {
+            "shot": "choice",
+            "phase": "LevelUpPaused",
+            "frame": 30,
+            "mainTime": 60.0,
+            "bossTime": 0.0
+        },
+        {
+            "shot": "choice",
+            "phase": "LevelUpPaused",
+            "frame": 60,
+            "mainTime": 60.0,
+            "bossTime": 0.0
+        },
+        {
+            "shot": "choice",
+            "phase": "LevelUpPaused",
+            "frame": 90,
+            "mainTime": 60.0,
+            "bossTime": 0.0
+        },
+        {
+            "shot": "choice",
+            "phase": "MainMapRunning",
+            "frame": 120,
+            "mainTime": 59.00001525878906,
+            "bossTime": 0.0
+        },
+        {
+            "shot": "choice",
+            "phase": "NormalBattleRunning",
+            "frame": 150,
+            "mainTime": 58.000030517578128,
+            "bossTime": 0.0
+        },
+        {
+            "shot": "choice",
+            "phase": "NormalBattleRunning",
+            "frame": 180,
+            "mainTime": 57.00004577636719,
+            "bossTime": 0.0
+        },
+        {
+            "shot": "choice",
+            "phase": "MainMapRunning",
+            "frame": 210,
+            "mainTime": 56.00006103515625,
+            "bossTime": 0.0
+        },
+        {
+            "shot": "choice",
+            "phase": "NormalBattleRunning",
+            "frame": 240,
+            "mainTime": 55.00007629394531,
+            "bossTime": 0.0
+        },
+        {
+            "shot": "choice",
+            "phase": "NormalBattleRunning",
+            "frame": 270,
+            "mainTime": 54.000091552734378,
+            "bossTime": 0.0
+        },
+        {
+            "shot": "explore",
+            "phase": "MainMapRunning",
+            "frame": 0,
+            "mainTime": 53.83342742919922,
+            "bossTime": 0.0
+        },
+        {
+            "shot": "explore",
+            "phase": "MainMapRunning",
+            "frame": 30,
+            "mainTime": 52.83344268798828,
+            "bossTime": 0.0
+        },
+        {
+            "shot": "explore",
+            "phase": "MainMapRunning",
+            "frame": 60,
+            "mainTime": 51.833457946777347,
+            "bossTime": 0.0
+        },
+        {
+            "shot": "explore",
+            "phase": "MainMapRunning",
+            "frame": 90,
+            "mainTime": 50.833473205566409,
+            "bossTime": 0.0
+        },
+        {
+            "shot": "explore",
+            "phase": "MainMapRunning",
+            "frame": 120,
+            "mainTime": 49.83348846435547,
+            "bossTime": 0.0
+        },
+        {
+            "shot": "explore",
+            "phase": "MainMapRunning",
+            "frame": 150,
+            "mainTime": 48.83350372314453,
+            "bossTime": 0.0
+        },
+        {
+            "shot": "explore",
+            "phase": "MainMapRunning",
+            "frame": 180,
+            "mainTime": 47.833518981933597,
+            "bossTime": 0.0
+        },
+        {
+            "shot": "explore",
+            "phase": "MainMapRunning",
+            "frame": 210,
+            "mainTime": 46.833534240722659,
+            "bossTime": 0.0
+        },
+        {
+            "shot": "explore",
+            "phase": "MainMapRunning",
+            "frame": 240,
+            "mainTime": 45.83354949951172,
+            "bossTime": 0.0
+        },
+        {
+            "shot": "explore",
+            "phase": "MainMapRunning",
+            "frame": 270,
+            "mainTime": 44.83356475830078,
+            "bossTime": 0.0
+        },
+        {
+            "shot": "explore",
+            "phase": "MainMapRunning",
+            "frame": 300,
+            "mainTime": 43.833580017089847,
+            "bossTime": 0.0
+        },
+        {
+            "shot": "explore",
+            "phase": "MainMapRunning",
+            "frame": 330,
+            "mainTime": 42.833595275878909,
+            "bossTime": 0.0
+        },
+        {
+            "shot": "combat",
+            "phase": "NormalBattleRunning",
+            "frame": 0,
+            "mainTime": 60.0,
+            "bossTime": 0.0
+        },
+        {
+            "shot": "combat",
+            "phase": "NormalBattleRunning",
+            "frame": 30,
+            "mainTime": 59.00001525878906,
+            "bossTime": 0.0
+        },
+        {
+            "shot": "combat",
+            "phase": "NormalBattleRunning",
+            "frame": 60,
+            "mainTime": 58.000030517578128,
+            "bossTime": 0.0
+        },
+        {
+            "shot": "combat",
+            "phase": "NormalBattleRunning",
+            "frame": 90,
+            "mainTime": 57.00004577636719,
+            "bossTime": 0.0
+        },
+        {
+            "shot": "combat",
+            "phase": "NormalBattleRunning",
+            "frame": 120,
+            "mainTime": 56.00006103515625,
+            "bossTime": 0.0
+        },
+        {
+            "shot": "combat",
+            "phase": "NormalBattleRunning",
+            "frame": 150,
+            "mainTime": 55.00007629394531,
+            "bossTime": 0.0
+        },
+        {
+            "shot": "combat",
+            "phase": "LevelUpPaused",
+            "frame": 180,
+            "mainTime": 54.36675262451172,
+            "bossTime": 0.0
+        },
+        {
+            "shot": "combat",
+            "phase": "LevelUpPaused",
+            "frame": 210,
+            "mainTime": 54.36675262451172,
+            "bossTime": 0.0
+        },
+        {
+            "shot": "combat",
+            "phase": "LevelUpPaused",
+            "frame": 240,
+            "mainTime": 54.36675262451172,
+            "bossTime": 0.0
+        },
+        {
+            "shot": "combat",
+            "phase": "LevelUpPaused",
+            "frame": 270,
+            "mainTime": 54.36675262451172,
+            "bossTime": 0.0
+        },
+        {
+            "shot": "boss",
+            "phase": "BossBattle",
+            "frame": 0,
+            "mainTime": 54.36675262451172,
+            "bossTime": 0.0
+        },
+        {
+            "shot": "boss",
+            "phase": "BossBattle",
+            "frame": 30,
+            "mainTime": 54.36675262451172,
+            "bossTime": 1.0000003576278687
+        },
+        {
+            "shot": "boss",
+            "phase": "BossBattle",
+            "frame": 60,
+            "mainTime": 54.36675262451172,
+            "bossTime": 1.9999994039535523
+        },
+        {
+            "shot": "boss",
+            "phase": "BossBattle",
+            "frame": 90,
+            "mainTime": 54.36675262451172,
+            "bossTime": 2.9999985694885256
+        },
+        {
+            "shot": "boss",
+            "phase": "BossBattle",
+            "frame": 120,
+            "mainTime": 54.36675262451172,
+            "bossTime": 3.999997615814209
+        },
+        {
+            "shot": "boss",
+            "phase": "BossBattle",
+            "frame": 150,
+            "mainTime": 54.36675262451172,
+            "bossTime": 4.999996662139893
+        },
+        {
+            "shot": "boss",
+            "phase": "BossBattle",
+            "frame": 180,
+            "mainTime": 54.36675262451172,
+            "bossTime": 5.999995708465576
+        },
+        {
+            "shot": "boss",
+            "phase": "BossBattle",
+            "frame": 210,
+            "mainTime": 54.36675262451172,
+            "bossTime": 6.99999475479126
+        },
+        {
+            "shot": "boss",
+            "phase": "BossBattle",
+            "frame": 240,
+            "mainTime": 54.36675262451172,
+            "bossTime": 7.999993801116943
+        },
+        {
+            "shot": "boss",
+            "phase": "BossBattle",
+            "frame": 270,
+            "mainTime": 54.36675262451172,
+            "bossTime": 9.000006675720215
+        },
+        {
+            "shot": "boss",
+            "phase": "Result",
+            "frame": 300,
+            "mainTime": 54.36675262451172,
+            "bossTime": 9.866684913635254
+        },
+        {
+            "shot": "boss",
+            "phase": "Result",
+            "frame": 330,
+            "mainTime": 54.36675262451172,
+            "bossTime": 9.866684913635254
+        },
+        {
+            "shot": "boss",
+            "phase": "Result",
+            "frame": 360,
+            "mainTime": 54.36675262451172,
+            "bossTime": 9.866684913635254
+        },
+        {
+            "shot": "boss",
+            "phase": "Result",
+            "frame": 390,
+            "mainTime": 54.36675262451172,
+            "bossTime": 9.866684913635254
+        }
+    ],
+    "scope": "Unity Editor Play Mode, controlled inputs and staged legal martial-art build; not an uninterrupted natural run. No damage or enemy-stat overrides."
+}

@@ -1,0 +1,14 @@
+{
+  "status": "composed_and_rendered",
+  "cgImages": 8,
+  "timelineSeconds": 90,
+  "cgSeconds": 36,
+  "gameplaySeconds": 46,
+  "endcardSeconds": 8,
+  "allPreviewPathsExist": true,
+  "visualBoardReviewed": true,
+  "newVideoRendered": true,
+  "remaining": [],
+  "unityChanged": "Editor-only recorder added; no runtime gameplay or scenes changed",
+  "final_validation": "../hyperframes-v03/validation.json"
+}

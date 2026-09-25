@@ -1,0 +1,10 @@
+{
+  "success": true,
+  "assets": 30,
+  "animation_frames": 168,
+  "checks": [
+    "All changes restricted to edge bands or the reviewed checker island; every frame bounds unchanged",
+    "All 30 meta files byte-identical: GUIDs, sprite IDs, rects, pivots and importer settings retained",
+    "Second apply preserved output hashes and modification times: no cumulative erosion"
+  ]
+}

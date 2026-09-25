@@ -7,6 +7,18 @@ namespace WuxiaRoguelite.UI
     /// <summary>Shared layout contract for independently drawn player and enemy HUDs.</summary>
     public static class PortraitUiLayout
     {
+        public const float ActionHeight = 64f;
+        public const float ActionGap = 12f;
+
+        // Reserve this space in the content viewport as well as in the button itself.
+        public static Rect BottomAction(Rect panel, int rowFromBottom = 0, int column = 0, int columns = 1)
+        {
+            float width = (panel.width - 48f - ActionGap * (columns - 1)) / columns;
+            return new Rect(panel.x + 24f + column * (width + ActionGap),
+                panel.yMax - 24f - ActionHeight - rowFromBottom * (ActionHeight + ActionGap),
+                width, ActionHeight);
+        }
+
         public static float CombatHealthTop(GamePhase phase) =>
             phase == GamePhase.BossBattle ? 174f : phase == GamePhase.MidBossBattle ? 140f : 154f;
 
@@ -25,11 +37,26 @@ namespace WuxiaRoguelite.UI
         private static readonly Dictionary<int, GUIStyle> labels = new Dictionary<int, GUIStyle>();
         private static GUIStyle touchButton;
         private static GUIStyle primaryButton;
+        private static GUIStyle touchTab;
+        private static GUIStyle selectedTouchTab;
 
         public static GUIStyle TouchButton(bool primary = false)
         {
-            if (primary) return primaryButton ??= WuxiaUiTheme.CreateButtonStyle(18, WuxiaButtonKind.Primary);
-            return touchButton ??= WuxiaUiTheme.CreateButtonStyle(16, WuxiaButtonKind.Secondary);
+            GUIStyle style;
+            if (primary) style = primaryButton ??= WuxiaUiTheme.CreateButtonStyle(18, WuxiaButtonKind.Primary);
+            else style = touchButton ??= WuxiaUiTheme.CreateButtonStyle(16, WuxiaButtonKind.Secondary);
+            // Tall actions can wrap long labels on narrow phone viewports.
+            style.wordWrap = true;
+            return style;
+        }
+
+        public static GUIStyle TouchTab(bool selected)
+        {
+            GUIStyle style = selected
+                ? selectedTouchTab ??= WuxiaUiTheme.CreateButtonStyle(16, WuxiaButtonKind.Secondary, selected: true)
+                : touchTab ??= WuxiaUiTheme.CreateButtonStyle(16, WuxiaButtonKind.Secondary);
+            style.wordWrap = true;
+            return style;
         }
 
         public static void Text(Rect rect, string text, int size = 16, Color? color = null,

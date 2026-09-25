@@ -14,6 +14,8 @@ namespace WuxiaRoguelite.Visual
         private static bool loaded;
         public static bool Available { get { Load(); return runs != null; } }
 
+        public static void ReleaseCache() => ResetCache();
+
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
         private static void ResetCache() { loaded = false; runs = null; idles = null; }
 

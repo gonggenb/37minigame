@@ -190,7 +190,9 @@ public sealed class HeroDirectionalPlayModeProbe : MonoBehaviour
             }
             player.ResetToSpawn(); F.cameraFollow.ResetVision(); yield return new WaitForSeconds(.35f);
             Vector3 ground = player.transform.position;
-            float expectedLift = player.followTutorialRestStopHeight
+            float expectedLift = player.followPingchuanTownHeight
+                ? PingchuanTownLayout.SurfaceHeight(ground.x, ground.z)
+                : player.followTutorialRestStopHeight
                 ? TutorialRestStopLayout.SurfaceHeight(ground.x, ground.z)
                 : player.followBambooValleyHeight ? BambooValleyLayout.SurfaceHeight(ground.x, ground.z)
                 : MainMapBridgeSurface.GetVisualLift(ground);

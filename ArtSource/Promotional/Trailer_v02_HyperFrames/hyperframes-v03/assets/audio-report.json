@@ -1,0 +1,9 @@
+{
+  "duration": 90,
+  "sample_rate": 44100,
+  "bpm": 120,
+  "provenance": "original deterministic synthesis; no external recordings",
+  "peak_dbfs": -1.4999999999999987,
+  "rms_dbfs": -16.277902638421327,
+  "clipped_samples": 0
+}

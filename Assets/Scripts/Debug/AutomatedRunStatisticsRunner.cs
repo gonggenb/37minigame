@@ -14,6 +14,8 @@ using WuxiaRoguelite.GameFlow;
 using WuxiaRoguelite.Map;
 using WuxiaRoguelite.MartialArts;
 using WuxiaRoguelite.Player;
+using WuxiaRoguelite.Runtime;
+using WuxiaRoguelite.UI;
 
 /// <summary>
 /// Editor-only, scene-driven balance probe. It continuously drives the real player Rigidbody,
@@ -32,6 +34,13 @@ public sealed class AutomatedRunStatisticsRunner : MonoBehaviour
     private const string MenuRoot = "37 MiniGame/Automated Run Statistics/";
     private const string SessionRunCountKey = "37MiniGame.AutomatedRunStatistics.RunCount";
     private const string SessionRunModeKey = "37MiniGame.AutomatedRunStatistics.RunMode";
+    private const string ReplayMode = "replay_challenges";
+    private bool preferencesCaptured, savedBackground;
+    private float savedTimeScale;
+    private readonly string[] preferenceKeys = { ChallengeProgress.UnlockKey, "WuxiaRoguelite.LevelTwoCompleted.v1" };
+    private readonly bool[] preferenceExists = new bool[2];
+    private readonly int[] preferenceValues = new int[2];
+
     private const string StandardMode = "standard";
     private const string PairedBalancedMode = "paired_balanced";
     private const string BattlePriorityMode = "battle_priority";
@@ -53,6 +62,9 @@ public sealed class AutomatedRunStatisticsRunner : MonoBehaviour
 
     private sealed class RunRecord
     {
+        public int tier, bounties;
+        public string approach;
+        public string midBossTalent, finalBossTalent;
         public int index;
         public int seed;
         public string starter;
@@ -121,6 +133,9 @@ public sealed class AutomatedRunStatisticsRunner : MonoBehaviour
     private int requestedRunCount;
     private string requestedRunMode;
 
+    [MenuItem(MenuRoot + "Run 15 Replay Challenge Runs")]
+    private static void RunReplayFromMenu() => QueueRuns(15, ReplayMode);
+
     [MenuItem(MenuRoot + "Run 20 Fixed-Seed Runs")]
     private static void RunTwentyFromMenu()
     {
@@ -145,6 +160,7 @@ public sealed class AutomatedRunStatisticsRunner : MonoBehaviour
         QueueRuns(StarterArts.Length, BattlePriorityMode);
     }
 
+    [MenuItem(MenuRoot + "Run 15 Replay Challenge Runs", true)]
     [MenuItem(MenuRoot + "Run 20 Fixed-Seed Runs", true)]
     [MenuItem(MenuRoot + "Run 5-Run Smoke Probe", true)]
     [MenuItem(MenuRoot + "Run 25 Paired Balanced Runs", true)]
@@ -209,6 +225,17 @@ public sealed class AutomatedRunStatisticsRunner : MonoBehaviour
         runner.requestedRunMode = mode;
     }
 
+    private void OnDestroy()
+    {
+        if (!preferencesCaptured) return;
+        for (int i = 0; i < preferenceKeys.Length; i++)
+            if (preferenceExists[i]) PlayerPrefs.SetInt(preferenceKeys[i], preferenceValues[i]);
+            else PlayerPrefs.DeleteKey(preferenceKeys[i]);
+        PlayerPrefs.Save();
+        Application.runInBackground = savedBackground; Time.timeScale = savedTimeScale;
+        preferencesCaptured = false;
+    }
+
     private void Start()
     {
         if (requestedRunCount <= 0)
@@ -220,6 +247,12 @@ public sealed class AutomatedRunStatisticsRunner : MonoBehaviour
             requestedRunMode = SessionState.GetString(SessionRunModeKey, StandardMode);
         }
 
+        if (requestedRunMode == ReplayMode)
+        {
+            for (int i = 0; i < preferenceKeys.Length; i++)
+            { preferenceExists[i] = PlayerPrefs.HasKey(preferenceKeys[i]); preferenceValues[i] = PlayerPrefs.GetInt(preferenceKeys[i]); }
+            savedBackground = Application.runInBackground; savedTimeScale = Time.timeScale; preferencesCaptured = true;
+        }
         flow = FindFirstObjectByType<GameFlowController>();
         if (flow == null || flow.IsTutorialLevel)
         {
@@ -291,6 +324,11 @@ public sealed class AutomatedRunStatisticsRunner : MonoBehaviour
 
     private void LateUpdate()
     {
+        // Gameplay phase changes restore 1x. Keep the advertised harness speed while
+        // running, but never override a real pause/loading screen or final cleanup.
+        if (!finishing && current != null && Time.timeScale > 0f &&
+            !LevelLoadingScreen.IsLoading && !StudioSplashScreen.IsBlocking)
+            Time.timeScale = SimulationTimeScale;
         if (playerController != null && MoveInputField != null)
         {
             MoveInputField.SetValue(playerController, automatedMoveInput);
@@ -393,9 +431,20 @@ public sealed class AutomatedRunStatisticsRunner : MonoBehaviour
 
     private void ForceStarterChoice()
     {
+        if (requestedRunMode == ReplayMode && flow.ChallengeRun != null)
+        {
+            // Controlled tier/approach fixtures; no unlocking or player stat assistance.
+            flow.ChallengeRun.tier = current.tier;
+            flow.ChallengeRun.approach = (BossApproach)(1 + (current.index - 1) % StarterArts.Length % 3);
+            current.approach = flow.ChallengeRun.approach.ToString();
+        }
+        current.midBossTalent = flow.MidBossTalent.ToString();
+        current.finalBossTalent = flow.FinalBossTalent.ToString();
         flow.currentChoices.Clear();
         flow.currentChoices.Add(current.starter);
         flow.ChooseMartialArt(0);
+        // Run initialization restores normal speed; reapply the harness speed after the opening choice.
+        Time.timeScale = SimulationTimeScale;
         current.martialChoices++;
         previousPlayerPosition = playerController.transform.position;
     }
@@ -650,17 +699,18 @@ public sealed class AutomatedRunStatisticsRunner : MonoBehaviour
 
         bool pairedBalanced = requestedRunMode == PairedBalancedMode;
         bool battlePriority = requestedRunMode == BattlePriorityMode;
-        int seed = pairedBalanced
+        int seed = requestedRunMode == ReplayMode ? 57000 + ((index - 1) % StarterArts.Length) * 97 : pairedBalanced
             ? 47000 + ((index - 1) / StarterArts.Length) * 97
             : battlePriority ? 37582 + (index - 1) * 97 : 37000 + index * 97;
         string starter = StarterArts[(index - 1) % StarterArts.Length];
         int policyIndex = requestedRunCount <= StarterArts.Length
             ? (index - 1) % RoutePolicies.Length
             : ((index - 1) / StarterArts.Length) % RoutePolicies.Length;
-        string policy = pairedBalanced ? "均衡" : battlePriority ? "战斗优先" : RoutePolicies[policyIndex];
+        string policy = (pairedBalanced || requestedRunMode == ReplayMode) ? "均衡" : battlePriority ? "战斗优先" : RoutePolicies[policyIndex];
         UnityEngine.Random.InitState(seed);
         current = new RunRecord
         {
+            tier = requestedRunMode == ReplayMode ? (index - 1) / StarterArts.Length : 0,
             index = index,
             seed = seed,
             starter = starter,
@@ -723,6 +773,7 @@ public sealed class AutomatedRunStatisticsRunner : MonoBehaviour
         current.martialArts = string.Join(" / ", player.martialArtRanks
             .OrderBy(pair => pair.Key)
             .Select(pair => $"{pair.Key}{pair.Value}"));
+        current.bounties = flow.ChallengeRun?.bounties.Count(b => b.completed) ?? 0;
         current.route = string.Join(" > ", routeEvents);
         records.Add(current);
 
@@ -755,7 +806,7 @@ public sealed class AutomatedRunStatisticsRunner : MonoBehaviour
         string outputDirectory = Path.Combine(projectRoot, "docs", "validation");
         Directory.CreateDirectory(outputDirectory);
         string date = DateTime.Now.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
-        string modeSuffix = requestedRunMode == PairedBalancedMode
+        string modeSuffix = requestedRunMode == ReplayMode ? "_replay_challenges" : requestedRunMode == PairedBalancedMode
             ? "_paired_balanced"
             : requestedRunMode == BattlePriorityMode ? "_battle_priority" : "_optimized";
         string csvPath = Path.Combine(outputDirectory, $"automated_run_stats{modeSuffix}_{date}.csv");
@@ -772,7 +823,7 @@ public sealed class AutomatedRunStatisticsRunner : MonoBehaviour
     private string BuildCsv()
     {
         StringBuilder csv = new StringBuilder();
-        csv.AppendLine("run,seed,starter,policy,victory,result,mid_boss_victory,simulated_duration,map_movement_time,normal_battle_time,cave_time,level_up_time,mid_boss_phase_time,boss_phase_time,distance,normal_enemies,elite_enemies,caves,treasures,herbs,vision_relics,mystery_herbs,martial_choices,level,map_battle_victories,momentum_rank,copper,extra_equipment,secrets,capstone,final_hp_ratio,main_time_remaining,mid_boss_battle_time,boss_battle_time,normal_timer_drop,cave_timer_max_drift,boss_timer_max_drift,martial_arts,route");
+        csv.AppendLine("run,seed,starter,policy,victory,result,mid_boss_victory,simulated_duration,map_movement_time,normal_battle_time,cave_time,level_up_time,mid_boss_phase_time,boss_phase_time,distance,normal_enemies,elite_enemies,caves,treasures,herbs,vision_relics,mystery_herbs,martial_choices,level,map_battle_victories,momentum_rank,copper,extra_equipment,secrets,capstone,final_hp_ratio,main_time_remaining,mid_boss_battle_time,boss_battle_time,normal_timer_drop,cave_timer_max_drift,boss_timer_max_drift,martial_arts,route,tier,approach,bounties,mid_boss_talent,final_boss_talent");
         foreach (RunRecord r in records)
         {
             csv.AppendLine(string.Join(",", new[]
@@ -787,7 +838,7 @@ public sealed class AutomatedRunStatisticsRunner : MonoBehaviour
                 r.extraEquipment.ToString(), r.secretCount.ToString(),
                 r.hasCapstone ? "1" : "0", F(r.finalHealthRatio), F(r.mainTimeRemaining), F(r.midBossBattleTime),
                 F(r.bossBattleTime), F(r.normalTimerDrop), F(r.caveTimerMaxDrift), F(r.bossTimerMaxDrift),
-                Csv(r.martialArts), Csv(r.route)
+                Csv(r.martialArts), Csv(r.route), r.tier.ToString(), Csv(r.approach), r.bounties.ToString(), Csv(r.midBossTalent), Csv(r.finalBossTalent)
             }));
         }
         return csv.ToString();
@@ -815,7 +866,7 @@ public sealed class AutomatedRunStatisticsRunner : MonoBehaviour
                 ? $"- 样本：{records.Count} 局战斗优先定向样本；五种起手各 1 局"
                 : $"- 样本：{records.Count} 局固定种子，五种起手循环覆盖");
         md.AppendLine($"- 运行方式：MainPrototype 正式场景、正式遭遇与正式战斗，Time.timeScale={SimulationTimeScale:0}");
-        md.AppendLine(requestedRunMode == PairedBalancedMode
+        md.AppendLine((requestedRunMode == PairedBalancedMode || requestedRunMode == ReplayMode)
             ? "- 路线策略：全部采用均衡策略；同流派武学优先，用于降低策略分组对流派结果的混杂"
             : requestedRunMode == BattlePriorityMode
                 ? "- 路线策略：全部采用战斗优先；同流派武学优先，用于定向观察连战回报与战损"
@@ -824,6 +875,15 @@ public sealed class AutomatedRunStatisticsRunner : MonoBehaviour
         md.AppendLine("- 复现边界：固定 UnityEngine.Random 种子用于控制随机来源；移动与碰撞仍由帧/物理调度驱动，不是逐帧锁步回放");
         md.AppendLine("- 结论边界：这是自动策略的系统和平衡探针，不是真人体验、UI 可用性或真机验收");
         md.AppendLine();
+        if (requestedRunMode == ReplayMode)
+        {
+            md.AppendLine("三档各五局，同一起手跨档共享种子和指定强敌倾向；全部采用均衡路线。测试直接指定档位，不替玩家永久解锁，不增加玩家属性。每档五局不足以估计真人胜率。");
+            md.AppendLine("|档位|通关|中期通过|平均击杀|平均悬赏完成|平均洞穴|");
+            md.AppendLine("|---|---|---|---|---|---|");
+            foreach (var group in records.GroupBy(r => r.tier))
+                md.AppendLine($"|{RunChallengeCatalog.TierName(group.Key)}|{group.Count(r => r.victory)}/{group.Count()}|{group.Count(r => r.midBossVictory)}/{group.Count()}|{group.Average(r => r.normalEnemies + r.eliteEnemies):0.0}|{group.Average(r => r.bounties):0.0}|{group.Average(r => r.caves):0.0}|");
+            md.AppendLine();
+        }
         md.AppendLine("## 总览");
         md.AppendLine();
         md.AppendLine($"- 整体通关：{wins}/{records.Count}（{Percent(wins, records.Count)}）");

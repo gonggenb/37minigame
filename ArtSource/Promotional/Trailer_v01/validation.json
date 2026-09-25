@@ -1,0 +1,13 @@
+{
+  "status": "RenderedAndChecked",
+  "humanVisualApproval": false,
+  "published": false,
+  "video": {"durationSeconds": 30, "width": 1080, "height": 1920, "fps": 30, "decodedFrames": 900, "codec": "H.264 High", "pixelFormat": "yuv420p", "fullDecodeExitCode": 0},
+  "audio": {"codec": "AAC LC", "sampleRate": 44100, "channels": 2, "meanVolumeDb": -16.6, "peakVolumeDb": -1.9, "microphoneRecorded": false, "voiceover": false},
+  "capture": {"source": "Current checkout Unity Editor Play Mode", "width": 720, "height": 1280, "fps": 30, "frames": 540, "runtimeErrors": [], "usesStagedBuild": true, "continuousNaturalRun": false},
+  "font": {"source": "Assets/Resources/Fonts/NotoSansCJKsc-Bold-Subset.ttf", "allCaptionGlyphsPresent": true},
+  "editorAfterCapture": {"isPlaying": false, "sceneIsDirty": false, "captureFramerate": 0, "consoleErrors": 0},
+  "timeRules": {"gameplayLogicModified": false, "normalBattle": "Existing countdown retained", "cave": "Existing pause rule untouched; no cave regression test in this task", "boss": "Existing independent clock retained"},
+  "checks": ["Opening, hero, exploration, combat, choice, boss and end-card frames visually inspected", "Captions placed outside gameplay UI", "Original project portraits, music and effects reused", "Entire final MP4 decoded without errors"],
+  "remaining": ["Human full-film watch and listening acceptance", "Phone platform upload and compression preview", "Optional voiceover or release call-to-action"]
+}

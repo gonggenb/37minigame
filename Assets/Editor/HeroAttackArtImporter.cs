@@ -39,7 +39,12 @@ namespace WuxiaRoguelite.Editor
         [MenuItem("37 MiniGame/Art/Reimport Hero Attack Pack")]
         public static void ImportAll()
         {
-            foreach (string path in Directory.GetFiles(Folder, "*.png"))
+            ImportPaths(Directory.GetFiles(Folder, "*.png"));
+        }
+
+        public static void ImportPaths(string[] paths)
+        {
+            foreach (string path in paths)
             {
                 AssetDatabase.ImportAsset(path, ImportAssetOptions.ForceSynchronousImport);
                 var importer = (TextureImporter)AssetImporter.GetAtPath(path);
@@ -70,7 +75,7 @@ namespace WuxiaRoguelite.Editor
                 importer.SaveAndReimport();
             }
             AssetDatabase.SaveAssets();
-            Debug.Log("Hero attack pack imported: 4 strips, 32 frames; PPU 160, foot pivot, Point, FullRect.");
+            Debug.Log($"Hero attack pack imported: {paths.Length} strips, {paths.Length * 8} frames; PPU 160, foot pivot, Point, FullRect.");
         }
     }
 }

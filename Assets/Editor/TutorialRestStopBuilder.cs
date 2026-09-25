@@ -79,7 +79,7 @@ namespace WuxiaRoguelite.EditorTools
             }
             var flow=Object.FindFirstObjectByType<GameFlowController>();
             var player=flow.playerController;player.transform.position=TutorialRestStopLayout.Spawn;
-            player.groundY=0;player.followBambooValleyHeight=false;player.followTutorialRestStopHeight=true;
+            player.groundY=0;player.followBambooValleyHeight=false;player.followPingchuanTownHeight=false;player.followTutorialRestStopHeight=true;
             flow.mainTimeLimit=LevelSequence.TutorialTimeLimitSeconds;flow.mainTimeRemaining=flow.mainTimeLimit;
             var camera=flow.cameraFollow!=null?flow.cameraFollow:Object.FindFirstObjectByType<WuxiaRoguelite.CameraTools.CameraFollow>();flow.cameraFollow=camera;camera.offset=new Vector3(4,16,-19);camera.portraitOffset=new Vector3(2,17,-20);
             camera.landscapeFieldOfView=40;camera.portraitFieldOfView=42;camera.lookAtHeight=.9f;

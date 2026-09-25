@@ -1,0 +1,935 @@
+{
+    "scope": "0.4m eight-neighbour shortest paths at player radius, excluding trigger encounters. Baked once; travel time and route balance need Play Mode validation.",
+    "midDistance": 35.0,
+    "farDistance": 70.0,
+    "encounters": [
+        {
+            "name": "东关铁卫 PC 45",
+            "type": "EliteEnemy",
+            "position": {
+                "x": 15.600000381469727,
+                "y": 0.2418115735054016,
+                "z": -9.199999809265137
+            },
+            "routeDistance": 61.41569137573242,
+            "tier": 1,
+            "baseCultivation": 42,
+            "cultivation": 63,
+            "baseCopper": 15,
+            "copper": 22,
+            "martialUpgrade": false
+        },
+        {
+            "name": "东关铁卫 PC 50",
+            "type": "EliteEnemy",
+            "position": {
+                "x": -35.20000076293945,
+                "y": 0.170091450214386,
+                "z": 12.0
+            },
+            "routeDistance": 57.50788116455078,
+            "tier": 1,
+            "baseCultivation": 42,
+            "cultivation": 63,
+            "baseCopper": 15,
+            "copper": 22,
+            "martialUpgrade": false
+        },
+        {
+            "name": "山贼喽啰 PC 1",
+            "type": "NormalEnemy",
+            "position": {
+                "x": -23.200000762939454,
+                "y": 0.2271202951669693,
+                "z": -31.600000381469728
+            },
+            "routeDistance": 10.994109153747559,
+            "tier": 0,
+            "baseCultivation": 10,
+            "cultivation": 10,
+            "baseCopper": 2,
+            "copper": 2,
+            "martialUpgrade": false
+        },
+        {
+            "name": "山贼喽啰 PC 14",
+            "type": "NormalEnemy",
+            "position": {
+                "x": 8.40000057220459,
+                "y": 0.25329530239105227,
+                "z": -5.599999904632568
+            },
+            "routeDistance": 55.541133880615237,
+            "tier": 1,
+            "baseCultivation": 10,
+            "cultivation": 15,
+            "baseCopper": 2,
+            "copper": 3,
+            "martialUpgrade": false
+        },
+        {
+            "name": "山贼喽啰 PC 22",
+            "type": "NormalEnemy",
+            "position": {
+                "x": 0.800000011920929,
+                "y": 0.16775821149349214,
+                "z": -15.199999809265137
+            },
+            "routeDistance": 44.958797454833987,
+            "tier": 1,
+            "baseCultivation": 10,
+            "cultivation": 15,
+            "baseCopper": 2,
+            "copper": 3,
+            "martialUpgrade": false
+        },
+        {
+            "name": "山贼喽啰 PC 28",
+            "type": "NormalEnemy",
+            "position": {
+                "x": 36.000003814697269,
+                "y": 0.30220866203308108,
+                "z": -19.200000762939454
+            },
+            "routeDistance": 82.05011749267578,
+            "tier": 2,
+            "baseCultivation": 10,
+            "cultivation": 20,
+            "baseCopper": 2,
+            "copper": 4,
+            "martialUpgrade": false
+        },
+        {
+            "name": "山贼喽啰 PC 32",
+            "type": "NormalEnemy",
+            "position": {
+                "x": -32.79999923706055,
+                "y": 0.22158391773700715,
+                "z": 6.800000190734863
+            },
+            "routeDistance": 52.045127868652347,
+            "tier": 1,
+            "baseCultivation": 10,
+            "cultivation": 15,
+            "baseCopper": 2,
+            "copper": 3,
+            "martialUpgrade": false
+        },
+        {
+            "name": "山贼喽啰 PC 9",
+            "type": "NormalEnemy",
+            "position": {
+                "x": -10.0,
+                "y": 0.2775793671607971,
+                "z": 12.40000057220459
+            },
+            "routeDistance": 60.46179962158203,
+            "tier": 1,
+            "baseCultivation": 10,
+            "cultivation": 15,
+            "baseCopper": 2,
+            "copper": 3,
+            "martialUpgrade": false
+        },
+        {
+            "name": "岩甲山魈 PC 43",
+            "type": "EliteEnemy",
+            "position": {
+                "x": 0.0,
+                "y": 0.22395801544189454,
+                "z": 26.399999618530275
+            },
+            "routeDistance": 78.20401000976563,
+            "tier": 2,
+            "baseCultivation": 38,
+            "cultivation": 76,
+            "baseCopper": 12,
+            "copper": 24,
+            "martialUpgrade": false
+        },
+        {
+            "name": "岩甲山魈 PC 48",
+            "type": "EliteEnemy",
+            "position": {
+                "x": 35.20000076293945,
+                "y": 0.20959196984767915,
+                "z": -31.600000381469728
+            },
+            "routeDistance": 87.62659454345703,
+            "tier": 2,
+            "baseCultivation": 38,
+            "cultivation": 76,
+            "baseCopper": 12,
+            "copper": 24,
+            "martialUpgrade": false
+        },
+        {
+            "name": "机关弩车 PC 20",
+            "type": "NormalEnemy",
+            "position": {
+                "x": 9.199999809265137,
+                "y": 0.29101473093032839,
+                "z": 4.0
+            },
+            "routeDistance": 64.53526306152344,
+            "tier": 1,
+            "baseCultivation": 14,
+            "cultivation": 21,
+            "baseCopper": 4,
+            "copper": 6,
+            "martialUpgrade": false
+        },
+        {
+            "name": "机关弩车 PC 26",
+            "type": "NormalEnemy",
+            "position": {
+                "x": 26.399999618530275,
+                "y": 0.17826691269874574,
+                "z": -32.400001525878909
+            },
+            "routeDistance": 82.60401916503906,
+            "tier": 2,
+            "baseCultivation": 14,
+            "cultivation": 28,
+            "baseCopper": 4,
+            "copper": 8,
+            "martialUpgrade": false
+        },
+        {
+            "name": "机关弩车 PC 7",
+            "type": "NormalEnemy",
+            "position": {
+                "x": -10.0,
+                "y": 0.1755276322364807,
+                "z": -5.599999904632568
+            },
+            "routeDistance": 42.061729431152347,
+            "tier": 1,
+            "baseCultivation": 14,
+            "cultivation": 21,
+            "baseCopper": 4,
+            "copper": 6,
+            "martialUpgrade": false
+        },
+        {
+            "name": "流寇 PC 11",
+            "type": "NormalEnemy",
+            "position": {
+                "x": 2.4000000953674318,
+                "y": 0.24725571274757386,
+                "z": 11.600000381469727
+            },
+            "routeDistance": 69.71867370605469,
+            "tier": 1,
+            "baseCultivation": 12,
+            "cultivation": 18,
+            "baseCopper": 3,
+            "copper": 4,
+            "martialUpgrade": false
+        },
+        {
+            "name": "流寇 PC 16",
+            "type": "NormalEnemy",
+            "position": {
+                "x": 19.921964645385743,
+                "y": 0.2620047628879547,
+                "z": -6.8076863288879398
+            },
+            "routeDistance": 66.64412689208985,
+            "tier": 1,
+            "baseCultivation": 12,
+            "cultivation": 18,
+            "baseCopper": 3,
+            "copper": 4,
+            "martialUpgrade": false
+        },
+        {
+            "name": "流寇 PC 3",
+            "type": "NormalEnemy",
+            "position": {
+                "x": -28.0,
+                "y": 0.2229052633047104,
+                "z": -17.200000762939454
+            },
+            "routeDistance": 25.72547149658203,
+            "tier": 0,
+            "baseCultivation": 12,
+            "cultivation": 12,
+            "baseCopper": 3,
+            "copper": 3,
+            "martialUpgrade": false
+        },
+        {
+            "name": "流寇 PC 30",
+            "type": "NormalEnemy",
+            "position": {
+                "x": 21.600000381469728,
+                "y": 0.18148784339427949,
+                "z": -35.20000076293945
+            },
+            "routeDistance": 83.41577911376953,
+            "tier": 2,
+            "baseCultivation": 12,
+            "cultivation": 24,
+            "baseCopper": 3,
+            "copper": 6,
+            "martialUpgrade": false
+        },
+        {
+            "name": "流寇 PC 34",
+            "type": "NormalEnemy",
+            "position": {
+                "x": -19.200000762939454,
+                "y": 0.2513405978679657,
+                "z": 27.600000381469728
+            },
+            "routeDistance": 76.1589126586914,
+            "tier": 2,
+            "baseCultivation": 12,
+            "cultivation": 24,
+            "baseCopper": 3,
+            "copper": 6,
+            "martialUpgrade": false
+        },
+        {
+            "name": "流寇 PC 37",
+            "type": "NormalEnemy",
+            "position": {
+                "x": 3.200000047683716,
+                "y": 0.1964004784822464,
+                "z": 33.20000076293945
+            },
+            "routeDistance": 86.72953796386719,
+            "tier": 2,
+            "baseCultivation": 12,
+            "cultivation": 24,
+            "baseCopper": 3,
+            "copper": 6,
+            "martialUpgrade": false
+        },
+        {
+            "name": "灰岩巨鼠 PC 10",
+            "type": "NormalEnemy",
+            "position": {
+                "x": -21.200000762939454,
+                "y": 0.1621137261390686,
+                "z": 3.200000047683716
+            },
+            "routeDistance": 54.724483489990237,
+            "tier": 1,
+            "baseCultivation": 9,
+            "cultivation": 14,
+            "baseCopper": 1,
+            "copper": 2,
+            "martialUpgrade": false
+        },
+        {
+            "name": "灰岩巨鼠 PC 15",
+            "type": "NormalEnemy",
+            "position": {
+                "x": 13.600000381469727,
+                "y": 0.28658387064933779,
+                "z": -4.0
+            },
+            "routeDistance": 61.40388870239258,
+            "tier": 1,
+            "baseCultivation": 9,
+            "cultivation": 14,
+            "baseCopper": 1,
+            "copper": 2,
+            "martialUpgrade": false
+        },
+        {
+            "name": "灰岩巨鼠 PC 2",
+            "type": "NormalEnemy",
+            "position": {
+                "x": -19.600000381469728,
+                "y": 0.2673422396183014,
+                "z": -25.200000762939454
+            },
+            "routeDistance": 18.485273361206056,
+            "tier": 0,
+            "baseCultivation": 9,
+            "cultivation": 9,
+            "baseCopper": 1,
+            "copper": 1,
+            "martialUpgrade": false
+        },
+        {
+            "name": "灰岩巨鼠 PC 29",
+            "type": "NormalEnemy",
+            "position": {
+                "x": 40.79999923706055,
+                "y": 0.268402099609375,
+                "z": -17.200000762939454
+            },
+            "routeDistance": 85.62169647216797,
+            "tier": 2,
+            "baseCultivation": 9,
+            "cultivation": 18,
+            "baseCopper": 1,
+            "copper": 2,
+            "martialUpgrade": false
+        },
+        {
+            "name": "灰岩巨鼠 PC 33",
+            "type": "NormalEnemy",
+            "position": {
+                "x": -32.400001525878909,
+                "y": 0.12362243235111237,
+                "z": 18.80000114440918
+            },
+            "routeDistance": 64.21085357666016,
+            "tier": 1,
+            "baseCultivation": 9,
+            "cultivation": 14,
+            "baseCopper": 1,
+            "copper": 2,
+            "martialUpgrade": false
+        },
+        {
+            "name": "玄衣刀客 PC 42",
+            "type": "EliteEnemy",
+            "position": {
+                "x": -25.600000381469728,
+                "y": 0.2105240672826767,
+                "z": 26.80000114440918
+            },
+            "routeDistance": 75.02751922607422,
+            "tier": 2,
+            "baseCultivation": 34,
+            "cultivation": 68,
+            "baseCopper": 12,
+            "copper": 24,
+            "martialUpgrade": false
+        },
+        {
+            "name": "玄衣刀客 PC 47",
+            "type": "EliteEnemy",
+            "position": {
+                "x": 26.0,
+                "y": 0.22454527020454408,
+                "z": -25.600000381469728
+            },
+            "routeDistance": 75.87261962890625,
+            "tier": 2,
+            "baseCultivation": 34,
+            "cultivation": 68,
+            "baseCopper": 12,
+            "copper": 24,
+            "martialUpgrade": false
+        },
+        {
+            "name": "紫衣毒客 PC 18",
+            "type": "NormalEnemy",
+            "position": {
+                "x": 14.40000057220459,
+                "y": 0.25266459584236147,
+                "z": 8.0
+            },
+            "routeDistance": 70.68917846679688,
+            "tier": 2,
+            "baseCultivation": 20,
+            "cultivation": 40,
+            "baseCopper": 7,
+            "copper": 14,
+            "martialUpgrade": false
+        },
+        {
+            "name": "紫衣毒客 PC 24",
+            "type": "NormalEnemy",
+            "position": {
+                "x": 17.200000762939454,
+                "y": 0.15655557811260224,
+                "z": -24.399999618530275
+            },
+            "routeDistance": 73.60986328125,
+            "tier": 2,
+            "baseCultivation": 20,
+            "cultivation": 40,
+            "baseCopper": 7,
+            "copper": 14,
+            "martialUpgrade": false
+        },
+        {
+            "name": "紫衣毒客 PC 36",
+            "type": "NormalEnemy",
+            "position": {
+                "x": 32.400001525878909,
+                "y": 0.1464715152978897,
+                "z": 4.800000190734863
+            },
+            "routeDistance": 83.84907531738281,
+            "tier": 2,
+            "baseCultivation": 20,
+            "cultivation": 40,
+            "baseCopper": 7,
+            "copper": 14,
+            "martialUpgrade": false
+        },
+        {
+            "name": "紫衣毒客 PC 39",
+            "type": "NormalEnemy",
+            "position": {
+                "x": 10.800000190734864,
+                "y": 0.22480235993862153,
+                "z": 37.20000076293945
+            },
+            "routeDistance": 93.87761688232422,
+            "tier": 2,
+            "baseCultivation": 20,
+            "cultivation": 40,
+            "baseCopper": 7,
+            "copper": 14,
+            "martialUpgrade": false
+        },
+        {
+            "name": "紫衣毒客 PC 5",
+            "type": "NormalEnemy",
+            "position": {
+                "x": -19.912145614624025,
+                "y": 0.21854504942893983,
+                "z": -10.369256973266602
+            },
+            "routeDistance": 38.958770751953128,
+            "tier": 1,
+            "baseCultivation": 20,
+            "cultivation": 30,
+            "baseCopper": 7,
+            "copper": 10,
+            "martialUpgrade": false
+        },
+        {
+            "name": "西路宝箱 PC 56",
+            "type": "Treasure",
+            "position": {
+                "x": -24.80000114440918,
+                "y": 0.21510587632656098,
+                "z": -34.79999923706055
+            },
+            "routeDistance": 7.13137149810791,
+            "tier": 0,
+            "baseCultivation": 12,
+            "cultivation": 12,
+            "baseCopper": 6,
+            "copper": 6,
+            "martialUpgrade": false
+        },
+        {
+            "name": "西路宝箱 PC 57",
+            "type": "Treasure",
+            "position": {
+                "x": -10.965685844421387,
+                "y": 0.280827134847641,
+                "z": 16.634315490722658
+            },
+            "routeDistance": 64.13044738769531,
+            "tier": 1,
+            "baseCultivation": 12,
+            "cultivation": 18,
+            "baseCopper": 6,
+            "copper": 9,
+            "martialUpgrade": false
+        },
+        {
+            "name": "西路宝箱 PC 58",
+            "type": "Treasure",
+            "position": {
+                "x": -21.600000381469728,
+                "y": 0.18489904701709748,
+                "z": 12.800000190734864
+            },
+            "routeDistance": 62.518611907958987,
+            "tier": 1,
+            "baseCultivation": 12,
+            "cultivation": 18,
+            "baseCopper": 6,
+            "copper": 9,
+            "martialUpgrade": false
+        },
+        {
+            "name": "西路宝箱 PC 59",
+            "type": "Treasure",
+            "position": {
+                "x": 22.80000114440918,
+                "y": 0.24078433215618134,
+                "z": 0.0
+            },
+            "routeDistance": 75.03236389160156,
+            "tier": 2,
+            "baseCultivation": 12,
+            "cultivation": 24,
+            "baseCopper": 6,
+            "copper": 12,
+            "martialUpgrade": true
+        },
+        {
+            "name": "西路宝箱 PC 60",
+            "type": "Treasure",
+            "position": {
+                "x": 37.20000076293945,
+                "y": 0.2894715368747711,
+                "z": -24.0
+            },
+            "routeDistance": 86.74128723144531,
+            "tier": 2,
+            "baseCultivation": 12,
+            "cultivation": 24,
+            "baseCopper": 6,
+            "copper": 12,
+            "martialUpgrade": true
+        },
+        {
+            "name": "西路宝箱 PC 61",
+            "type": "Treasure",
+            "position": {
+                "x": 14.933316230773926,
+                "y": 0.17481213808059693,
+                "z": 29.802236557006837
+            },
+            "routeDistance": 91.91780090332031,
+            "tier": 2,
+            "baseCultivation": 12,
+            "cultivation": 24,
+            "baseCopper": 6,
+            "copper": 12,
+            "martialUpgrade": true
+        },
+        {
+            "name": "西路宝箱 PC 62",
+            "type": "Treasure",
+            "position": {
+                "x": -16.80000114440918,
+                "y": 0.254587322473526,
+                "z": 28.80000114440918
+            },
+            "routeDistance": 75.96481323242188,
+            "tier": 2,
+            "baseCultivation": 12,
+            "cultivation": 24,
+            "baseCopper": 6,
+            "copper": 12,
+            "martialUpgrade": true
+        },
+        {
+            "name": "西路宝箱 PC 63",
+            "type": "Treasure",
+            "position": {
+                "x": 32.0,
+                "y": 0.18553131818771363,
+                "z": 11.600000381469727
+            },
+            "routeDistance": 87.13435363769531,
+            "tier": 2,
+            "baseCultivation": 12,
+            "cultivation": 24,
+            "baseCopper": 6,
+            "copper": 12,
+            "martialUpgrade": true
+        },
+        {
+            "name": "赤骑枪客 PC 13",
+            "type": "NormalEnemy",
+            "position": {
+                "x": 2.0,
+                "y": 0.20327991247177125,
+                "z": -6.0
+            },
+            "routeDistance": 51.95292282104492,
+            "tier": 1,
+            "baseCultivation": 16,
+            "cultivation": 24,
+            "baseCopper": 5,
+            "copper": 8,
+            "martialUpgrade": false
+        },
+        {
+            "name": "赤骑枪客 PC 21",
+            "type": "NormalEnemy",
+            "position": {
+                "x": 20.80000114440918,
+                "y": 0.22386685013771058,
+                "z": -14.800000190734864
+            },
+            "routeDistance": 64.62750244140625,
+            "tier": 1,
+            "baseCultivation": 16,
+            "cultivation": 24,
+            "baseCopper": 5,
+            "copper": 8,
+            "martialUpgrade": false
+        },
+        {
+            "name": "赤骑枪客 PC 27",
+            "type": "NormalEnemy",
+            "position": {
+                "x": 29.200000762939454,
+                "y": 0.225739985704422,
+                "z": -28.0
+            },
+            "routeDistance": 80.06675720214844,
+            "tier": 2,
+            "baseCultivation": 16,
+            "cultivation": 32,
+            "baseCopper": 5,
+            "copper": 10,
+            "martialUpgrade": false
+        },
+        {
+            "name": "赤骑枪客 PC 31",
+            "type": "NormalEnemy",
+            "position": {
+                "x": -25.600000381469728,
+                "y": 0.1639716774225235,
+                "z": 15.600000381469727
+            },
+            "routeDistance": 63.82746887207031,
+            "tier": 1,
+            "baseCultivation": 16,
+            "cultivation": 24,
+            "baseCopper": 5,
+            "copper": 8,
+            "martialUpgrade": false
+        },
+        {
+            "name": "赤骑枪客 PC 8",
+            "type": "NormalEnemy",
+            "position": {
+                "x": -10.0,
+                "y": 0.18225562572479249,
+                "z": 4.0
+            },
+            "routeDistance": 51.661766052246097,
+            "tier": 1,
+            "baseCultivation": 16,
+            "cultivation": 24,
+            "baseCopper": 5,
+            "copper": 8,
+            "martialUpgrade": false
+        },
+        {
+            "name": "边城黑衣客 PC 44",
+            "type": "EliteEnemy",
+            "position": {
+                "x": 34.0,
+                "y": 0.17351321876049043,
+                "z": 10.0
+            },
+            "routeDistance": 88.47161102294922,
+            "tier": 2,
+            "baseCultivation": 40,
+            "cultivation": 80,
+            "baseCopper": 14,
+            "copper": 28,
+            "martialUpgrade": false
+        },
+        {
+            "name": "边城黑衣客 PC 49",
+            "type": "EliteEnemy",
+            "position": {
+                "x": 10.800000190734864,
+                "y": 0.20390015840530396,
+                "z": 33.60000228881836
+            },
+            "routeDistance": 89.87760162353516,
+            "tier": 2,
+            "baseCultivation": 40,
+            "cultivation": 80,
+            "baseCopper": 14,
+            "copper": 28,
+            "martialUpgrade": false
+        },
+        {
+            "name": "青竹机关傀 PC 19",
+            "type": "NormalEnemy",
+            "position": {
+                "x": 14.40000057220459,
+                "y": 0.16649749875068665,
+                "z": 16.0
+            },
+            "routeDistance": 78.689208984375,
+            "tier": 2,
+            "baseCultivation": 24,
+            "cultivation": 48,
+            "baseCopper": 8,
+            "copper": 16,
+            "martialUpgrade": false
+        },
+        {
+            "name": "青竹机关傀 PC 25",
+            "type": "NormalEnemy",
+            "position": {
+                "x": 23.200000762939454,
+                "y": 0.19827574491500855,
+                "z": -26.399999618530275
+            },
+            "routeDistance": 75.27849578857422,
+            "tier": 2,
+            "baseCultivation": 24,
+            "cultivation": 48,
+            "baseCopper": 8,
+            "copper": 16,
+            "martialUpgrade": false
+        },
+        {
+            "name": "青竹机关傀 PC 40",
+            "type": "NormalEnemy",
+            "position": {
+                "x": 12.40000057220459,
+                "y": 0.24200476706027986,
+                "z": 42.79999923706055
+            },
+            "routeDistance": 100.14038848876953,
+            "tier": 2,
+            "baseCultivation": 24,
+            "cultivation": 48,
+            "baseCopper": 8,
+            "copper": 16,
+            "martialUpgrade": false
+        },
+        {
+            "name": "青竹机关傀 PC 6",
+            "type": "NormalEnemy",
+            "position": {
+                "x": -11.600000381469727,
+                "y": 0.2070545107126236,
+                "z": -12.0
+            },
+            "routeDistance": 34.99897384643555,
+            "tier": 0,
+            "baseCultivation": 24,
+            "cultivation": 24,
+            "baseCopper": 8,
+            "copper": 8,
+            "martialUpgrade": false
+        },
+        {
+            "name": "青衣快剑 PC 12",
+            "type": "NormalEnemy",
+            "position": {
+                "x": -19.906147003173829,
+                "y": 0.17142587900161744,
+                "z": 8.860897064208985
+            },
+            "routeDistance": 58.158843994140628,
+            "tier": 1,
+            "baseCultivation": 17,
+            "cultivation": 26,
+            "baseCopper": 5,
+            "copper": 8,
+            "martialUpgrade": false
+        },
+        {
+            "name": "青衣快剑 PC 17",
+            "type": "NormalEnemy",
+            "position": {
+                "x": 28.80000114440918,
+                "y": 0.18428878486156465,
+                "z": -1.2000000476837159
+            },
+            "routeDistance": 77.92943572998047,
+            "tier": 2,
+            "baseCultivation": 17,
+            "cultivation": 34,
+            "baseCopper": 5,
+            "copper": 10,
+            "martialUpgrade": false
+        },
+        {
+            "name": "青衣快剑 PC 23",
+            "type": "NormalEnemy",
+            "position": {
+                "x": 8.800000190734864,
+                "y": 0.12650656700134278,
+                "z": -20.0
+            },
+            "routeDistance": 54.9470329284668,
+            "tier": 1,
+            "baseCultivation": 17,
+            "cultivation": 26,
+            "baseCopper": 5,
+            "copper": 8,
+            "martialUpgrade": false
+        },
+        {
+            "name": "青衣快剑 PC 35",
+            "type": "NormalEnemy",
+            "position": {
+                "x": -6.400000095367432,
+                "y": 0.2911607623100281,
+                "z": 20.399999618530275
+            },
+            "routeDistance": 69.95298767089844,
+            "tier": 1,
+            "baseCultivation": 17,
+            "cultivation": 26,
+            "baseCopper": 5,
+            "copper": 8,
+            "martialUpgrade": false
+        },
+        {
+            "name": "青衣快剑 PC 38",
+            "type": "NormalEnemy",
+            "position": {
+                "x": 10.0,
+                "y": 0.17481717467308045,
+                "z": 29.200000762939454
+            },
+            "routeDistance": 86.95209503173828,
+            "tier": 2,
+            "baseCultivation": 17,
+            "cultivation": 34,
+            "baseCopper": 5,
+            "copper": 10,
+            "martialUpgrade": false
+        },
+        {
+            "name": "青衣快剑 PC 4",
+            "type": "NormalEnemy",
+            "position": {
+                "x": -31.600000381469728,
+                "y": 0.27362436056137087,
+                "z": -4.800000190734863
+            },
+            "routeDistance": 41.01076889038086,
+            "tier": 1,
+            "baseCultivation": 17,
+            "cultivation": 26,
+            "baseCopper": 5,
+            "copper": 8,
+            "martialUpgrade": false
+        },
+        {
+            "name": "黑风刀客 PC 41",
+            "type": "EliteEnemy",
+            "position": {
+                "x": -30.0,
+                "y": 0.1507837027311325,
+                "z": 23.200000762939454
+            },
+            "routeDistance": 69.20497131347656,
+            "tier": 1,
+            "baseCultivation": 30,
+            "cultivation": 45,
+            "baseCopper": 10,
+            "copper": 15,
+            "martialUpgrade": false
+        },
+        {
+            "name": "黑风刀客 PC 46",
+            "type": "EliteEnemy",
+            "position": {
+                "x": 8.0,
+                "y": 0.17963355779647828,
+                "z": -12.0
+            },
+            "routeDistance": 52.49019241333008,
+            "tier": 1,
+            "baseCultivation": 30,
+            "cultivation": 45,
+            "baseCopper": 10,
+            "copper": 15,
+            "martialUpgrade": false
+        }
+    ]
+}

@@ -3,6 +3,7 @@ using System.Linq;
 using UnityEngine;
 using WuxiaRoguelite.Audio;
 using WuxiaRoguelite.Battle;
+using WuxiaRoguelite.CameraTools;
 using WuxiaRoguelite.Cave;
 using WuxiaRoguelite.GameFlow;
 using WuxiaRoguelite.MartialArts;
@@ -259,7 +260,9 @@ namespace WuxiaRoguelite.UI
 
         private void Update()
         {
-            if (LevelLoadingScreen.IsLoading) return;
+            if (LevelLoadingScreen.IsLoading || StudioSplashScreen.IsBlocking) return;
+            UpdateGrowthFeedback();
+            UpdateFusionFeedback();
             UpdateHealthFeedback();
             UpdateExplorationNotices();
 
@@ -307,6 +310,7 @@ namespace WuxiaRoguelite.UI
 
         private void OnDisable()
         {
+            CloseChallengeLedger();
             SetSettingsOpen(false);
             SetCharacterScreenOpen(false);
             IsSettingsOpen = false;
@@ -353,6 +357,14 @@ namespace WuxiaRoguelite.UI
             Matrix4x4 originalGuiMatrix = ResponsiveGui.ApplyScale(guiScale);
             try
             {
+                if (StudioSplashScreen.IsBlocking)
+                {
+                    bool enabled = GUI.enabled;
+                    GUI.enabled = false;
+                    try { DrawMainMenu(); }
+                    finally { GUI.enabled = enabled; }
+                    return;
+                }
                 if (gameFlow.IsLevelTwoDifficultyNoticeActive)
                 {
                     DrawLevelTwoDifficultyNotice();
@@ -381,6 +393,15 @@ namespace WuxiaRoguelite.UI
                 if (gameFlow.IsOpeningIntroActive)
                 {
                     DrawTutorialSkipButton();
+                    return;
+                }
+
+                if (challengeLedgerOpen && (gameFlow.CurrentPhase != GamePhase.MainMapRunning || !gameFlow.HasBossTalents))
+                    CloseChallengeLedger();
+                if (gameFlow.HasBossTalents && (gameFlow.IsChallengeBriefingActive || challengeLedgerOpen))
+                {
+                    DrawChallengeBriefing();
+                    DrawSettingsButton();
                     return;
                 }
 
@@ -430,6 +451,8 @@ namespace WuxiaRoguelite.UI
                     else
                     {
                         DrawCharacterButtons();
+                        DrawChallengeButton();
+                        DrawRunObjective();
                     }
                 }
 
@@ -454,6 +477,8 @@ namespace WuxiaRoguelite.UI
             }
             finally
             {
+                DrawGrowthFeedback();
+                DrawFusionFeedback();
                 GUI.matrix = originalGuiMatrix;
             }
         }
@@ -550,7 +575,7 @@ namespace WuxiaRoguelite.UI
             FillRect(screen, WithAlpha(WuxiaUiTheme.BackgroundInk,
                 gameFlow.CurrentPhase == GamePhase.Ready ? 0.60f : 0.82f));
 
-            Rect panel = CenteredRect(440f, 404f);
+            Rect panel = CenteredRect(440f, 468f);
             DrawPanel(panel, Panel, Gold);
             ResponsiveGui.DrawSingleLineLabel(
                 new Rect(panel.x + 22f, panel.y + 14f, panel.width - 44f, 38f),
@@ -607,14 +632,15 @@ namespace WuxiaRoguelite.UI
                 MobileDisplaySettings.SetPortrait(false);
             }
 
+            DrawTiltShiftSetting(new Rect(panel.x + 22f, panel.y + 256f, panel.width - 44f, 64f));
             ResponsiveGui.DrawSingleLineLabel(
-                new Rect(panel.x + 22f, panel.y + 260f, panel.width - 44f, 24f),
+                new Rect(panel.x + 22f, panel.y + 326f, panel.width - 44f, 24f),
                 "操作", headingStyle, 11);
             ResponsiveGui.DrawSingleLineLabel(
-                new Rect(panel.x + 22f, panel.y + 288f, panel.width - 44f, 22f),
+                new Rect(panel.x + 22f, panel.y + 354f, panel.width - 44f, 22f),
                 "移动：竖屏滑动 / 横屏摇杆 / 键盘 W、A、S、D", bodyStyle, 10);
             ResponsiveGui.DrawSingleLineLabel(
-                new Rect(panel.x + 22f, panel.y + 312f, panel.width - 44f, 22f),
+                new Rect(panel.x + 22f, panel.y + 378f, panel.width - 44f, 22f),
                 "快捷键：P 角色状态 · B 装备背包 · Esc 设置", mutedStyle, 9);
 
             Rect bottomRow = new Rect(panel.x + 22f, panel.yMax - 52f, panel.width - 44f, 34f);
@@ -633,6 +659,21 @@ namespace WuxiaRoguelite.UI
                     "返回游戏", actionButtonStyle))
             {
                 SetSettingsOpen(false);
+            }
+        }
+
+        private void DrawTiltShiftSetting(Rect row)
+        {
+            WuxiaUiTheme.DrawCompactSurface(row, Panel, Gold);
+            WuxiaUiComponents.Text(new Rect(row.x + 14f, row.y + 4f, row.width - 140f, 28f),
+                "移轴景深", 18);
+            WuxiaUiComponents.Text(new Rect(row.x + 14f, row.y + 32f, row.width - 140f, 24f),
+                "远近柔焦，人物清晰", 12, Muted);
+            if (GUI.Button(new Rect(row.xMax - 112f, row.center.y - (ResponsiveGui.IsPortrait ? PortraitUiLayout.ActionHeight : 44f) / 2f,
+                98f, ResponsiveGui.IsPortrait ? PortraitUiLayout.ActionHeight : 44f),
+                TiltShiftEffect.UserEnabled ? "已开启" : "已关闭", WuxiaUiComponents.TouchButton()))
+            {
+                TiltShiftEffect.SetUserEnabled(!TiltShiftEffect.UserEnabled);
             }
         }
 
@@ -655,7 +696,7 @@ namespace WuxiaRoguelite.UI
 
             Rect buttonRect = GetTutorialSkipButtonRect();
             if (GUI.Button(buttonRect,
-                    new GUIContent(runtimeSkipTutorialIcon, "跳过关卡1，确认难度提示后进入关卡2"),
+                    new GUIContent(runtimeSkipTutorialIcon, "跳过教学，进入关卡2"),
                     iconButtonStyle))
             {
                 gameFlow.SkipTutorialLevel();
@@ -685,15 +726,16 @@ namespace WuxiaRoguelite.UI
             Rect safe = ResponsiveGui.SafeArea;
             float width = Mathf.Min(490f, safe.width - 32f);
             float bodyHeight = bodyStyle.CalcHeight(new GUIContent(lesson.Body), width - 48f);
-            float height = bodyHeight + 180f;
+            float height = bodyHeight + (ResponsiveGui.IsPortrait ? 196f : 180f);
             Rect card = new Rect(safe.center.x - width * 0.5f, safe.center.y - height * 0.5f, width, height);
             DrawPanel(card, Panel, Gold);
             GUI.Label(new Rect(card.x + 24f, card.y + 18f, width - 48f, 30f), lesson.Title, titleStyle);
             GUI.Label(new Rect(card.x + 24f, card.y + 62f, width - 48f, bodyHeight), lesson.Body, bodyStyle);
-            if (GUI.Button(new Rect(card.x + 24f, card.yMax - 94f, width - 48f, 48f),
+            if (GUI.Button(new Rect(card.x + 24f, card.yMax - (ResponsiveGui.IsPortrait ? 110f : 94f), width - 48f,
+                ResponsiveGui.IsPortrait ? PortraitUiLayout.ActionHeight : 48f),
                 lesson.Action, mainMenuButtonStyle)) confirm();
             GUI.Label(new Rect(card.x + 24f, card.yMax - 36f, width - 48f, 22f),
-                "仅关卡1显示 · 阅读期间不计时", mutedStyle);
+                "阅读时不计时", mutedStyle);
             DrawTutorialSkipButton();
             DrawSettingsButton();
             // Consume backdrop input; the movement gesture cannot dismiss a new lesson.
@@ -1711,27 +1753,30 @@ namespace WuxiaRoguelite.UI
                 new Rect(panel.x + 18f, panel.y + 9f, panel.width - 210f, 34f),
                 "侠客档案", titleStyle, 16);
             ResponsiveGui.DrawSingleLineLabel(
-                new Rect(panel.xMax - 174f, panel.y + 11f, 116f, 28f),
+                new Rect(panel.xMax - (ResponsiveGui.IsPortrait ? 198f : 174f), panel.y + 11f, 116f, 28f),
                 "江湖暂停", centeredStyle, 10);
-            if (GUI.Button(new Rect(panel.xMax - 60f, panel.y + 6f, 44f, 44f), "×", actionButtonStyle))
+            if (GUI.Button(new Rect(panel.xMax - (ResponsiveGui.IsPortrait ? 80f : 60f), panel.y + 6f,
+                ResponsiveGui.IsPortrait ? PortraitUiLayout.ActionHeight : 44f,
+                ResponsiveGui.IsPortrait ? PortraitUiLayout.ActionHeight : 44f), "×", actionButtonStyle))
             {
                 SetCharacterScreenOpen(false);
                 return;
             }
 
-            float tabY = panel.y + 50f;
-            float tabWidth = Mathf.Min(150f, (panel.width - 36f) * 0.5f);
-            float tabHeight = ResponsiveGui.IsPortrait ? 44f : 32f;
+            float tabY = panel.y + (ResponsiveGui.IsPortrait ? 82f : 50f);
+            float tabGap = ResponsiveGui.IsPortrait ? PortraitUiLayout.ActionGap : 4f;
+            float tabWidth = ResponsiveGui.IsPortrait ? (panel.width - 36f - tabGap) * 0.5f : Mathf.Min(150f, (panel.width - 36f) * 0.5f);
+            float tabHeight = ResponsiveGui.IsPortrait ? PortraitUiLayout.ActionHeight : 32f;
             if (GUI.Button(new Rect(panel.x + 18f, tabY, tabWidth, tabHeight), "角色状态", currentView == CharacterView.Status ? activeTabStyle : tabStyle))
             {
                 currentView = CharacterView.Status;
             }
-            if (GUI.Button(new Rect(panel.x + 22f + tabWidth, tabY, tabWidth, tabHeight), "装备背包", currentView == CharacterView.Equipment ? activeTabStyle : tabStyle))
+            if (GUI.Button(new Rect(panel.x + 18f + tabGap + tabWidth, tabY, tabWidth, tabHeight), "装备背包", currentView == CharacterView.Equipment ? activeTabStyle : tabStyle))
             {
                 currentView = CharacterView.Equipment;
             }
 
-            Rect content = new Rect(panel.x + 18f, tabY + tabHeight + 12f, panel.width - 36f, panel.height - tabHeight - 76f);
+            Rect content = new Rect(panel.x + 18f, tabY + tabHeight + 12f, panel.width - 36f, panel.yMax - (tabY + tabHeight + 12f) - 14f);
             if (currentView == CharacterView.Status)
             {
                 DrawStatus(content);
@@ -1915,40 +1960,24 @@ namespace WuxiaRoguelite.UI
             if (ResponsiveGui.IsPortrait) { DrawPortraitLevelUp(); return; }
             FillRect(new Rect(0f, 0f, ResponsiveGui.Width, ResponsiveGui.Height),
                 new Color(0.02f, 0.025f, 0.025f, 0.72f));
-            Rect panel = CenteredRect(660f, 340f);
+            Rect panel = CenteredRect(820f, 480f);
             DrawPanel(panel, new Color(0.09f, 0.105f, 0.105f, 1f), Gold,
                 WuxiaPanelKind.Paper);
-            GUI.Label(new Rect(panel.x + 18f, panel.y + 12f, panel.width - 36f, 32f), "修为突破", titleStyle);
+            GUI.Label(new Rect(panel.x + 18f, panel.y + 12f, 145f, 32f), "修为突破", titleStyle);
+            if (!string.IsNullOrEmpty(gameFlow.RouteOpeningHint))
+                WuxiaUiComponents.Text(new Rect(panel.x + 170, panel.y + 17, panel.width - 188, 24), gameFlow.RouteOpeningHint, 13, Gold);
 
-            float detailsWidth = Mathf.Clamp(panel.width * 0.39f, 210f, 244f);
             Rect choicesArea = new Rect(panel.x + 18f, panel.y + 54f,
-                panel.width - detailsWidth - 50f, panel.height - 112f);
-            Rect detailsArea = new Rect(choicesArea.xMax + 14f, choicesArea.y,
-                detailsWidth, choicesArea.height);
-            string hoveredArt = null;
-
-            for (int i = 0; i < gameFlow.currentChoices.Count; i++)
+                panel.width - 36f, panel.height - 112f);
+            int count = gameFlow.currentChoices.Count;
+            float cardWidth = (choicesArea.width - Mathf.Max(0, count - 1) * 12f) / Mathf.Max(1, count);
+            for (int i = 0; i < count; i++)
             {
-                string artId = gameFlow.currentChoices[i];
-                Rect card = new Rect(choicesArea.x, choicesArea.y + i * 72f,
-                    choicesArea.width, 62f);
-                if (card.Contains(Event.current.mousePosition))
-                {
-                    hoveredArt = artId;
-                }
-
+                string id = gameFlow.currentChoices[i];
+                Rect card = new Rect(choicesArea.x + i * (cardWidth + 12f), choicesArea.y,
+                    cardWidth, choicesArea.height);
                 bool selected = GUI.Button(card, GUIContent.none, actionButtonStyle);
-                DrawIcon(new Rect(card.x + 7f, card.y + 7f, 48f, 48f),
-                    FindMartialArtIcon(artId), MartialArtIconRenderer.Accent(artId));
-                ResponsiveGui.DrawSingleLineLabel(
-                    new Rect(card.x + 65f, card.y + 5f, card.width - 74f, 26f),
-                    GetOfferName(artId), headingStyle, 10);
-                MartialArtDefinition definition = MartialArtCatalog.Get(artId);
-                ResponsiveGui.DrawSingleLineLabel(
-                    new Rect(card.x + 65f, card.y + 31f, card.width - 74f, 22f),
-                    definition?.GetEffectSummary(playerStats.GetMartialArtRank(artId) + 1) ?? "查看效果",
-                    mutedStyle, 8);
-
+                DrawFusionChoiceCard(card, id);
                 if (selected)
                 {
                     gameFlow.ChooseMartialArt(i);
@@ -1956,45 +1985,13 @@ namespace WuxiaRoguelite.UI
                 }
             }
 
-            if (hoveredArt == null && gameFlow.currentChoices.Count > 0)
-            {
-                hoveredArt = gameFlow.currentChoices[0];
-            }
-            DrawMartialArtTooltip(detailsArea, hoveredArt);
-
             GUI.enabled = gameFlow.martialArtRerollsRemaining > 0;
-            if (GUI.Button(new Rect(choicesArea.x, panel.yMax - 44f, choicesArea.width, 30f),
+            if (GUI.Button(new Rect(choicesArea.x, panel.yMax - 52f, choicesArea.width, 44f),
                     $"重观残页（剩余 {gameFlow.martialArtRerollsRemaining}）", actionButtonStyle))
             {
                 gameFlow.RerollMartialArtChoices();
             }
             GUI.enabled = true;
-        }
-
-        private void DrawMartialArtTooltip(Rect rect, string artId)
-        {
-            DrawPanel(rect, new Color(0.055f, 0.065f, 0.06f, 0.98f), Gold,
-                WuxiaPanelKind.Paper);
-            MartialArtDefinition definition = MartialArtCatalog.Get(artId);
-            if (definition == null)
-            {
-                GUI.Label(new Rect(rect.x + 14f, rect.y + 22f, rect.width - 28f, 28f),
-                    "悬停武学查看效果", headingStyle);
-                GUI.Label(new Rect(rect.x + 14f, rect.y + 58f, rect.width - 28f, 78f),
-                    "选择后会立即获得本局属性加成；突破期间所有时间暂停。", mutedStyle);
-                return;
-            }
-
-            ResponsiveGui.DrawSingleLineLabel(
-                new Rect(rect.x + 14f, rect.y + 10f, rect.width - 28f, 28f),
-                GetOfferName(definition.id), headingStyle, 10);
-            ResponsiveGui.DrawSingleLineLabel(
-                new Rect(rect.x + 14f, rect.y + 40f, rect.width - 28f, 20f),
-                $"{MartialArtCatalog.SchoolName(definition.school)} · {definition.category}", mutedStyle, 9);
-            GUI.Label(new Rect(rect.x + 14f, rect.y + 68f, rect.width - 28f, 44f),
-                definition.GetEffectSummary(playerStats.GetMartialArtRank(artId) + 1), tooltipEffectStyle);
-            GUI.Label(new Rect(rect.x + 14f, rect.y + 116f, rect.width - 28f, rect.height - 126f),
-                definition.description, bodyStyle);
         }
 
         private void DrawMartialArtTile(Rect rect, string artId)
@@ -2115,59 +2112,8 @@ namespace WuxiaRoguelite.UI
 
         private void DrawResultPanel()
         {
-            if (ResponsiveGui.IsPortrait) { DrawPortraitResult(); return; }
-            FillRect(new Rect(0f, 0f, ResponsiveGui.Width, ResponsiveGui.Height), new Color(0.02f, 0.025f, 0.025f, 0.78f));
-            Rect safe = ResponsiveGui.SafeArea;
-            float width = Mathf.Min(460f, safe.width - 32f);
-            float height = Mathf.Min(280f, safe.height - 32f);
-            Rect panel = new Rect(
-                safe.center.x - width * 0.5f,
-                safe.center.y - height * 0.5f,
-                width,
-                height);
-            bool cleared = gameFlow.IsTutorialCompletionSummary || gameFlow.bossDefeated;
-            DrawPanel(panel, Panel,
-                cleared ? Jade : new Color(0.72f, 0.25f, 0.20f),
-                WuxiaPanelKind.Boss);
-            GUI.Label(
-                new Rect(panel.x + 24f, panel.y + 16f, panel.width - 48f, 36f),
-                gameFlow.IsTutorialCompletionSummary ? "教学完成" : gameFlow.bossDefeated ? "闯关功成" : "江湖路断",
-                titleStyle);
-            ResponsiveGui.DrawSingleLineLabel(
-                new Rect(panel.x + 24f, panel.y + 58f, panel.width - 48f, 24f),
-                gameFlow.CurrentLevelDisplayName, headingStyle, 11);
-            ResponsiveGui.DrawSingleLineLabel(
-                new Rect(panel.x + 24f, panel.y + 90f, panel.width - 48f, 24f),
-                gameFlow.statusMessage, bodyStyle, 9);
-            ResponsiveGui.DrawSingleLineLabel(
-                new Rect(panel.x + 24f, panel.y + 122f, panel.width - 48f, 22f),
-                $"等级 {playerStats.level}  ·  击杀 {playerStats.killCount}  ·  磨砺 {playerStats.combatMomentumRank}/{PlayerStats.MaxCombatMomentumRank}  ·  洞穴 {playerStats.caveEntries}",
-                mutedStyle, 9);
-            string buildSummary = playerStats.learnedMartialArts.Count > 0
-                ? string.Join(" · ", playerStats.learnedMartialArts.Take(3))
-                : "尚未习得武学";
-            ResponsiveGui.DrawSingleLineLabel(
-                new Rect(panel.x + 24f, panel.y + 152f, panel.width - 48f, 22f),
-                $"本关武学：{buildSummary}", mutedStyle, 9);
-
-            float buttonGap = 12f;
-            float buttonWidth = (panel.width - 48f - buttonGap) * 0.5f;
-            Rect homeButton = new Rect(panel.x + 24f, panel.yMax - 64f, buttonWidth, 44f);
-            Rect nextButton = new Rect(homeButton.xMax + buttonGap, homeButton.y, buttonWidth, 44f);
-            if (GUI.Button(homeButton, "返回主页", actionButtonStyle))
-            {
-                gameFlow.ReturnToMainMenu();
-            }
-
-            GUI.enabled = gameFlow.CanContinueToNextLevel;
-            if (GUI.Button(
-                    nextButton,
-                    gameFlow.CanContinueToNextLevel ? "下一关" : "下一关尚未开放",
-                    mainMenuButtonStyle))
-            {
-                gameFlow.ContinueToNextLevel();
-            }
-            GUI.enabled = true;
+            if (gameFlow.IsEndingOpen) DrawGameEnding();
+            else DrawRunReview();
         }
 
         private void DrawDebugControls()

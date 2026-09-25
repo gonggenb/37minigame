@@ -149,6 +149,13 @@ namespace WuxiaRoguelite.Battle
                 ? BossV2Tuning.OpeningFoxfireDelay
                 : isMidBossBattle ? MidBossTuning.OpeningSkillDelay : 0f;
             BossSkillCooldownRemaining = BossSkillCooldownDuration;
+            if (isBossBattle && enemy != null)
+            {
+                float openingMultiplier = enemy.bossApproach == BossApproach.Rapid ? .8f :
+                    enemy.bossApproach == BossApproach.Fierce ? 1.25f : 1f;
+                BossSkillCooldownDuration *= openingMultiplier;
+                BossSkillCooldownRemaining = BossSkillCooldownDuration;
+            }
             LastBossSkill = BossSkillId.None;
             BossSkillSequence = 0;
             LastBossSkillTriggeredAt = -100f;
@@ -173,6 +180,12 @@ namespace WuxiaRoguelite.Battle
             ResetMidBossSkills();
             ResetFinalBossSkills();
             martialArtLastActivationTimes.Clear();
+            BeginEnemyTraits();
+            if (isBossBattle && enemy.bossApproach == BossApproach.Armored)
+            {
+                BossWardMax = BossWard = enemy.maxHealth * .10f;
+                FinalBossWardAge = 0f;
+            }
             PlayerShield = CalculateOpeningShield();
             if (playerStats.GetMartialArtRank("金钟罩") > 0)
             {
@@ -186,6 +199,7 @@ namespace WuxiaRoguelite.Battle
 
         public void CancelBattle()
         {
+            ResetUltimateVisuals();
             if (battleRoutine != null)
             {
                 StopCoroutine(battleRoutine);
@@ -193,6 +207,7 @@ namespace WuxiaRoguelite.Battle
             }
 
             IsBattleActive = false;
+            ResetEnemyTraits();
             currentEnemy = null;
             PlayerAttackVisualSequence = 0;
             PlayerAttackVisualCues = BattleVfxCue.None;
@@ -239,6 +254,7 @@ namespace WuxiaRoguelite.Battle
                 PlayerAttackCooldownRemaining -= combatDeltaTime;
                 EnemyAttackCooldownRemaining -= combatDeltaTime;
                 poisonTickCooldown -= combatDeltaTime;
+                TickEnemyVenom(combatDeltaTime);
                 if (IsBossEncounter)
                 {
                     if (IsBossBattle)
@@ -336,7 +352,7 @@ namespace WuxiaRoguelite.Battle
                 forcedShadowDodge = interval < int.MaxValue && EnemyAttackAttempts % interval == 0;
             }
 
-            if (forcedShadowDodge || UnityEngine.Random.value < defender.dodgeChance)
+            if (forcedShadowDodge || UnityEngine.Random.value < (isPlayerAttack ? defender.dodgeChance : PlayerDodgeChance()))
             {
                 LastAttackWasDodged = true;
                 LastVfxCues |= BattleVfxCue.Dodge;
@@ -362,13 +378,15 @@ namespace WuxiaRoguelite.Battle
                 return 1f;
             }
 
-            float effectiveDefense = defender.defense;
+            float effectiveDefense = isPlayerAttack ? defender.defense : EffectivePlayerDefense;
             if (isPlayerAttack && ReferenceEquals(defender, currentEnemy))
             {
                 effectiveDefense = Mathf.Max(0f, effectiveDefense - EnemyArmorBreak);
             }
 
             float attackPower = attacker.attack;
+            if (!isPlayerAttack && CurrentEnemyTrait == EnemyTrait.HeavyOpening && EnemyAttackAttempts == 1)
+                attackPower *= EnemyTraits.OpeningAttackMultiplier;
             if (isPlayerAttack)
             {
                 int openingRank = playerStats.GetMartialArtRank("惊鸿一式");
@@ -403,7 +421,8 @@ namespace WuxiaRoguelite.Battle
             bool isCrit = UnityEngine.Random.value < Mathf.Clamp01(critChance);
             if (isCrit)
             {
-                damage *= Mathf.Max(1f, attacker.critMultiplier);
+                damage *= isPlayerAttack ? BossTalentCatalog.CriticalMultiplier(CurrentBossTalent, attacker.critMultiplier)
+                    : Mathf.Max(1f, attacker.critMultiplier);
                 LastVfxCues |= BattleVfxCue.CriticalHit;
             }
 
@@ -432,12 +451,13 @@ namespace WuxiaRoguelite.Battle
 
             if (isPlayerAttack && ReferenceEquals(defender, currentEnemy))
             {
-                ApplyDamageToCurrentEnemy(damage);
+                damage = ApplyDamageToCurrentEnemy(damage);
             }
             else
             {
                 defender.TakeDamage(damage);
             }
+            if (!isPlayerAttack) ApplyEnemyVenom();
             float totalDamage = damage;
             LastVfxCues |= BattleVfxCue.BasicHit;
             string[] effects = new string[8];
@@ -469,7 +489,7 @@ namespace WuxiaRoguelite.Battle
                     effects[effectCount++] = $"连环剑 {CombatNumberDisplay.Format(comboDamage)}";
                 }
             }
-            else if (damage > 0f)
+            else if (damage > 0f || shieldAbsorbed > 0f)
             {
                 float reflectedDamage = ApplyRetaliation(attacker);
                 if (reflectedDamage > 0f)
@@ -485,7 +505,9 @@ namespace WuxiaRoguelite.Battle
             if (attacker.lifeSteal > 0f && totalDamage > 0f)
             {
                 float healthBeforeHeal = attacker.currentHealth;
-                attacker.Heal(totalDamage * attacker.lifeSteal);
+                if (isPlayerAttack) HealPlayerInBattle(totalDamage * attacker.lifeSteal);
+                else attacker.Heal(totalDamage * attacker.lifeSteal);
+                if (isPlayerAttack) RunReview.lifeStealHealing += attacker.currentHealth - healthBeforeHeal;
                 if (attacker.currentHealth > healthBeforeHeal + 0.01f)
                 {
                     LastVfxCues |= BattleVfxCue.Heal;
@@ -557,6 +579,7 @@ namespace WuxiaRoguelite.Battle
 
             float absorbed = Mathf.Min(PlayerShield, incomingDamage);
             PlayerShield -= absorbed;
+            RunReview.shieldAbsorbed += absorbed;
             return incomingDamage - absorbed;
         }
 
@@ -568,7 +591,7 @@ namespace WuxiaRoguelite.Battle
             if (healRatio > 0f)
             {
                 float heal = playerStats.runtimeStats.maxHealth * healRatio;
-                playerStats.runtimeStats.Heal(heal);
+                HealPlayerInBattle(heal);
                 LastVfxCues |= BattleVfxCue.Heal;
                 LastTriggeredEffect = $"闪避回血 {CombatNumberDisplay.Format(heal)}";
             }
@@ -674,7 +697,7 @@ namespace WuxiaRoguelite.Battle
 
             float damage = RollDamage(attacker.attack * ratio);
             LastVfxCues |= BattleVfxCue.SwordQi;
-            ApplyDamageToCurrentEnemy(damage);
+            damage = ApplyAttributedDamage(damage, DamageSource.SwordQi);
             int temperedPoisonRank = playerStats.GetSecretRank("青锋淬毒");
             if (temperedPoisonRank > 0 && currentEnemy != null)
             {
@@ -704,7 +727,7 @@ namespace WuxiaRoguelite.Battle
             }
 
             float damage = RollDamage(attacker.attack * (0.70f + rank * 0.20f));
-            ApplyDamageToCurrentEnemy(damage);
+            damage = ApplyAttributedDamage(damage, DamageSource.Combo);
             LastVfxCues |= BattleVfxCue.SwiftCombo;
             RegisterMartialArtActivation("无影连环剑");
             FeatureSkillVfx("无影连环剑");
@@ -719,9 +742,9 @@ namespace WuxiaRoguelite.Battle
                 return 0f;
             }
 
-            float ratio = 0.45f + rank * 0.20f;
+            float ratio = BossTalentCatalog.RetaliationRatio(rank);
             float damage = RollDamage(Mathf.Max(1f, playerStats.runtimeStats.defense * ratio));
-            ApplyDamageToCurrentEnemy(damage);
+            damage = ApplyAttributedDamage(damage, DamageSource.Retaliation);
             LastVfxCues |= BattleVfxCue.Retaliation;
             RegisterMartialArtActivation("反震诀");
             FeatureSkillVfx("反震诀");
@@ -751,18 +774,18 @@ namespace WuxiaRoguelite.Battle
                 FeatureSkillVfx("化功毒雾");
             }
             damage = RollDamage(damage);
-            ApplyDamageToCurrentEnemy(damage);
+            damage = ApplyAttributedDamage(damage, DamageSource.Poison);
 
             int lifeDrainRank = playerStats.GetMartialArtRank("吸星诀");
             float healthBeforePoisonHeal = playerStats.runtimeStats.currentHealth;
             if (lifeDrainRank > 0)
             {
-                playerStats.runtimeStats.Heal(damage * lifeDrainRank * 0.10f);
+                HealPlayerInBattle(damage * lifeDrainRank * 0.10f);
             }
             int poisonBloodRank = playerStats.GetSecretRank("以毒养血");
             if (poisonBloodRank > 0)
             {
-                playerStats.runtimeStats.Heal(damage * poisonBloodRank * 0.08f);
+                HealPlayerInBattle(damage * poisonBloodRank * 0.08f);
             }
             if (playerStats.runtimeStats.currentHealth > healthBeforePoisonHeal + 0.01f)
             {
@@ -804,10 +827,13 @@ namespace WuxiaRoguelite.Battle
                 CurrentBossPhase == BossBattlePhase.Foxfire)
             {
                 CurrentBossPhase = BossBattlePhase.DemonArmor;
-                BossWardMax = currentEnemy.maxHealth * BossV2Tuning.DemonArmorMaxHealthRatio;
+                BossWardMax = currentEnemy.maxHealth * BossV2Tuning.DemonArmorMaxHealthRatio *
+                    (currentEnemy.bossApproach == BossApproach.Armored ? 1.5f : 1f);
                 BossWard = BossWardMax;
                 TriggerBossSkill(BossSkillId.DemonArmor,
                     $"{currentEnemy.displayName}凝成妖甲：全伤害均可破甲");
+                if (currentEnemy.bossApproach != BossApproach.None && currentEnemy.challengeTier >= 1)
+                    BossSkillCooldownRemaining = Mathf.Min(BossSkillCooldownRemaining, 2.4f);
                 return;
             }
 
@@ -822,6 +848,8 @@ namespace WuxiaRoguelite.Battle
                     1f / Mathf.Max(0.1f, currentEnemy.attackSpeed));
                 TriggerBossSkill(BossSkillId.BloodFrenzy,
                     $"{currentEnemy.displayName}踏入残血狂暴：攻势与狐火加快");
+                if (currentEnemy.bossApproach != BossApproach.None && currentEnemy.challengeTier >= 2)
+                    BossSkillCooldownRemaining = Mathf.Min(BossSkillCooldownRemaining, 2f);
             }
         }
 
@@ -836,12 +864,14 @@ namespace WuxiaRoguelite.Battle
 
         private float GetFoxfireCooldown()
         {
-            return CurrentBossPhase switch
+            float duration = CurrentBossPhase switch
             {
                 BossBattlePhase.BloodFrenzy => BossV2Tuning.PhaseThreeFoxfireCooldown,
                 BossBattlePhase.DemonArmor => BossV2Tuning.PhaseTwoFoxfireCooldown,
                 _ => BossV2Tuning.PhaseOneFoxfireCooldown
             };
+            return duration * (currentEnemy.bossApproach == BossApproach.Rapid ? .8f :
+                currentEnemy.bossApproach == BossApproach.Fierce ? 1.1f : 1f);
         }
 
         private void TriggerBossSkill(BossSkillId skill, string log)
@@ -878,14 +908,23 @@ namespace WuxiaRoguelite.Battle
                 1f - DamageVarianceRatio, 1f + DamageVarianceRatio);
         }
 
-        private float ApplyDamageToCurrentEnemy(float damage)
+        private float ApplyDamageToCurrentEnemy(float damage) => ApplyAttributedDamage(damage, DamageSource.Basic);
+
+        private float ApplyAttributedDamage(float damage, DamageSource source)
         {
             if (currentEnemy == null || damage <= 0f)
             {
                 return 0f;
             }
 
+            damage *= BossTalentCatalog.DamageMultiplier(CurrentBossTalent, source);
             float remaining = damage;
+            if (EnemyOpeningArmor > 0)
+            {
+                float absorbed = Mathf.Min(EnemyOpeningArmor, remaining);
+                EnemyOpeningArmor -= absorbed; remaining -= absorbed;
+                if (EnemyOpeningArmor <= 0f) OpeningArmorBreakSequence++;
+            }
             if (IsBossEncounter && BossWard > 0f)
             {
                 float absorbed = Mathf.Min(BossWard, remaining);
@@ -907,7 +946,9 @@ namespace WuxiaRoguelite.Battle
                 currentEnemy.TakeDamage(remaining);
             }
 
-            return damage - remaining + (healthBefore - currentEnemy.currentHealth);
+            float resolved = damage - remaining + (healthBefore - currentEnemy.currentHealth);
+            RunReview.Record(source, resolved);
+            return resolved;
         }
 
         private void RegisterMartialArtActivation(string artId)
@@ -915,6 +956,7 @@ namespace WuxiaRoguelite.Battle
             if (!string.IsNullOrEmpty(artId))
             {
                 martialArtLastActivationTimes[artId] = Time.unscaledTime;
+                RecordUltimateActivation(artId);
             }
         }
 

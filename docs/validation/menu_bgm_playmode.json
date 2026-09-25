@@ -1,0 +1,45 @@
+{
+  "date": "2026-09-10",
+  "unity": "6000.5.4f1",
+  "scene": "MainPrototype",
+  "scope": "Controlled Editor Play Mode music integration; no device or subjective listening approval",
+  "checks": [
+    {
+      "menuPass": true,
+      "mutePass": true,
+      "unmutePass": true,
+      "selectionOpen": true,
+      "phase": "Ready",
+      "loopSeek": 63,
+      "clipLength": 64
+    },
+    {
+      "loopWrapped": true,
+      "loopTime": 7.36265326,
+      "menuContinuedInLevelSelection": true,
+      "sourceCount": 6
+    },
+    {
+      "enteredGame": "OpeningIntro",
+      "menuStopped": true,
+      "mapPlaying": true,
+      "mapClip": "bgm_mainmap_wuxia_urgent_60s_v01"
+    },
+    {
+      "returnToMenu": true,
+      "onlyMenu": true,
+      "sourceCount": 6,
+      "timer": 60
+    },
+    {
+      "globalPausePreservesPosition": true,
+      "before": 21.1413155,
+      "after": 21.162653
+    },
+    {
+      "pauseResumePass": true,
+      "originalMusicPreferenceRestored": 1
+    }
+  ],
+  "consoleErrors": 0
+}

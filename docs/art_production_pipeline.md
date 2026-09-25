@@ -194,6 +194,12 @@ Output constraints:
 6. 检查越界像素、透明杂点和半透明脏边。
 7. 输出条带和逐帧预览图。
 
+已确认的主角旧图抠图白边与封闭棋盘残底，由
+`Tools/ArtPipeline/clean_character_alpha_edges.py` 在归一化后处理；该工具使用已审查资源清单，
+不得直接套用到新角色、白毛或特效。先生成深浅底对照，再使用 `--apply`，保留原图和
+SHA-256 以便复现与回退。处理范围及 Unity 验证见
+[角色透明边缘修复](validation/alpha_cleanup/README.md)。
+
 ### 5.4 动画预览
 
 资源进入 Unity 前必须至少检查：

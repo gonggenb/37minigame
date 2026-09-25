@@ -1050,6 +1050,17 @@ namespace WuxiaRoguelite.EditorTools
             }
 
             const string tutorialPath = "Assets/Scenes/TutorialLevel.unity";
+            // The authored tutorial has its own environment; do not clone level two's town over it.
+            if (File.Exists(PingchuanTownLevelBuilder.TemplatePath) && File.Exists(tutorialPath))
+            {
+                EditorSceneManager.SaveOpenScenes();
+                EditorSceneManager.OpenScene(tutorialPath, OpenSceneMode.Single);
+                TutorialRestStopBuilder.Build();
+                RegisterBuildScene(tutorialPath);
+                EditorSceneManager.OpenScene(ScenePath, OpenSceneMode.Single);
+                return;
+            }
+
             EditorSceneManager.SaveOpenScenes();
             if (File.Exists(tutorialPath))
             {
@@ -1802,6 +1813,7 @@ namespace WuxiaRoguelite.EditorTools
                     LoadFrames(XuanjiaMidBossSkillPath, fallbackSprite)));
             }
 
+            LevelTwoMonsterPackBuilder.AddProfilesForLevelTwo(profiles);
             return profiles.ToArray();
         }
 
@@ -2152,7 +2164,7 @@ namespace WuxiaRoguelite.EditorTools
             }
         }
 
-        private static void ConfigureSpriteSheet(string path, int frameWidth, int frameHeight,
+        internal static void ConfigureSpriteSheet(string path, int frameWidth, int frameHeight,
             float pixelsPerUnit, Vector2? customPivot = null)
         {
             if (!File.Exists(path))

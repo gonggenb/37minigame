@@ -1,0 +1,21 @@
+{
+    "success": true,
+    "error": "",
+    "checks": [
+        "Splash automatically starts once at app startup",
+        "Packaged original logo loads from Resources",
+        "Startup holds gameplay and existing audio",
+        "Orientation change preserves active splash",
+        "Splash consumes neither gameplay timer",
+        "Automatic completion restores time scale and audio",
+        "Startup leaves the main menu inactive until presentation completes",
+        "Duplicate startup request in the same session is ignored",
+        "Returning home does not replay the splash",
+        "Changing levels does not replay the splash",
+        "Skip closes with a short fade without waiting for the full duration",
+        "Skip restores the previous time and audio state exactly",
+        "Skip does not open underlying menu or settings"
+    ],
+    "runtimeErrors": [],
+    "scope": "Controlled Unity Editor Play Mode in both orientations; not natural-route balance or device acceptance."
+}

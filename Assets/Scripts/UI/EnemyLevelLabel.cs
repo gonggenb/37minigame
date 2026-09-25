@@ -80,9 +80,21 @@ namespace WuxiaRoguelite.UI
             GUI.depth = -100;
             float guiScale = ResponsiveGui.Scale;
             Vector2 guiPoint = ResponsiveGui.ScreenPointToGui(screenPoint, guiScale);
-            Rect labelRect = new Rect(guiPoint.x - 26f, guiPoint.y - 9f, 52f, 18f);
-            string levelText = $"{encounter.enemyStats.DisplayLevel}级";
+            string trait = WuxiaRoguelite.Battle.EnemyTraits.Label(encounter.Trait);
+            float width = string.IsNullOrEmpty(trait) ? 52 : 164;
+            Rect labelRect = new Rect(guiPoint.x - width / 2, guiPoint.y - 9f, width, 18f);
+            string levelText = $"{encounter.enemyStats.DisplayLevel}级" + (string.IsNullOrEmpty(trait) ? "" : " · " + trait);
             Matrix4x4 originalGuiMatrix = ResponsiveGui.ApplyScale(guiScale);
+            var bounty = gameFlow.HasRunChallenge ? gameFlow.ChallengeRun.Find(encounter) : null;
+            if (bounty != null && !bounty.completed)
+            {
+                Rect banner = new Rect(guiPoint.x - 110, labelRect.y - 34, 220, 30);
+                WuxiaUiTheme.DrawCompactSurface(banner, new Color(.05f, .035f, .025f, .94f), WuxiaUiTheme.Danger);
+                var icon = ChallengeArt.Get("bounty_writ");
+                if (icon != null) GUI.DrawTexture(new Rect(banner.x + 2, banner.y, 30, 30), icon, ScaleMode.ScaleToFit, true);
+                WuxiaUiComponents.Text(new Rect(banner.x + 36, banner.y, banner.width - 40, 30),
+                    "悬赏强敌 · 胜利主修升重", 12, WuxiaUiTheme.Brass);
+            }
             ResponsiveGui.DrawSingleLineLabel(
                 new Rect(labelRect.x + 1f, labelRect.y + 1f, labelRect.width, labelRect.height),
                 levelText, shadowStyle, 9);
@@ -93,6 +105,20 @@ namespace WuxiaRoguelite.UI
                 : new Color(1f, 0.90f, 0.64f);
             ResponsiveGui.DrawSingleLineLabel(labelRect, levelText, labelStyle, 9);
             GUI.color = previous;
+            // Nearby targets expose the decision before contact. Distant targets remain compact.
+            if (playerDistance <= 9f && !string.IsNullOrEmpty(trait))
+            {
+                string counter = EnemyMatchupInsight.Counter(encounter.Trait, gameFlow.playerStats);
+                Rect insight = new Rect(Mathf.Clamp(guiPoint.x - 132, ResponsiveGui.SafeArea.x + 8,
+                    ResponsiveGui.SafeArea.xMax - 272), labelRect.yMax + 2, 264,
+                    string.IsNullOrEmpty(counter) ? 28 : 50);
+                WuxiaUiTheme.DrawCompactSurface(insight, WuxiaUiTheme.BackgroundInk, WuxiaUiTheme.Brass);
+                WuxiaUiComponents.Text(new Rect(insight.x + 6, insight.y, insight.width - 12, 26),
+                    EnemyMatchupInsight.Weakness(encounter.Trait), 14);
+                if (!string.IsNullOrEmpty(counter)) WuxiaUiComponents.Text(
+                    new Rect(insight.x + 6, insight.y + 24, insight.width - 12, 24), counter, 14,
+                    WuxiaUiTheme.TextPrimary);
+            }
             GUI.matrix = originalGuiMatrix;
         }
 
@@ -107,6 +133,9 @@ namespace WuxiaRoguelite.UI
                 worldCamera, anchor, guiScale, out Vector2 direction);
             string arrow = WorldIndicatorUtility.DirectionArrow(direction);
             string label = $"{arrow} {encounter.enemyStats.DisplayLevel}级  {Mathf.CeilToInt(playerDistance)}步";
+            var flow = GameFlowController.Instance;
+            if (flow != null && flow.HasRunChallenge && flow.ChallengeRun.Find(encounter) != null)
+                label = $"{arrow} 悬赏  {Mathf.CeilToInt(playerDistance)}步";
             Rect panel = new Rect(markerPoint.x - 54f, markerPoint.y - 13f, 108f, 26f);
 
             int playerLevel = playerStats != null ? playerStats.level : 1;

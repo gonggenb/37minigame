@@ -1,0 +1,69 @@
+[
+  {
+    "id": "01",
+    "name": "incense",
+    "prompt": "Create a brand-new vertical 9:16 cinematic wuxia game CG keyframe, no text, no logo, no collage. Extreme macro closeup of the burning tip of a single slender incense stick rising from an ancient bronze censer at the bottom-left of frame. One incandescent ember breaks loose and floats right, ash grain detail, thin graceful smoke rising into immense dark negative space. Far out of focus behind, the silhouette of a ruined Chinese temple doorway. Midnight desaturated jade-black and ivory shadows, a tiny rich vermilion ember as the only saturated accent, dramatic rim light, volumetric cinematic depth, premium handpainted anime game concept art with realistic surfaces, very strong focal hierarchy and intentional negative space. Tiny object, enormous darkness. Entirely new environment art, not a portrait. No countdown numbers, no UI, no calligraphy. Keep crucial visual action in central 70%.",
+    "source_file": "/Users/gongyuyang/.codex/generated_images/01a0c4c0-a309-7f23-9576-97ec465307a2/exec-f8e428bf-2dbf-4902-94e0-8d8f77b3ab78.png"
+  },
+  {
+    "id": "02",
+    "name": "mountain_city",
+    "prompt": "Generate one new full-frame 9:16 vertical cinematic establishing shot for an original wuxia game concept trailer. Bird's-eye view over a steep ancient Chinese mountain town, layered dark tiled rooftops and long stone stairs rushing toward a distant ruined temple on a rocky ridge. A SINGLE subtle huge nine-tailed fox-shaped shadow in the red cloudbank above that temple hints at danger, not a literal character closeup. Wind whips a few ivory paper scraps past camera; tiny vermilion lanterns lead the eye through mist. Three depth planes: close roof eave silhouette, intricate city valley, vast ominous crimson storm sky. Desaturated charcoal jade, misty ivory, selective vermilion and old gold. Sophisticated handpainted anime cinematic concept art, architectural coherence, moody high-contrast lighting, vast scale, NOT photoreal or neon sci-fi. New environment art. No text, labels, watermarks, borders or montage.",
+    "source_file": "/Users/gongyuyang/.codex/generated_images/01a0c4c0-a309-7f23-9576-97ec465307a2/exec-ff4c0032-a33c-4ca6-94ed-55a76cb9b054.png"
+  },
+  {
+    "id": "03",
+    "name": "sword_closeup",
+    "refs": [
+      "hero_draws_sword.png"
+    ],
+    "prompt": "Use the reference ONLY to preserve the original male swordsman's navy and ivory sleeve, black gold bracer and ornate sword design. Create a COMPLETELY NEW 9:16 vertical cinematic CG macro keyframe; no portrait or reuse of composition. Frame only his TWO anatomically correct hands at waist height: left hand holds dark scabbard, right hand firmly grasps sword hilt and has drawn exactly a short six-inch section of silver blade, a thin cool ivory specular glint at the mouth. A muted vermilion flame reflected in polished metal signals approaching danger. Black ponytail and face are OUT OF FRAME. Background a blurred wet stone temple staircase at night, drifting pale ash. Dramatic shallow depth of field, charcoal-jade shadows, ivory and muted old-gold highlights. Premium handpainted wuxia anime cinematic realism, gripping anticipation before combat. No extra hands, no duplicated blades, no text, no UI, no collage.",
+    "source_file": "/Users/gongyuyang/.codex/generated_images/01a0c4c0-a309-7f23-9576-97ec465307a2/exec-3d7fb345-a2b5-4041-a9bb-bc90c2f4e197.png"
+  },
+  {
+    "id": "04",
+    "name": "hero_rooftop",
+    "refs": [
+      "hero_draws_sword.png"
+    ],
+    "prompt": "Use the reference ONLY for male character identity and costume: young adult Chinese swordsman, black high ponytail with small old-gold clasp, layered navy/ivory wuxia robes, dark bracers and gold trim, straight sword. Generate a COMPLETELY NEW vertical 9:16 cinematic action CG keyframe. WIDE low tracking-camera angle behind and slightly to the side of the swordsman as he lands in a deep forward lunge on a rain-slick tiled roof and advances toward a distant ruined temple. His body occupies at most 40% of frame, face visible only in three-quarter profile, one sword held LOW pointing forward, long ponytail and ivory robe hems swept dramatically backward, two legs with a readable grounded landing pose. Foreground blurred roof ridge gives depth, city rooftops beneath, red storm sky above. A few tiles dislodge into air, ash and mist create controlled directional motion. Desaturated jade-charcoal, ivory, vermilion storm accent. Premium handpainted anime game CG, strong perspective and action staging, emotionally determined. No poster portrait, no giant central face, no text or UI, no extra limbs or weapons.",
+    "source_file": "/Users/gongyuyang/.codex/generated_images/01a0c4c0-a309-7f23-9576-97ec465307a2/exec-168b1942-e16b-47fb-898e-dde94c794a3f.png"
+  },
+  {
+    "id": "05",
+    "name": "fox_reveal",
+    "refs": [
+      "fox_bloodmoon.png"
+    ],
+    "prompt": "Use reference ONLY to keep the fox antagonist's identity: adult fox woman, long burgundy hair, fox ears, amber eyes, ornate red/ivory/gold robes, nine ivory tails tipped crimson. Create a NEW 9:16 cinematic CG scene: ground-level camera from the bottom of monumental dark stone temple stairs looking far upward. The fox woman stands SMALL at the top in upper-middle frame, side-on with head turning toward camera, hands lowered, an immense FAN of nine separate tails unfurling behind her fills the ruined temple gate with a threatening silhouette. She is dangerous and regal, not pin-up. Foreground empty broken stairs, red flower petals moving toward camera, a thin ribbon of red foxfire snakes down one side of steps. Stormy charcoal sky and a dim crimson moon HALF-HIDDEN behind architecture. Strong depth, underlighting, desaturated jade shadows and ivory tails, controlled vermilion accents. Premium handpainted anime film concept art, architecture detailed, ominous scale and narrative. No reuse of original frontal portrait composition, no text or UI, no collage.",
+    "source_file": "/Users/gongyuyang/.codex/generated_images/01a0c4c0-a309-7f23-9576-97ec465307a2/exec-447bf7de-aae9-4463-b94d-d71544295a4c.png"
+  },
+  {
+    "id": "06",
+    "name": "clash",
+    "refs": [
+      "hero_draws_sword.png",
+      "fox_bloodmoon.png"
+    ],
+    "prompt": "Make one original vertical 9:16 cinematic wuxia action CG keyframe, using references ONLY for hero and fox-antagonist identity, costumes and colors. Staging: dramatic very wide side view across the courtyard of a ruined Chinese temple at night. The small navy-and-ivory black-ponytail male swordsman at LOWER LEFT drives a SINGLE clean diagonal silver sword slash toward upper right; the red/ivory fox woman stands at UPPER RIGHT on a stair platform, nine enormous ivory-crimson tails sweep outward into the arc. Their sword light and foxfire collide just right of center as a concentrated bright golden-white contact point, NOT a whole-frame explosion. Stone fragments, red petals, cloak fabric and a clean curved shockwave mark the impact. Both characters fully distinct with readable silhouettes, dynamic but anatomically correct, no extra limbs. Large temple pillars and storm cloud layers show huge scale, characters at most one-third the frame height each. Charcoal-jade negative space, ivory light, controlled vermilion, antique gold. Premium handpainted anime cinematic CG illustration, strong motion direction and depth, art directed, no text, no borders, no UI, no collage, no borrowed franchise symbols.",
+    "source_file": "/Users/gongyuyang/.codex/generated_images/01a0c4c0-a309-7f23-9576-97ec465307a2/exec-772cc976-9c13-4682-8bbe-94ff6c8a9e21.png"
+  },
+  {
+    "id": "07",
+    "name": "hero_resolve",
+    "refs": [
+      "hero_draws_sword.png"
+    ],
+    "prompt": "Create an entirely NEW vertical 9:16 cinematic CG keyframe of the SAME young adult Chinese male wuxia swordsman from the reference, using it only to preserve black high ponytail, dark eyes, angular face, navy/ivory/gold clothing. Extreme close-up three-quarter PROFILE of his focused face, looking hard toward frame right at an unseen enemy, only one eye fully visible, mouth closed, a few wet black hair strands across cheek. Sword blade held vertically OUT OF FOCUS along the far right edge reflects a narrow warm red flame. Face occupies central half, dark temple roof silhouette beyond, fine rain and ivory drifting ash, strong cool jade rim light against crimson reflected light. Emotion is quiet resolve immediately before battle, not beauty posing, not angry open-mouth shouting. Painterly cinematic anime realism, subtly textured skin, restrained palette, shallow focus. No text, no logo, no collage, no duplicated face, no copied reference background.",
+    "source_file": "/Users/gongyuyang/.codex/generated_images/01a0c4c0-a309-7f23-9576-97ec465307a2/exec-2e10624e-5a2f-4fe0-9718-466d21e9e711.png"
+  },
+  {
+    "id": "08",
+    "name": "foxfire_assault",
+    "refs": [
+      "fox_bloodmoon.png"
+    ],
+    "prompt": "Generate one NEW vertical 9:16 high-end handpainted anime wuxia cinematic CG action frame. Reference only locks antagonist identity: adult amber-eyed fox woman, long burgundy hair, red ivory antique-gold robes, nine white tails with red tips. HIGH OVERHEAD camera looking steeply DOWN across a wet ruined Chinese temple courtyard, fox woman SMALL near top center on the stairs, extends one arm. Three discrete red foxfire arcs sweep from her toward lower left of frame like a fan-shaped advancing attack, reflected on dark stone slabs; no swordsman yet, no impact explosion. Nine flowing tails create an ivory fan behind her, old stone lanterns, broken roof tiles, windblown red petals and low ground fog. Clear empty dark gaps between three arcs so movement direction is readable. Most frame is courtyard geometry and travel distance, not a character poster. Cinematic foreshortening, desaturated charcoal-jade shadows, selective vermilion fire and ivory tails, no neon technoscience. No typography, no UI, no logo, no collage, anatomically coherent.",
+    "source_file": "/Users/gongyuyang/.codex/generated_images/01a0c4c0-a309-7f23-9576-97ec465307a2/exec-24cb816d-e4f2-44e7-a63f-5249fcfe6687.png"
+  }
+]

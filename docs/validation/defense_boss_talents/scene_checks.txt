@@ -1,0 +1,2 @@
+BambooValleyLevel: announced talent delivered to actual final boss.
+TutorialLevel: new run excludes both talents and talent briefing.

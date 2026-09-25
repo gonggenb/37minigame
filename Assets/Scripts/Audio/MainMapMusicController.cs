@@ -16,8 +16,10 @@ namespace WuxiaRoguelite.Audio
         public AudioSource specialMusicSource;
         public AudioSource stingerSource;
         public AudioSource timeWarningSource;
+        public AudioSource menuMusicSource;
 
         [Header("Music Assets")]
+        public AudioClip menuMusic;
         public AudioClip normalBattleStem;
         public AudioClip caveMusic;
         public AudioClip caveBattleStem;
@@ -36,6 +38,9 @@ namespace WuxiaRoguelite.Audio
         public AudioClip timeWarningBell20;
 
         [Header("Mix")]
+        [Range(0f, 1f)] public float menuMusicVolume = 0.32f;
+        [Min(0.01f)] public float menuFadeInSeconds = 1.5f;
+        [Min(0.01f)] public float menuFadeOutSeconds = 0.65f;
         [Range(0f, 1f)] public float volume = 0.35f;
         [Range(0f, 1f)] public float overlayVolume = 0.2f;
         [Range(0f, 1f)] public float specialMusicVolume = 0.38f;
@@ -95,9 +100,17 @@ namespace WuxiaRoguelite.Audio
         {
             ResolveReferences(true);
             ConfigureSources();
-            ResolveTimeWarningAssets();
-            bossArmorAccent = Resources.Load<AudioClip>("Audio/BossTransitions/stg_fox_armor_transition_v01");
-            bossFrenzyAccent = Resources.Load<AudioClip>("Audio/BossTransitions/stg_fox_frenzy_transition_v01");
+            bool menuOnly = gameObject.scene.name == LevelSequence.MenuSceneName;
+            if (!menuOnly) ResolveTimeWarningAssets();
+            if (menuMusic == null)
+            {
+                menuMusic = Resources.Load<AudioClip>("Audio/Menu/bgm_menu_wuxia_punk_dj_60s_v02");
+            }
+            if (!menuOnly)
+            {
+                bossArmorAccent = Resources.Load<AudioClip>("Audio/BossTransitions/stg_fox_armor_transition_v01");
+                bossFrenzyAccent = Resources.Load<AudioClip>("Audio/BossTransitions/stg_fox_frenzy_transition_v01");
+            }
             MusicEnabled = PlayerPrefs.GetInt(MusicEnabledPreference, 1) != 0;
             ApplyMusicEnabledState();
         }
@@ -136,6 +149,7 @@ namespace WuxiaRoguelite.Audio
             SetMuted(specialMusicSource, muted);
             SetMuted(stingerSource, muted);
             SetMuted(timeWarningSource, muted);
+            SetMuted(menuMusicSource, muted);
         }
 
         private static void SetMuted(AudioSource source, bool muted)
@@ -176,6 +190,9 @@ namespace WuxiaRoguelite.Audio
             timeWarningSource = timeWarningSource != null
                 ? timeWarningSource
                 : gameObject.AddComponent<AudioSource>();
+            menuMusicSource = menuMusicSource != null
+                ? menuMusicSource
+                : gameObject.AddComponent<AudioSource>();
         }
 
         private void ConfigureSources()
@@ -185,6 +202,7 @@ namespace WuxiaRoguelite.Audio
             ConfigureSource(specialMusicSource, 188, false, specialMusicVolume);
             ConfigureSource(stingerSource, 160, false, stingerVolume);
             ConfigureSource(timeWarningSource, 168, false, 1f);
+            ConfigureSource(menuMusicSource, 196, true, 0f);
         }
 
         private static void ConfigureSource(AudioSource source, int priority, bool loop, float configuredVolume)
@@ -203,6 +221,7 @@ namespace WuxiaRoguelite.Audio
 
         private void SyncPlayback()
         {
+            SyncMenuMusic();
             if (gameFlow == null || musicSource == null || musicSource.clip == null)
             {
                 return;
@@ -303,7 +322,7 @@ namespace WuxiaRoguelite.Audio
                     StopSource(stingerSource, ref stingerPaused, true);
                     StopTimeWarning(true);
                     restartMainMusicOnNextRun = true;
-                    ActiveMusicState = "Ready";
+                    ActiveMusicState = phase == GamePhase.Ready && menuMusic != null ? "Menu" : "Ready";
                     break;
             }
 
@@ -312,6 +331,34 @@ namespace WuxiaRoguelite.Audio
             UpdateOverlayFade();
             previousPhase = phase;
             previousMainTime = gameFlow.mainTimeRemaining;
+        }
+
+        private void SyncMenuMusic()
+        {
+            // The studio splash and existing pause UI own AudioListener.pause.
+            // Do not restart a globally paused source or consume its entrance fade.
+            if (gameFlow == null || menuMusicSource == null || menuMusic == null || AudioListener.pause)
+            {
+                return;
+            }
+
+            bool inMenu = gameFlow.CurrentPhase == GamePhase.Ready;
+            if (inMenu && !menuMusicSource.isPlaying)
+            {
+                menuMusicSource.clip = menuMusic;
+                menuMusicSource.loop = true;
+                menuMusicSource.volume = 0f;
+                menuMusicSource.Play();
+            }
+
+            float target = inMenu ? menuMusicVolume : 0f;
+            float fadeSeconds = inMenu ? menuFadeInSeconds : menuFadeOutSeconds;
+            menuMusicSource.volume = Mathf.MoveTowards(menuMusicSource.volume, target,
+                Mathf.Max(menuMusicVolume, 0.01f) * Time.unscaledDeltaTime / Mathf.Max(fadeSeconds, 0.01f));
+            if (!inMenu && menuMusicSource.isPlaying && menuMusicSource.volume <= 0f)
+            {
+                menuMusicSource.Stop();
+            }
         }
 
         private void PlayMainMapMusic()

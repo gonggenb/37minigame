@@ -42,7 +42,8 @@ namespace WuxiaRoguelite.EditorTools
             Transform encounters = new GameObject("Bamboo Valley Encounters").transform;
             void Place(string templateName, Vector2 point)
             {
-                EncounterTrigger template = originalEncounters.First(e => e.name == templateName);
+                var stableTemplates = AssetDatabase.LoadAssetAtPath<GameObject>(PingchuanTownLevelBuilder.TemplatePath);
+                EncounterTrigger template = (stableTemplates != null ? stableTemplates.GetComponentsInChildren<EncounterTrigger>(true) : originalEncounters).First(e => e.name == templateName);
                 GameObject clone = Object.Instantiate(template.gameObject, encounters);
                 clone.name = templateName + " BV " + encounters.childCount;
                 clone.transform.position = new Vector3(point.x, BambooValleyLayout.SurfaceHeight(point.x, point.y), point.y);
@@ -58,6 +59,8 @@ namespace WuxiaRoguelite.EditorTools
             Place("隐市岩洞",new(20,-2.8f));
             encounters.GetComponentsInChildren<EncounterTrigger>().Last(e=>e.encounterType==EncounterType.HiddenCave).caveContent=CaveContentType.Random;
             foreach (EncounterTrigger old in originalEncounters) Object.DestroyImmediate(old.gameObject);
+            foreach(string oldName in new[]{"Pingchuan Town Environment","Pingchuan Encounters"})
+            {var old=GameObject.Find(oldName);if(old!=null)Object.DestroyImmediate(old);}
             GameObject map = GameObject.Find("3D Prototype Map");
             if (map != null) Object.DestroyImmediate(map);
 
@@ -83,9 +86,12 @@ namespace WuxiaRoguelite.EditorTools
             var flow=Object.FindFirstObjectByType<GameFlowController>();
             flow.mainTimeLimit=60; flow.mainTimeRemaining=60;
             flow.midBossTriggerElapsedTime=0; // Level 2's timed gatekeeper remains Level 2 specific.
+            var music = Object.FindFirstObjectByType<WuxiaRoguelite.Audio.MainMapMusicController>();
+            if (music != null) music.midBossMusic = null; // This level never enters the timed gatekeeper phase.
             flow.playerController.transform.position=BambooValleyLayout.Spawn;
             flow.playerController.groundY=0;
             flow.playerController.followBambooValleyHeight=true;
+            flow.playerController.followPingchuanTownHeight=false;
             environment.AddComponent<BambooValleyVisibility>().player=flow.playerController.transform;
             flow.bossIntroNarration="竹影摇动，石台之上，九道狐火照亮最后的对手。";
             CameraFollow camera=flow.cameraFollow != null ? flow.cameraFollow : Object.FindFirstObjectByType<CameraFollow>();

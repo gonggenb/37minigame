@@ -1,0 +1,732 @@
+[
+  {
+    "name": "东关铁卫 PC 45",
+    "type": "EliteEnemy",
+    "x": 15.6,
+    "y": 0.241811574,
+    "z": -9.2,
+    "stats": "{\"displayName\":\"东关铁卫\",\"visualId\":\"stone_ape\",\"level\":0,\"maxHealth\":165.0,\"currentHealth\":165.0,\"attack\":16.0,\"defense\":6.0,\"attackSpeed\":0.7799999713897705,\"critChance\":0.029999999329447748,\"critMultiplier\":1.5,\"lifeSteal\":0.0,\"dodgeChance\":0.0,\"moveSpeed\":0.0}",
+    "cultivation": 42,
+    "copper": 15
+  },
+  {
+    "name": "东关铁卫 PC 50",
+    "type": "EliteEnemy",
+    "x": -35.2,
+    "y": 0.17009145,
+    "z": 12.0,
+    "stats": "{\"displayName\":\"东关铁卫\",\"visualId\":\"stone_ape\",\"level\":0,\"maxHealth\":165.0,\"currentHealth\":165.0,\"attack\":16.0,\"defense\":6.0,\"attackSpeed\":0.7799999713897705,\"critChance\":0.029999999329447748,\"critMultiplier\":1.5,\"lifeSteal\":0.0,\"dodgeChance\":0.0,\"moveSpeed\":0.0}",
+    "cultivation": 42,
+    "copper": 15
+  },
+  {
+    "name": "东村铁骨草 PC 67",
+    "type": "Herb",
+    "x": 5.6,
+    "y": 0.1506045,
+    "z": -15.2,
+    "stats": "{\"displayName\":\"铁骨草\",\"visualId\":\"\",\"level\":0,\"maxHealth\":1.0,\"currentHealth\":1.0,\"attack\":0.0,\"defense\":0.0,\"attackSpeed\":1.0,\"critChance\":0.029999999329447748,\"critMultiplier\":1.5,\"lifeSteal\":0.0,\"dodgeChance\":0.0,\"moveSpeed\":0.0}",
+    "cultivation": 0,
+    "copper": 0
+  },
+  {
+    "name": "东郊无名奇草 PC 73",
+    "type": "MysteryHerb",
+    "x": 31.6,
+    "y": 0.2818531,
+    "z": -14.4000006,
+    "stats": "{\"displayName\":\"无名奇草\",\"visualId\":\"\",\"level\":0,\"maxHealth\":1.0,\"currentHealth\":1.0,\"attack\":0.0,\"defense\":0.0,\"attackSpeed\":1.0,\"critChance\":0.029999999329447748,\"critMultiplier\":1.5,\"lifeSteal\":0.0,\"dodgeChance\":0.0,\"moveSpeed\":0.0}",
+    "cultivation": 0,
+    "copper": 0
+  },
+  {
+    "name": "北坡轻身草 PC 66",
+    "type": "Herb",
+    "x": -32.0,
+    "y": 0.2581646,
+    "z": 2.4,
+    "stats": "{\"displayName\":\"轻身草\",\"visualId\":\"\",\"level\":0,\"maxHealth\":1.0,\"currentHealth\":1.0,\"attack\":0.0,\"defense\":0.0,\"attackSpeed\":1.0,\"critChance\":0.029999999329447748,\"critMultiplier\":1.5,\"lifeSteal\":0.0,\"dodgeChance\":0.0,\"moveSpeed\":0.0}",
+    "cultivation": 0,
+    "copper": 0
+  },
+  {
+    "name": "北坡轻身草 PC 70",
+    "type": "Herb",
+    "x": 11.6,
+    "y": 0.235818908,
+    "z": 39.6000023,
+    "stats": "{\"displayName\":\"轻身草\",\"visualId\":\"\",\"level\":0,\"maxHealth\":1.0,\"currentHealth\":1.0,\"attack\":0.0,\"defense\":0.0,\"attackSpeed\":1.0,\"critChance\":0.029999999329447748,\"critMultiplier\":1.5,\"lifeSteal\":0.0,\"dodgeChance\":0.0,\"moveSpeed\":0.0}",
+    "cultivation": 0,
+    "copper": 0
+  },
+  {
+    "name": "北门药草 PC 65",
+    "type": "Herb",
+    "x": -10.0,
+    "y": 0.15985547,
+    "z": -1.2,
+    "stats": "{\"displayName\":\"药草\",\"visualId\":\"\",\"level\":0,\"maxHealth\":1.0,\"currentHealth\":1.0,\"attack\":0.0,\"defense\":0.0,\"attackSpeed\":1.0,\"critChance\":0.029999999329447748,\"critMultiplier\":1.5,\"lifeSteal\":0.0,\"dodgeChance\":0.0,\"moveSpeed\":0.0}",
+    "cultivation": 0,
+    "copper": 0
+  },
+  {
+    "name": "北门药草 PC 69",
+    "type": "Herb",
+    "x": -12.4000006,
+    "y": 0.281440884,
+    "z": 25.6,
+    "stats": "{\"displayName\":\"药草\",\"visualId\":\"\",\"level\":0,\"maxHealth\":1.0,\"currentHealth\":1.0,\"attack\":0.0,\"defense\":0.0,\"attackSpeed\":1.0,\"critChance\":0.029999999329447748,\"critMultiplier\":1.5,\"lifeSteal\":0.0,\"dodgeChance\":0.0,\"moveSpeed\":0.0}",
+    "cultivation": 0,
+    "copper": 0
+  },
+  {
+    "name": "南桥药草 PC 64",
+    "type": "Herb",
+    "x": -22.0,
+    "y": 0.247157469,
+    "z": -27.6,
+    "stats": "{\"displayName\":\"药草\",\"visualId\":\"\",\"level\":0,\"maxHealth\":1.0,\"currentHealth\":1.0,\"attack\":0.0,\"defense\":0.0,\"attackSpeed\":1.0,\"critChance\":0.029999999329447748,\"critMultiplier\":1.5,\"lifeSteal\":0.0,\"dodgeChance\":0.0,\"moveSpeed\":0.0}",
+    "cultivation": 0,
+    "copper": 0
+  },
+  {
+    "name": "南桥药草 PC 68",
+    "type": "Herb",
+    "x": 20.0,
+    "y": 0.188223064,
+    "z": -20.4,
+    "stats": "{\"displayName\":\"药草\",\"visualId\":\"\",\"level\":0,\"maxHealth\":1.0,\"currentHealth\":1.0,\"attack\":0.0,\"defense\":0.0,\"attackSpeed\":1.0,\"critChance\":0.029999999329447748,\"critMultiplier\":1.5,\"lifeSteal\":0.0,\"dodgeChance\":0.0,\"moveSpeed\":0.0}",
+    "cultivation": 0,
+    "copper": 0
+  },
+  {
+    "name": "山贼喽啰 PC 1",
+    "type": "NormalEnemy",
+    "x": -23.2,
+    "y": 0.2271203,
+    "z": -31.6,
+    "stats": "{\"displayName\":\"铁獠山猪\",\"visualId\":\"iron_tusk_boar\",\"level\":0,\"maxHealth\":35.0,\"currentHealth\":35.0,\"attack\":5.0,\"defense\":1.0,\"attackSpeed\":0.8999999761581421,\"critChance\":0.029999999329447748,\"critMultiplier\":1.5,\"lifeSteal\":0.0,\"dodgeChance\":0.0,\"moveSpeed\":0.0}",
+    "cultivation": 10,
+    "copper": 2
+  },
+  {
+    "name": "山贼喽啰 PC 14",
+    "type": "NormalEnemy",
+    "x": 8.400001,
+    "y": 0.2532953,
+    "z": -5.6,
+    "stats": "{\"displayName\":\"赤练蛇妖\",\"visualId\":\"scarlet_viper\",\"level\":0,\"maxHealth\":35.0,\"currentHealth\":35.0,\"attack\":5.0,\"defense\":1.0,\"attackSpeed\":0.8999999761581421,\"critChance\":0.029999999329447748,\"critMultiplier\":1.5,\"lifeSteal\":0.0,\"dodgeChance\":0.0,\"moveSpeed\":0.0}",
+    "cultivation": 10,
+    "copper": 2
+  },
+  {
+    "name": "山贼喽啰 PC 22",
+    "type": "NormalEnemy",
+    "x": 0.8,
+    "y": 0.167758211,
+    "z": -15.2,
+    "stats": "{\"displayName\":\"斗笠刀匪\",\"visualId\":\"strawhat_bandit\",\"level\":0,\"maxHealth\":35.0,\"currentHealth\":35.0,\"attack\":5.0,\"defense\":1.0,\"attackSpeed\":0.8999999761581421,\"critChance\":0.029999999329447748,\"critMultiplier\":1.5,\"lifeSteal\":0.0,\"dodgeChance\":0.0,\"moveSpeed\":0.0}",
+    "cultivation": 10,
+    "copper": 2
+  },
+  {
+    "name": "山贼喽啰 PC 28",
+    "type": "NormalEnemy",
+    "x": 36.0000038,
+    "y": 0.302208662,
+    "z": -19.2,
+    "stats": "{\"displayName\":\"赤练蛇妖\",\"visualId\":\"scarlet_viper\",\"level\":0,\"maxHealth\":35.0,\"currentHealth\":35.0,\"attack\":5.0,\"defense\":1.0,\"attackSpeed\":0.8999999761581421,\"critChance\":0.029999999329447748,\"critMultiplier\":1.5,\"lifeSteal\":0.0,\"dodgeChance\":0.0,\"moveSpeed\":0.0}",
+    "cultivation": 10,
+    "copper": 2
+  },
+  {
+    "name": "山贼喽啰 PC 32",
+    "type": "NormalEnemy",
+    "x": -32.8,
+    "y": 0.221583918,
+    "z": 6.8,
+    "stats": "{\"displayName\":\"山贼喽啰\",\"visualId\":\"bamboo_puppet\",\"level\":0,\"maxHealth\":35.0,\"currentHealth\":35.0,\"attack\":5.0,\"defense\":1.0,\"attackSpeed\":0.8999999761581421,\"critChance\":0.029999999329447748,\"critMultiplier\":1.5,\"lifeSteal\":0.0,\"dodgeChance\":0.0,\"moveSpeed\":0.0}",
+    "cultivation": 10,
+    "copper": 2
+  },
+  {
+    "name": "山贼喽啰 PC 9",
+    "type": "NormalEnemy",
+    "x": -10.0,
+    "y": 0.277579367,
+    "z": 12.4000006,
+    "stats": "{\"displayName\":\"灯笼怨灵\",\"visualId\":\"lantern_wraith\",\"level\":0,\"maxHealth\":35.0,\"currentHealth\":35.0,\"attack\":5.0,\"defense\":1.0,\"attackSpeed\":0.8999999761581421,\"critChance\":0.029999999329447748,\"critMultiplier\":1.5,\"lifeSteal\":0.0,\"dodgeChance\":0.0,\"moveSpeed\":0.0}",
+    "cultivation": 10,
+    "copper": 2
+  },
+  {
+    "name": "岩甲山魈 PC 43",
+    "type": "EliteEnemy",
+    "x": 0.0,
+    "y": 0.223958015,
+    "z": 26.4,
+    "stats": "{\"displayName\":\"岩甲山魈\",\"visualId\":\"stone_ape\",\"level\":0,\"maxHealth\":150.0,\"currentHealth\":150.0,\"attack\":15.0,\"defense\":6.0,\"attackSpeed\":0.7200000286102295,\"critChance\":0.03999999910593033,\"critMultiplier\":1.5,\"lifeSteal\":0.0,\"dodgeChance\":0.0,\"moveSpeed\":0.0}",
+    "cultivation": 38,
+    "copper": 12
+  },
+  {
+    "name": "岩甲山魈 PC 48",
+    "type": "EliteEnemy",
+    "x": 35.2,
+    "y": 0.20959197,
+    "z": -31.6,
+    "stats": "{\"displayName\":\"岩甲山魈\",\"visualId\":\"stone_ape\",\"level\":0,\"maxHealth\":150.0,\"currentHealth\":150.0,\"attack\":15.0,\"defense\":6.0,\"attackSpeed\":0.7200000286102295,\"critChance\":0.03999999910593033,\"critMultiplier\":1.5,\"lifeSteal\":0.0,\"dodgeChance\":0.0,\"moveSpeed\":0.0}",
+    "cultivation": 38,
+    "copper": 12
+  },
+  {
+    "name": "望气石·东 PC 72",
+    "type": "VisionRelic",
+    "x": 11.6,
+    "y": 0.221500546,
+    "z": 11.6,
+    "stats": "{\"displayName\":\"药草\",\"visualId\":\"\",\"level\":0,\"maxHealth\":1.0,\"currentHealth\":1.0,\"attack\":0.0,\"defense\":0.0,\"attackSpeed\":1.0,\"critChance\":0.029999999329447748,\"critMultiplier\":1.5,\"lifeSteal\":0.0,\"dodgeChance\":0.0,\"moveSpeed\":0.0}",
+    "cultivation": 0,
+    "copper": 0
+  },
+  {
+    "name": "望气石·西 PC 71",
+    "type": "VisionRelic",
+    "x": -17.6,
+    "y": 0.281190038,
+    "z": -21.2,
+    "stats": "{\"displayName\":\"药草\",\"visualId\":\"\",\"level\":0,\"maxHealth\":1.0,\"currentHealth\":1.0,\"attack\":0.0,\"defense\":0.0,\"attackSpeed\":1.0,\"critChance\":0.029999999329447748,\"critMultiplier\":1.5,\"lifeSteal\":0.0,\"dodgeChance\":0.0,\"moveSpeed\":0.0}",
+    "cultivation": 0,
+    "copper": 0
+  },
+  {
+    "name": "机关弩车 PC 20",
+    "type": "NormalEnemy",
+    "x": 9.2,
+    "y": 0.291014731,
+    "z": 4.0,
+    "stats": "{\"displayName\":\"机关弩车\",\"visualId\":\"ballista\",\"level\":0,\"maxHealth\":50.0,\"currentHealth\":50.0,\"attack\":7.0,\"defense\":2.0,\"attackSpeed\":1.0,\"critChance\":0.029999999329447748,\"critMultiplier\":1.5,\"lifeSteal\":0.0,\"dodgeChance\":0.0,\"moveSpeed\":0.0}",
+    "cultivation": 14,
+    "copper": 4
+  },
+  {
+    "name": "机关弩车 PC 26",
+    "type": "NormalEnemy",
+    "x": 26.4,
+    "y": 0.178266913,
+    "z": -32.4,
+    "stats": "{\"displayName\":\"机关弩车\",\"visualId\":\"ballista\",\"level\":0,\"maxHealth\":50.0,\"currentHealth\":50.0,\"attack\":7.0,\"defense\":2.0,\"attackSpeed\":1.0,\"critChance\":0.029999999329447748,\"critMultiplier\":1.5,\"lifeSteal\":0.0,\"dodgeChance\":0.0,\"moveSpeed\":0.0}",
+    "cultivation": 14,
+    "copper": 4
+  },
+  {
+    "name": "机关弩车 PC 7",
+    "type": "NormalEnemy",
+    "x": -10.0,
+    "y": 0.175527632,
+    "z": -5.6,
+    "stats": "{\"displayName\":\"机关弩车\",\"visualId\":\"ballista\",\"level\":0,\"maxHealth\":50.0,\"currentHealth\":50.0,\"attack\":7.0,\"defense\":2.0,\"attackSpeed\":1.0,\"critChance\":0.029999999329447748,\"critMultiplier\":1.5,\"lifeSteal\":0.0,\"dodgeChance\":0.0,\"moveSpeed\":0.0}",
+    "cultivation": 14,
+    "copper": 4
+  },
+  {
+    "name": "流寇 PC 11",
+    "type": "NormalEnemy",
+    "x": 2.4,
+    "y": 0.247255713,
+    "z": 11.6,
+    "stats": "{\"displayName\":\"酒葫芦恶僧\",\"visualId\":\"gourd_rogue_monk\",\"level\":0,\"maxHealth\":45.0,\"currentHealth\":45.0,\"attack\":6.0,\"defense\":1.0,\"attackSpeed\":1.0,\"critChance\":0.029999999329447748,\"critMultiplier\":1.5,\"lifeSteal\":0.0,\"dodgeChance\":0.0,\"moveSpeed\":0.0}",
+    "cultivation": 12,
+    "copper": 3
+  },
+  {
+    "name": "流寇 PC 16",
+    "type": "NormalEnemy",
+    "x": 19.9219646,
+    "y": 0.262004763,
+    "z": -6.80768633,
+    "stats": "{\"displayName\":\"铁獠山猪\",\"visualId\":\"iron_tusk_boar\",\"level\":0,\"maxHealth\":45.0,\"currentHealth\":45.0,\"attack\":6.0,\"defense\":1.0,\"attackSpeed\":1.0,\"critChance\":0.029999999329447748,\"critMultiplier\":1.5,\"lifeSteal\":0.0,\"dodgeChance\":0.0,\"moveSpeed\":0.0}",
+    "cultivation": 12,
+    "copper": 3
+  },
+  {
+    "name": "流寇 PC 3",
+    "type": "NormalEnemy",
+    "x": -28.0,
+    "y": 0.222905263,
+    "z": -17.2,
+    "stats": "{\"displayName\":\"斗笠刀匪\",\"visualId\":\"strawhat_bandit\",\"level\":0,\"maxHealth\":45.0,\"currentHealth\":45.0,\"attack\":6.0,\"defense\":1.0,\"attackSpeed\":1.0,\"critChance\":0.029999999329447748,\"critMultiplier\":1.5,\"lifeSteal\":0.0,\"dodgeChance\":0.0,\"moveSpeed\":0.0}",
+    "cultivation": 12,
+    "copper": 3
+  },
+  {
+    "name": "流寇 PC 30",
+    "type": "NormalEnemy",
+    "x": 21.6,
+    "y": 0.181487843,
+    "z": -35.2,
+    "stats": "{\"displayName\":\"流寇\",\"visualId\":\"bamboo_puppet\",\"level\":0,\"maxHealth\":45.0,\"currentHealth\":45.0,\"attack\":6.0,\"defense\":1.0,\"attackSpeed\":1.0,\"critChance\":0.029999999329447748,\"critMultiplier\":1.5,\"lifeSteal\":0.0,\"dodgeChance\":0.0,\"moveSpeed\":0.0}",
+    "cultivation": 12,
+    "copper": 3
+  },
+  {
+    "name": "流寇 PC 34",
+    "type": "NormalEnemy",
+    "x": -19.2,
+    "y": 0.2513406,
+    "z": 27.6,
+    "stats": "{\"displayName\":\"菌甲小妖\",\"visualId\":\"moss_mushroom_imp\",\"level\":0,\"maxHealth\":45.0,\"currentHealth\":45.0,\"attack\":6.0,\"defense\":1.0,\"attackSpeed\":1.0,\"critChance\":0.029999999329447748,\"critMultiplier\":1.5,\"lifeSteal\":0.0,\"dodgeChance\":0.0,\"moveSpeed\":0.0}",
+    "cultivation": 12,
+    "copper": 3
+  },
+  {
+    "name": "流寇 PC 37",
+    "type": "NormalEnemy",
+    "x": 3.2,
+    "y": 0.196400478,
+    "z": 33.2,
+    "stats": "{\"displayName\":\"铁獠山猪\",\"visualId\":\"iron_tusk_boar\",\"level\":0,\"maxHealth\":45.0,\"currentHealth\":45.0,\"attack\":6.0,\"defense\":1.0,\"attackSpeed\":1.0,\"critChance\":0.029999999329447748,\"critMultiplier\":1.5,\"lifeSteal\":0.0,\"dodgeChance\":0.0,\"moveSpeed\":0.0}",
+    "cultivation": 12,
+    "copper": 3
+  },
+  {
+    "name": "灰岩巨鼠 PC 10",
+    "type": "NormalEnemy",
+    "x": -21.2,
+    "y": 0.162113726,
+    "z": 3.2,
+    "stats": "{\"displayName\":\"灰岩巨鼠\",\"visualId\":\"rat\",\"level\":0,\"maxHealth\":28.0,\"currentHealth\":28.0,\"attack\":4.0,\"defense\":0.0,\"attackSpeed\":1.350000023841858,\"critChance\":0.029999999329447748,\"critMultiplier\":1.5,\"lifeSteal\":0.0,\"dodgeChance\":0.0,\"moveSpeed\":0.0}",
+    "cultivation": 9,
+    "copper": 1
+  },
+  {
+    "name": "灰岩巨鼠 PC 15",
+    "type": "NormalEnemy",
+    "x": 13.6,
+    "y": 0.286583871,
+    "z": -4.0,
+    "stats": "{\"displayName\":\"灰岩巨鼠\",\"visualId\":\"rat\",\"level\":0,\"maxHealth\":28.0,\"currentHealth\":28.0,\"attack\":4.0,\"defense\":0.0,\"attackSpeed\":1.350000023841858,\"critChance\":0.029999999329447748,\"critMultiplier\":1.5,\"lifeSteal\":0.0,\"dodgeChance\":0.0,\"moveSpeed\":0.0}",
+    "cultivation": 9,
+    "copper": 1
+  },
+  {
+    "name": "灰岩巨鼠 PC 2",
+    "type": "NormalEnemy",
+    "x": -19.6,
+    "y": 0.26734224,
+    "z": -25.2,
+    "stats": "{\"displayName\":\"灰岩巨鼠\",\"visualId\":\"rat\",\"level\":0,\"maxHealth\":28.0,\"currentHealth\":28.0,\"attack\":4.0,\"defense\":0.0,\"attackSpeed\":1.350000023841858,\"critChance\":0.029999999329447748,\"critMultiplier\":1.5,\"lifeSteal\":0.0,\"dodgeChance\":0.0,\"moveSpeed\":0.0}",
+    "cultivation": 9,
+    "copper": 1
+  },
+  {
+    "name": "灰岩巨鼠 PC 29",
+    "type": "NormalEnemy",
+    "x": 40.8,
+    "y": 0.2684021,
+    "z": -17.2,
+    "stats": "{\"displayName\":\"灰岩巨鼠\",\"visualId\":\"rat\",\"level\":0,\"maxHealth\":28.0,\"currentHealth\":28.0,\"attack\":4.0,\"defense\":0.0,\"attackSpeed\":1.350000023841858,\"critChance\":0.029999999329447748,\"critMultiplier\":1.5,\"lifeSteal\":0.0,\"dodgeChance\":0.0,\"moveSpeed\":0.0}",
+    "cultivation": 9,
+    "copper": 1
+  },
+  {
+    "name": "灰岩巨鼠 PC 33",
+    "type": "NormalEnemy",
+    "x": -32.4,
+    "y": 0.123622432,
+    "z": 18.8000011,
+    "stats": "{\"displayName\":\"灯笼怨灵\",\"visualId\":\"lantern_wraith\",\"level\":0,\"maxHealth\":28.0,\"currentHealth\":28.0,\"attack\":4.0,\"defense\":0.0,\"attackSpeed\":1.350000023841858,\"critChance\":0.029999999329447748,\"critMultiplier\":1.5,\"lifeSteal\":0.0,\"dodgeChance\":0.0,\"moveSpeed\":0.0}",
+    "cultivation": 9,
+    "copper": 1
+  },
+  {
+    "name": "玄衣刀客 PC 42",
+    "type": "EliteEnemy",
+    "x": -25.6,
+    "y": 0.210524067,
+    "z": 26.8000011,
+    "stats": "{\"displayName\":\"玄衣刀客\",\"visualId\":\"stone_ape\",\"level\":0,\"maxHealth\":135.0,\"currentHealth\":135.0,\"attack\":13.0,\"defense\":4.0,\"attackSpeed\":0.8999999761581421,\"critChance\":0.029999999329447748,\"critMultiplier\":1.5,\"lifeSteal\":0.0,\"dodgeChance\":0.0,\"moveSpeed\":0.0}",
+    "cultivation": 34,
+    "copper": 12
+  },
+  {
+    "name": "玄衣刀客 PC 47",
+    "type": "EliteEnemy",
+    "x": 26.0,
+    "y": 0.22454527,
+    "z": -25.6,
+    "stats": "{\"displayName\":\"玄衣刀客\",\"visualId\":\"stone_ape\",\"level\":0,\"maxHealth\":135.0,\"currentHealth\":135.0,\"attack\":13.0,\"defense\":4.0,\"attackSpeed\":0.8999999761581421,\"critChance\":0.029999999329447748,\"critMultiplier\":1.5,\"lifeSteal\":0.0,\"dodgeChance\":0.0,\"moveSpeed\":0.0}",
+    "cultivation": 34,
+    "copper": 12
+  },
+  {
+    "name": "紫衣毒客 PC 18",
+    "type": "NormalEnemy",
+    "x": 14.4000006,
+    "y": 0.2526646,
+    "z": 8.0,
+    "stats": "{\"displayName\":\"酒葫芦恶僧\",\"visualId\":\"gourd_rogue_monk\",\"level\":0,\"maxHealth\":66.0,\"currentHealth\":66.0,\"attack\":9.0,\"defense\":2.0,\"attackSpeed\":1.0499999523162842,\"critChance\":0.029999999329447748,\"critMultiplier\":1.5,\"lifeSteal\":0.1599999964237213,\"dodgeChance\":0.05000000074505806,\"moveSpeed\":0.0}",
+    "cultivation": 20,
+    "copper": 7
+  },
+  {
+    "name": "紫衣毒客 PC 24",
+    "type": "NormalEnemy",
+    "x": 17.2,
+    "y": 0.156555578,
+    "z": -24.4,
+    "stats": "{\"displayName\":\"酒葫芦恶僧\",\"visualId\":\"gourd_rogue_monk\",\"level\":0,\"maxHealth\":66.0,\"currentHealth\":66.0,\"attack\":9.0,\"defense\":2.0,\"attackSpeed\":1.0499999523162842,\"critChance\":0.029999999329447748,\"critMultiplier\":1.5,\"lifeSteal\":0.1599999964237213,\"dodgeChance\":0.05000000074505806,\"moveSpeed\":0.0}",
+    "cultivation": 20,
+    "copper": 7
+  },
+  {
+    "name": "紫衣毒客 PC 36",
+    "type": "NormalEnemy",
+    "x": 32.4,
+    "y": 0.146471515,
+    "z": 4.8,
+    "stats": "{\"displayName\":\"紫衣毒客\",\"visualId\":\"bamboo_puppet\",\"level\":0,\"maxHealth\":66.0,\"currentHealth\":66.0,\"attack\":9.0,\"defense\":2.0,\"attackSpeed\":1.0499999523162842,\"critChance\":0.029999999329447748,\"critMultiplier\":1.5,\"lifeSteal\":0.1599999964237213,\"dodgeChance\":0.05000000074505806,\"moveSpeed\":0.0}",
+    "cultivation": 20,
+    "copper": 7
+  },
+  {
+    "name": "紫衣毒客 PC 39",
+    "type": "NormalEnemy",
+    "x": 10.8,
+    "y": 0.22480236,
+    "z": 37.2,
+    "stats": "{\"displayName\":\"紫衣毒客\",\"visualId\":\"bamboo_puppet\",\"level\":0,\"maxHealth\":66.0,\"currentHealth\":66.0,\"attack\":9.0,\"defense\":2.0,\"attackSpeed\":1.0499999523162842,\"critChance\":0.029999999329447748,\"critMultiplier\":1.5,\"lifeSteal\":0.1599999964237213,\"dodgeChance\":0.05000000074505806,\"moveSpeed\":0.0}",
+    "cultivation": 20,
+    "copper": 7
+  },
+  {
+    "name": "紫衣毒客 PC 5",
+    "type": "NormalEnemy",
+    "x": -19.9121456,
+    "y": 0.218545049,
+    "z": -10.369257,
+    "stats": "{\"displayName\":\"紫衣毒客\",\"visualId\":\"bamboo_puppet\",\"level\":0,\"maxHealth\":66.0,\"currentHealth\":66.0,\"attack\":9.0,\"defense\":2.0,\"attackSpeed\":1.0499999523162842,\"critChance\":0.029999999329447748,\"critMultiplier\":1.5,\"lifeSteal\":0.1599999964237213,\"dodgeChance\":0.05000000074505806,\"moveSpeed\":0.0}",
+    "cultivation": 20,
+    "copper": 7
+  },
+  {
+    "name": "西路宝箱 PC 56",
+    "type": "Treasure",
+    "x": -24.8000011,
+    "y": 0.215105876,
+    "z": -34.8,
+    "stats": "{\"displayName\":\"宝箱\",\"visualId\":\"\",\"level\":0,\"maxHealth\":1.0,\"currentHealth\":1.0,\"attack\":0.0,\"defense\":0.0,\"attackSpeed\":1.0,\"critChance\":0.029999999329447748,\"critMultiplier\":1.5,\"lifeSteal\":0.0,\"dodgeChance\":0.0,\"moveSpeed\":0.0}",
+    "cultivation": 12,
+    "copper": 6
+  },
+  {
+    "name": "西路宝箱 PC 57",
+    "type": "Treasure",
+    "x": -10.9656858,
+    "y": 0.280827135,
+    "z": 16.6343155,
+    "stats": "{\"displayName\":\"宝箱\",\"visualId\":\"\",\"level\":0,\"maxHealth\":1.0,\"currentHealth\":1.0,\"attack\":0.0,\"defense\":0.0,\"attackSpeed\":1.0,\"critChance\":0.029999999329447748,\"critMultiplier\":1.5,\"lifeSteal\":0.0,\"dodgeChance\":0.0,\"moveSpeed\":0.0}",
+    "cultivation": 12,
+    "copper": 6
+  },
+  {
+    "name": "西路宝箱 PC 58",
+    "type": "Treasure",
+    "x": -21.6,
+    "y": 0.184899047,
+    "z": 12.8,
+    "stats": "{\"displayName\":\"宝箱\",\"visualId\":\"\",\"level\":0,\"maxHealth\":1.0,\"currentHealth\":1.0,\"attack\":0.0,\"defense\":0.0,\"attackSpeed\":1.0,\"critChance\":0.029999999329447748,\"critMultiplier\":1.5,\"lifeSteal\":0.0,\"dodgeChance\":0.0,\"moveSpeed\":0.0}",
+    "cultivation": 12,
+    "copper": 6
+  },
+  {
+    "name": "西路宝箱 PC 59",
+    "type": "Treasure",
+    "x": 22.8000011,
+    "y": 0.240784332,
+    "z": 0.0,
+    "stats": "{\"displayName\":\"宝箱\",\"visualId\":\"\",\"level\":0,\"maxHealth\":1.0,\"currentHealth\":1.0,\"attack\":0.0,\"defense\":0.0,\"attackSpeed\":1.0,\"critChance\":0.029999999329447748,\"critMultiplier\":1.5,\"lifeSteal\":0.0,\"dodgeChance\":0.0,\"moveSpeed\":0.0}",
+    "cultivation": 12,
+    "copper": 6
+  },
+  {
+    "name": "西路宝箱 PC 60",
+    "type": "Treasure",
+    "x": 37.2,
+    "y": 0.289471537,
+    "z": -24.0,
+    "stats": "{\"displayName\":\"宝箱\",\"visualId\":\"\",\"level\":0,\"maxHealth\":1.0,\"currentHealth\":1.0,\"attack\":0.0,\"defense\":0.0,\"attackSpeed\":1.0,\"critChance\":0.029999999329447748,\"critMultiplier\":1.5,\"lifeSteal\":0.0,\"dodgeChance\":0.0,\"moveSpeed\":0.0}",
+    "cultivation": 12,
+    "copper": 6
+  },
+  {
+    "name": "西路宝箱 PC 61",
+    "type": "Treasure",
+    "x": 14.9333162,
+    "y": 0.174812138,
+    "z": 29.8022366,
+    "stats": "{\"displayName\":\"宝箱\",\"visualId\":\"\",\"level\":0,\"maxHealth\":1.0,\"currentHealth\":1.0,\"attack\":0.0,\"defense\":0.0,\"attackSpeed\":1.0,\"critChance\":0.029999999329447748,\"critMultiplier\":1.5,\"lifeSteal\":0.0,\"dodgeChance\":0.0,\"moveSpeed\":0.0}",
+    "cultivation": 12,
+    "copper": 6
+  },
+  {
+    "name": "西路宝箱 PC 62",
+    "type": "Treasure",
+    "x": -16.8000011,
+    "y": 0.254587322,
+    "z": 28.8000011,
+    "stats": "{\"displayName\":\"宝箱\",\"visualId\":\"\",\"level\":0,\"maxHealth\":1.0,\"currentHealth\":1.0,\"attack\":0.0,\"defense\":0.0,\"attackSpeed\":1.0,\"critChance\":0.029999999329447748,\"critMultiplier\":1.5,\"lifeSteal\":0.0,\"dodgeChance\":0.0,\"moveSpeed\":0.0}",
+    "cultivation": 12,
+    "copper": 6
+  },
+  {
+    "name": "西路宝箱 PC 63",
+    "type": "Treasure",
+    "x": 32.0,
+    "y": 0.185531318,
+    "z": 11.6,
+    "stats": "{\"displayName\":\"宝箱\",\"visualId\":\"\",\"level\":0,\"maxHealth\":1.0,\"currentHealth\":1.0,\"attack\":0.0,\"defense\":0.0,\"attackSpeed\":1.0,\"critChance\":0.029999999329447748,\"critMultiplier\":1.5,\"lifeSteal\":0.0,\"dodgeChance\":0.0,\"moveSpeed\":0.0}",
+    "cultivation": 12,
+    "copper": 6
+  },
+  {
+    "name": "赤骑枪客 PC 13",
+    "type": "NormalEnemy",
+    "x": 2.0,
+    "y": 0.203279912,
+    "z": -6.0,
+    "stats": "{\"displayName\":\"赤骑枪客\",\"visualId\":\"rider\",\"level\":0,\"maxHealth\":58.0,\"currentHealth\":58.0,\"attack\":8.0,\"defense\":2.0,\"attackSpeed\":0.949999988079071,\"critChance\":0.029999999329447748,\"critMultiplier\":1.5,\"lifeSteal\":0.0,\"dodgeChance\":0.0,\"moveSpeed\":0.0}",
+    "cultivation": 16,
+    "copper": 5
+  },
+  {
+    "name": "赤骑枪客 PC 21",
+    "type": "NormalEnemy",
+    "x": 20.8000011,
+    "y": 0.22386685,
+    "z": -14.8,
+    "stats": "{\"displayName\":\"赤骑枪客\",\"visualId\":\"rider\",\"level\":0,\"maxHealth\":58.0,\"currentHealth\":58.0,\"attack\":8.0,\"defense\":2.0,\"attackSpeed\":0.949999988079071,\"critChance\":0.029999999329447748,\"critMultiplier\":1.5,\"lifeSteal\":0.0,\"dodgeChance\":0.0,\"moveSpeed\":0.0}",
+    "cultivation": 16,
+    "copper": 5
+  },
+  {
+    "name": "赤骑枪客 PC 27",
+    "type": "NormalEnemy",
+    "x": 29.2,
+    "y": 0.225739986,
+    "z": -28.0,
+    "stats": "{\"displayName\":\"赤骑枪客\",\"visualId\":\"rider\",\"level\":0,\"maxHealth\":58.0,\"currentHealth\":58.0,\"attack\":8.0,\"defense\":2.0,\"attackSpeed\":0.949999988079071,\"critChance\":0.029999999329447748,\"critMultiplier\":1.5,\"lifeSteal\":0.0,\"dodgeChance\":0.0,\"moveSpeed\":0.0}",
+    "cultivation": 16,
+    "copper": 5
+  },
+  {
+    "name": "赤骑枪客 PC 31",
+    "type": "NormalEnemy",
+    "x": -25.6,
+    "y": 0.163971677,
+    "z": 15.6,
+    "stats": "{\"displayName\":\"菌甲小妖\",\"visualId\":\"moss_mushroom_imp\",\"level\":0,\"maxHealth\":58.0,\"currentHealth\":58.0,\"attack\":8.0,\"defense\":2.0,\"attackSpeed\":0.949999988079071,\"critChance\":0.029999999329447748,\"critMultiplier\":1.5,\"lifeSteal\":0.0,\"dodgeChance\":0.0,\"moveSpeed\":0.0}",
+    "cultivation": 16,
+    "copper": 5
+  },
+  {
+    "name": "赤骑枪客 PC 8",
+    "type": "NormalEnemy",
+    "x": -10.0,
+    "y": 0.182255626,
+    "z": 4.0,
+    "stats": "{\"displayName\":\"赤骑枪客\",\"visualId\":\"rider\",\"level\":0,\"maxHealth\":58.0,\"currentHealth\":58.0,\"attack\":8.0,\"defense\":2.0,\"attackSpeed\":0.949999988079071,\"critChance\":0.029999999329447748,\"critMultiplier\":1.5,\"lifeSteal\":0.0,\"dodgeChance\":0.0,\"moveSpeed\":0.0}",
+    "cultivation": 16,
+    "copper": 5
+  },
+  {
+    "name": "边城黑衣客 PC 44",
+    "type": "EliteEnemy",
+    "x": 34.0,
+    "y": 0.173513219,
+    "z": 10.0,
+    "stats": "{\"displayName\":\"边城黑衣客\",\"visualId\":\"stone_ape\",\"level\":0,\"maxHealth\":155.0,\"currentHealth\":155.0,\"attack\":15.0,\"defense\":5.0,\"attackSpeed\":0.8500000238418579,\"critChance\":0.029999999329447748,\"critMultiplier\":1.5,\"lifeSteal\":0.0,\"dodgeChance\":0.0,\"moveSpeed\":0.0}",
+    "cultivation": 40,
+    "copper": 14
+  },
+  {
+    "name": "边城黑衣客 PC 49",
+    "type": "EliteEnemy",
+    "x": 10.8,
+    "y": 0.203900158,
+    "z": 33.6000023,
+    "stats": "{\"displayName\":\"边城黑衣客\",\"visualId\":\"stone_ape\",\"level\":0,\"maxHealth\":155.0,\"currentHealth\":155.0,\"attack\":15.0,\"defense\":5.0,\"attackSpeed\":0.8500000238418579,\"critChance\":0.029999999329447748,\"critMultiplier\":1.5,\"lifeSteal\":0.0,\"dodgeChance\":0.0,\"moveSpeed\":0.0}",
+    "cultivation": 40,
+    "copper": 14
+  },
+  {
+    "name": "隐市岩洞 PC 51",
+    "type": "HiddenCave",
+    "x": -33.579998,
+    "y": 0.0,
+    "z": 21.644001,
+    "stats": "{\"displayName\":\"云游商人\",\"visualId\":\"\",\"level\":0,\"maxHealth\":1.0,\"currentHealth\":1.0,\"attack\":0.0,\"defense\":0.0,\"attackSpeed\":1.0,\"critChance\":0.029999999329447748,\"critMultiplier\":1.5,\"lifeSteal\":0.0,\"dodgeChance\":0.0,\"moveSpeed\":0.0}",
+    "cultivation": 0,
+    "copper": 0
+  },
+  {
+    "name": "隐市岩洞 PC 52",
+    "type": "HiddenCave",
+    "x": -26.512,
+    "y": 0.0,
+    "z": 28.424,
+    "stats": "{\"displayName\":\"云游商人\",\"visualId\":\"\",\"level\":0,\"maxHealth\":1.0,\"currentHealth\":1.0,\"attack\":0.0,\"defense\":0.0,\"attackSpeed\":1.0,\"critChance\":0.029999999329447748,\"critMultiplier\":1.5,\"lifeSteal\":0.0,\"dodgeChance\":0.0,\"moveSpeed\":0.0}",
+    "cultivation": 0,
+    "copper": 0
+  },
+  {
+    "name": "隐市岩洞 PC 53",
+    "type": "HiddenCave",
+    "x": 0.0,
+    "y": 0.0,
+    "z": 29.2,
+    "stats": "{\"displayName\":\"云游商人\",\"visualId\":\"\",\"level\":0,\"maxHealth\":1.0,\"currentHealth\":1.0,\"attack\":0.0,\"defense\":0.0,\"attackSpeed\":1.0,\"critChance\":0.029999999329447748,\"critMultiplier\":1.5,\"lifeSteal\":0.0,\"dodgeChance\":0.0,\"moveSpeed\":0.0}",
+    "cultivation": 0,
+    "copper": 0
+  },
+  {
+    "name": "隐市岩洞 PC 54",
+    "type": "HiddenCave",
+    "x": 36.0,
+    "y": 0.0,
+    "z": 8.8,
+    "stats": "{\"displayName\":\"云游商人\",\"visualId\":\"\",\"level\":0,\"maxHealth\":1.0,\"currentHealth\":1.0,\"attack\":0.0,\"defense\":0.0,\"attackSpeed\":1.0,\"critChance\":0.029999999329447748,\"critMultiplier\":1.5,\"lifeSteal\":0.0,\"dodgeChance\":0.0,\"moveSpeed\":0.0}",
+    "cultivation": 0,
+    "copper": 0
+  },
+  {
+    "name": "隐市岩洞 PC 55",
+    "type": "HiddenCave",
+    "x": -36.948,
+    "y": 0.0,
+    "z": 12.496,
+    "stats": "{\"displayName\":\"云游商人\",\"visualId\":\"\",\"level\":0,\"maxHealth\":1.0,\"currentHealth\":1.0,\"attack\":0.0,\"defense\":0.0,\"attackSpeed\":1.0,\"critChance\":0.029999999329447748,\"critMultiplier\":1.5,\"lifeSteal\":0.0,\"dodgeChance\":0.0,\"moveSpeed\":0.0}",
+    "cultivation": 0,
+    "copper": 0
+  },
+  {
+    "name": "青竹机关傀 PC 19",
+    "type": "NormalEnemy",
+    "x": 14.4000006,
+    "y": 0.1664975,
+    "z": 16.0,
+    "stats": "{\"displayName\":\"青竹机关傀\",\"visualId\":\"bamboo_puppet\",\"level\":0,\"maxHealth\":82.0,\"currentHealth\":82.0,\"attack\":12.0,\"defense\":4.0,\"attackSpeed\":0.9200000166893005,\"critChance\":0.029999999329447748,\"critMultiplier\":1.5,\"lifeSteal\":0.0,\"dodgeChance\":0.03999999910593033,\"moveSpeed\":0.0}",
+    "cultivation": 24,
+    "copper": 8
+  },
+  {
+    "name": "青竹机关傀 PC 25",
+    "type": "NormalEnemy",
+    "x": 23.2,
+    "y": 0.198275745,
+    "z": -26.4,
+    "stats": "{\"displayName\":\"斗笠刀匪\",\"visualId\":\"strawhat_bandit\",\"level\":0,\"maxHealth\":82.0,\"currentHealth\":82.0,\"attack\":12.0,\"defense\":4.0,\"attackSpeed\":0.9200000166893005,\"critChance\":0.029999999329447748,\"critMultiplier\":1.5,\"lifeSteal\":0.0,\"dodgeChance\":0.03999999910593033,\"moveSpeed\":0.0}",
+    "cultivation": 24,
+    "copper": 8
+  },
+  {
+    "name": "青竹机关傀 PC 40",
+    "type": "NormalEnemy",
+    "x": 12.4000006,
+    "y": 0.242004767,
+    "z": 42.8,
+    "stats": "{\"displayName\":\"灯笼怨灵\",\"visualId\":\"lantern_wraith\",\"level\":0,\"maxHealth\":82.0,\"currentHealth\":82.0,\"attack\":12.0,\"defense\":4.0,\"attackSpeed\":0.9200000166893005,\"critChance\":0.029999999329447748,\"critMultiplier\":1.5,\"lifeSteal\":0.0,\"dodgeChance\":0.03999999910593033,\"moveSpeed\":0.0}",
+    "cultivation": 24,
+    "copper": 8
+  },
+  {
+    "name": "青竹机关傀 PC 6",
+    "type": "NormalEnemy",
+    "x": -11.6,
+    "y": 0.207054511,
+    "z": -12.0,
+    "stats": "{\"displayName\":\"菌甲小妖\",\"visualId\":\"moss_mushroom_imp\",\"level\":0,\"maxHealth\":82.0,\"currentHealth\":82.0,\"attack\":12.0,\"defense\":4.0,\"attackSpeed\":0.9200000166893005,\"critChance\":0.029999999329447748,\"critMultiplier\":1.5,\"lifeSteal\":0.0,\"dodgeChance\":0.03999999910593033,\"moveSpeed\":0.0}",
+    "cultivation": 24,
+    "copper": 8
+  },
+  {
+    "name": "青衣快剑 PC 12",
+    "type": "NormalEnemy",
+    "x": -19.906147,
+    "y": 0.171425879,
+    "z": 8.860897,
+    "stats": "{\"displayName\":\"青衣快剑\",\"visualId\":\"ink_wolf\",\"level\":0,\"maxHealth\":44.0,\"currentHealth\":44.0,\"attack\":8.0,\"defense\":1.0,\"attackSpeed\":1.4500000476837159,\"critChance\":0.07999999821186066,\"critMultiplier\":1.5,\"lifeSteal\":0.0,\"dodgeChance\":0.11999999731779099,\"moveSpeed\":0.0}",
+    "cultivation": 17,
+    "copper": 5
+  },
+  {
+    "name": "青衣快剑 PC 17",
+    "type": "NormalEnemy",
+    "x": 28.8000011,
+    "y": 0.184288785,
+    "z": -1.2,
+    "stats": "{\"displayName\":\"青衣快剑\",\"visualId\":\"ink_wolf\",\"level\":0,\"maxHealth\":44.0,\"currentHealth\":44.0,\"attack\":8.0,\"defense\":1.0,\"attackSpeed\":1.4500000476837159,\"critChance\":0.07999999821186066,\"critMultiplier\":1.5,\"lifeSteal\":0.0,\"dodgeChance\":0.11999999731779099,\"moveSpeed\":0.0}",
+    "cultivation": 17,
+    "copper": 5
+  },
+  {
+    "name": "青衣快剑 PC 23",
+    "type": "NormalEnemy",
+    "x": 8.8,
+    "y": 0.126506567,
+    "z": -20.0,
+    "stats": "{\"displayName\":\"青衣快剑\",\"visualId\":\"ink_wolf\",\"level\":0,\"maxHealth\":44.0,\"currentHealth\":44.0,\"attack\":8.0,\"defense\":1.0,\"attackSpeed\":1.4500000476837159,\"critChance\":0.07999999821186066,\"critMultiplier\":1.5,\"lifeSteal\":0.0,\"dodgeChance\":0.11999999731779099,\"moveSpeed\":0.0}",
+    "cultivation": 17,
+    "copper": 5
+  },
+  {
+    "name": "青衣快剑 PC 35",
+    "type": "NormalEnemy",
+    "x": -6.4,
+    "y": 0.291160762,
+    "z": 20.4,
+    "stats": "{\"displayName\":\"青衣快剑\",\"visualId\":\"ink_wolf\",\"level\":0,\"maxHealth\":44.0,\"currentHealth\":44.0,\"attack\":8.0,\"defense\":1.0,\"attackSpeed\":1.4500000476837159,\"critChance\":0.07999999821186066,\"critMultiplier\":1.5,\"lifeSteal\":0.0,\"dodgeChance\":0.11999999731779099,\"moveSpeed\":0.0}",
+    "cultivation": 17,
+    "copper": 5
+  },
+  {
+    "name": "青衣快剑 PC 38",
+    "type": "NormalEnemy",
+    "x": 10.0,
+    "y": 0.174817175,
+    "z": 29.2,
+    "stats": "{\"displayName\":\"赤练蛇妖\",\"visualId\":\"scarlet_viper\",\"level\":0,\"maxHealth\":44.0,\"currentHealth\":44.0,\"attack\":8.0,\"defense\":1.0,\"attackSpeed\":1.4500000476837159,\"critChance\":0.07999999821186066,\"critMultiplier\":1.5,\"lifeSteal\":0.0,\"dodgeChance\":0.11999999731779099,\"moveSpeed\":0.0}",
+    "cultivation": 17,
+    "copper": 5
+  },
+  {
+    "name": "青衣快剑 PC 4",
+    "type": "NormalEnemy",
+    "x": -31.6,
+    "y": 0.273624361,
+    "z": -4.8,
+    "stats": "{\"displayName\":\"青衣快剑\",\"visualId\":\"ink_wolf\",\"level\":0,\"maxHealth\":44.0,\"currentHealth\":44.0,\"attack\":8.0,\"defense\":1.0,\"attackSpeed\":1.4500000476837159,\"critChance\":0.07999999821186066,\"critMultiplier\":1.5,\"lifeSteal\":0.0,\"dodgeChance\":0.11999999731779099,\"moveSpeed\":0.0}",
+    "cultivation": 17,
+    "copper": 5
+  },
+  {
+    "name": "黑风刀客 PC 41",
+    "type": "EliteEnemy",
+    "x": -30.0,
+    "y": 0.1507837,
+    "z": 23.2,
+    "stats": "{\"displayName\":\"黑风刀客\",\"visualId\":\"stone_ape\",\"level\":0,\"maxHealth\":120.0,\"currentHealth\":120.0,\"attack\":12.0,\"defense\":3.0,\"attackSpeed\":0.8500000238418579,\"critChance\":0.029999999329447748,\"critMultiplier\":1.5,\"lifeSteal\":0.0,\"dodgeChance\":0.0,\"moveSpeed\":0.0}",
+    "cultivation": 30,
+    "copper": 10
+  },
+  {
+    "name": "黑风刀客 PC 46",
+    "type": "EliteEnemy",
+    "x": 8.0,
+    "y": 0.179633558,
+    "z": -12.0,
+    "stats": "{\"displayName\":\"黑风刀客\",\"visualId\":\"stone_ape\",\"level\":0,\"maxHealth\":120.0,\"currentHealth\":120.0,\"attack\":12.0,\"defense\":3.0,\"attackSpeed\":0.8500000238418579,\"critChance\":0.029999999329447748,\"critMultiplier\":1.5,\"lifeSteal\":0.0,\"dodgeChance\":0.0,\"moveSpeed\":0.0}",
+    "cultivation": 30,
+    "copper": 10
+  }
+]

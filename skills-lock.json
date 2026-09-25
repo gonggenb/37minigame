@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "skills": {
+    "video-pre-launch-check-officer": {
+      "source": "winichai/video-pre-launch-check-officer",
+      "sourceType": "github",
+      "skillPath": "SKILL.md",
+      "computedHash": "e75fbeb1dfd2584e07977518ace11f8e8d6e4a4fd8bebec5e5eb8831a67e3405"
+    }
+  }
+}

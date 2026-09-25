@@ -1,0 +1,9 @@
+{
+    "reachableCells": 29540,
+    "clearCells": 30272,
+    "encounters": 73,
+    "cellSize": 0.4000000059604645,
+    "playerRadius": 0.3400000035762787,
+    "unreachable": [],
+    "scope": "Static collision flood; not a substitute for real player control."
+}

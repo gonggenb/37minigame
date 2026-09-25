@@ -1,0 +1,740 @@
+{
+    "normal": 40,
+    "elite": 10,
+    "caves": 5,
+    "treasures": 8,
+    "herbs": 7,
+    "placements": [
+        {
+            "name": "山贼喽啰 PC 1",
+            "type": "NormalEnemy",
+            "region": "Entry",
+            "position": {
+                "x": -23.200000762939454,
+                "y": 0.2271202951669693,
+                "z": -31.600000381469728
+            }
+        },
+        {
+            "name": "灰岩巨鼠 PC 2",
+            "type": "NormalEnemy",
+            "region": "Entry",
+            "position": {
+                "x": -19.600000381469728,
+                "y": 0.2673422396183014,
+                "z": -25.200000762939454
+            }
+        },
+        {
+            "name": "流寇 PC 3",
+            "type": "NormalEnemy",
+            "region": "Entry",
+            "position": {
+                "x": -28.0,
+                "y": 0.2229052633047104,
+                "z": -17.200000762939454
+            }
+        },
+        {
+            "name": "青衣快剑 PC 4",
+            "type": "NormalEnemy",
+            "region": "Entry",
+            "position": {
+                "x": -31.600000381469728,
+                "y": 0.27362436056137087,
+                "z": -4.800000190734863
+            }
+        },
+        {
+            "name": "紫衣毒客 PC 5",
+            "type": "NormalEnemy",
+            "region": "Entry",
+            "position": {
+                "x": -19.912145614624025,
+                "y": 0.21854504942893983,
+                "z": -10.369256973266602
+            }
+        },
+        {
+            "name": "青竹机关傀 PC 6",
+            "type": "NormalEnemy",
+            "region": "Entry",
+            "position": {
+                "x": -11.600000381469727,
+                "y": 0.2070545107126236,
+                "z": -12.0
+            }
+        },
+        {
+            "name": "机关弩车 PC 7",
+            "type": "NormalEnemy",
+            "region": "Town",
+            "position": {
+                "x": -10.0,
+                "y": 0.1755276322364807,
+                "z": -5.599999904632568
+            }
+        },
+        {
+            "name": "赤骑枪客 PC 8",
+            "type": "NormalEnemy",
+            "region": "Town",
+            "position": {
+                "x": -10.0,
+                "y": 0.18225562572479249,
+                "z": 4.0
+            }
+        },
+        {
+            "name": "山贼喽啰 PC 9",
+            "type": "NormalEnemy",
+            "region": "Town",
+            "position": {
+                "x": -10.0,
+                "y": 0.2775793671607971,
+                "z": 12.40000057220459
+            }
+        },
+        {
+            "name": "灰岩巨鼠 PC 10",
+            "type": "NormalEnemy",
+            "region": "Town",
+            "position": {
+                "x": -21.200000762939454,
+                "y": 0.1621137261390686,
+                "z": 3.200000047683716
+            }
+        },
+        {
+            "name": "流寇 PC 11",
+            "type": "NormalEnemy",
+            "region": "Town",
+            "position": {
+                "x": 2.4000000953674318,
+                "y": 0.24725571274757386,
+                "z": 11.600000381469727
+            }
+        },
+        {
+            "name": "青衣快剑 PC 12",
+            "type": "NormalEnemy",
+            "region": "Town",
+            "position": {
+                "x": -19.906147003173829,
+                "y": 0.17142587900161744,
+                "z": 8.860897064208985
+            }
+        },
+        {
+            "name": "赤骑枪客 PC 13",
+            "type": "NormalEnemy",
+            "region": "Plain",
+            "position": {
+                "x": 2.0,
+                "y": 0.20327991247177125,
+                "z": -6.0
+            }
+        },
+        {
+            "name": "山贼喽啰 PC 14",
+            "type": "NormalEnemy",
+            "region": "Plain",
+            "position": {
+                "x": 8.40000057220459,
+                "y": 0.25329530239105227,
+                "z": -5.599999904632568
+            }
+        },
+        {
+            "name": "灰岩巨鼠 PC 15",
+            "type": "NormalEnemy",
+            "region": "Plain",
+            "position": {
+                "x": 13.600000381469727,
+                "y": 0.28658387064933779,
+                "z": -4.0
+            }
+        },
+        {
+            "name": "流寇 PC 16",
+            "type": "NormalEnemy",
+            "region": "Plain",
+            "position": {
+                "x": 19.921964645385743,
+                "y": 0.2620047628879547,
+                "z": -6.8076863288879398
+            }
+        },
+        {
+            "name": "青衣快剑 PC 17",
+            "type": "NormalEnemy",
+            "region": "Plain",
+            "position": {
+                "x": 28.80000114440918,
+                "y": 0.18428878486156465,
+                "z": -1.2000000476837159
+            }
+        },
+        {
+            "name": "紫衣毒客 PC 18",
+            "type": "NormalEnemy",
+            "region": "Plain",
+            "position": {
+                "x": 14.40000057220459,
+                "y": 0.25266459584236147,
+                "z": 8.0
+            }
+        },
+        {
+            "name": "青竹机关傀 PC 19",
+            "type": "NormalEnemy",
+            "region": "Plain",
+            "position": {
+                "x": 14.40000057220459,
+                "y": 0.16649749875068665,
+                "z": 16.0
+            }
+        },
+        {
+            "name": "机关弩车 PC 20",
+            "type": "NormalEnemy",
+            "region": "Plain",
+            "position": {
+                "x": 9.199999809265137,
+                "y": 0.29101473093032839,
+                "z": 4.0
+            }
+        },
+        {
+            "name": "赤骑枪客 PC 21",
+            "type": "NormalEnemy",
+            "region": "Plain",
+            "position": {
+                "x": 20.80000114440918,
+                "y": 0.22386685013771058,
+                "z": -14.800000190734864
+            }
+        },
+        {
+            "name": "山贼喽啰 PC 22",
+            "type": "NormalEnemy",
+            "region": "Plain",
+            "position": {
+                "x": 0.800000011920929,
+                "y": 0.16775821149349214,
+                "z": -15.199999809265137
+            }
+        },
+        {
+            "name": "青衣快剑 PC 23",
+            "type": "NormalEnemy",
+            "region": "Camp",
+            "position": {
+                "x": 8.800000190734864,
+                "y": 0.12650656700134278,
+                "z": -20.0
+            }
+        },
+        {
+            "name": "紫衣毒客 PC 24",
+            "type": "NormalEnemy",
+            "region": "Camp",
+            "position": {
+                "x": 17.200000762939454,
+                "y": 0.15655557811260224,
+                "z": -24.399999618530275
+            }
+        },
+        {
+            "name": "青竹机关傀 PC 25",
+            "type": "NormalEnemy",
+            "region": "Camp",
+            "position": {
+                "x": 23.200000762939454,
+                "y": 0.19827574491500855,
+                "z": -26.399999618530275
+            }
+        },
+        {
+            "name": "机关弩车 PC 26",
+            "type": "NormalEnemy",
+            "region": "Camp",
+            "position": {
+                "x": 26.399999618530275,
+                "y": 0.17826691269874574,
+                "z": -32.400001525878909
+            }
+        },
+        {
+            "name": "赤骑枪客 PC 27",
+            "type": "NormalEnemy",
+            "region": "Camp",
+            "position": {
+                "x": 29.200000762939454,
+                "y": 0.225739985704422,
+                "z": -28.0
+            }
+        },
+        {
+            "name": "山贼喽啰 PC 28",
+            "type": "NormalEnemy",
+            "region": "Camp",
+            "position": {
+                "x": 36.000003814697269,
+                "y": 0.30220866203308108,
+                "z": -19.200000762939454
+            }
+        },
+        {
+            "name": "灰岩巨鼠 PC 29",
+            "type": "NormalEnemy",
+            "region": "Camp",
+            "position": {
+                "x": 40.79999923706055,
+                "y": 0.268402099609375,
+                "z": -17.200000762939454
+            }
+        },
+        {
+            "name": "流寇 PC 30",
+            "type": "NormalEnemy",
+            "region": "Camp",
+            "position": {
+                "x": 21.600000381469728,
+                "y": 0.18148784339427949,
+                "z": -35.20000076293945
+            }
+        },
+        {
+            "name": "赤骑枪客 PC 31",
+            "type": "NormalEnemy",
+            "region": "Caves",
+            "position": {
+                "x": -25.600000381469728,
+                "y": 0.1639716774225235,
+                "z": 15.600000381469727
+            }
+        },
+        {
+            "name": "山贼喽啰 PC 32",
+            "type": "NormalEnemy",
+            "region": "Caves",
+            "position": {
+                "x": -32.79999923706055,
+                "y": 0.22158391773700715,
+                "z": 6.800000190734863
+            }
+        },
+        {
+            "name": "灰岩巨鼠 PC 33",
+            "type": "NormalEnemy",
+            "region": "Caves",
+            "position": {
+                "x": -32.400001525878909,
+                "y": 0.12362243235111237,
+                "z": 18.80000114440918
+            }
+        },
+        {
+            "name": "流寇 PC 34",
+            "type": "NormalEnemy",
+            "region": "Caves",
+            "position": {
+                "x": -19.200000762939454,
+                "y": 0.2513405978679657,
+                "z": 27.600000381469728
+            }
+        },
+        {
+            "name": "青衣快剑 PC 35",
+            "type": "NormalEnemy",
+            "region": "Caves",
+            "position": {
+                "x": -6.400000095367432,
+                "y": 0.2911607623100281,
+                "z": 20.399999618530275
+            }
+        },
+        {
+            "name": "紫衣毒客 PC 36",
+            "type": "NormalEnemy",
+            "region": "Caves",
+            "position": {
+                "x": 32.400001525878909,
+                "y": 0.1464715152978897,
+                "z": 4.800000190734863
+            }
+        },
+        {
+            "name": "流寇 PC 37",
+            "type": "NormalEnemy",
+            "region": "Pass",
+            "position": {
+                "x": 3.200000047683716,
+                "y": 0.1964004784822464,
+                "z": 33.20000076293945
+            }
+        },
+        {
+            "name": "青衣快剑 PC 38",
+            "type": "NormalEnemy",
+            "region": "Pass",
+            "position": {
+                "x": 10.0,
+                "y": 0.17481717467308045,
+                "z": 29.200000762939454
+            }
+        },
+        {
+            "name": "紫衣毒客 PC 39",
+            "type": "NormalEnemy",
+            "region": "Pass",
+            "position": {
+                "x": 10.800000190734864,
+                "y": 0.22480235993862153,
+                "z": 37.20000076293945
+            }
+        },
+        {
+            "name": "青竹机关傀 PC 40",
+            "type": "NormalEnemy",
+            "region": "Pass",
+            "position": {
+                "x": 12.40000057220459,
+                "y": 0.24200476706027986,
+                "z": 42.79999923706055
+            }
+        },
+        {
+            "name": "黑风刀客 PC 41",
+            "type": "EliteEnemy",
+            "region": "Elite pockets",
+            "position": {
+                "x": -30.0,
+                "y": 0.1507837027311325,
+                "z": 23.200000762939454
+            }
+        },
+        {
+            "name": "玄衣刀客 PC 42",
+            "type": "EliteEnemy",
+            "region": "Elite pockets",
+            "position": {
+                "x": -25.600000381469728,
+                "y": 0.2105240672826767,
+                "z": 26.80000114440918
+            }
+        },
+        {
+            "name": "岩甲山魈 PC 43",
+            "type": "EliteEnemy",
+            "region": "Elite pockets",
+            "position": {
+                "x": 0.0,
+                "y": 0.22395801544189454,
+                "z": 26.399999618530275
+            }
+        },
+        {
+            "name": "边城黑衣客 PC 44",
+            "type": "EliteEnemy",
+            "region": "Elite pockets",
+            "position": {
+                "x": 34.0,
+                "y": 0.17351321876049043,
+                "z": 10.0
+            }
+        },
+        {
+            "name": "东关铁卫 PC 45",
+            "type": "EliteEnemy",
+            "region": "Elite pockets",
+            "position": {
+                "x": 15.600000381469727,
+                "y": 0.2418115735054016,
+                "z": -9.199999809265137
+            }
+        },
+        {
+            "name": "黑风刀客 PC 46",
+            "type": "EliteEnemy",
+            "region": "Elite pockets",
+            "position": {
+                "x": 8.0,
+                "y": 0.17963355779647828,
+                "z": -12.0
+            }
+        },
+        {
+            "name": "玄衣刀客 PC 47",
+            "type": "EliteEnemy",
+            "region": "Elite pockets",
+            "position": {
+                "x": 26.0,
+                "y": 0.22454527020454408,
+                "z": -25.600000381469728
+            }
+        },
+        {
+            "name": "岩甲山魈 PC 48",
+            "type": "EliteEnemy",
+            "region": "Elite pockets",
+            "position": {
+                "x": 35.20000076293945,
+                "y": 0.20959196984767915,
+                "z": -31.600000381469728
+            }
+        },
+        {
+            "name": "边城黑衣客 PC 49",
+            "type": "EliteEnemy",
+            "region": "Elite pockets",
+            "position": {
+                "x": 10.800000190734864,
+                "y": 0.20390015840530396,
+                "z": 33.60000228881836
+            }
+        },
+        {
+            "name": "东关铁卫 PC 50",
+            "type": "EliteEnemy",
+            "region": "Elite pockets",
+            "position": {
+                "x": -35.20000076293945,
+                "y": 0.170091450214386,
+                "z": 12.0
+            }
+        },
+        {
+            "name": "隐市岩洞 PC 51",
+            "type": "HiddenCave",
+            "region": "Caves",
+            "position": {
+                "x": -33.57999801635742,
+                "y": 0.0,
+                "z": 21.644001007080079
+            }
+        },
+        {
+            "name": "隐市岩洞 PC 52",
+            "type": "HiddenCave",
+            "region": "Caves",
+            "position": {
+                "x": -26.511999130249025,
+                "y": 0.0,
+                "z": 28.423999786376954
+            }
+        },
+        {
+            "name": "隐市岩洞 PC 53",
+            "type": "HiddenCave",
+            "region": "Caves",
+            "position": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 29.200000762939454
+            }
+        },
+        {
+            "name": "隐市岩洞 PC 54",
+            "type": "HiddenCave",
+            "region": "Caves",
+            "position": {
+                "x": 36.0,
+                "y": 0.0,
+                "z": 8.800000190734864
+            }
+        },
+        {
+            "name": "隐市岩洞 PC 55",
+            "type": "HiddenCave",
+            "region": "Caves",
+            "position": {
+                "x": -36.948001861572269,
+                "y": 0.0,
+                "z": 12.496000289916993
+            }
+        },
+        {
+            "name": "西路宝箱 PC 56",
+            "type": "Treasure",
+            "region": "Supply",
+            "position": {
+                "x": -24.80000114440918,
+                "y": 0.21510587632656098,
+                "z": -34.79999923706055
+            }
+        },
+        {
+            "name": "西路宝箱 PC 57",
+            "type": "Treasure",
+            "region": "Supply",
+            "position": {
+                "x": -10.965685844421387,
+                "y": 0.280827134847641,
+                "z": 16.634315490722658
+            }
+        },
+        {
+            "name": "西路宝箱 PC 58",
+            "type": "Treasure",
+            "region": "Supply",
+            "position": {
+                "x": -21.600000381469728,
+                "y": 0.18489904701709748,
+                "z": 12.800000190734864
+            }
+        },
+        {
+            "name": "西路宝箱 PC 59",
+            "type": "Treasure",
+            "region": "Supply",
+            "position": {
+                "x": 22.80000114440918,
+                "y": 0.24078433215618134,
+                "z": 0.0
+            }
+        },
+        {
+            "name": "西路宝箱 PC 60",
+            "type": "Treasure",
+            "region": "Supply",
+            "position": {
+                "x": 37.20000076293945,
+                "y": 0.2894715368747711,
+                "z": -24.0
+            }
+        },
+        {
+            "name": "西路宝箱 PC 61",
+            "type": "Treasure",
+            "region": "Supply",
+            "position": {
+                "x": 14.933316230773926,
+                "y": 0.17481213808059693,
+                "z": 29.802236557006837
+            }
+        },
+        {
+            "name": "西路宝箱 PC 62",
+            "type": "Treasure",
+            "region": "Supply",
+            "position": {
+                "x": -16.80000114440918,
+                "y": 0.254587322473526,
+                "z": 28.80000114440918
+            }
+        },
+        {
+            "name": "西路宝箱 PC 63",
+            "type": "Treasure",
+            "region": "Supply",
+            "position": {
+                "x": 32.0,
+                "y": 0.18553131818771363,
+                "z": 11.600000381469727
+            }
+        },
+        {
+            "name": "南桥药草 PC 64",
+            "type": "Herb",
+            "region": "Recovery",
+            "position": {
+                "x": -22.0,
+                "y": 0.24715746939182282,
+                "z": -27.600000381469728
+            }
+        },
+        {
+            "name": "北门药草 PC 65",
+            "type": "Herb",
+            "region": "Recovery",
+            "position": {
+                "x": -10.0,
+                "y": 0.15985547006130219,
+                "z": -1.2000000476837159
+            }
+        },
+        {
+            "name": "北坡轻身草 PC 66",
+            "type": "Herb",
+            "region": "Recovery",
+            "position": {
+                "x": -32.0,
+                "y": 0.2581646144390106,
+                "z": 2.4000000953674318
+            }
+        },
+        {
+            "name": "东村铁骨草 PC 67",
+            "type": "Herb",
+            "region": "Recovery",
+            "position": {
+                "x": 5.599999904632568,
+                "y": 0.1506045013666153,
+                "z": -15.199999809265137
+            }
+        },
+        {
+            "name": "南桥药草 PC 68",
+            "type": "Herb",
+            "region": "Recovery",
+            "position": {
+                "x": 20.0,
+                "y": 0.18822306394577027,
+                "z": -20.399999618530275
+            }
+        },
+        {
+            "name": "北门药草 PC 69",
+            "type": "Herb",
+            "region": "Recovery",
+            "position": {
+                "x": -12.40000057220459,
+                "y": 0.2814408838748932,
+                "z": 25.600000381469728
+            }
+        },
+        {
+            "name": "北坡轻身草 PC 70",
+            "type": "Herb",
+            "region": "Recovery",
+            "position": {
+                "x": 11.600000381469727,
+                "y": 0.23581890761852265,
+                "z": 39.60000228881836
+            }
+        },
+        {
+            "name": "望气石·西 PC 71",
+            "type": "VisionRelic",
+            "region": "Entry fork",
+            "position": {
+                "x": -17.600000381469728,
+                "y": 0.28119003772735598,
+                "z": -21.200000762939454
+            }
+        },
+        {
+            "name": "望气石·东 PC 72",
+            "type": "VisionRelic",
+            "region": "North fork",
+            "position": {
+                "x": 11.600000381469727,
+                "y": 0.22150054574012757,
+                "z": 11.600000381469727
+            }
+        },
+        {
+            "name": "东郊无名奇草 PC 73",
+            "type": "MysteryHerb",
+            "region": "Exploration",
+            "position": {
+                "x": 31.600000381469728,
+                "y": 0.2818531095981598,
+                "z": -14.40000057220459
+            }
+        }
+    ],
+    "scope": "Authored placement; natural-run balance and device performance require separate validation."
+}

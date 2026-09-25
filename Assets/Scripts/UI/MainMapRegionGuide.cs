@@ -7,6 +7,7 @@ namespace WuxiaRoguelite.UI
     public sealed class MainMapRegionGuide : MonoBehaviour
     {
         [Header("路线信息")]
+        public WuxiaRoguelite.Map.RouteSpecialty specialty;
         public string regionName = "中央驿路";
         public string routeTheme = "起步 · 混合收益";
         public string riskLabel = "低风险";
@@ -63,8 +64,9 @@ namespace WuxiaRoguelite.UI
             float guiScale = ResponsiveGui.Scale;
             Vector2 guiPoint = ResponsiveGui.ScreenPointToGui(screenPoint, guiScale);
             bool showDetails = playerDistance <= detailDistance;
-            float width = showDetails ? 158f : 112f;
-            float height = showDetails ? 43f : 25f;
+            bool route = specialty != WuxiaRoguelite.Map.RouteSpecialty.None;
+            float width = showDetails ? (route ? 224f : 158f) : 112f;
+            float height = showDetails ? (route ? 64f : 43f) : 25f;
             Rect panel = new Rect(guiPoint.x - width * 0.5f, guiPoint.y - height - 9f, width, height);
 
             GUI.depth = -118;
@@ -85,7 +87,10 @@ namespace WuxiaRoguelite.UI
             {
                 ResponsiveGui.DrawSingleLineLabel(
                     new Rect(panel.x + 8f, panel.y + 21f, panel.width - 16f, 18f),
-                    $"{routeTheme} · {riskLabel}", detailStyle, 8);
+                    specialty == WuxiaRoguelite.Map.RouteSpecialty.Camp && gameFlow.HasRunChallenge
+                        ? gameFlow.PursuitSummary : route ? routeTheme : $"{routeTheme} · {riskLabel}", detailStyle, 10);
+                if (route) ResponsiveGui.DrawSingleLineLabel(new Rect(panel.x + 8, panel.y + 40, panel.width - 16, 18),
+                    gameFlow.RouteProgress(specialty), detailStyle, 10);
             }
 
             Color previous = GUI.color;

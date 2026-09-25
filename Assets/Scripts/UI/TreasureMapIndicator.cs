@@ -1,6 +1,7 @@
 using UnityEngine;
 using WuxiaRoguelite.GameFlow;
 using WuxiaRoguelite.Map;
+using WuxiaRoguelite.Runtime;
 
 namespace WuxiaRoguelite.UI
 {
@@ -143,9 +144,11 @@ namespace WuxiaRoguelite.UI
 
             ResponsiveGui.DrawSingleLineLabel(
                 new Rect(panel.x + 6f, panel.y + 2f, panel.width - 12f, 20f),
-                "◆ 珍藏宝箱 ◆", titleStyle, 10);
+                $"◆ {TreasureTitle} ◆", titleStyle, 10);
             ResponsiveGui.DrawSingleLineLabel(
                 new Rect(panel.x + 6f, panel.y + 21f, panel.width - 12f, 18f),
+                encounter.GrantsMartialArtUpgrade ? GameTextCatalog.FarExplorationTreasureHint :
+                encounter.ExplorationRewardTier == 1 ? GameTextCatalog.MidExplorationTreasureHint :
                 playerIsNear ? "靠近即可开启" : "装备 · 修为 · 铜钱", hintStyle, 9);
 
             Color previousColor = GUI.color;
@@ -154,6 +157,9 @@ namespace WuxiaRoguelite.UI
             GUI.color = previousColor;
             GUI.matrix = originalGuiMatrix;
         }
+
+        private string TreasureTitle => encounter.GrantsMartialArtUpgrade ? GameTextCatalog.FarExplorationTreasureName :
+            encounter.ExplorationRewardTier == 1 ? GameTextCatalog.MidExplorationTreasureName : "珍藏宝箱";
 
         private bool IsChestInsideCamera(Camera worldCamera)
         {
@@ -174,7 +180,7 @@ namespace WuxiaRoguelite.UI
             Vector2 markerPoint = WorldIndicatorUtility.GetClampedGuiPoint(
                 worldCamera, anchor, guiScale, out Vector2 direction);
             string arrow = WorldIndicatorUtility.DirectionArrow(direction);
-            string label = $"{arrow} 宝箱  {Mathf.CeilToInt(playerDistance)}步";
+            string label = $"{arrow} {(encounter.ExplorationRewardTier > 0 ? TreasureTitle : "宝箱")}  {Mathf.CeilToInt(playerDistance)}步";
             Rect panel = new Rect(markerPoint.x - 57f, markerPoint.y - 14f, 114f, 28f);
             float pulse = 0.78f + Mathf.Sin(Time.unscaledTime * pulseSpeed) * 0.18f;
 

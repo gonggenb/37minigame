@@ -11,10 +11,36 @@ namespace WuxiaRoguelite.Visual
         public const string ResourceRoot = "Characters/HeroAttacks/";
         private static Sprite[][] clips;
         private static Sprite[] idle;
+        private static Sprite[][] basicVariants;
         public static readonly string[] Ids = { "basic", "sword_qi", "venom_palm", "blood_cleave" };
+        private static readonly string[] BasicVariantIds = { "jade_crescent", "golden_ember", "ink_afterimage" };
+        public static int BasicVariantCount => BasicVariantIds.Length;
+
+        public static void ReleaseCache() { ResetCache(); HeroUltimateArt.ReleaseCache(); HeroExternalVfxArt.ReleaseCache(); }
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
-        private static void ResetCache() { clips = null; idle = null; }
+        private static void ResetCache() { clips = null; idle = null; basicVariants = null; }
+
+        public static Sprite[] BasicFrames(int variant)
+        {
+            if (basicVariants == null)
+            {
+                basicVariants = new Sprite[BasicVariantCount][];
+                for (int i = 0; i < basicVariants.Length; i++)
+                {
+                    basicVariants[i] = Resources.LoadAll<Sprite>(ResourceRoot + "spr_hero_attack_basic_" + BasicVariantIds[i] + "_right_8f_v01");
+                    Array.Sort(basicVariants[i], (a, b) => string.CompareOrdinal(a.name, b.name));
+                    if (basicVariants[i].Length != 8)
+                        Debug.LogError("Hero basic attack variant requires eight sprites: " + BasicVariantIds[i]);
+                }
+            }
+            return basicVariants[Mathf.Clamp(variant, 0, BasicVariantCount - 1)];
+        }
+
+        // Wide baked-in trails need more transparent canvas. Restore the same on-screen
+        // body height around the foot pivot; never resize the shadow or combat layout.
+        // Heights match Tools/ArtPipeline/prepare_hero_basic_variants.cjs.
+        public static float BasicDisplayScale(int variant) => 136f / (variant == 2 ? 94f : 112f);
 
         public static Sprite[] Frames(HeroAttackForm form)
         {

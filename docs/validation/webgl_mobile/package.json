@@ -1,0 +1,51 @@
+{
+  "totalBytes": 107470096,
+  "files": [
+    {
+      "path": "Build/528234895a30d581c3399123c20695dc.wasm.unityweb",
+      "bytes": 5389386,
+      "sha256": "7693aa76b18bccc8c8c429b2e9af4911ec1e8a6ca8203faa6cddfed52a6f4901"
+    },
+    {
+      "path": "Build/663f9c077d5b855e58f4cc6af2be9718.framework.js.unityweb",
+      "bytes": 72508,
+      "sha256": "8180919b89afc2995096d9e10291b89302e631605102d5748332094f31d308ae"
+    },
+    {
+      "path": "Build/b554ec634968da0c9cf49de2be75b438.loader.js",
+      "bytes": 48527,
+      "sha256": "61e84278db4a964cfc29ab0eb857e9680f233776104f19c61eb875405dd6cf7d"
+    },
+    {
+      "path": "Build/df94d81ab6d12c863af46e9b75924775.data.unityweb",
+      "bytes": 100816791,
+      "sha256": "6da02e046b6593d607b43a4793a7ee46a04b33dad22d198336b902f712c28ae8",
+      "uncompressedBytes": 133599469
+    },
+    {
+      "path": "Build/f29818efc8929f50ab275d876cef7282.symbols.json.unityweb",
+      "bytes": 1137852,
+      "sha256": "872f62afe268d5ad012c5f8a3fb427409f900884711718569b37f890f620eca8"
+    },
+    {
+      "path": "GUID.txt",
+      "bytes": 32,
+      "sha256": "c2a044dd7c5566c05b97c2baee2983f4c3ee6232054e0804f052c0aea1e87769"
+    },
+    {
+      "path": "ProjectVersion.txt",
+      "bytes": 83,
+      "sha256": "dc39b76877cad51588645e7b18e8c1c90e462ddcec948e3d9e60214dee3c09fc"
+    },
+    {
+      "path": "dependencies.txt",
+      "bytes": 1351,
+      "sha256": "63ba47659b16404df3b99e2fc2f7e369e420966ba4d61d0dd555d17114b24d42"
+    },
+    {
+      "path": "index.html",
+      "bytes": 3566,
+      "sha256": "4bf14e5555e7f3a29ea82b3cb049ed8c7d56e22df2ad7905f1cdd719244807ea"
+    }
+  ]
+}

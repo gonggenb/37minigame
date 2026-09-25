@@ -12,6 +12,7 @@ namespace WuxiaRoguelite.GameFlow
     /// </summary>
     public static class LevelSequence
     {
+        public const string MenuSceneName = "BootMenu";
         public const string TutorialSceneName = "TutorialLevel";
         public const string LevelTwoSceneName = "MainPrototype";
         public const string LevelThreeSceneName = "BambooValleyLevel";
@@ -19,15 +20,18 @@ namespace WuxiaRoguelite.GameFlow
         private const string TutorialCompletedKey = "WuxiaRoguelite.TutorialCompleted.v1";
         private const string LevelTwoCompletedKey = "WuxiaRoguelite.LevelTwoCompleted.v1";
         private static string autoStartScene;
+        private static bool showSelectionOnMenu;
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
         private static void ResetSession()
         {
             autoStartScene = null;
+            showSelectionOnMenu = false;
         }
 
         public static bool IsTutorialScene =>
             SceneManager.GetActiveScene().name == TutorialSceneName;
+        public static bool IsMenuScene => SceneManager.GetActiveScene().name == MenuSceneName;
 
         public static bool IsLevelThreeScene =>
             SceneManager.GetActiveScene().name == LevelThreeSceneName;
@@ -72,7 +76,27 @@ namespace WuxiaRoguelite.GameFlow
 
         public static void LoadLevelSelection()
         {
-            Load(LevelTwoSceneName, GameTextCatalog.GameTitle, false);
+            LoadMainMenu(true);
+        }
+
+        public static void LoadMainMenu(bool showSelection = false)
+        {
+            if (LevelLoadingScreen.IsLoading) return;
+            showSelectionOnMenu = showSelection;
+            Load(MenuSceneName, GameTextCatalog.GameTitle, false);
+        }
+
+        public static bool ConsumeMenuSelectionRequest()
+        {
+            bool value = showSelectionOnMenu;
+            showSelectionOnMenu = false;
+            return value;
+        }
+
+        public static void CancelPendingRequest()
+        {
+            autoStartScene = null;
+            showSelectionOnMenu = false;
         }
 
         public static void LoadLevelThree()

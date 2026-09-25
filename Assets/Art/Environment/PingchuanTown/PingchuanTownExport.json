@@ -1,0 +1,7045 @@
+{
+  "materials": [
+    {
+      "name": "PC_M00",
+      "source": "loam",
+      "color": [
+        0.25,
+        0.28999999165534973,
+        0.13500000536441803,
+        1.0
+      ],
+      "roughness": 0.8500000238418579,
+      "emission": 0.0
+    },
+    {
+      "name": "PC_M01",
+      "source": "water",
+      "color": [
+        0.026000000536441803,
+        0.24500000476837158,
+        0.27000001072883606,
+        1.0
+      ],
+      "roughness": 0.1899999976158142,
+      "emission": 0.0
+    },
+    {
+      "name": "PC_M02",
+      "source": "road",
+      "color": [
+        0.4699999988079071,
+        0.3700000047683716,
+        0.2150000035762787,
+        1.0
+      ],
+      "roughness": 0.8500000238418579,
+      "emission": 0.0
+    },
+    {
+      "name": "PC_M03",
+      "source": "stone",
+      "color": [
+        0.3499999940395355,
+        0.38999998569488525,
+        0.3700000047683716,
+        1.0
+      ],
+      "roughness": 0.8500000238418579,
+      "emission": 0.0
+    },
+    {
+      "name": "PC_M04",
+      "source": "stone_light",
+      "color": [
+        0.49000000953674316,
+        0.46000000834465027,
+        0.3700000047683716,
+        1.0
+      ],
+      "roughness": 0.8500000238418579,
+      "emission": 0.0
+    },
+    {
+      "name": "PC_M05",
+      "source": "dirt",
+      "color": [
+        0.3400000035762787,
+        0.26499998569488525,
+        0.13500000536441803,
+        1.0
+      ],
+      "roughness": 0.8500000238418579,
+      "emission": 0.0
+    },
+    {
+      "name": "PC_M06",
+      "source": "plaster",
+      "color": [
+        0.6899999976158142,
+        0.6000000238418579,
+        0.4300000071525574,
+        1.0
+      ],
+      "roughness": 0.8500000238418579,
+      "emission": 0.0
+    },
+    {
+      "name": "PC_M07",
+      "source": "wood",
+      "color": [
+        0.18000000715255737,
+        0.08399999886751175,
+        0.03500000014901161,
+        1.0
+      ],
+      "roughness": 0.8500000238418579,
+      "emission": 0.0
+    },
+    {
+      "name": "PC_M08",
+      "source": "ink",
+      "color": [
+        0.02199999988079071,
+        0.023000000044703484,
+        0.01899999938905239,
+        1.0
+      ],
+      "roughness": 0.8500000238418579,
+      "emission": 0.0
+    },
+    {
+      "name": "PC_M09",
+      "source": "wood_edge",
+      "color": [
+        0.3700000047683716,
+        0.2199999988079071,
+        0.10000000149011612,
+        1.0
+      ],
+      "roughness": 0.8500000238418579,
+      "emission": 0.0
+    },
+    {
+      "name": "PC_M10",
+      "source": "paper",
+      "color": [
+        1.0,
+        0.4399999976158142,
+        0.07999999821186066,
+        1.0
+      ],
+      "roughness": 0.5,
+      "emission": 3.0
+    },
+    {
+      "name": "PC_M11",
+      "source": "rope",
+      "color": [
+        0.47999998927116394,
+        0.36000001430511475,
+        0.18000000715255737,
+        1.0
+      ],
+      "roughness": 0.8500000238418579,
+      "emission": 0.0
+    },
+    {
+      "name": "PC_M12",
+      "source": "roof",
+      "color": [
+        0.052000001072883606,
+        0.09200000017881393,
+        0.11500000208616257,
+        1.0
+      ],
+      "roughness": 0.8500000238418579,
+      "emission": 0.0
+    },
+    {
+      "name": "PC_M13",
+      "source": "roof_alt",
+      "color": [
+        0.10999999940395355,
+        0.17000000178813934,
+        0.1899999976158142,
+        1.0
+      ],
+      "roughness": 0.8500000238418579,
+      "emission": 0.0
+    },
+    {
+      "name": "PC_M14",
+      "source": "iron",
+      "color": [
+        0.04500000178813934,
+        0.05400000140070915,
+        0.054999999701976776,
+        1.0
+      ],
+      "roughness": 0.8500000238418579,
+      "emission": 0.0
+    },
+    {
+      "name": "PC_M15",
+      "source": "brass",
+      "color": [
+        0.47999998927116394,
+        0.30000001192092896,
+        0.07999999821186066,
+        1.0
+      ],
+      "roughness": 0.8500000238418579,
+      "emission": 0.0
+    },
+    {
+      "name": "PC_M16",
+      "source": "pottery",
+      "color": [
+        0.12999999523162842,
+        0.23000000417232513,
+        0.23000000417232513,
+        1.0
+      ],
+      "roughness": 0.8500000238418579,
+      "emission": 0.0
+    },
+    {
+      "name": "PC_M17",
+      "source": "indigo",
+      "color": [
+        0.07000000029802322,
+        0.1599999964237213,
+        0.23000000417232513,
+        1.0
+      ],
+      "roughness": 0.8500000238418579,
+      "emission": 0.0
+    },
+    {
+      "name": "PC_M18",
+      "source": "berry",
+      "color": [
+        0.6800000071525574,
+        0.09000000357627869,
+        0.027000000700354576,
+        1.0
+      ],
+      "roughness": 0.8500000238418579,
+      "emission": 0.0
+    },
+    {
+      "name": "PC_M19",
+      "source": "herb_leaf",
+      "color": [
+        0.1899999976158142,
+        0.4000000059604645,
+        0.12999999523162842,
+        1.0
+      ],
+      "roughness": 0.8500000238418579,
+      "emission": 0.0
+    },
+    {
+      "name": "PC_M20",
+      "source": "leaf2",
+      "color": [
+        0.3100000023841858,
+        0.36000001430511475,
+        0.09300000220537186,
+        1.0
+      ],
+      "roughness": 0.8500000238418579,
+      "emission": 0.0
+    },
+    {
+      "name": "PC_M21",
+      "source": "cloth",
+      "color": [
+        0.6399999856948853,
+        0.550000011920929,
+        0.3700000047683716,
+        1.0
+      ],
+      "roughness": 0.8500000238418579,
+      "emission": 0.0
+    },
+    {
+      "name": "PC_M22",
+      "source": "red_cloth",
+      "color": [
+        0.4300000071525574,
+        0.052000001072883606,
+        0.02500000037252903,
+        1.0
+      ],
+      "roughness": 0.8500000238418579,
+      "emission": 0.0
+    },
+    {
+      "name": "PC_M23",
+      "source": "bark",
+      "color": [
+        0.14000000059604645,
+        0.10000000149011612,
+        0.052000001072883606,
+        1.0
+      ],
+      "roughness": 0.8500000238418579,
+      "emission": 0.0
+    },
+    {
+      "name": "PC_M24",
+      "source": "flame",
+      "color": [
+        1.0,
+        0.18000000715255737,
+        0.014000000432133675,
+        1.0
+      ],
+      "roughness": 0.800000011920929,
+      "emission": 5.0
+    },
+    {
+      "name": "PC_M25",
+      "source": "flame_core",
+      "color": [
+        1.0,
+        0.6299999952316284,
+        0.10999999940395355,
+        1.0
+      ],
+      "roughness": 0.800000011920929,
+      "emission": 7.0
+    },
+    {
+      "name": "PC_M26",
+      "source": "cliff",
+      "color": [
+        0.28999999165534973,
+        0.33000001311302185,
+        0.3400000035762787,
+        1.0
+      ],
+      "roughness": 0.8500000238418579,
+      "emission": 0.0
+    },
+    {
+      "name": "PC_M27",
+      "source": "moss",
+      "color": [
+        0.1599999964237213,
+        0.23999999463558197,
+        0.06599999964237213,
+        1.0
+      ],
+      "roughness": 0.8500000238418579,
+      "emission": 0.0
+    },
+    {
+      "name": "PC_M28",
+      "source": "leaf0",
+      "color": [
+        0.10999999940395355,
+        0.2199999988079071,
+        0.06400000303983688,
+        1.0
+      ],
+      "roughness": 0.8500000238418579,
+      "emission": 0.0
+    },
+    {
+      "name": "PC_M29",
+      "source": "leaf3",
+      "color": [
+        0.10499999672174454,
+        0.23000000417232513,
+        0.15000000596046448,
+        1.0
+      ],
+      "roughness": 0.8500000238418579,
+      "emission": 0.0
+    },
+    {
+      "name": "PC_M30",
+      "source": "leaf1",
+      "color": [
+        0.20000000298023224,
+        0.28999999165534973,
+        0.07400000095367432,
+        1.0
+      ],
+      "roughness": 0.8500000238418579,
+      "emission": 0.0
+    },
+    {
+      "name": "PC_M31",
+      "source": "bamboo",
+      "color": [
+        0.17000000178813934,
+        0.28999999165534973,
+        0.05999999865889549,
+        1.0
+      ],
+      "roughness": 0.8500000238418579,
+      "emission": 0.0
+    },
+    {
+      "name": "PC_M32",
+      "source": "bamboo_node",
+      "color": [
+        0.36000001430511475,
+        0.38999998569488525,
+        0.12999999523162842,
+        1.0
+      ],
+      "roughness": 0.8500000238418579,
+      "emission": 0.0
+    },
+    {
+      "name": "PC_M33",
+      "source": "foam",
+      "color": [
+        0.49000000953674316,
+        0.699999988079071,
+        0.6600000262260437,
+        1.0
+      ],
+      "roughness": 0.6000000238418579,
+      "emission": 0.0
+    },
+    {
+      "name": "PC_M34",
+      "source": "flower",
+      "color": [
+        0.8700000047683716,
+        0.800000011920929,
+        0.46000000834465027,
+        1.0
+      ],
+      "roughness": 0.8500000238418579,
+      "emission": 0.0
+    },
+    {
+      "name": "PC_M35",
+      "source": "distant_0",
+      "color": [
+        0.2199999988079071,
+        0.3100000023841858,
+        0.36000001430511475,
+        1.0
+      ],
+      "roughness": 1.0,
+      "emission": 0.0
+    },
+    {
+      "name": "PC_M36",
+      "source": "distant_1",
+      "color": [
+        0.28999999165534973,
+        0.38999998569488525,
+        0.44999998807907104,
+        1.0
+      ],
+      "roughness": 1.0,
+      "emission": 0.0
+    },
+    {
+      "name": "PC_M37",
+      "source": "distant_2",
+      "color": [
+        0.3700000047683716,
+        0.4699999988079071,
+        0.5299999713897705,
+        1.0
+      ],
+      "roughness": 1.0,
+      "emission": 0.0
+    }
+  ],
+  "meshes": [
+    {
+      "name": "PC_-5_-4_PC_M00",
+      "vertices": 136,
+      "triangles": 68
+    },
+    {
+      "name": "PC_-4_-4_PC_M00",
+      "vertices": 1224,
+      "triangles": 612
+    },
+    {
+      "name": "PC_-3_-4_PC_M00",
+      "vertices": 1292,
+      "triangles": 646
+    },
+    {
+      "name": "PC_-2_-4_PC_M00",
+      "vertices": 1224,
+      "triangles": 612
+    },
+    {
+      "name": "PC_-1_-4_PC_M00",
+      "vertices": 1224,
+      "triangles": 612
+    },
+    {
+      "name": "PC_0_-4_PC_M00",
+      "vertices": 1224,
+      "triangles": 612
+    },
+    {
+      "name": "PC_1_-4_PC_M00",
+      "vertices": 1224,
+      "triangles": 612
+    },
+    {
+      "name": "PC_2_-4_PC_M00",
+      "vertices": 1292,
+      "triangles": 646
+    },
+    {
+      "name": "PC_3_-4_PC_M00",
+      "vertices": 1224,
+      "triangles": 612
+    },
+    {
+      "name": "PC_4_-4_PC_M00",
+      "vertices": 136,
+      "triangles": 68
+    },
+    {
+      "name": "PC_-5_-3_PC_M00",
+      "vertices": 160,
+      "triangles": 80
+    },
+    {
+      "name": "PC_-4_-3_PC_M00",
+      "vertices": 1440,
+      "triangles": 720
+    },
+    {
+      "name": "PC_-3_-3_PC_M00",
+      "vertices": 1520,
+      "triangles": 760
+    },
+    {
+      "name": "PC_-2_-3_PC_M00",
+      "vertices": 1440,
+      "triangles": 720
+    },
+    {
+      "name": "PC_-1_-3_PC_M00",
+      "vertices": 1440,
+      "triangles": 720
+    },
+    {
+      "name": "PC_0_-3_PC_M00",
+      "vertices": 1440,
+      "triangles": 720
+    },
+    {
+      "name": "PC_1_-3_PC_M00",
+      "vertices": 1440,
+      "triangles": 720
+    },
+    {
+      "name": "PC_2_-3_PC_M00",
+      "vertices": 1520,
+      "triangles": 760
+    },
+    {
+      "name": "PC_3_-3_PC_M00",
+      "vertices": 1440,
+      "triangles": 720
+    },
+    {
+      "name": "PC_4_-3_PC_M00",
+      "vertices": 160,
+      "triangles": 80
+    },
+    {
+      "name": "PC_-5_-2_PC_M00",
+      "vertices": 152,
+      "triangles": 76
+    },
+    {
+      "name": "PC_-4_-2_PC_M00",
+      "vertices": 1368,
+      "triangles": 684
+    },
+    {
+      "name": "PC_-3_-2_PC_M00",
+      "vertices": 1444,
+      "triangles": 722
+    },
+    {
+      "name": "PC_-2_-2_PC_M00",
+      "vertices": 1368,
+      "triangles": 684
+    },
+    {
+      "name": "PC_-1_-2_PC_M00",
+      "vertices": 1368,
+      "triangles": 684
+    },
+    {
+      "name": "PC_0_-2_PC_M00",
+      "vertices": 1368,
+      "triangles": 684
+    },
+    {
+      "name": "PC_1_-2_PC_M00",
+      "vertices": 1368,
+      "triangles": 684
+    },
+    {
+      "name": "PC_2_-2_PC_M00",
+      "vertices": 1444,
+      "triangles": 722
+    },
+    {
+      "name": "PC_3_-2_PC_M00",
+      "vertices": 1368,
+      "triangles": 684
+    },
+    {
+      "name": "PC_4_-2_PC_M00",
+      "vertices": 152,
+      "triangles": 76
+    },
+    {
+      "name": "PC_-5_-1_PC_M00",
+      "vertices": 152,
+      "triangles": 76
+    },
+    {
+      "name": "PC_-4_-1_PC_M00",
+      "vertices": 1368,
+      "triangles": 684
+    },
+    {
+      "name": "PC_-3_-1_PC_M00",
+      "vertices": 1444,
+      "triangles": 722
+    },
+    {
+      "name": "PC_-2_-1_PC_M00",
+      "vertices": 1368,
+      "triangles": 684
+    },
+    {
+      "name": "PC_-1_-1_PC_M00",
+      "vertices": 1368,
+      "triangles": 684
+    },
+    {
+      "name": "PC_0_-1_PC_M00",
+      "vertices": 1368,
+      "triangles": 684
+    },
+    {
+      "name": "PC_1_-1_PC_M00",
+      "vertices": 1368,
+      "triangles": 684
+    },
+    {
+      "name": "PC_2_-1_PC_M00",
+      "vertices": 1444,
+      "triangles": 722
+    },
+    {
+      "name": "PC_3_-1_PC_M00",
+      "vertices": 1368,
+      "triangles": 684
+    },
+    {
+      "name": "PC_4_-1_PC_M00",
+      "vertices": 152,
+      "triangles": 76
+    },
+    {
+      "name": "PC_-5_0_PC_M00",
+      "vertices": 152,
+      "triangles": 76
+    },
+    {
+      "name": "PC_-4_0_PC_M00",
+      "vertices": 1368,
+      "triangles": 684
+    },
+    {
+      "name": "PC_-3_0_PC_M00",
+      "vertices": 1444,
+      "triangles": 722
+    },
+    {
+      "name": "PC_-2_0_PC_M00",
+      "vertices": 1368,
+      "triangles": 684
+    },
+    {
+      "name": "PC_-1_0_PC_M00",
+      "vertices": 1368,
+      "triangles": 684
+    },
+    {
+      "name": "PC_0_0_PC_M00",
+      "vertices": 1368,
+      "triangles": 684
+    },
+    {
+      "name": "PC_1_0_PC_M00",
+      "vertices": 1368,
+      "triangles": 684
+    },
+    {
+      "name": "PC_2_0_PC_M00",
+      "vertices": 1444,
+      "triangles": 722
+    },
+    {
+      "name": "PC_3_0_PC_M00",
+      "vertices": 1368,
+      "triangles": 684
+    },
+    {
+      "name": "PC_4_0_PC_M00",
+      "vertices": 152,
+      "triangles": 76
+    },
+    {
+      "name": "PC_-5_1_PC_M00",
+      "vertices": 152,
+      "triangles": 76
+    },
+    {
+      "name": "PC_-4_1_PC_M00",
+      "vertices": 1368,
+      "triangles": 684
+    },
+    {
+      "name": "PC_-3_1_PC_M00",
+      "vertices": 1444,
+      "triangles": 722
+    },
+    {
+      "name": "PC_-2_1_PC_M00",
+      "vertices": 1368,
+      "triangles": 684
+    },
+    {
+      "name": "PC_-1_1_PC_M00",
+      "vertices": 1368,
+      "triangles": 684
+    },
+    {
+      "name": "PC_0_1_PC_M00",
+      "vertices": 1368,
+      "triangles": 684
+    },
+    {
+      "name": "PC_1_1_PC_M00",
+      "vertices": 1368,
+      "triangles": 684
+    },
+    {
+      "name": "PC_2_1_PC_M00",
+      "vertices": 1444,
+      "triangles": 722
+    },
+    {
+      "name": "PC_3_1_PC_M00",
+      "vertices": 1368,
+      "triangles": 684
+    },
+    {
+      "name": "PC_4_1_PC_M00",
+      "vertices": 152,
+      "triangles": 76
+    },
+    {
+      "name": "PC_-5_2_PC_M00",
+      "vertices": 160,
+      "triangles": 80
+    },
+    {
+      "name": "PC_-4_2_PC_M00",
+      "vertices": 1440,
+      "triangles": 720
+    },
+    {
+      "name": "PC_-3_2_PC_M00",
+      "vertices": 1520,
+      "triangles": 760
+    },
+    {
+      "name": "PC_-2_2_PC_M00",
+      "vertices": 1440,
+      "triangles": 720
+    },
+    {
+      "name": "PC_-1_2_PC_M00",
+      "vertices": 1440,
+      "triangles": 720
+    },
+    {
+      "name": "PC_0_2_PC_M00",
+      "vertices": 1440,
+      "triangles": 720
+    },
+    {
+      "name": "PC_1_2_PC_M00",
+      "vertices": 1440,
+      "triangles": 720
+    },
+    {
+      "name": "PC_2_2_PC_M00",
+      "vertices": 1520,
+      "triangles": 760
+    },
+    {
+      "name": "PC_3_2_PC_M00",
+      "vertices": 1440,
+      "triangles": 720
+    },
+    {
+      "name": "PC_4_2_PC_M00",
+      "vertices": 160,
+      "triangles": 80
+    },
+    {
+      "name": "PC_-5_3_PC_M00",
+      "vertices": 136,
+      "triangles": 68
+    },
+    {
+      "name": "PC_-4_3_PC_M00",
+      "vertices": 1224,
+      "triangles": 612
+    },
+    {
+      "name": "PC_-3_3_PC_M00",
+      "vertices": 1292,
+      "triangles": 646
+    },
+    {
+      "name": "PC_-2_3_PC_M00",
+      "vertices": 1224,
+      "triangles": 612
+    },
+    {
+      "name": "PC_-1_3_PC_M00",
+      "vertices": 1224,
+      "triangles": 612
+    },
+    {
+      "name": "PC_0_3_PC_M00",
+      "vertices": 1224,
+      "triangles": 612
+    },
+    {
+      "name": "PC_1_3_PC_M00",
+      "vertices": 1224,
+      "triangles": 612
+    },
+    {
+      "name": "PC_2_3_PC_M00",
+      "vertices": 1292,
+      "triangles": 646
+    },
+    {
+      "name": "PC_3_3_PC_M00",
+      "vertices": 1224,
+      "triangles": 612
+    },
+    {
+      "name": "PC_4_3_PC_M00",
+      "vertices": 136,
+      "triangles": 68
+    },
+    {
+      "name": "PC_-4_0_PC_M01",
+      "vertices": 32,
+      "triangles": 16
+    },
+    {
+      "name": "PC_-4_-1_PC_M01",
+      "vertices": 8,
+      "triangles": 4
+    },
+    {
+      "name": "PC_-3_-1_PC_M01",
+      "vertices": 28,
+      "triangles": 14
+    },
+    {
+      "name": "PC_-3_-2_PC_M01",
+      "vertices": 8,
+      "triangles": 4
+    },
+    {
+      "name": "PC_-2_-2_PC_M01",
+      "vertices": 28,
+      "triangles": 14
+    },
+    {
+      "name": "PC_-1_-2_PC_M01",
+      "vertices": 60,
+      "triangles": 30
+    },
+    {
+      "name": "PC_0_-2_PC_M01",
+      "vertices": 20,
+      "triangles": 10
+    },
+    {
+      "name": "PC_0_-3_PC_M01",
+      "vertices": 16,
+      "triangles": 8
+    },
+    {
+      "name": "PC_1_-3_PC_M01",
+      "vertices": 24,
+      "triangles": 12
+    },
+    {
+      "name": "PC_1_-4_PC_M01",
+      "vertices": 12,
+      "triangles": 6
+    },
+    {
+      "name": "PC_2_-4_PC_M01",
+      "vertices": 24,
+      "triangles": 12
+    },
+    {
+      "name": "PC_3_-4_PC_M01",
+      "vertices": 12,
+      "triangles": 6
+    },
+    {
+      "name": "PC_3_-3_PC_M01",
+      "vertices": 8,
+      "triangles": 4
+    },
+    {
+      "name": "PC_-1_-1_PC_M01",
+      "vertices": 32,
+      "triangles": 16
+    },
+    {
+      "name": "PC_-1_0_PC_M01",
+      "vertices": 32,
+      "triangles": 16
+    },
+    {
+      "name": "PC_-1_1_PC_M01",
+      "vertices": 8,
+      "triangles": 4
+    },
+    {
+      "name": "PC_0_1_PC_M01",
+      "vertices": 36,
+      "triangles": 18
+    },
+    {
+      "name": "PC_1_1_PC_M01",
+      "vertices": 12,
+      "triangles": 6
+    },
+    {
+      "name": "PC_1_2_PC_M01",
+      "vertices": 24,
+      "triangles": 12
+    },
+    {
+      "name": "PC_2_2_PC_M01",
+      "vertices": 8,
+      "triangles": 4
+    },
+    {
+      "name": "PC_2_3_PC_M01",
+      "vertices": 20,
+      "triangles": 10
+    },
+    {
+      "name": "PC_-2_-4_PC_M02",
+      "vertices": 16,
+      "triangles": 8
+    },
+    {
+      "name": "PC_-2_-3_PC_M02",
+      "vertices": 48,
+      "triangles": 24
+    },
+    {
+      "name": "PC_-2_-2_PC_M02",
+      "vertices": 36,
+      "triangles": 18
+    },
+    {
+      "name": "PC_-1_-2_PC_M02",
+      "vertices": 24,
+      "triangles": 12
+    },
+    {
+      "name": "PC_-1_-1_PC_M02",
+      "vertices": 84,
+      "triangles": 42
+    },
+    {
+      "name": "PC_-1_0_PC_M02",
+      "vertices": 52,
+      "triangles": 26
+    },
+    {
+      "name": "PC_-1_1_PC_M02",
+      "vertices": 80,
+      "triangles": 40
+    },
+    {
+      "name": "PC_-1_2_PC_M02",
+      "vertices": 16,
+      "triangles": 8
+    },
+    {
+      "name": "PC_0_2_PC_M02",
+      "vertices": 64,
+      "triangles": 32
+    },
+    {
+      "name": "PC_0_3_PC_M02",
+      "vertices": 20,
+      "triangles": 10
+    },
+    {
+      "name": "PC_-2_0_PC_M02",
+      "vertices": 114,
+      "triangles": 50
+    },
+    {
+      "name": "PC_-2_1_PC_M02",
+      "vertices": 42,
+      "triangles": 20
+    },
+    {
+      "name": "PC_-3_1_PC_M02",
+      "vertices": 74,
+      "triangles": 36
+    },
+    {
+      "name": "PC_0_-1_PC_M02",
+      "vertices": 52,
+      "triangles": 26
+    },
+    {
+      "name": "PC_1_-1_PC_M02",
+      "vertices": 72,
+      "triangles": 36
+    },
+    {
+      "name": "PC_2_-1_PC_M02",
+      "vertices": 12,
+      "triangles": 6
+    },
+    {
+      "name": "PC_2_0_PC_M02",
+      "vertices": 36,
+      "triangles": 18
+    },
+    {
+      "name": "PC_0_-2_PC_M02",
+      "vertices": 40,
+      "triangles": 20
+    },
+    {
+      "name": "PC_1_-2_PC_M02",
+      "vertices": 52,
+      "triangles": 26
+    },
+    {
+      "name": "PC_1_-3_PC_M02",
+      "vertices": 36,
+      "triangles": 18
+    },
+    {
+      "name": "PC_2_-3_PC_M02",
+      "vertices": 16,
+      "triangles": 8
+    },
+    {
+      "name": "PC_2_-2_PC_M02",
+      "vertices": 24,
+      "triangles": 12
+    },
+    {
+      "name": "PC_3_-2_PC_M02",
+      "vertices": 28,
+      "triangles": 14
+    },
+    {
+      "name": "PC_1_0_PC_M02",
+      "vertices": 32,
+      "triangles": 16
+    },
+    {
+      "name": "PC_1_1_PC_M02",
+      "vertices": 24,
+      "triangles": 12
+    },
+    {
+      "name": "PC_-3_-2_PC_M02",
+      "vertices": 16,
+      "triangles": 8
+    },
+    {
+      "name": "PC_-3_-1_PC_M02",
+      "vertices": 197,
+      "triangles": 87
+    },
+    {
+      "name": "PC_-3_0_PC_M02",
+      "vertices": 34,
+      "triangles": 16
+    },
+    {
+      "name": "PC_-3_2_PC_M02",
+      "vertices": 24,
+      "triangles": 12
+    },
+    {
+      "name": "PC_-2_2_PC_M02",
+      "vertices": 36,
+      "triangles": 18
+    },
+    {
+      "name": "PC_-1_-2_PC_M03",
+      "vertices": 6520,
+      "triangles": 2232
+    },
+    {
+      "name": "PC_-1_-1_PC_M03",
+      "vertices": 8756,
+      "triangles": 3982
+    },
+    {
+      "name": "PC_-1_0_PC_M03",
+      "vertices": 8880,
+      "triangles": 4120
+    },
+    {
+      "name": "PC_-1_1_PC_M03",
+      "vertices": 3438,
+      "triangles": 1396
+    },
+    {
+      "name": "PC_-1_-2_PC_M04",
+      "vertices": 1074,
+      "triangles": 384
+    },
+    {
+      "name": "PC_-1_-1_PC_M04",
+      "vertices": 16657,
+      "triangles": 7907
+    },
+    {
+      "name": "PC_-1_0_PC_M04",
+      "vertices": 22082,
+      "triangles": 10862
+    },
+    {
+      "name": "PC_-1_1_PC_M04",
+      "vertices": 5521,
+      "triangles": 2039
+    },
+    {
+      "name": "PC_1_-1_PC_M05",
+      "vertices": 4116,
+      "triangles": 2010
+    },
+    {
+      "name": "PC_0_-1_PC_M05",
+      "vertices": 2068,
+      "triangles": 1034
+    },
+    {
+      "name": "PC_1_0_PC_M05",
+      "vertices": 804,
+      "triangles": 402
+    },
+    {
+      "name": "PC_0_0_PC_M05",
+      "vertices": 500,
+      "triangles": 250
+    },
+    {
+      "name": "PC_0_-2_PC_M05",
+      "vertices": 32,
+      "triangles": 16
+    },
+    {
+      "name": "PC_1_-2_PC_M05",
+      "vertices": 1608,
+      "triangles": 804
+    },
+    {
+      "name": "PC_1_-3_PC_M05",
+      "vertices": 2712,
+      "triangles": 1308
+    },
+    {
+      "name": "PC_2_-3_PC_M05",
+      "vertices": 2032,
+      "triangles": 1016
+    },
+    {
+      "name": "PC_2_-2_PC_M05",
+      "vertices": 1296,
+      "triangles": 648
+    },
+    {
+      "name": "PC_-3_1_PC_M05",
+      "vertices": 7152,
+      "triangles": 3528
+    },
+    {
+      "name": "PC_-3_2_PC_M05",
+      "vertices": 432,
+      "triangles": 216
+    },
+    {
+      "name": "PC_0_2_PC_M05",
+      "vertices": 9496,
+      "triangles": 4676
+    },
+    {
+      "name": "PC_-1_2_PC_M05",
+      "vertices": 3752,
+      "triangles": 1852
+    },
+    {
+      "name": "PC_-1_1_PC_M05",
+      "vertices": 40,
+      "triangles": 20
+    },
+    {
+      "name": "PC_0_1_PC_M05",
+      "vertices": 40,
+      "triangles": 20
+    },
+    {
+      "name": "PC_1_2_PC_M05",
+      "vertices": 1504,
+      "triangles": 752
+    },
+    {
+      "name": "PC_0_3_PC_M05",
+      "vertices": 280,
+      "triangles": 140
+    },
+    {
+      "name": "PC_1_3_PC_M05",
+      "vertices": 56,
+      "triangles": 28
+    },
+    {
+      "name": "PC_-2_-1_PC_M03",
+      "vertices": 2875,
+      "triangles": 1333
+    },
+    {
+      "name": "PC_-2_-1_PC_M04",
+      "vertices": 4964,
+      "triangles": 2412
+    },
+    {
+      "name": "PC_-2_-1_PC_M06",
+      "vertices": 128,
+      "triangles": 64
+    },
+    {
+      "name": "PC_-2_-1_PC_M07",
+      "vertices": 16536,
+      "triangles": 7294
+    },
+    {
+      "name": "PC_-1_-1_PC_M07",
+      "vertices": 16120,
+      "triangles": 7174
+    },
+    {
+      "name": "PC_-2_-1_PC_M08",
+      "vertices": 1762,
+      "triangles": 1042
+    },
+    {
+      "name": "PC_-2_-1_PC_M09",
+      "vertices": 19495,
+      "triangles": 8519
+    },
+    {
+      "name": "PC_-1_-1_PC_M09",
+      "vertices": 21087,
+      "triangles": 9481
+    },
+    {
+      "name": "PC_-2_-1_PC_M10",
+      "vertices": 960,
+      "triangles": 520
+    },
+    {
+      "name": "PC_-2_-1_PC_M11",
+      "vertices": 36288,
+      "triangles": 12096
+    },
+    {
+      "name": "PC_-2_-1_PC_M12",
+      "vertices": 87018,
+      "triangles": 42058
+    },
+    {
+      "name": "PC_-1_-1_PC_M12",
+      "vertices": 74757,
+      "triangles": 36253
+    },
+    {
+      "name": "PC_-2_-1_PC_M13",
+      "vertices": 41658,
+      "triangles": 18160
+    },
+    {
+      "name": "PC_-1_-1_PC_M13",
+      "vertices": 36300,
+      "triangles": 15768
+    },
+    {
+      "name": "PC_-2_-1_PC_M14",
+      "vertices": 11118,
+      "triangles": 3706
+    },
+    {
+      "name": "PC_-1_-1_PC_M14",
+      "vertices": 16656,
+      "triangles": 5552
+    },
+    {
+      "name": "PC_-2_-1_PC_M15",
+      "vertices": 4562,
+      "triangles": 1920
+    },
+    {
+      "name": "PC_-2_-1_PC_M16",
+      "vertices": 8180,
+      "triangles": 3310
+    },
+    {
+      "name": "PC_-2_0_PC_M03",
+      "vertices": 2579,
+      "triangles": 1189
+    },
+    {
+      "name": "PC_-2_0_PC_M04",
+      "vertices": 8416,
+      "triangles": 3910
+    },
+    {
+      "name": "PC_-2_0_PC_M06",
+      "vertices": 156,
+      "triangles": 78
+    },
+    {
+      "name": "PC_-2_0_PC_M07",
+      "vertices": 18248,
+      "triangles": 8050
+    },
+    {
+      "name": "PC_-1_0_PC_M07",
+      "vertices": 16145,
+      "triangles": 7195
+    },
+    {
+      "name": "PC_-2_0_PC_M08",
+      "vertices": 2426,
+      "triangles": 1434
+    },
+    {
+      "name": "PC_-2_0_PC_M09",
+      "vertices": 23433,
+      "triangles": 10247
+    },
+    {
+      "name": "PC_-1_0_PC_M09",
+      "vertices": 19207,
+      "triangles": 8509
+    },
+    {
+      "name": "PC_-2_0_PC_M10",
+      "vertices": 1362,
+      "triangles": 740
+    },
+    {
+      "name": "PC_-2_0_PC_M11",
+      "vertices": 45144,
+      "triangles": 15208
+    },
+    {
+      "name": "PC_-2_0_PC_M12",
+      "vertices": 106866,
+      "triangles": 51604
+    },
+    {
+      "name": "PC_-1_0_PC_M12",
+      "vertices": 80360,
+      "triangles": 38828
+    },
+    {
+      "name": "PC_-2_0_PC_M13",
+      "vertices": 50298,
+      "triangles": 22072
+    },
+    {
+      "name": "PC_-1_0_PC_M13",
+      "vertices": 36933,
+      "triangles": 16177
+    },
+    {
+      "name": "PC_-2_0_PC_M14",
+      "vertices": 12360,
+      "triangles": 4120
+    },
+    {
+      "name": "PC_-1_0_PC_M14",
+      "vertices": 13962,
+      "triangles": 4654
+    },
+    {
+      "name": "PC_-2_0_PC_M15",
+      "vertices": 11112,
+      "triangles": 4594
+    },
+    {
+      "name": "PC_-2_0_PC_M16",
+      "vertices": 11092,
+      "triangles": 4506
+    },
+    {
+      "name": "PC_-2_1_PC_M03",
+      "vertices": 1108,
+      "triangles": 386
+    },
+    {
+      "name": "PC_-2_1_PC_M04",
+      "vertices": 820,
+      "triangles": 302
+    },
+    {
+      "name": "PC_-2_1_PC_M06",
+      "vertices": 4,
+      "triangles": 2
+    },
+    {
+      "name": "PC_-2_1_PC_M07",
+      "vertices": 3386,
+      "triangles": 1472
+    },
+    {
+      "name": "PC_-1_1_PC_M07",
+      "vertices": 3791,
+      "triangles": 1691
+    },
+    {
+      "name": "PC_-2_1_PC_M08",
+      "vertices": 248,
+      "triangles": 148
+    },
+    {
+      "name": "PC_-2_1_PC_M09",
+      "vertices": 3205,
+      "triangles": 1399
+    },
+    {
+      "name": "PC_-1_1_PC_M09",
+      "vertices": 6700,
+      "triangles": 2908
+    },
+    {
+      "name": "PC_-2_1_PC_M10",
+      "vertices": 104,
+      "triangles": 56
+    },
+    {
+      "name": "PC_-2_1_PC_M11",
+      "vertices": 4824,
+      "triangles": 1608
+    },
+    {
+      "name": "PC_-2_1_PC_M12",
+      "vertices": 9965,
+      "triangles": 4831
+    },
+    {
+      "name": "PC_-2_1_PC_M13",
+      "vertices": 5123,
+      "triangles": 2223
+    },
+    {
+      "name": "PC_-1_1_PC_M13",
+      "vertices": 19223,
+      "triangles": 8451
+    },
+    {
+      "name": "PC_-2_1_PC_M14",
+      "vertices": 2394,
+      "triangles": 798
+    },
+    {
+      "name": "PC_-1_1_PC_M14",
+      "vertices": 4140,
+      "triangles": 1380
+    },
+    {
+      "name": "PC_-2_1_PC_M15",
+      "vertices": 48,
+      "triangles": 28
+    },
+    {
+      "name": "PC_-2_1_PC_M16",
+      "vertices": 1180,
+      "triangles": 466
+    },
+    {
+      "name": "PC_-1_-1_PC_M06",
+      "vertices": 88,
+      "triangles": 44
+    },
+    {
+      "name": "PC_-1_-1_PC_M08",
+      "vertices": 6582,
+      "triangles": 3024
+    },
+    {
+      "name": "PC_-1_-1_PC_M10",
+      "vertices": 1000,
+      "triangles": 548
+    },
+    {
+      "name": "PC_-1_-1_PC_M11",
+      "vertices": 27804,
+      "triangles": 9496
+    },
+    {
+      "name": "PC_-1_-1_PC_M15",
+      "vertices": 576,
+      "triangles": 336
+    },
+    {
+      "name": "PC_-1_-1_PC_M16",
+      "vertices": 9892,
+      "triangles": 4040
+    },
+    {
+      "name": "PC_-1_0_PC_M15",
+      "vertices": 9222,
+      "triangles": 3820
+    },
+    {
+      "name": "PC_-1_0_PC_M06",
+      "vertices": 108,
+      "triangles": 54
+    },
+    {
+      "name": "PC_-1_0_PC_M08",
+      "vertices": 8136,
+      "triangles": 3578
+    },
+    {
+      "name": "PC_-1_0_PC_M10",
+      "vertices": 1048,
+      "triangles": 576
+    },
+    {
+      "name": "PC_-1_0_PC_M11",
+      "vertices": 29076,
+      "triangles": 10024
+    },
+    {
+      "name": "PC_-1_0_PC_M16",
+      "vertices": 6872,
+      "triangles": 2838
+    },
+    {
+      "name": "PC_-1_1_PC_M06",
+      "vertices": 28,
+      "triangles": 14
+    },
+    {
+      "name": "PC_-1_1_PC_M08",
+      "vertices": 392,
+      "triangles": 220
+    },
+    {
+      "name": "PC_-1_1_PC_M10",
+      "vertices": 442,
+      "triangles": 240
+    },
+    {
+      "name": "PC_-1_1_PC_M11",
+      "vertices": 7704,
+      "triangles": 2568
+    },
+    {
+      "name": "PC_-1_1_PC_M12",
+      "vertices": 40253,
+      "triangles": 19647
+    },
+    {
+      "name": "PC_-1_1_PC_M15",
+      "vertices": 8822,
+      "triangles": 3586
+    },
+    {
+      "name": "PC_-1_1_PC_M16",
+      "vertices": 1196,
+      "triangles": 478
+    },
+    {
+      "name": "PC_0_-1_PC_M03",
+      "vertices": 1015,
+      "triangles": 401
+    },
+    {
+      "name": "PC_0_-1_PC_M04",
+      "vertices": 3816,
+      "triangles": 1458
+    },
+    {
+      "name": "PC_0_-1_PC_M06",
+      "vertices": 40,
+      "triangles": 20
+    },
+    {
+      "name": "PC_0_-1_PC_M07",
+      "vertices": 7026,
+      "triangles": 3078
+    },
+    {
+      "name": "PC_0_-1_PC_M08",
+      "vertices": 1940,
+      "triangles": 866
+    },
+    {
+      "name": "PC_0_-1_PC_M09",
+      "vertices": 11066,
+      "triangles": 4590
+    },
+    {
+      "name": "PC_0_-1_PC_M10",
+      "vertices": 366,
+      "triangles": 194
+    },
+    {
+      "name": "PC_0_-1_PC_M11",
+      "vertices": 25399,
+      "triangles": 8467
+    },
+    {
+      "name": "PC_0_-1_PC_M12",
+      "vertices": 18721,
+      "triangles": 9067
+    },
+    {
+      "name": "PC_0_-1_PC_M13",
+      "vertices": 9167,
+      "triangles": 3971
+    },
+    {
+      "name": "PC_0_-1_PC_M14",
+      "vertices": 3910,
+      "triangles": 1308
+    },
+    {
+      "name": "PC_0_-1_PC_M15",
+      "vertices": 156,
+      "triangles": 88
+    },
+    {
+      "name": "PC_0_-1_PC_M16",
+      "vertices": 1742,
+      "triangles": 712
+    },
+    {
+      "name": "PC_0_0_PC_M03",
+      "vertices": 1665,
+      "triangles": 695
+    },
+    {
+      "name": "PC_0_0_PC_M04",
+      "vertices": 1735,
+      "triangles": 813
+    },
+    {
+      "name": "PC_0_0_PC_M06",
+      "vertices": 48,
+      "triangles": 24
+    },
+    {
+      "name": "PC_0_0_PC_M07",
+      "vertices": 7040,
+      "triangles": 3172
+    },
+    {
+      "name": "PC_0_0_PC_M09",
+      "vertices": 6026,
+      "triangles": 2630
+    },
+    {
+      "name": "PC_0_0_PC_M12",
+      "vertices": 28620,
+      "triangles": 13780
+    },
+    {
+      "name": "PC_0_0_PC_M13",
+      "vertices": 14000,
+      "triangles": 6060
+    },
+    {
+      "name": "PC_0_0_PC_M08",
+      "vertices": 4304,
+      "triangles": 1782
+    },
+    {
+      "name": "PC_0_0_PC_M10",
+      "vertices": 188,
+      "triangles": 102
+    },
+    {
+      "name": "PC_0_0_PC_M14",
+      "vertices": 2316,
+      "triangles": 772
+    },
+    {
+      "name": "PC_0_0_PC_M15",
+      "vertices": 96,
+      "triangles": 56
+    },
+    {
+      "name": "PC_0_0_PC_M16",
+      "vertices": 1204,
+      "triangles": 476
+    },
+    {
+      "name": "PC_0_0_PC_M11",
+      "vertices": 25488,
+      "triangles": 8496
+    },
+    {
+      "name": "PC_-1_-2_PC_M15",
+      "vertices": 3616,
+      "triangles": 1468
+    },
+    {
+      "name": "PC_-1_-2_PC_M07",
+      "vertices": 599,
+      "triangles": 313
+    },
+    {
+      "name": "PC_-1_-2_PC_M09",
+      "vertices": 1882,
+      "triangles": 1004
+    },
+    {
+      "name": "PC_-1_-2_PC_M10",
+      "vertices": 96,
+      "triangles": 56
+    },
+    {
+      "name": "PC_-1_-2_PC_M14",
+      "vertices": 240,
+      "triangles": 80
+    },
+    {
+      "name": "PC_-1_-2_PC_M12",
+      "vertices": 9410,
+      "triangles": 4642
+    },
+    {
+      "name": "PC_-1_-2_PC_M13",
+      "vertices": 4302,
+      "triangles": 1866
+    },
+    {
+      "name": "PC_-1_-1_PC_M17",
+      "vertices": 332,
+      "triangles": 128
+    },
+    {
+      "name": "PC_-1_-1_PC_M18",
+      "vertices": 2484,
+      "triangles": 828
+    },
+    {
+      "name": "PC_-1_-1_PC_M19",
+      "vertices": 3768,
+      "triangles": 1256
+    },
+    {
+      "name": "PC_-1_-1_PC_M20",
+      "vertices": 3894,
+      "triangles": 1298
+    },
+    {
+      "name": "PC_-1_-1_PC_M21",
+      "vertices": 1193,
+      "triangles": 485
+    },
+    {
+      "name": "PC_-1_0_PC_M17",
+      "vertices": 332,
+      "triangles": 128
+    },
+    {
+      "name": "PC_-1_0_PC_M18",
+      "vertices": 4428,
+      "triangles": 1476
+    },
+    {
+      "name": "PC_-1_0_PC_M19",
+      "vertices": 5148,
+      "triangles": 1716
+    },
+    {
+      "name": "PC_-1_0_PC_M20",
+      "vertices": 4692,
+      "triangles": 1564
+    },
+    {
+      "name": "PC_-1_0_PC_M21",
+      "vertices": 1531,
+      "triangles": 615
+    },
+    {
+      "name": "PC_-2_0_PC_M17",
+      "vertices": 332,
+      "triangles": 128
+    },
+    {
+      "name": "PC_-2_0_PC_M20",
+      "vertices": 3183,
+      "triangles": 1061
+    },
+    {
+      "name": "PC_-2_0_PC_M19",
+      "vertices": 2856,
+      "triangles": 952
+    },
+    {
+      "name": "PC_-2_0_PC_M18",
+      "vertices": 1512,
+      "triangles": 504
+    },
+    {
+      "name": "PC_-2_0_PC_M21",
+      "vertices": 332,
+      "triangles": 128
+    },
+    {
+      "name": "PC_0_0_PC_M22",
+      "vertices": 914,
+      "triangles": 448
+    },
+    {
+      "name": "PC_1_-1_PC_M21",
+      "vertices": 332,
+      "triangles": 128
+    },
+    {
+      "name": "PC_1_-1_PC_M07",
+      "vertices": 3778,
+      "triangles": 1650
+    },
+    {
+      "name": "PC_1_-1_PC_M11",
+      "vertices": 15693,
+      "triangles": 5313
+    },
+    {
+      "name": "PC_1_-1_PC_M09",
+      "vertices": 8940,
+      "triangles": 3720
+    },
+    {
+      "name": "PC_1_-1_PC_M16",
+      "vertices": 2248,
+      "triangles": 950
+    },
+    {
+      "name": "PC_1_-1_PC_M08",
+      "vertices": 1816,
+      "triangles": 816
+    },
+    {
+      "name": "PC_1_-1_PC_M14",
+      "vertices": 652,
+      "triangles": 222
+    },
+    {
+      "name": "PC_1_-1_PC_M10",
+      "vertices": 102,
+      "triangles": 54
+    },
+    {
+      "name": "PC_1_-1_PC_M12",
+      "vertices": 72,
+      "triangles": 36
+    },
+    {
+      "name": "PC_1_-1_PC_M15",
+      "vertices": 60,
+      "triangles": 32
+    },
+    {
+      "name": "PC_1_0_PC_M08",
+      "vertices": 1432,
+      "triangles": 576
+    },
+    {
+      "name": "PC_1_0_PC_M07",
+      "vertices": 3955,
+      "triangles": 1733
+    },
+    {
+      "name": "PC_1_0_PC_M09",
+      "vertices": 1599,
+      "triangles": 707
+    },
+    {
+      "name": "PC_0_-1_PC_M22",
+      "vertices": 269,
+      "triangles": 115
+    },
+    {
+      "name": "PC_1_-1_PC_M22",
+      "vertices": 269,
+      "triangles": 115
+    },
+    {
+      "name": "PC_1_0_PC_M22",
+      "vertices": 883,
+      "triangles": 455
+    },
+    {
+      "name": "PC_1_-2_PC_M21",
+      "vertices": 808,
+      "triangles": 312
+    },
+    {
+      "name": "PC_2_-2_PC_M21",
+      "vertices": 1470,
+      "triangles": 560
+    },
+    {
+      "name": "PC_1_-2_PC_M11",
+      "vertices": 11794,
+      "triangles": 4058
+    },
+    {
+      "name": "PC_2_-2_PC_M11",
+      "vertices": 14768,
+      "triangles": 5128
+    },
+    {
+      "name": "PC_1_-2_PC_M07",
+      "vertices": 4172,
+      "triangles": 1834
+    },
+    {
+      "name": "PC_2_-2_PC_M07",
+      "vertices": 6138,
+      "triangles": 2786
+    },
+    {
+      "name": "PC_1_-2_PC_M09",
+      "vertices": 3004,
+      "triangles": 1246
+    },
+    {
+      "name": "PC_2_-2_PC_M09",
+      "vertices": 5472,
+      "triangles": 2380
+    },
+    {
+      "name": "PC_1_-2_PC_M14",
+      "vertices": 796,
+      "triangles": 270
+    },
+    {
+      "name": "PC_2_-2_PC_M14",
+      "vertices": 1276,
+      "triangles": 430
+    },
+    {
+      "name": "PC_1_-2_PC_M03",
+      "vertices": 784,
+      "triangles": 294
+    },
+    {
+      "name": "PC_1_-2_PC_M10",
+      "vertices": 148,
+      "triangles": 80
+    },
+    {
+      "name": "PC_1_-2_PC_M12",
+      "vertices": 124,
+      "triangles": 66
+    },
+    {
+      "name": "PC_1_-2_PC_M15",
+      "vertices": 108,
+      "triangles": 60
+    },
+    {
+      "name": "PC_1_-3_PC_M21",
+      "vertices": 1368,
+      "triangles": 524
+    },
+    {
+      "name": "PC_1_-3_PC_M11",
+      "vertices": 16614,
+      "triangles": 5712
+    },
+    {
+      "name": "PC_1_-3_PC_M07",
+      "vertices": 5768,
+      "triangles": 2626
+    },
+    {
+      "name": "PC_1_-3_PC_M09",
+      "vertices": 5279,
+      "triangles": 2225
+    },
+    {
+      "name": "PC_1_-3_PC_M14",
+      "vertices": 868,
+      "triangles": 294
+    },
+    {
+      "name": "PC_1_-3_PC_M03",
+      "vertices": 3321,
+      "triangles": 1203
+    },
+    {
+      "name": "PC_1_-3_PC_M10",
+      "vertices": 192,
+      "triangles": 112
+    },
+    {
+      "name": "PC_1_-3_PC_M12",
+      "vertices": 14822,
+      "triangles": 7206
+    },
+    {
+      "name": "PC_1_-3_PC_M15",
+      "vertices": 3196,
+      "triangles": 1316
+    },
+    {
+      "name": "PC_2_-3_PC_M21",
+      "vertices": 1144,
+      "triangles": 438
+    },
+    {
+      "name": "PC_2_-3_PC_M11",
+      "vertices": 16884,
+      "triangles": 5796
+    },
+    {
+      "name": "PC_2_-3_PC_M07",
+      "vertices": 11276,
+      "triangles": 5002
+    },
+    {
+      "name": "PC_2_-3_PC_M09",
+      "vertices": 8402,
+      "triangles": 3588
+    },
+    {
+      "name": "PC_2_-3_PC_M14",
+      "vertices": 11976,
+      "triangles": 3992
+    },
+    {
+      "name": "PC_2_-3_PC_M03",
+      "vertices": 1554,
+      "triangles": 530
+    },
+    {
+      "name": "PC_2_-3_PC_M10",
+      "vertices": 48,
+      "triangles": 28
+    },
+    {
+      "name": "PC_2_-3_PC_M12",
+      "vertices": 48,
+      "triangles": 28
+    },
+    {
+      "name": "PC_2_-3_PC_M15",
+      "vertices": 48,
+      "triangles": 28
+    },
+    {
+      "name": "PC_2_-2_PC_M03",
+      "vertices": 1020,
+      "triangles": 416
+    },
+    {
+      "name": "PC_2_-2_PC_M10",
+      "vertices": 122,
+      "triangles": 68
+    },
+    {
+      "name": "PC_2_-2_PC_M12",
+      "vertices": 7255,
+      "triangles": 3469
+    },
+    {
+      "name": "PC_2_-2_PC_M15",
+      "vertices": 102,
+      "triangles": 58
+    },
+    {
+      "name": "PC_1_-3_PC_M08",
+      "vertices": 7644,
+      "triangles": 3060
+    },
+    {
+      "name": "PC_1_-3_PC_M13",
+      "vertices": 7955,
+      "triangles": 3435
+    },
+    {
+      "name": "PC_1_-3_PC_M22",
+      "vertices": 807,
+      "triangles": 345
+    },
+    {
+      "name": "PC_2_-2_PC_M08",
+      "vertices": 7644,
+      "triangles": 3060
+    },
+    {
+      "name": "PC_2_-2_PC_M13",
+      "vertices": 3787,
+      "triangles": 1617
+    },
+    {
+      "name": "PC_2_-2_PC_M22",
+      "vertices": 807,
+      "triangles": 345
+    },
+    {
+      "name": "PC_2_-3_PC_M23",
+      "vertices": 1041,
+      "triangles": 421
+    },
+    {
+      "name": "PC_2_-3_PC_M24",
+      "vertices": 330,
+      "triangles": 126
+    },
+    {
+      "name": "PC_2_-3_PC_M25",
+      "vertices": 35,
+      "triangles": 19
+    },
+    {
+      "name": "PC_-3_1_PC_M08",
+      "vertices": 4980,
+      "triangles": 1988
+    },
+    {
+      "name": "PC_-3_1_PC_M26",
+      "vertices": 10983,
+      "triangles": 3899
+    },
+    {
+      "name": "PC_-3_2_PC_M26",
+      "vertices": 11353,
+      "triangles": 4053
+    },
+    {
+      "name": "PC_-3_2_PC_M08",
+      "vertices": 168,
+      "triangles": 56
+    },
+    {
+      "name": "PC_-3_1_PC_M27",
+      "vertices": 2195,
+      "triangles": 773
+    },
+    {
+      "name": "PC_-3_1_PC_M07",
+      "vertices": 3296,
+      "triangles": 1474
+    },
+    {
+      "name": "PC_-3_1_PC_M03",
+      "vertices": 5705,
+      "triangles": 2451
+    },
+    {
+      "name": "PC_-3_2_PC_M03",
+      "vertices": 2114,
+      "triangles": 946
+    },
+    {
+      "name": "PC_-3_1_PC_M10",
+      "vertices": 266,
+      "triangles": 146
+    },
+    {
+      "name": "PC_-3_1_PC_M14",
+      "vertices": 6660,
+      "triangles": 2220
+    },
+    {
+      "name": "PC_-3_1_PC_M09",
+      "vertices": 2045,
+      "triangles": 955
+    },
+    {
+      "name": "PC_-3_1_PC_M12",
+      "vertices": 228,
+      "triangles": 124
+    },
+    {
+      "name": "PC_-3_1_PC_M15",
+      "vertices": 210,
+      "triangles": 118
+    },
+    {
+      "name": "PC_-3_1_PC_M22",
+      "vertices": 538,
+      "triangles": 230
+    },
+    {
+      "name": "PC_-2_2_PC_M08",
+      "vertices": 2448,
+      "triangles": 980
+    },
+    {
+      "name": "PC_-2_2_PC_M26",
+      "vertices": 2020,
+      "triangles": 700
+    },
+    {
+      "name": "PC_-2_2_PC_M27",
+      "vertices": 517,
+      "triangles": 173
+    },
+    {
+      "name": "PC_-3_2_PC_M27",
+      "vertices": 2062,
+      "triangles": 736
+    },
+    {
+      "name": "PC_-3_2_PC_M07",
+      "vertices": 297,
+      "triangles": 155
+    },
+    {
+      "name": "PC_-2_2_PC_M07",
+      "vertices": 216,
+      "triangles": 108
+    },
+    {
+      "name": "PC_-2_2_PC_M03",
+      "vertices": 1225,
+      "triangles": 417
+    },
+    {
+      "name": "PC_-3_2_PC_M10",
+      "vertices": 48,
+      "triangles": 28
+    },
+    {
+      "name": "PC_-2_2_PC_M10",
+      "vertices": 72,
+      "triangles": 40
+    },
+    {
+      "name": "PC_-3_2_PC_M14",
+      "vertices": 1206,
+      "triangles": 402
+    },
+    {
+      "name": "PC_-2_2_PC_M14",
+      "vertices": 1326,
+      "triangles": 442
+    },
+    {
+      "name": "PC_-3_2_PC_M09",
+      "vertices": 253,
+      "triangles": 123
+    },
+    {
+      "name": "PC_-2_2_PC_M09",
+      "vertices": 276,
+      "triangles": 138
+    },
+    {
+      "name": "PC_-3_2_PC_M12",
+      "vertices": 48,
+      "triangles": 28
+    },
+    {
+      "name": "PC_-2_2_PC_M12",
+      "vertices": 60,
+      "triangles": 32
+    },
+    {
+      "name": "PC_-3_2_PC_M15",
+      "vertices": 48,
+      "triangles": 28
+    },
+    {
+      "name": "PC_-2_2_PC_M15",
+      "vertices": 54,
+      "triangles": 30
+    },
+    {
+      "name": "PC_-2_2_PC_M22",
+      "vertices": 269,
+      "triangles": 115
+    },
+    {
+      "name": "PC_0_2_PC_M08",
+      "vertices": 11898,
+      "triangles": 4764
+    },
+    {
+      "name": "PC_-1_2_PC_M26",
+      "vertices": 3801,
+      "triangles": 1357
+    },
+    {
+      "name": "PC_0_2_PC_M26",
+      "vertices": 4337,
+      "triangles": 1527
+    },
+    {
+      "name": "PC_-1_2_PC_M08",
+      "vertices": 42,
+      "triangles": 14
+    },
+    {
+      "name": "PC_0_2_PC_M27",
+      "vertices": 1182,
+      "triangles": 412
+    },
+    {
+      "name": "PC_-1_2_PC_M27",
+      "vertices": 896,
+      "triangles": 314
+    },
+    {
+      "name": "PC_-1_2_PC_M07",
+      "vertices": 250,
+      "triangles": 128
+    },
+    {
+      "name": "PC_0_2_PC_M07",
+      "vertices": 1379,
+      "triangles": 603
+    },
+    {
+      "name": "PC_-1_2_PC_M03",
+      "vertices": 1430,
+      "triangles": 598
+    },
+    {
+      "name": "PC_0_2_PC_M03",
+      "vertices": 2230,
+      "triangles": 968
+    },
+    {
+      "name": "PC_-1_2_PC_M10",
+      "vertices": 72,
+      "triangles": 40
+    },
+    {
+      "name": "PC_0_2_PC_M10",
+      "vertices": 178,
+      "triangles": 100
+    },
+    {
+      "name": "PC_-1_2_PC_M14",
+      "vertices": 1326,
+      "triangles": 442
+    },
+    {
+      "name": "PC_0_2_PC_M14",
+      "vertices": 2060,
+      "triangles": 696
+    },
+    {
+      "name": "PC_-1_2_PC_M09",
+      "vertices": 260,
+      "triangles": 132
+    },
+    {
+      "name": "PC_0_2_PC_M09",
+      "vertices": 897,
+      "triangles": 447
+    },
+    {
+      "name": "PC_-1_2_PC_M12",
+      "vertices": 60,
+      "triangles": 32
+    },
+    {
+      "name": "PC_0_2_PC_M12",
+      "vertices": 8382,
+      "triangles": 4134
+    },
+    {
+      "name": "PC_-1_2_PC_M15",
+      "vertices": 54,
+      "triangles": 30
+    },
+    {
+      "name": "PC_0_2_PC_M15",
+      "vertices": 3862,
+      "triangles": 1572
+    },
+    {
+      "name": "PC_0_2_PC_M22",
+      "vertices": 539,
+      "triangles": 231
+    },
+    {
+      "name": "PC_2_0_PC_M08",
+      "vertices": 2448,
+      "triangles": 980
+    },
+    {
+      "name": "PC_3_0_PC_M26",
+      "vertices": 6472,
+      "triangles": 2326
+    },
+    {
+      "name": "PC_2_0_PC_M26",
+      "vertices": 3030,
+      "triangles": 1028
+    },
+    {
+      "name": "PC_3_0_PC_M08",
+      "vertices": 84,
+      "triangles": 28
+    },
+    {
+      "name": "PC_2_0_PC_M27",
+      "vertices": 783,
+      "triangles": 263
+    },
+    {
+      "name": "PC_3_0_PC_M27",
+      "vertices": 1451,
+      "triangles": 519
+    },
+    {
+      "name": "PC_2_0_PC_M07",
+      "vertices": 526,
+      "triangles": 272
+    },
+    {
+      "name": "PC_2_0_PC_M03",
+      "vertices": 2238,
+      "triangles": 882
+    },
+    {
+      "name": "PC_3_0_PC_M03",
+      "vertices": 1772,
+      "triangles": 698
+    },
+    {
+      "name": "PC_2_0_PC_M10",
+      "vertices": 120,
+      "triangles": 68
+    },
+    {
+      "name": "PC_2_0_PC_M14",
+      "vertices": 2532,
+      "triangles": 844
+    },
+    {
+      "name": "PC_2_0_PC_M09",
+      "vertices": 557,
+      "triangles": 277
+    },
+    {
+      "name": "PC_2_0_PC_M12",
+      "vertices": 108,
+      "triangles": 60
+    },
+    {
+      "name": "PC_2_0_PC_M15",
+      "vertices": 102,
+      "triangles": 58
+    },
+    {
+      "name": "PC_2_0_PC_M22",
+      "vertices": 269,
+      "triangles": 115
+    },
+    {
+      "name": "PC_-3_0_PC_M07",
+      "vertices": 436,
+      "triangles": 184
+    },
+    {
+      "name": "PC_-3_0_PC_M03",
+      "vertices": 1325,
+      "triangles": 451
+    },
+    {
+      "name": "PC_-3_0_PC_M10",
+      "vertices": 4,
+      "triangles": 2
+    },
+    {
+      "name": "PC_-3_0_PC_M14",
+      "vertices": 48,
+      "triangles": 16
+    },
+    {
+      "name": "PC_-3_0_PC_M09",
+      "vertices": 187,
+      "triangles": 83
+    },
+    {
+      "name": "PC_1_2_PC_M03",
+      "vertices": 5062,
+      "triangles": 1798
+    },
+    {
+      "name": "PC_1_2_PC_M07",
+      "vertices": 3677,
+      "triangles": 1555
+    },
+    {
+      "name": "PC_1_2_PC_M09",
+      "vertices": 2831,
+      "triangles": 1247
+    },
+    {
+      "name": "PC_1_2_PC_M10",
+      "vertices": 64,
+      "triangles": 36
+    },
+    {
+      "name": "PC_1_2_PC_M14",
+      "vertices": 1954,
+      "triangles": 656
+    },
+    {
+      "name": "PC_1_2_PC_M12",
+      "vertices": 5974,
+      "triangles": 2838
+    },
+    {
+      "name": "PC_0_2_PC_M13",
+      "vertices": 3787,
+      "triangles": 1677
+    },
+    {
+      "name": "PC_1_2_PC_M13",
+      "vertices": 3118,
+      "triangles": 1304
+    },
+    {
+      "name": "PC_1_2_PC_M08",
+      "vertices": 5096,
+      "triangles": 2040
+    },
+    {
+      "name": "PC_1_3_PC_M03",
+      "vertices": 273,
+      "triangles": 115
+    },
+    {
+      "name": "PC_1_3_PC_M07",
+      "vertices": 522,
+      "triangles": 230
+    },
+    {
+      "name": "PC_1_3_PC_M09",
+      "vertices": 367,
+      "triangles": 161
+    },
+    {
+      "name": "PC_1_2_PC_M11",
+      "vertices": 4464,
+      "triangles": 1584
+    },
+    {
+      "name": "PC_1_3_PC_M11",
+      "vertices": 2592,
+      "triangles": 864
+    },
+    {
+      "name": "PC_1_3_PC_M12",
+      "vertices": 2223,
+      "triangles": 1087
+    },
+    {
+      "name": "PC_1_3_PC_M13",
+      "vertices": 1270,
+      "triangles": 546
+    },
+    {
+      "name": "PC_1_2_PC_M22",
+      "vertices": 535,
+      "triangles": 229
+    },
+    {
+      "name": "PC_1_2_PC_M21",
+      "vertices": 684,
+      "triangles": 262
+    },
+    {
+      "name": "PC_1_2_PC_M15",
+      "vertices": 48,
+      "triangles": 28
+    },
+    {
+      "name": "PC_0_2_PC_M04",
+      "vertices": 3672,
+      "triangles": 1288
+    },
+    {
+      "name": "PC_-2_-3_PC_M15",
+      "vertices": 3628,
+      "triangles": 1472
+    },
+    {
+      "name": "PC_-2_-3_PC_M03",
+      "vertices": 1016,
+      "triangles": 372
+    },
+    {
+      "name": "PC_-2_-3_PC_M07",
+      "vertices": 262,
+      "triangles": 128
+    },
+    {
+      "name": "PC_-2_-3_PC_M09",
+      "vertices": 381,
+      "triangles": 175
+    },
+    {
+      "name": "PC_-2_-3_PC_M10",
+      "vertices": 150,
+      "triangles": 80
+    },
+    {
+      "name": "PC_-2_-3_PC_M14",
+      "vertices": 480,
+      "triangles": 160
+    },
+    {
+      "name": "PC_-2_-3_PC_M12",
+      "vertices": 8444,
+      "triangles": 4150
+    },
+    {
+      "name": "PC_-2_-3_PC_M13",
+      "vertices": 4345,
+      "triangles": 1899
+    },
+    {
+      "name": "PC_-3_-3_PC_M21",
+      "vertices": 310,
+      "triangles": 120
+    },
+    {
+      "name": "PC_-2_-3_PC_M21",
+      "vertices": 22,
+      "triangles": 8
+    },
+    {
+      "name": "PC_-3_-3_PC_M07",
+      "vertices": 416,
+      "triangles": 196
+    },
+    {
+      "name": "PC_-3_-3_PC_M11",
+      "vertices": 222,
+      "triangles": 124
+    },
+    {
+      "name": "PC_-2_-3_PC_M11",
+      "vertices": 138,
+      "triangles": 76
+    },
+    {
+      "name": "PC_-3_-3_PC_M09",
+      "vertices": 401,
+      "triangles": 183
+    },
+    {
+      "name": "PC_-3_-3_PC_M16",
+      "vertices": 2266,
+      "triangles": 950
+    },
+    {
+      "name": "PC_-3_-3_PC_M08",
+      "vertices": 384,
+      "triangles": 240
+    },
+    {
+      "name": "PC_-3_-3_PC_M14",
+      "vertices": 216,
+      "triangles": 72
+    },
+    {
+      "name": "PC_-3_-3_PC_M10",
+      "vertices": 48,
+      "triangles": 28
+    },
+    {
+      "name": "PC_-3_-3_PC_M12",
+      "vertices": 48,
+      "triangles": 28
+    },
+    {
+      "name": "PC_-3_-3_PC_M15",
+      "vertices": 48,
+      "triangles": 28
+    },
+    {
+      "name": "PC_-2_-2_PC_M07",
+      "vertices": 476,
+      "triangles": 248
+    },
+    {
+      "name": "PC_1_0_PC_M11",
+      "vertices": 9504,
+      "triangles": 3168
+    },
+    {
+      "name": "PC_0_0_PC_M21",
+      "vertices": 420,
+      "triangles": 224
+    },
+    {
+      "name": "PC_1_0_PC_M21",
+      "vertices": 612,
+      "triangles": 334
+    },
+    {
+      "name": "PC_1_0_PC_M14",
+      "vertices": 1720,
+      "triangles": 578
+    },
+    {
+      "name": "PC_-4_1_PC_M26",
+      "vertices": 5104,
+      "triangles": 1702
+    },
+    {
+      "name": "PC_-4_1_PC_M27",
+      "vertices": 801,
+      "triangles": 267
+    },
+    {
+      "name": "PC_-3_1_PC_M04",
+      "vertices": 4854,
+      "triangles": 1654
+    },
+    {
+      "name": "PC_1_2_PC_M04",
+      "vertices": 701,
+      "triangles": 275
+    },
+    {
+      "name": "PC_0_2_PC_M11",
+      "vertices": 2880,
+      "triangles": 960
+    },
+    {
+      "name": "PC_-2_-2_PC_M09",
+      "vertices": 1770,
+      "triangles": 968
+    },
+    {
+      "name": "PC_1_1_PC_M09",
+      "vertices": 1068,
+      "triangles": 590
+    },
+    {
+      "name": "PC_0_1_PC_M09",
+      "vertices": 604,
+      "triangles": 346
+    },
+    {
+      "name": "PC_1_1_PC_M07",
+      "vertices": 314,
+      "triangles": 164
+    },
+    {
+      "name": "PC_0_1_PC_M07",
+      "vertices": 240,
+      "triangles": 128
+    },
+    {
+      "name": "PC_-3_-2_PC_M09",
+      "vertices": 704,
+      "triangles": 376
+    },
+    {
+      "name": "PC_-3_-1_PC_M09",
+      "vertices": 2562,
+      "triangles": 1318
+    },
+    {
+      "name": "PC_-3_-2_PC_M07",
+      "vertices": 188,
+      "triangles": 102
+    },
+    {
+      "name": "PC_-3_-1_PC_M07",
+      "vertices": 2470,
+      "triangles": 1072
+    },
+    {
+      "name": "PC_-3_-4_PC_M07",
+      "vertices": 26,
+      "triangles": 12
+    },
+    {
+      "name": "PC_0_-2_PC_M07",
+      "vertices": 30,
+      "triangles": 12
+    },
+    {
+      "name": "PC_3_-2_PC_M07",
+      "vertices": 26,
+      "triangles": 12
+    },
+    {
+      "name": "PC_-3_-4_PC_M03",
+      "vertices": 900,
+      "triangles": 304
+    },
+    {
+      "name": "PC_1_-1_PC_M03",
+      "vertices": 483,
+      "triangles": 169
+    },
+    {
+      "name": "PC_0_-2_PC_M03",
+      "vertices": 3450,
+      "triangles": 1154
+    },
+    {
+      "name": "PC_3_-2_PC_M03",
+      "vertices": 816,
+      "triangles": 276
+    },
+    {
+      "name": "PC_1_1_PC_M03",
+      "vertices": 2202,
+      "triangles": 738
+    },
+    {
+      "name": "PC_-3_-4_PC_M10",
+      "vertices": 28,
+      "triangles": 12
+    },
+    {
+      "name": "PC_0_-2_PC_M10",
+      "vertices": 30,
+      "triangles": 14
+    },
+    {
+      "name": "PC_3_-2_PC_M10",
+      "vertices": 28,
+      "triangles": 12
+    },
+    {
+      "name": "PC_1_1_PC_M10",
+      "vertices": 24,
+      "triangles": 12
+    },
+    {
+      "name": "PC_-3_-4_PC_M14",
+      "vertices": 120,
+      "triangles": 40
+    },
+    {
+      "name": "PC_0_-2_PC_M14",
+      "vertices": 120,
+      "triangles": 40
+    },
+    {
+      "name": "PC_3_-2_PC_M14",
+      "vertices": 120,
+      "triangles": 40
+    },
+    {
+      "name": "PC_1_1_PC_M14",
+      "vertices": 120,
+      "triangles": 40
+    },
+    {
+      "name": "PC_-3_-4_PC_M09",
+      "vertices": 80,
+      "triangles": 40
+    },
+    {
+      "name": "PC_0_-2_PC_M09",
+      "vertices": 16,
+      "triangles": 12
+    },
+    {
+      "name": "PC_3_-2_PC_M09",
+      "vertices": 16,
+      "triangles": 12
+    },
+    {
+      "name": "PC_-3_-4_PC_M12",
+      "vertices": 16,
+      "triangles": 6
+    },
+    {
+      "name": "PC_0_-2_PC_M12",
+      "vertices": 16,
+      "triangles": 6
+    },
+    {
+      "name": "PC_3_-2_PC_M12",
+      "vertices": 12,
+      "triangles": 4
+    },
+    {
+      "name": "PC_1_1_PC_M12",
+      "vertices": 12,
+      "triangles": 4
+    },
+    {
+      "name": "PC_-3_-4_PC_M15",
+      "vertices": 6,
+      "triangles": 2
+    },
+    {
+      "name": "PC_0_-2_PC_M15",
+      "vertices": 6,
+      "triangles": 2
+    },
+    {
+      "name": "PC_3_-2_PC_M15",
+      "vertices": 6,
+      "triangles": 2
+    },
+    {
+      "name": "PC_1_1_PC_M15",
+      "vertices": 6,
+      "triangles": 2
+    },
+    {
+      "name": "PC_-3_-3_PC_M23",
+      "vertices": 2858,
+      "triangles": 1148
+    },
+    {
+      "name": "PC_-2_-3_PC_M23",
+      "vertices": 2373,
+      "triangles": 871
+    },
+    {
+      "name": "PC_-3_-3_PC_M28",
+      "vertices": 5163,
+      "triangles": 1721
+    },
+    {
+      "name": "PC_-2_-3_PC_M28",
+      "vertices": 3444,
+      "triangles": 1148
+    },
+    {
+      "name": "PC_-3_-3_PC_M29",
+      "vertices": 3384,
+      "triangles": 1128
+    },
+    {
+      "name": "PC_-2_-3_PC_M29",
+      "vertices": 2790,
+      "triangles": 930
+    },
+    {
+      "name": "PC_-3_-3_PC_M30",
+      "vertices": 4977,
+      "triangles": 1659
+    },
+    {
+      "name": "PC_-2_-3_PC_M30",
+      "vertices": 4023,
+      "triangles": 1341
+    },
+    {
+      "name": "PC_-3_-3_PC_M20",
+      "vertices": 5895,
+      "triangles": 1965
+    },
+    {
+      "name": "PC_-2_-3_PC_M20",
+      "vertices": 4818,
+      "triangles": 1606
+    },
+    {
+      "name": "PC_-3_-2_PC_M28",
+      "vertices": 2529,
+      "triangles": 843
+    },
+    {
+      "name": "PC_-3_-2_PC_M29",
+      "vertices": 1821,
+      "triangles": 607
+    },
+    {
+      "name": "PC_-3_-2_PC_M30",
+      "vertices": 2691,
+      "triangles": 897
+    },
+    {
+      "name": "PC_-3_-2_PC_M20",
+      "vertices": 3480,
+      "triangles": 1160
+    },
+    {
+      "name": "PC_-2_-1_PC_M23",
+      "vertices": 630,
+      "triangles": 232
+    },
+    {
+      "name": "PC_-2_-1_PC_M28",
+      "vertices": 1617,
+      "triangles": 539
+    },
+    {
+      "name": "PC_-2_-1_PC_M29",
+      "vertices": 870,
+      "triangles": 290
+    },
+    {
+      "name": "PC_-2_-1_PC_M20",
+      "vertices": 2361,
+      "triangles": 787
+    },
+    {
+      "name": "PC_-2_-1_PC_M30",
+      "vertices": 4200,
+      "triangles": 1400
+    },
+    {
+      "name": "PC_-2_0_PC_M23",
+      "vertices": 320,
+      "triangles": 118
+    },
+    {
+      "name": "PC_-3_1_PC_M23",
+      "vertices": 551,
+      "triangles": 203
+    },
+    {
+      "name": "PC_-2_0_PC_M28",
+      "vertices": 861,
+      "triangles": 287
+    },
+    {
+      "name": "PC_-3_1_PC_M28",
+      "vertices": 1782,
+      "triangles": 594
+    },
+    {
+      "name": "PC_-2_0_PC_M29",
+      "vertices": 522,
+      "triangles": 174
+    },
+    {
+      "name": "PC_-3_1_PC_M29",
+      "vertices": 726,
+      "triangles": 242
+    },
+    {
+      "name": "PC_-3_1_PC_M20",
+      "vertices": 2262,
+      "triangles": 754
+    },
+    {
+      "name": "PC_-2_0_PC_M30",
+      "vertices": 2472,
+      "triangles": 824
+    },
+    {
+      "name": "PC_-3_1_PC_M30",
+      "vertices": 1737,
+      "triangles": 579
+    },
+    {
+      "name": "PC_-1_-1_PC_M23",
+      "vertices": 316,
+      "triangles": 116
+    },
+    {
+      "name": "PC_0_-1_PC_M28",
+      "vertices": 1041,
+      "triangles": 347
+    },
+    {
+      "name": "PC_-1_-1_PC_M28",
+      "vertices": 684,
+      "triangles": 228
+    },
+    {
+      "name": "PC_-1_-1_PC_M29",
+      "vertices": 468,
+      "triangles": 156
+    },
+    {
+      "name": "PC_0_-1_PC_M29",
+      "vertices": 546,
+      "triangles": 182
+    },
+    {
+      "name": "PC_0_-1_PC_M30",
+      "vertices": 1164,
+      "triangles": 388
+    },
+    {
+      "name": "PC_-1_-1_PC_M30",
+      "vertices": 2064,
+      "triangles": 688
+    },
+    {
+      "name": "PC_0_-1_PC_M20",
+      "vertices": 1425,
+      "triangles": 475
+    },
+    {
+      "name": "PC_0_0_PC_M23",
+      "vertices": 659,
+      "triangles": 239
+    },
+    {
+      "name": "PC_-2_1_PC_M23",
+      "vertices": 908,
+      "triangles": 330
+    },
+    {
+      "name": "PC_0_0_PC_M28",
+      "vertices": 1719,
+      "triangles": 573
+    },
+    {
+      "name": "PC_-1_0_PC_M28",
+      "vertices": 246,
+      "triangles": 82
+    },
+    {
+      "name": "PC_0_1_PC_M28",
+      "vertices": 1308,
+      "triangles": 436
+    },
+    {
+      "name": "PC_-1_1_PC_M28",
+      "vertices": 678,
+      "triangles": 226
+    },
+    {
+      "name": "PC_-2_1_PC_M28",
+      "vertices": 2139,
+      "triangles": 713
+    },
+    {
+      "name": "PC_0_0_PC_M20",
+      "vertices": 2181,
+      "triangles": 727
+    },
+    {
+      "name": "PC_-1_1_PC_M20",
+      "vertices": 1368,
+      "triangles": 456
+    },
+    {
+      "name": "PC_-2_1_PC_M20",
+      "vertices": 2886,
+      "triangles": 962
+    },
+    {
+      "name": "PC_0_0_PC_M29",
+      "vertices": 1056,
+      "triangles": 352
+    },
+    {
+      "name": "PC_-1_0_PC_M29",
+      "vertices": 15,
+      "triangles": 5
+    },
+    {
+      "name": "PC_-2_1_PC_M29",
+      "vertices": 1089,
+      "triangles": 363
+    },
+    {
+      "name": "PC_-1_1_PC_M29",
+      "vertices": 66,
+      "triangles": 22
+    },
+    {
+      "name": "PC_0_0_PC_M30",
+      "vertices": 1650,
+      "triangles": 550
+    },
+    {
+      "name": "PC_-1_1_PC_M30",
+      "vertices": 2112,
+      "triangles": 704
+    },
+    {
+      "name": "PC_-2_1_PC_M30",
+      "vertices": 4122,
+      "triangles": 1374
+    },
+    {
+      "name": "PC_0_2_PC_M23",
+      "vertices": 1062,
+      "triangles": 396
+    },
+    {
+      "name": "PC_0_2_PC_M28",
+      "vertices": 1899,
+      "triangles": 633
+    },
+    {
+      "name": "PC_0_2_PC_M30",
+      "vertices": 2478,
+      "triangles": 826
+    },
+    {
+      "name": "PC_0_2_PC_M29",
+      "vertices": 1461,
+      "triangles": 487
+    },
+    {
+      "name": "PC_0_2_PC_M20",
+      "vertices": 2460,
+      "triangles": 820
+    },
+    {
+      "name": "PC_2_-2_PC_M23",
+      "vertices": 655,
+      "triangles": 247
+    },
+    {
+      "name": "PC_2_-2_PC_M28",
+      "vertices": 1656,
+      "triangles": 552
+    },
+    {
+      "name": "PC_2_-2_PC_M30",
+      "vertices": 1995,
+      "triangles": 665
+    },
+    {
+      "name": "PC_2_-2_PC_M29",
+      "vertices": 1212,
+      "triangles": 404
+    },
+    {
+      "name": "PC_2_-2_PC_M20",
+      "vertices": 2364,
+      "triangles": 788
+    },
+    {
+      "name": "PC_3_-3_PC_M23",
+      "vertices": 2806,
+      "triangles": 1030
+    },
+    {
+      "name": "PC_3_-3_PC_M28",
+      "vertices": 4539,
+      "triangles": 1513
+    },
+    {
+      "name": "PC_2_-3_PC_M28",
+      "vertices": 1404,
+      "triangles": 468
+    },
+    {
+      "name": "PC_3_-3_PC_M20",
+      "vertices": 5538,
+      "triangles": 1846
+    },
+    {
+      "name": "PC_2_-3_PC_M20",
+      "vertices": 1815,
+      "triangles": 605
+    },
+    {
+      "name": "PC_3_-3_PC_M29",
+      "vertices": 3138,
+      "triangles": 1046
+    },
+    {
+      "name": "PC_2_-3_PC_M29",
+      "vertices": 1185,
+      "triangles": 395
+    },
+    {
+      "name": "PC_3_-3_PC_M30",
+      "vertices": 4650,
+      "triangles": 1550
+    },
+    {
+      "name": "PC_2_-3_PC_M30",
+      "vertices": 1563,
+      "triangles": 521
+    },
+    {
+      "name": "PC_1_0_PC_M23",
+      "vertices": 332,
+      "triangles": 118
+    },
+    {
+      "name": "PC_2_0_PC_M28",
+      "vertices": 1569,
+      "triangles": 523
+    },
+    {
+      "name": "PC_1_0_PC_M28",
+      "vertices": 1164,
+      "triangles": 388
+    },
+    {
+      "name": "PC_2_0_PC_M20",
+      "vertices": 2217,
+      "triangles": 739
+    },
+    {
+      "name": "PC_1_0_PC_M20",
+      "vertices": 2058,
+      "triangles": 686
+    },
+    {
+      "name": "PC_2_0_PC_M30",
+      "vertices": 1500,
+      "triangles": 500
+    },
+    {
+      "name": "PC_1_0_PC_M30",
+      "vertices": 1377,
+      "triangles": 459
+    },
+    {
+      "name": "PC_2_0_PC_M29",
+      "vertices": 240,
+      "triangles": 80
+    },
+    {
+      "name": "PC_1_0_PC_M29",
+      "vertices": 591,
+      "triangles": 197
+    },
+    {
+      "name": "PC_0_-2_PC_M23",
+      "vertices": 638,
+      "triangles": 230
+    },
+    {
+      "name": "PC_0_-2_PC_M28",
+      "vertices": 1788,
+      "triangles": 596
+    },
+    {
+      "name": "PC_0_-2_PC_M20",
+      "vertices": 2541,
+      "triangles": 847
+    },
+    {
+      "name": "PC_0_-2_PC_M29",
+      "vertices": 975,
+      "triangles": 325
+    },
+    {
+      "name": "PC_0_-2_PC_M30",
+      "vertices": 1893,
+      "triangles": 631
+    },
+    {
+      "name": "PC_-3_2_PC_M23",
+      "vertices": 1994,
+      "triangles": 742
+    },
+    {
+      "name": "PC_-4_3_PC_M23",
+      "vertices": 525,
+      "triangles": 195
+    },
+    {
+      "name": "PC_-4_2_PC_M23",
+      "vertices": 1693,
+      "triangles": 623
+    },
+    {
+      "name": "PC_-3_2_PC_M30",
+      "vertices": 3396,
+      "triangles": 1132
+    },
+    {
+      "name": "PC_-4_1_PC_M30",
+      "vertices": 3135,
+      "triangles": 1045
+    },
+    {
+      "name": "PC_-4_2_PC_M30",
+      "vertices": 3294,
+      "triangles": 1098
+    },
+    {
+      "name": "PC_-4_3_PC_M30",
+      "vertices": 1179,
+      "triangles": 393
+    },
+    {
+      "name": "PC_-3_2_PC_M20",
+      "vertices": 3903,
+      "triangles": 1301
+    },
+    {
+      "name": "PC_-4_2_PC_M20",
+      "vertices": 4017,
+      "triangles": 1339
+    },
+    {
+      "name": "PC_-4_1_PC_M20",
+      "vertices": 3462,
+      "triangles": 1154
+    },
+    {
+      "name": "PC_-4_3_PC_M20",
+      "vertices": 1350,
+      "triangles": 450
+    },
+    {
+      "name": "PC_-4_3_PC_M28",
+      "vertices": 924,
+      "triangles": 308
+    },
+    {
+      "name": "PC_-3_2_PC_M28",
+      "vertices": 3129,
+      "triangles": 1043
+    },
+    {
+      "name": "PC_-4_2_PC_M28",
+      "vertices": 3057,
+      "triangles": 1019
+    },
+    {
+      "name": "PC_3_1_PC_M23",
+      "vertices": 3974,
+      "triangles": 1454
+    },
+    {
+      "name": "PC_3_1_PC_M20",
+      "vertices": 6330,
+      "triangles": 2110
+    },
+    {
+      "name": "PC_2_1_PC_M20",
+      "vertices": 2139,
+      "triangles": 713
+    },
+    {
+      "name": "PC_3_0_PC_M20",
+      "vertices": 2724,
+      "triangles": 908
+    },
+    {
+      "name": "PC_2_1_PC_M28",
+      "vertices": 1485,
+      "triangles": 495
+    },
+    {
+      "name": "PC_3_1_PC_M28",
+      "vertices": 5202,
+      "triangles": 1734
+    },
+    {
+      "name": "PC_3_0_PC_M28",
+      "vertices": 2013,
+      "triangles": 671
+    },
+    {
+      "name": "PC_3_1_PC_M30",
+      "vertices": 5562,
+      "triangles": 1854
+    },
+    {
+      "name": "PC_2_1_PC_M30",
+      "vertices": 1269,
+      "triangles": 423
+    },
+    {
+      "name": "PC_3_0_PC_M30",
+      "vertices": 2283,
+      "triangles": 761
+    },
+    {
+      "name": "PC_-1_-3_PC_M23",
+      "vertices": 2046,
+      "triangles": 750
+    },
+    {
+      "name": "PC_-1_-4_PC_M23",
+      "vertices": 1650,
+      "triangles": 612
+    },
+    {
+      "name": "PC_0_-3_PC_M23",
+      "vertices": 1644,
+      "triangles": 604
+    },
+    {
+      "name": "PC_-1_-3_PC_M28",
+      "vertices": 3837,
+      "triangles": 1279
+    },
+    {
+      "name": "PC_-1_-4_PC_M28",
+      "vertices": 2535,
+      "triangles": 845
+    },
+    {
+      "name": "PC_0_-3_PC_M28",
+      "vertices": 2901,
+      "triangles": 967
+    },
+    {
+      "name": "PC_-1_-3_PC_M30",
+      "vertices": 4302,
+      "triangles": 1434
+    },
+    {
+      "name": "PC_-1_-4_PC_M30",
+      "vertices": 2715,
+      "triangles": 905
+    },
+    {
+      "name": "PC_0_-3_PC_M30",
+      "vertices": 2835,
+      "triangles": 945
+    },
+    {
+      "name": "PC_-1_-3_PC_M29",
+      "vertices": 2373,
+      "triangles": 791
+    },
+    {
+      "name": "PC_-1_-4_PC_M29",
+      "vertices": 1500,
+      "triangles": 500
+    },
+    {
+      "name": "PC_0_-3_PC_M29",
+      "vertices": 1500,
+      "triangles": 500
+    },
+    {
+      "name": "PC_-1_-3_PC_M20",
+      "vertices": 5313,
+      "triangles": 1771
+    },
+    {
+      "name": "PC_-1_-4_PC_M20",
+      "vertices": 3333,
+      "triangles": 1111
+    },
+    {
+      "name": "PC_-2_-4_PC_M20",
+      "vertices": 3219,
+      "triangles": 1073
+    },
+    {
+      "name": "PC_0_-3_PC_M20",
+      "vertices": 3939,
+      "triangles": 1313
+    },
+    {
+      "name": "PC_-3_-4_PC_M23",
+      "vertices": 1977,
+      "triangles": 729
+    },
+    {
+      "name": "PC_-4_-4_PC_M23",
+      "vertices": 801,
+      "triangles": 299
+    },
+    {
+      "name": "PC_-4_-3_PC_M23",
+      "vertices": 2226,
+      "triangles": 828
+    },
+    {
+      "name": "PC_-3_-4_PC_M28",
+      "vertices": 3399,
+      "triangles": 1133
+    },
+    {
+      "name": "PC_-4_-4_PC_M28",
+      "vertices": 1506,
+      "triangles": 502
+    },
+    {
+      "name": "PC_-4_-3_PC_M28",
+      "vertices": 2802,
+      "triangles": 934
+    },
+    {
+      "name": "PC_-3_-4_PC_M29",
+      "vertices": 1566,
+      "triangles": 522
+    },
+    {
+      "name": "PC_-4_-4_PC_M29",
+      "vertices": 930,
+      "triangles": 310
+    },
+    {
+      "name": "PC_-4_-3_PC_M29",
+      "vertices": 2268,
+      "triangles": 756
+    },
+    {
+      "name": "PC_-3_-4_PC_M30",
+      "vertices": 3291,
+      "triangles": 1097
+    },
+    {
+      "name": "PC_-4_-4_PC_M30",
+      "vertices": 1428,
+      "triangles": 476
+    },
+    {
+      "name": "PC_-4_-3_PC_M30",
+      "vertices": 3396,
+      "triangles": 1132
+    },
+    {
+      "name": "PC_-3_-4_PC_M20",
+      "vertices": 4083,
+      "triangles": 1361
+    },
+    {
+      "name": "PC_-4_-4_PC_M20",
+      "vertices": 1746,
+      "triangles": 582
+    },
+    {
+      "name": "PC_-4_-3_PC_M20",
+      "vertices": 3801,
+      "triangles": 1267
+    },
+    {
+      "name": "PC_-1_2_PC_M23",
+      "vertices": 2486,
+      "triangles": 922
+    },
+    {
+      "name": "PC_-2_2_PC_M23",
+      "vertices": 2995,
+      "triangles": 1099
+    },
+    {
+      "name": "PC_-1_3_PC_M23",
+      "vertices": 2130,
+      "triangles": 866
+    },
+    {
+      "name": "PC_-2_3_PC_M23",
+      "vertices": 2213,
+      "triangles": 903
+    },
+    {
+      "name": "PC_-1_2_PC_M28",
+      "vertices": 4182,
+      "triangles": 1394
+    },
+    {
+      "name": "PC_-2_2_PC_M28",
+      "vertices": 4758,
+      "triangles": 1586
+    },
+    {
+      "name": "PC_-1_3_PC_M28",
+      "vertices": 2640,
+      "triangles": 880
+    },
+    {
+      "name": "PC_-2_3_PC_M28",
+      "vertices": 2652,
+      "triangles": 884
+    },
+    {
+      "name": "PC_0_3_PC_M28",
+      "vertices": 1242,
+      "triangles": 414
+    },
+    {
+      "name": "PC_-1_2_PC_M20",
+      "vertices": 5247,
+      "triangles": 1749
+    },
+    {
+      "name": "PC_-2_2_PC_M20",
+      "vertices": 6291,
+      "triangles": 2097
+    },
+    {
+      "name": "PC_-1_3_PC_M20",
+      "vertices": 3012,
+      "triangles": 1004
+    },
+    {
+      "name": "PC_-2_3_PC_M20",
+      "vertices": 3384,
+      "triangles": 1128
+    },
+    {
+      "name": "PC_0_3_PC_M20",
+      "vertices": 1593,
+      "triangles": 531
+    },
+    {
+      "name": "PC_-1_2_PC_M29",
+      "vertices": 2646,
+      "triangles": 882
+    },
+    {
+      "name": "PC_-2_2_PC_M29",
+      "vertices": 2781,
+      "triangles": 927
+    },
+    {
+      "name": "PC_-1_3_PC_M29",
+      "vertices": 1830,
+      "triangles": 610
+    },
+    {
+      "name": "PC_-2_3_PC_M29",
+      "vertices": 1962,
+      "triangles": 654
+    },
+    {
+      "name": "PC_0_3_PC_M29",
+      "vertices": 780,
+      "triangles": 260
+    },
+    {
+      "name": "PC_-1_2_PC_M30",
+      "vertices": 4218,
+      "triangles": 1406
+    },
+    {
+      "name": "PC_-2_2_PC_M30",
+      "vertices": 5064,
+      "triangles": 1688
+    },
+    {
+      "name": "PC_-1_3_PC_M30",
+      "vertices": 2727,
+      "triangles": 909
+    },
+    {
+      "name": "PC_-2_3_PC_M30",
+      "vertices": 2871,
+      "triangles": 957
+    },
+    {
+      "name": "PC_0_3_PC_M30",
+      "vertices": 1143,
+      "triangles": 381
+    },
+    {
+      "name": "PC_-4_1_PC_M23",
+      "vertices": 1956,
+      "triangles": 720
+    },
+    {
+      "name": "PC_-4_0_PC_M23",
+      "vertices": 162,
+      "triangles": 60
+    },
+    {
+      "name": "PC_-3_0_PC_M23",
+      "vertices": 1092,
+      "triangles": 390
+    },
+    {
+      "name": "PC_-4_1_PC_M28",
+      "vertices": 2811,
+      "triangles": 937
+    },
+    {
+      "name": "PC_-4_0_PC_M28",
+      "vertices": 999,
+      "triangles": 333
+    },
+    {
+      "name": "PC_-3_0_PC_M28",
+      "vertices": 1995,
+      "triangles": 665
+    },
+    {
+      "name": "PC_-4_0_PC_M30",
+      "vertices": 888,
+      "triangles": 296
+    },
+    {
+      "name": "PC_-3_0_PC_M30",
+      "vertices": 2202,
+      "triangles": 734
+    },
+    {
+      "name": "PC_-4_1_PC_M29",
+      "vertices": 2088,
+      "triangles": 696
+    },
+    {
+      "name": "PC_-4_0_PC_M29",
+      "vertices": 114,
+      "triangles": 38
+    },
+    {
+      "name": "PC_-3_0_PC_M29",
+      "vertices": 1278,
+      "triangles": 426
+    },
+    {
+      "name": "PC_-4_0_PC_M20",
+      "vertices": 1419,
+      "triangles": 473
+    },
+    {
+      "name": "PC_-3_0_PC_M20",
+      "vertices": 2736,
+      "triangles": 912
+    },
+    {
+      "name": "PC_-3_3_PC_M23",
+      "vertices": 1461,
+      "triangles": 539
+    },
+    {
+      "name": "PC_-3_3_PC_M28",
+      "vertices": 2202,
+      "triangles": 734
+    },
+    {
+      "name": "PC_-3_3_PC_M30",
+      "vertices": 2319,
+      "triangles": 773
+    },
+    {
+      "name": "PC_-3_2_PC_M29",
+      "vertices": 1722,
+      "triangles": 574
+    },
+    {
+      "name": "PC_-3_3_PC_M29",
+      "vertices": 1572,
+      "triangles": 524
+    },
+    {
+      "name": "PC_-3_3_PC_M20",
+      "vertices": 2628,
+      "triangles": 876
+    },
+    {
+      "name": "PC_-4_2_PC_M29",
+      "vertices": 2085,
+      "triangles": 695
+    },
+    {
+      "name": "PC_-4_3_PC_M29",
+      "vertices": 585,
+      "triangles": 195
+    },
+    {
+      "name": "PC_-4_-2_PC_M23",
+      "vertices": 2201,
+      "triangles": 805
+    },
+    {
+      "name": "PC_-3_-2_PC_M23",
+      "vertices": 949,
+      "triangles": 345
+    },
+    {
+      "name": "PC_-4_-2_PC_M28",
+      "vertices": 3609,
+      "triangles": 1203
+    },
+    {
+      "name": "PC_-4_-2_PC_M29",
+      "vertices": 2124,
+      "triangles": 708
+    },
+    {
+      "name": "PC_-4_-2_PC_M20",
+      "vertices": 4158,
+      "triangles": 1386
+    },
+    {
+      "name": "PC_-4_-2_PC_M30",
+      "vertices": 3429,
+      "triangles": 1143
+    },
+    {
+      "name": "PC_-2_-4_PC_M23",
+      "vertices": 1571,
+      "triangles": 585
+    },
+    {
+      "name": "PC_-2_-4_PC_M28",
+      "vertices": 2415,
+      "triangles": 805
+    },
+    {
+      "name": "PC_-2_-4_PC_M29",
+      "vertices": 1911,
+      "triangles": 637
+    },
+    {
+      "name": "PC_-2_-4_PC_M30",
+      "vertices": 2556,
+      "triangles": 852
+    },
+    {
+      "name": "PC_0_-4_PC_M23",
+      "vertices": 1598,
+      "triangles": 592
+    },
+    {
+      "name": "PC_1_-3_PC_M23",
+      "vertices": 6,
+      "triangles": 2
+    },
+    {
+      "name": "PC_1_-4_PC_M23",
+      "vertices": 1050,
+      "triangles": 388
+    },
+    {
+      "name": "PC_0_-4_PC_M28",
+      "vertices": 2493,
+      "triangles": 831
+    },
+    {
+      "name": "PC_1_-3_PC_M28",
+      "vertices": 393,
+      "triangles": 131
+    },
+    {
+      "name": "PC_1_-4_PC_M28",
+      "vertices": 1620,
+      "triangles": 540
+    },
+    {
+      "name": "PC_0_-4_PC_M20",
+      "vertices": 3201,
+      "triangles": 1067
+    },
+    {
+      "name": "PC_1_-3_PC_M20",
+      "vertices": 501,
+      "triangles": 167
+    },
+    {
+      "name": "PC_1_-4_PC_M20",
+      "vertices": 2181,
+      "triangles": 727
+    },
+    {
+      "name": "PC_0_-4_PC_M30",
+      "vertices": 2802,
+      "triangles": 934
+    },
+    {
+      "name": "PC_1_-3_PC_M30",
+      "vertices": 282,
+      "triangles": 94
+    },
+    {
+      "name": "PC_1_-4_PC_M30",
+      "vertices": 1755,
+      "triangles": 585
+    },
+    {
+      "name": "PC_0_-4_PC_M29",
+      "vertices": 1809,
+      "triangles": 603
+    },
+    {
+      "name": "PC_1_-3_PC_M29",
+      "vertices": 141,
+      "triangles": 47
+    },
+    {
+      "name": "PC_1_-4_PC_M29",
+      "vertices": 1212,
+      "triangles": 404
+    },
+    {
+      "name": "PC_2_-4_PC_M23",
+      "vertices": 369,
+      "triangles": 135
+    },
+    {
+      "name": "PC_2_-4_PC_M28",
+      "vertices": 1107,
+      "triangles": 369
+    },
+    {
+      "name": "PC_2_-4_PC_M29",
+      "vertices": 711,
+      "triangles": 237
+    },
+    {
+      "name": "PC_2_-4_PC_M30",
+      "vertices": 1011,
+      "triangles": 337
+    },
+    {
+      "name": "PC_2_-4_PC_M20",
+      "vertices": 1497,
+      "triangles": 499
+    },
+    {
+      "name": "PC_3_-2_PC_M23",
+      "vertices": 2419,
+      "triangles": 895
+    },
+    {
+      "name": "PC_3_-1_PC_M23",
+      "vertices": 2501,
+      "triangles": 921
+    },
+    {
+      "name": "PC_3_-2_PC_M28",
+      "vertices": 3372,
+      "triangles": 1124
+    },
+    {
+      "name": "PC_3_-1_PC_M28",
+      "vertices": 3840,
+      "triangles": 1280
+    },
+    {
+      "name": "PC_3_-1_PC_M30",
+      "vertices": 4323,
+      "triangles": 1441
+    },
+    {
+      "name": "PC_3_-2_PC_M30",
+      "vertices": 3693,
+      "triangles": 1231
+    },
+    {
+      "name": "PC_3_-2_PC_M20",
+      "vertices": 4293,
+      "triangles": 1431
+    },
+    {
+      "name": "PC_3_-1_PC_M20",
+      "vertices": 4923,
+      "triangles": 1641
+    },
+    {
+      "name": "PC_3_-1_PC_M29",
+      "vertices": 2754,
+      "triangles": 918
+    },
+    {
+      "name": "PC_3_-2_PC_M29",
+      "vertices": 2202,
+      "triangles": 734
+    },
+    {
+      "name": "PC_-4_-1_PC_M23",
+      "vertices": 1644,
+      "triangles": 616
+    },
+    {
+      "name": "PC_-3_-1_PC_M23",
+      "vertices": 510,
+      "triangles": 192
+    },
+    {
+      "name": "PC_-4_-1_PC_M28",
+      "vertices": 2349,
+      "triangles": 783
+    },
+    {
+      "name": "PC_-3_-1_PC_M28",
+      "vertices": 1560,
+      "triangles": 520
+    },
+    {
+      "name": "PC_-4_-1_PC_M29",
+      "vertices": 1626,
+      "triangles": 542
+    },
+    {
+      "name": "PC_-3_-1_PC_M29",
+      "vertices": 927,
+      "triangles": 309
+    },
+    {
+      "name": "PC_-4_-1_PC_M20",
+      "vertices": 3099,
+      "triangles": 1033
+    },
+    {
+      "name": "PC_-3_-1_PC_M20",
+      "vertices": 2343,
+      "triangles": 781
+    },
+    {
+      "name": "PC_-4_-1_PC_M30",
+      "vertices": 2574,
+      "triangles": 858
+    },
+    {
+      "name": "PC_-3_-1_PC_M30",
+      "vertices": 1695,
+      "triangles": 565
+    },
+    {
+      "name": "PC_3_0_PC_M23",
+      "vertices": 984,
+      "triangles": 372
+    },
+    {
+      "name": "PC_2_-1_PC_M23",
+      "vertices": 2051,
+      "triangles": 827
+    },
+    {
+      "name": "PC_2_-1_PC_M28",
+      "vertices": 2556,
+      "triangles": 852
+    },
+    {
+      "name": "PC_2_-1_PC_M29",
+      "vertices": 1653,
+      "triangles": 551
+    },
+    {
+      "name": "PC_2_-1_PC_M30",
+      "vertices": 2937,
+      "triangles": 979
+    },
+    {
+      "name": "PC_2_-1_PC_M20",
+      "vertices": 3714,
+      "triangles": 1238
+    },
+    {
+      "name": "PC_3_2_PC_M23",
+      "vertices": 989,
+      "triangles": 363
+    },
+    {
+      "name": "PC_2_2_PC_M23",
+      "vertices": 4974,
+      "triangles": 1836
+    },
+    {
+      "name": "PC_3_3_PC_M23",
+      "vertices": 1815,
+      "triangles": 851
+    },
+    {
+      "name": "PC_3_2_PC_M28",
+      "vertices": 2253,
+      "triangles": 751
+    },
+    {
+      "name": "PC_2_2_PC_M28",
+      "vertices": 6987,
+      "triangles": 2329
+    },
+    {
+      "name": "PC_3_3_PC_M28",
+      "vertices": 1704,
+      "triangles": 568
+    },
+    {
+      "name": "PC_2_2_PC_M29",
+      "vertices": 5532,
+      "triangles": 1844
+    },
+    {
+      "name": "PC_3_1_PC_M29",
+      "vertices": 4062,
+      "triangles": 1354
+    },
+    {
+      "name": "PC_3_2_PC_M29",
+      "vertices": 1347,
+      "triangles": 449
+    },
+    {
+      "name": "PC_3_3_PC_M29",
+      "vertices": 1086,
+      "triangles": 362
+    },
+    {
+      "name": "PC_2_1_PC_M29",
+      "vertices": 393,
+      "triangles": 131
+    },
+    {
+      "name": "PC_3_2_PC_M20",
+      "vertices": 2760,
+      "triangles": 920
+    },
+    {
+      "name": "PC_2_2_PC_M20",
+      "vertices": 8376,
+      "triangles": 2792
+    },
+    {
+      "name": "PC_3_3_PC_M20",
+      "vertices": 2277,
+      "triangles": 759
+    },
+    {
+      "name": "PC_3_2_PC_M30",
+      "vertices": 2187,
+      "triangles": 729
+    },
+    {
+      "name": "PC_2_2_PC_M30",
+      "vertices": 7839,
+      "triangles": 2613
+    },
+    {
+      "name": "PC_3_3_PC_M30",
+      "vertices": 1875,
+      "triangles": 625
+    },
+    {
+      "name": "PC_0_3_PC_M23",
+      "vertices": 630,
+      "triangles": 238
+    },
+    {
+      "name": "PC_1_2_PC_M23",
+      "vertices": 2440,
+      "triangles": 894
+    },
+    {
+      "name": "PC_1_2_PC_M28",
+      "vertices": 3432,
+      "triangles": 1144
+    },
+    {
+      "name": "PC_1_2_PC_M20",
+      "vertices": 4140,
+      "triangles": 1380
+    },
+    {
+      "name": "PC_1_2_PC_M29",
+      "vertices": 2145,
+      "triangles": 715
+    },
+    {
+      "name": "PC_1_2_PC_M30",
+      "vertices": 3846,
+      "triangles": 1282
+    },
+    {
+      "name": "PC_1_-2_PC_M23",
+      "vertices": 306,
+      "triangles": 112
+    },
+    {
+      "name": "PC_1_-2_PC_M28",
+      "vertices": 888,
+      "triangles": 296
+    },
+    {
+      "name": "PC_1_-2_PC_M30",
+      "vertices": 834,
+      "triangles": 278
+    },
+    {
+      "name": "PC_1_-2_PC_M20",
+      "vertices": 1395,
+      "triangles": 465
+    },
+    {
+      "name": "PC_1_-2_PC_M29",
+      "vertices": 384,
+      "triangles": 128
+    },
+    {
+      "name": "PC_2_3_PC_M23",
+      "vertices": 1706,
+      "triangles": 714
+    },
+    {
+      "name": "PC_2_3_PC_M28",
+      "vertices": 2160,
+      "triangles": 720
+    },
+    {
+      "name": "PC_1_3_PC_M28",
+      "vertices": 1200,
+      "triangles": 400
+    },
+    {
+      "name": "PC_2_3_PC_M20",
+      "vertices": 2997,
+      "triangles": 999
+    },
+    {
+      "name": "PC_1_3_PC_M20",
+      "vertices": 1560,
+      "triangles": 520
+    },
+    {
+      "name": "PC_2_3_PC_M30",
+      "vertices": 2358,
+      "triangles": 786
+    },
+    {
+      "name": "PC_1_3_PC_M30",
+      "vertices": 1254,
+      "triangles": 418
+    },
+    {
+      "name": "PC_3_0_PC_M29",
+      "vertices": 1074,
+      "triangles": 358
+    },
+    {
+      "name": "PC_1_1_PC_M23",
+      "vertices": 630,
+      "triangles": 236
+    },
+    {
+      "name": "PC_1_1_PC_M28",
+      "vertices": 1467,
+      "triangles": 489
+    },
+    {
+      "name": "PC_1_1_PC_M30",
+      "vertices": 1713,
+      "triangles": 571
+    },
+    {
+      "name": "PC_1_1_PC_M20",
+      "vertices": 2466,
+      "triangles": 822
+    },
+    {
+      "name": "PC_1_1_PC_M29",
+      "vertices": 855,
+      "triangles": 285
+    },
+    {
+      "name": "PC_1_3_PC_M23",
+      "vertices": 660,
+      "triangles": 244
+    },
+    {
+      "name": "PC_1_3_PC_M29",
+      "vertices": 768,
+      "triangles": 256
+    },
+    {
+      "name": "PC_0_-1_PC_M23",
+      "vertices": 323,
+      "triangles": 119
+    },
+    {
+      "name": "PC_2_3_PC_M29",
+      "vertices": 1086,
+      "triangles": 362
+    },
+    {
+      "name": "PC_2_0_PC_M23",
+      "vertices": 678,
+      "triangles": 336
+    },
+    {
+      "name": "PC_-1_-2_PC_M23",
+      "vertices": 432,
+      "triangles": 248
+    },
+    {
+      "name": "PC_-1_-2_PC_M28",
+      "vertices": 1050,
+      "triangles": 350
+    },
+    {
+      "name": "PC_-1_-2_PC_M30",
+      "vertices": 870,
+      "triangles": 290
+    },
+    {
+      "name": "PC_-1_-2_PC_M20",
+      "vertices": 1140,
+      "triangles": 380
+    },
+    {
+      "name": "PC_0_1_PC_M23",
+      "vertices": 316,
+      "triangles": 116
+    },
+    {
+      "name": "PC_0_1_PC_M29",
+      "vertices": 594,
+      "triangles": 198
+    },
+    {
+      "name": "PC_0_1_PC_M20",
+      "vertices": 2067,
+      "triangles": 689
+    },
+    {
+      "name": "PC_0_1_PC_M30",
+      "vertices": 1614,
+      "triangles": 538
+    },
+    {
+      "name": "PC_-3_-3_PC_M31",
+      "vertices": 7106,
+      "triangles": 2742
+    },
+    {
+      "name": "PC_-2_-3_PC_M31",
+      "vertices": 4645,
+      "triangles": 1783
+    },
+    {
+      "name": "PC_-2_-4_PC_M31",
+      "vertices": 2507,
+      "triangles": 959
+    },
+    {
+      "name": "PC_-3_-3_PC_M32",
+      "vertices": 5289,
+      "triangles": 2287
+    },
+    {
+      "name": "PC_-2_-3_PC_M32",
+      "vertices": 3405,
+      "triangles": 1467
+    },
+    {
+      "name": "PC_-2_-4_PC_M32",
+      "vertices": 1943,
+      "triangles": 823
+    },
+    {
+      "name": "PC_-3_-1_PC_M31",
+      "vertices": 3794,
+      "triangles": 1454
+    },
+    {
+      "name": "PC_-4_-1_PC_M31",
+      "vertices": 586,
+      "triangles": 218
+    },
+    {
+      "name": "PC_-3_-1_PC_M32",
+      "vertices": 2730,
+      "triangles": 1190
+    },
+    {
+      "name": "PC_-4_-1_PC_M32",
+      "vertices": 407,
+      "triangles": 173
+    },
+    {
+      "name": "PC_-2_1_PC_M31",
+      "vertices": 5192,
+      "triangles": 1994
+    },
+    {
+      "name": "PC_-2_1_PC_M32",
+      "vertices": 3812,
+      "triangles": 1640
+    },
+    {
+      "name": "PC_0_1_PC_M31",
+      "vertices": 2768,
+      "triangles": 1050
+    },
+    {
+      "name": "PC_0_2_PC_M31",
+      "vertices": 4308,
+      "triangles": 1648
+    },
+    {
+      "name": "PC_0_1_PC_M32",
+      "vertices": 2071,
+      "triangles": 873
+    },
+    {
+      "name": "PC_0_2_PC_M32",
+      "vertices": 3384,
+      "triangles": 1432
+    },
+    {
+      "name": "PC_2_1_PC_M31",
+      "vertices": 5598,
+      "triangles": 2166
+    },
+    {
+      "name": "PC_2_1_PC_M32",
+      "vertices": 4305,
+      "triangles": 1825
+    },
+    {
+      "name": "PC_3_-2_PC_M31",
+      "vertices": 3458,
+      "triangles": 1344
+    },
+    {
+      "name": "PC_2_-2_PC_M31",
+      "vertices": 2480,
+      "triangles": 936
+    },
+    {
+      "name": "PC_3_-2_PC_M32",
+      "vertices": 2622,
+      "triangles": 1114
+    },
+    {
+      "name": "PC_2_-2_PC_M32",
+      "vertices": 1945,
+      "triangles": 809
+    },
+    {
+      "name": "PC_2_-3_PC_M31",
+      "vertices": 4140,
+      "triangles": 1574
+    },
+    {
+      "name": "PC_2_-4_PC_M31",
+      "vertices": 3400,
+      "triangles": 1318
+    },
+    {
+      "name": "PC_2_-3_PC_M32",
+      "vertices": 3223,
+      "triangles": 1357
+    },
+    {
+      "name": "PC_2_-4_PC_M32",
+      "vertices": 2429,
+      "triangles": 1057
+    },
+    {
+      "name": "PC_-4_0_PC_M03",
+      "vertices": 4422,
+      "triangles": 1474
+    },
+    {
+      "name": "PC_-4_-1_PC_M03",
+      "vertices": 1353,
+      "triangles": 451
+    },
+    {
+      "name": "PC_-3_-1_PC_M03",
+      "vertices": 3666,
+      "triangles": 1222
+    },
+    {
+      "name": "PC_-4_0_PC_M27",
+      "vertices": 1218,
+      "triangles": 406
+    },
+    {
+      "name": "PC_-4_-1_PC_M27",
+      "vertices": 738,
+      "triangles": 246
+    },
+    {
+      "name": "PC_-3_0_PC_M27",
+      "vertices": 336,
+      "triangles": 112
+    },
+    {
+      "name": "PC_-3_-1_PC_M27",
+      "vertices": 576,
+      "triangles": 192
+    },
+    {
+      "name": "PC_-4_0_PC_M33",
+      "vertices": 2952,
+      "triangles": 1476
+    },
+    {
+      "name": "PC_-4_-1_PC_M33",
+      "vertices": 624,
+      "triangles": 312
+    },
+    {
+      "name": "PC_-3_-1_PC_M33",
+      "vertices": 2952,
+      "triangles": 1476
+    },
+    {
+      "name": "PC_-3_-2_PC_M33",
+      "vertices": 648,
+      "triangles": 324
+    },
+    {
+      "name": "PC_-2_-2_PC_M33",
+      "vertices": 3112,
+      "triangles": 1556
+    },
+    {
+      "name": "PC_-1_-2_PC_M33",
+      "vertices": 5572,
+      "triangles": 2786
+    },
+    {
+      "name": "PC_0_-2_PC_M33",
+      "vertices": 2044,
+      "triangles": 1022
+    },
+    {
+      "name": "PC_0_-3_PC_M33",
+      "vertices": 1760,
+      "triangles": 880
+    },
+    {
+      "name": "PC_1_-3_PC_M33",
+      "vertices": 2536,
+      "triangles": 1268
+    },
+    {
+      "name": "PC_1_-4_PC_M33",
+      "vertices": 1252,
+      "triangles": 626
+    },
+    {
+      "name": "PC_2_-4_PC_M33",
+      "vertices": 2372,
+      "triangles": 1186
+    },
+    {
+      "name": "PC_3_-4_PC_M33",
+      "vertices": 1248,
+      "triangles": 624
+    },
+    {
+      "name": "PC_3_-3_PC_M33",
+      "vertices": 1392,
+      "triangles": 696
+    },
+    {
+      "name": "PC_-1_-1_PC_M33",
+      "vertices": 3428,
+      "triangles": 1714
+    },
+    {
+      "name": "PC_-1_0_PC_M33",
+      "vertices": 2860,
+      "triangles": 1430
+    },
+    {
+      "name": "PC_-1_1_PC_M33",
+      "vertices": 1036,
+      "triangles": 518
+    },
+    {
+      "name": "PC_0_1_PC_M33",
+      "vertices": 3136,
+      "triangles": 1568
+    },
+    {
+      "name": "PC_1_1_PC_M33",
+      "vertices": 1368,
+      "triangles": 684
+    },
+    {
+      "name": "PC_1_2_PC_M33",
+      "vertices": 2616,
+      "triangles": 1308
+    },
+    {
+      "name": "PC_2_2_PC_M33",
+      "vertices": 868,
+      "triangles": 434
+    },
+    {
+      "name": "PC_2_3_PC_M33",
+      "vertices": 2328,
+      "triangles": 1164
+    },
+    {
+      "name": "PC_-3_-2_PC_M03",
+      "vertices": 1797,
+      "triangles": 599
+    },
+    {
+      "name": "PC_-2_-2_PC_M03",
+      "vertices": 2637,
+      "triangles": 879
+    },
+    {
+      "name": "PC_-3_-2_PC_M27",
+      "vertices": 459,
+      "triangles": 153
+    },
+    {
+      "name": "PC_-2_-2_PC_M27",
+      "vertices": 522,
+      "triangles": 174
+    },
+    {
+      "name": "PC_-1_-2_PC_M27",
+      "vertices": 1128,
+      "triangles": 376
+    },
+    {
+      "name": "PC_0_-2_PC_M27",
+      "vertices": 588,
+      "triangles": 196
+    },
+    {
+      "name": "PC_-1_-1_PC_M27",
+      "vertices": 396,
+      "triangles": 132
+    },
+    {
+      "name": "PC_0_-3_PC_M03",
+      "vertices": 3138,
+      "triangles": 1046
+    },
+    {
+      "name": "PC_0_-3_PC_M27",
+      "vertices": 762,
+      "triangles": 254
+    },
+    {
+      "name": "PC_1_-3_PC_M27",
+      "vertices": 870,
+      "triangles": 290
+    },
+    {
+      "name": "PC_1_-4_PC_M03",
+      "vertices": 2088,
+      "triangles": 696
+    },
+    {
+      "name": "PC_1_-4_PC_M27",
+      "vertices": 612,
+      "triangles": 204
+    },
+    {
+      "name": "PC_2_-4_PC_M03",
+      "vertices": 2619,
+      "triangles": 873
+    },
+    {
+      "name": "PC_2_-4_PC_M27",
+      "vertices": 549,
+      "triangles": 183
+    },
+    {
+      "name": "PC_3_-4_PC_M03",
+      "vertices": 1911,
+      "triangles": 637
+    },
+    {
+      "name": "PC_3_-3_PC_M03",
+      "vertices": 1677,
+      "triangles": 559
+    },
+    {
+      "name": "PC_3_-4_PC_M27",
+      "vertices": 318,
+      "triangles": 106
+    },
+    {
+      "name": "PC_3_-3_PC_M27",
+      "vertices": 501,
+      "triangles": 167
+    },
+    {
+      "name": "PC_-1_0_PC_M27",
+      "vertices": 294,
+      "triangles": 98
+    },
+    {
+      "name": "PC_0_1_PC_M03",
+      "vertices": 4230,
+      "triangles": 1410
+    },
+    {
+      "name": "PC_-1_1_PC_M27",
+      "vertices": 354,
+      "triangles": 118
+    },
+    {
+      "name": "PC_0_1_PC_M27",
+      "vertices": 768,
+      "triangles": 256
+    },
+    {
+      "name": "PC_1_1_PC_M27",
+      "vertices": 357,
+      "triangles": 119
+    },
+    {
+      "name": "PC_1_2_PC_M27",
+      "vertices": 747,
+      "triangles": 249
+    },
+    {
+      "name": "PC_2_2_PC_M03",
+      "vertices": 2094,
+      "triangles": 698
+    },
+    {
+      "name": "PC_2_3_PC_M03",
+      "vertices": 2739,
+      "triangles": 913
+    },
+    {
+      "name": "PC_2_2_PC_M27",
+      "vertices": 834,
+      "triangles": 278
+    },
+    {
+      "name": "PC_2_3_PC_M27",
+      "vertices": 1002,
+      "triangles": 334
+    },
+    {
+      "name": "PC_2_-3_PC_M19",
+      "vertices": 138,
+      "triangles": 46
+    },
+    {
+      "name": "PC_1_-3_PC_M19",
+      "vertices": 66,
+      "triangles": 22
+    },
+    {
+      "name": "PC_1_-4_PC_M19",
+      "vertices": 138,
+      "triangles": 46
+    },
+    {
+      "name": "PC_2_-4_PC_M19",
+      "vertices": 102,
+      "triangles": 34
+    },
+    {
+      "name": "PC_2_-3_PC_M34",
+      "vertices": 243,
+      "triangles": 81
+    },
+    {
+      "name": "PC_1_-3_PC_M34",
+      "vertices": 138,
+      "triangles": 46
+    },
+    {
+      "name": "PC_1_-4_PC_M34",
+      "vertices": 303,
+      "triangles": 101
+    },
+    {
+      "name": "PC_2_-4_PC_M34",
+      "vertices": 231,
+      "triangles": 77
+    },
+    {
+      "name": "PC_-2_2_PC_M19",
+      "vertices": 390,
+      "triangles": 130
+    },
+    {
+      "name": "PC_-3_2_PC_M19",
+      "vertices": 222,
+      "triangles": 74
+    },
+    {
+      "name": "PC_-2_3_PC_M19",
+      "vertices": 240,
+      "triangles": 104
+    },
+    {
+      "name": "PC_-2_1_PC_M19",
+      "vertices": 786,
+      "triangles": 262
+    },
+    {
+      "name": "PC_-3_3_PC_M19",
+      "vertices": 324,
+      "triangles": 150
+    },
+    {
+      "name": "PC_-3_1_PC_M19",
+      "vertices": 435,
+      "triangles": 145
+    },
+    {
+      "name": "PC_-2_2_PC_M34",
+      "vertices": 837,
+      "triangles": 279
+    },
+    {
+      "name": "PC_-3_2_PC_M34",
+      "vertices": 420,
+      "triangles": 140
+    },
+    {
+      "name": "PC_-2_3_PC_M34",
+      "vertices": 309,
+      "triangles": 103
+    },
+    {
+      "name": "PC_-2_1_PC_M34",
+      "vertices": 555,
+      "triangles": 185
+    },
+    {
+      "name": "PC_-3_3_PC_M34",
+      "vertices": 408,
+      "triangles": 136
+    },
+    {
+      "name": "PC_-3_1_PC_M34",
+      "vertices": 498,
+      "triangles": 166
+    },
+    {
+      "name": "PC_-1_-3_PC_M19",
+      "vertices": 324,
+      "triangles": 108
+    },
+    {
+      "name": "PC_-2_-4_PC_M19",
+      "vertices": 222,
+      "triangles": 74
+    },
+    {
+      "name": "PC_-2_-3_PC_M19",
+      "vertices": 360,
+      "triangles": 120
+    },
+    {
+      "name": "PC_0_-3_PC_M19",
+      "vertices": 390,
+      "triangles": 130
+    },
+    {
+      "name": "PC_-1_-4_PC_M19",
+      "vertices": 186,
+      "triangles": 62
+    },
+    {
+      "name": "PC_0_-4_PC_M19",
+      "vertices": 234,
+      "triangles": 78
+    },
+    {
+      "name": "PC_-1_-3_PC_M34",
+      "vertices": 729,
+      "triangles": 243
+    },
+    {
+      "name": "PC_-2_-4_PC_M34",
+      "vertices": 480,
+      "triangles": 160
+    },
+    {
+      "name": "PC_-1_-4_PC_M34",
+      "vertices": 378,
+      "triangles": 126
+    },
+    {
+      "name": "PC_-2_-3_PC_M34",
+      "vertices": 693,
+      "triangles": 231
+    },
+    {
+      "name": "PC_0_-3_PC_M34",
+      "vertices": 720,
+      "triangles": 240
+    },
+    {
+      "name": "PC_0_-4_PC_M34",
+      "vertices": 507,
+      "triangles": 169
+    },
+    {
+      "name": "PC_-1_0_PC_M30",
+      "vertices": 1836,
+      "triangles": 612
+    },
+    {
+      "name": "PC_-1_1_PC_M19",
+      "vertices": 234,
+      "triangles": 78
+    },
+    {
+      "name": "PC_0_1_PC_M19",
+      "vertices": 306,
+      "triangles": 102
+    },
+    {
+      "name": "PC_-2_0_PC_M34",
+      "vertices": 507,
+      "triangles": 169
+    },
+    {
+      "name": "PC_-1_1_PC_M34",
+      "vertices": 507,
+      "triangles": 169
+    },
+    {
+      "name": "PC_0_1_PC_M34",
+      "vertices": 657,
+      "triangles": 219
+    },
+    {
+      "name": "PC_-1_0_PC_M34",
+      "vertices": 147,
+      "triangles": 49
+    },
+    {
+      "name": "PC_3_2_PC_M19",
+      "vertices": 270,
+      "triangles": 90
+    },
+    {
+      "name": "PC_3_1_PC_M19",
+      "vertices": 240,
+      "triangles": 80
+    },
+    {
+      "name": "PC_3_3_PC_M19",
+      "vertices": 240,
+      "triangles": 122
+    },
+    {
+      "name": "PC_3_2_PC_M34",
+      "vertices": 567,
+      "triangles": 189
+    },
+    {
+      "name": "PC_3_1_PC_M34",
+      "vertices": 456,
+      "triangles": 152
+    },
+    {
+      "name": "PC_3_3_PC_M34",
+      "vertices": 210,
+      "triangles": 70
+    },
+    {
+      "name": "PC_2_1_PC_M19",
+      "vertices": 276,
+      "triangles": 92
+    },
+    {
+      "name": "PC_1_1_PC_M19",
+      "vertices": 336,
+      "triangles": 112
+    },
+    {
+      "name": "PC_1_0_PC_M19",
+      "vertices": 282,
+      "triangles": 94
+    },
+    {
+      "name": "PC_2_0_PC_M19",
+      "vertices": 198,
+      "triangles": 66
+    },
+    {
+      "name": "PC_2_1_PC_M34",
+      "vertices": 543,
+      "triangles": 181
+    },
+    {
+      "name": "PC_1_1_PC_M34",
+      "vertices": 642,
+      "triangles": 214
+    },
+    {
+      "name": "PC_2_0_PC_M34",
+      "vertices": 435,
+      "triangles": 145
+    },
+    {
+      "name": "PC_1_0_PC_M34",
+      "vertices": 615,
+      "triangles": 205
+    },
+    {
+      "name": "PC_1_2_PC_M19",
+      "vertices": 264,
+      "triangles": 88
+    },
+    {
+      "name": "PC_0_3_PC_M19",
+      "vertices": 354,
+      "triangles": 166
+    },
+    {
+      "name": "PC_0_2_PC_M19",
+      "vertices": 132,
+      "triangles": 44
+    },
+    {
+      "name": "PC_1_3_PC_M19",
+      "vertices": 156,
+      "triangles": 76
+    },
+    {
+      "name": "PC_1_2_PC_M34",
+      "vertices": 477,
+      "triangles": 159
+    },
+    {
+      "name": "PC_0_3_PC_M34",
+      "vertices": 444,
+      "triangles": 148
+    },
+    {
+      "name": "PC_0_2_PC_M34",
+      "vertices": 270,
+      "triangles": 90
+    },
+    {
+      "name": "PC_1_3_PC_M34",
+      "vertices": 162,
+      "triangles": 54
+    },
+    {
+      "name": "PC_-3_0_PC_M19",
+      "vertices": 786,
+      "triangles": 262
+    },
+    {
+      "name": "PC_-3_0_PC_M34",
+      "vertices": 762,
+      "triangles": 254
+    },
+    {
+      "name": "PC_-4_0_PC_M19",
+      "vertices": 228,
+      "triangles": 76
+    },
+    {
+      "name": "PC_-4_-1_PC_M19",
+      "vertices": 156,
+      "triangles": 52
+    },
+    {
+      "name": "PC_-3_-1_PC_M19",
+      "vertices": 3081,
+      "triangles": 1027
+    },
+    {
+      "name": "PC_-4_0_PC_M34",
+      "vertices": 477,
+      "triangles": 159
+    },
+    {
+      "name": "PC_-4_-1_PC_M34",
+      "vertices": 351,
+      "triangles": 117
+    },
+    {
+      "name": "PC_-3_-1_PC_M34",
+      "vertices": 465,
+      "triangles": 155
+    },
+    {
+      "name": "PC_-1_2_PC_M19",
+      "vertices": 270,
+      "triangles": 90
+    },
+    {
+      "name": "PC_-1_3_PC_M19",
+      "vertices": 240,
+      "triangles": 80
+    },
+    {
+      "name": "PC_-1_2_PC_M34",
+      "vertices": 606,
+      "triangles": 202
+    },
+    {
+      "name": "PC_-1_3_PC_M34",
+      "vertices": 501,
+      "triangles": 167
+    },
+    {
+      "name": "PC_-2_-2_PC_M28",
+      "vertices": 561,
+      "triangles": 187
+    },
+    {
+      "name": "PC_-2_-2_PC_M20",
+      "vertices": 1101,
+      "triangles": 367
+    },
+    {
+      "name": "PC_-2_-2_PC_M30",
+      "vertices": 738,
+      "triangles": 246
+    },
+    {
+      "name": "PC_-3_-2_PC_M19",
+      "vertices": 288,
+      "triangles": 96
+    },
+    {
+      "name": "PC_-2_-2_PC_M19",
+      "vertices": 150,
+      "triangles": 50
+    },
+    {
+      "name": "PC_-3_-3_PC_M19",
+      "vertices": 354,
+      "triangles": 118
+    },
+    {
+      "name": "PC_-2_-1_PC_M19",
+      "vertices": 1914,
+      "triangles": 638
+    },
+    {
+      "name": "PC_-2_-2_PC_M34",
+      "vertices": 372,
+      "triangles": 124
+    },
+    {
+      "name": "PC_-3_-2_PC_M34",
+      "vertices": 627,
+      "triangles": 209
+    },
+    {
+      "name": "PC_-3_-3_PC_M34",
+      "vertices": 684,
+      "triangles": 228
+    },
+    {
+      "name": "PC_-2_-1_PC_M34",
+      "vertices": 540,
+      "triangles": 180
+    },
+    {
+      "name": "PC_-3_-4_PC_M19",
+      "vertices": 210,
+      "triangles": 70
+    },
+    {
+      "name": "PC_-4_-3_PC_M19",
+      "vertices": 276,
+      "triangles": 92
+    },
+    {
+      "name": "PC_-4_-4_PC_M19",
+      "vertices": 60,
+      "triangles": 20
+    },
+    {
+      "name": "PC_-3_-4_PC_M34",
+      "vertices": 447,
+      "triangles": 149
+    },
+    {
+      "name": "PC_-4_-3_PC_M34",
+      "vertices": 600,
+      "triangles": 200
+    },
+    {
+      "name": "PC_-4_-4_PC_M34",
+      "vertices": 123,
+      "triangles": 41
+    },
+    {
+      "name": "PC_-4_1_PC_M19",
+      "vertices": 168,
+      "triangles": 56
+    },
+    {
+      "name": "PC_-4_1_PC_M34",
+      "vertices": 333,
+      "triangles": 111
+    },
+    {
+      "name": "PC_1_-1_PC_M30",
+      "vertices": 285,
+      "triangles": 95
+    },
+    {
+      "name": "PC_1_-1_PC_M20",
+      "vertices": 519,
+      "triangles": 173
+    },
+    {
+      "name": "PC_1_-1_PC_M28",
+      "vertices": 333,
+      "triangles": 111
+    },
+    {
+      "name": "PC_2_-1_PC_M19",
+      "vertices": 336,
+      "triangles": 112
+    },
+    {
+      "name": "PC_1_-1_PC_M19",
+      "vertices": 180,
+      "triangles": 60
+    },
+    {
+      "name": "PC_2_-1_PC_M34",
+      "vertices": 732,
+      "triangles": 244
+    },
+    {
+      "name": "PC_1_-1_PC_M34",
+      "vertices": 357,
+      "triangles": 119
+    },
+    {
+      "name": "PC_0_-2_PC_M19",
+      "vertices": 294,
+      "triangles": 98
+    },
+    {
+      "name": "PC_1_-2_PC_M19",
+      "vertices": 174,
+      "triangles": 58
+    },
+    {
+      "name": "PC_0_-1_PC_M19",
+      "vertices": 186,
+      "triangles": 62
+    },
+    {
+      "name": "PC_0_-2_PC_M34",
+      "vertices": 645,
+      "triangles": 215
+    },
+    {
+      "name": "PC_1_-2_PC_M34",
+      "vertices": 366,
+      "triangles": 122
+    },
+    {
+      "name": "PC_0_-1_PC_M34",
+      "vertices": 396,
+      "triangles": 132
+    },
+    {
+      "name": "PC_2_2_PC_M19",
+      "vertices": 294,
+      "triangles": 98
+    },
+    {
+      "name": "PC_2_3_PC_M19",
+      "vertices": 336,
+      "triangles": 166
+    },
+    {
+      "name": "PC_2_2_PC_M34",
+      "vertices": 660,
+      "triangles": 220
+    },
+    {
+      "name": "PC_2_3_PC_M34",
+      "vertices": 288,
+      "triangles": 96
+    },
+    {
+      "name": "PC_-1_-2_PC_M19",
+      "vertices": 258,
+      "triangles": 86
+    },
+    {
+      "name": "PC_-1_-2_PC_M34",
+      "vertices": 525,
+      "triangles": 175
+    },
+    {
+      "name": "PC_3_-4_PC_M28",
+      "vertices": 162,
+      "triangles": 54
+    },
+    {
+      "name": "PC_3_-4_PC_M20",
+      "vertices": 333,
+      "triangles": 111
+    },
+    {
+      "name": "PC_3_-4_PC_M30",
+      "vertices": 156,
+      "triangles": 52
+    },
+    {
+      "name": "PC_3_-3_PC_M19",
+      "vertices": 258,
+      "triangles": 86
+    },
+    {
+      "name": "PC_3_-4_PC_M19",
+      "vertices": 48,
+      "triangles": 16
+    },
+    {
+      "name": "PC_3_-3_PC_M34",
+      "vertices": 561,
+      "triangles": 187
+    },
+    {
+      "name": "PC_3_-4_PC_M34",
+      "vertices": 105,
+      "triangles": 35
+    },
+    {
+      "name": "PC_-4_-2_PC_M19",
+      "vertices": 258,
+      "triangles": 86
+    },
+    {
+      "name": "PC_-4_-2_PC_M34",
+      "vertices": 555,
+      "triangles": 185
+    },
+    {
+      "name": "PC_3_-1_PC_M19",
+      "vertices": 210,
+      "triangles": 70
+    },
+    {
+      "name": "PC_3_0_PC_M19",
+      "vertices": 270,
+      "triangles": 90
+    },
+    {
+      "name": "PC_3_-1_PC_M34",
+      "vertices": 447,
+      "triangles": 149
+    },
+    {
+      "name": "PC_3_0_PC_M34",
+      "vertices": 609,
+      "triangles": 203
+    },
+    {
+      "name": "PC_-4_2_PC_M19",
+      "vertices": 252,
+      "triangles": 84
+    },
+    {
+      "name": "PC_-4_3_PC_M19",
+      "vertices": 198,
+      "triangles": 90
+    },
+    {
+      "name": "PC_-4_2_PC_M34",
+      "vertices": 504,
+      "triangles": 168
+    },
+    {
+      "name": "PC_-4_3_PC_M34",
+      "vertices": 381,
+      "triangles": 127
+    },
+    {
+      "name": "PC_0_0_PC_M19",
+      "vertices": 222,
+      "triangles": 74
+    },
+    {
+      "name": "PC_0_0_PC_M34",
+      "vertices": 495,
+      "triangles": 165
+    },
+    {
+      "name": "PC_1_0_PC_M03",
+      "vertices": 810,
+      "triangles": 270
+    },
+    {
+      "name": "PC_0_-1_PC_M27",
+      "vertices": 111,
+      "triangles": 37
+    },
+    {
+      "name": "PC_0_0_PC_M27",
+      "vertices": 210,
+      "triangles": 70
+    },
+    {
+      "name": "PC_1_0_PC_M27",
+      "vertices": 156,
+      "triangles": 52
+    },
+    {
+      "name": "PC_3_-2_PC_M19",
+      "vertices": 174,
+      "triangles": 58
+    },
+    {
+      "name": "PC_3_-2_PC_M34",
+      "vertices": 354,
+      "triangles": 118
+    },
+    {
+      "name": "PC_-2_1_PC_M27",
+      "vertices": 285,
+      "triangles": 95
+    },
+    {
+      "name": "PC_-2_0_PC_M27",
+      "vertices": 138,
+      "triangles": 46
+    },
+    {
+      "name": "PC_2_1_PC_M03",
+      "vertices": 1296,
+      "triangles": 432
+    },
+    {
+      "name": "PC_1_3_PC_M27",
+      "vertices": 690,
+      "triangles": 230
+    },
+    {
+      "name": "PC_2_1_PC_M27",
+      "vertices": 516,
+      "triangles": 172
+    },
+    {
+      "name": "PC_-2_-4_PC_M03",
+      "vertices": 930,
+      "triangles": 310
+    },
+    {
+      "name": "PC_-3_-3_PC_M03",
+      "vertices": 732,
+      "triangles": 244
+    },
+    {
+      "name": "PC_-2_-4_PC_M27",
+      "vertices": 348,
+      "triangles": 116
+    },
+    {
+      "name": "PC_-2_-3_PC_M27",
+      "vertices": 291,
+      "triangles": 97
+    },
+    {
+      "name": "PC_-3_-3_PC_M27",
+      "vertices": 792,
+      "triangles": 264
+    },
+    {
+      "name": "PC_-3_-4_PC_M27",
+      "vertices": 213,
+      "triangles": 71
+    },
+    {
+      "name": "PC_-1_-1_PC_M34",
+      "vertices": 201,
+      "triangles": 67
+    },
+    {
+      "name": "PC_2_-2_PC_M19",
+      "vertices": 204,
+      "triangles": 68
+    },
+    {
+      "name": "PC_2_-2_PC_M34",
+      "vertices": 429,
+      "triangles": 143
+    },
+    {
+      "name": "PC_2_-1_PC_M03",
+      "vertices": 1011,
+      "triangles": 337
+    },
+    {
+      "name": "PC_3_-1_PC_M03",
+      "vertices": 672,
+      "triangles": 224
+    },
+    {
+      "name": "PC_2_-1_PC_M27",
+      "vertices": 291,
+      "triangles": 97
+    },
+    {
+      "name": "PC_3_-1_PC_M27",
+      "vertices": 465,
+      "triangles": 155
+    },
+    {
+      "name": "PC_3_-2_PC_M27",
+      "vertices": 474,
+      "triangles": 158
+    },
+    {
+      "name": "PC_1_-2_PC_M27",
+      "vertices": 99,
+      "triangles": 33
+    },
+    {
+      "name": "PC_2_-3_PC_M27",
+      "vertices": 618,
+      "triangles": 206
+    },
+    {
+      "name": "PC_-1_3_PC_M03",
+      "vertices": 378,
+      "triangles": 126
+    },
+    {
+      "name": "PC_-2_3_PC_M03",
+      "vertices": 936,
+      "triangles": 312
+    },
+    {
+      "name": "PC_-1_3_PC_M27",
+      "vertices": 621,
+      "triangles": 207
+    },
+    {
+      "name": "PC_-2_3_PC_M27",
+      "vertices": 777,
+      "triangles": 259
+    },
+    {
+      "name": "PC_-4_1_PC_M03",
+      "vertices": 876,
+      "triangles": 292
+    },
+    {
+      "name": "PC_-4_-4_PC_M03",
+      "vertices": 162,
+      "triangles": 54
+    },
+    {
+      "name": "PC_-4_-3_PC_M03",
+      "vertices": 1056,
+      "triangles": 352
+    },
+    {
+      "name": "PC_-4_-4_PC_M27",
+      "vertices": 33,
+      "triangles": 11
+    },
+    {
+      "name": "PC_-4_-3_PC_M27",
+      "vertices": 405,
+      "triangles": 135
+    },
+    {
+      "name": "PC_-2_-1_PC_M27",
+      "vertices": 159,
+      "triangles": 53
+    },
+    {
+      "name": "PC_3_2_PC_M03",
+      "vertices": 1332,
+      "triangles": 444
+    },
+    {
+      "name": "PC_3_1_PC_M03",
+      "vertices": 1080,
+      "triangles": 360
+    },
+    {
+      "name": "PC_3_3_PC_M03",
+      "vertices": 408,
+      "triangles": 136
+    },
+    {
+      "name": "PC_3_2_PC_M27",
+      "vertices": 852,
+      "triangles": 284
+    },
+    {
+      "name": "PC_3_1_PC_M27",
+      "vertices": 792,
+      "triangles": 264
+    },
+    {
+      "name": "PC_3_3_PC_M27",
+      "vertices": 204,
+      "triangles": 68
+    },
+    {
+      "name": "PC_1_-1_PC_M27",
+      "vertices": 72,
+      "triangles": 24
+    },
+    {
+      "name": "PC_-3_3_PC_M03",
+      "vertices": 474,
+      "triangles": 158
+    },
+    {
+      "name": "PC_-3_3_PC_M27",
+      "vertices": 534,
+      "triangles": 178
+    },
+    {
+      "name": "PC_-1_-4_PC_M03",
+      "vertices": 456,
+      "triangles": 152
+    },
+    {
+      "name": "PC_-1_-3_PC_M03",
+      "vertices": 1224,
+      "triangles": 408
+    },
+    {
+      "name": "PC_0_-4_PC_M03",
+      "vertices": 534,
+      "triangles": 178
+    },
+    {
+      "name": "PC_-1_-4_PC_M27",
+      "vertices": 342,
+      "triangles": 114
+    },
+    {
+      "name": "PC_-1_-3_PC_M27",
+      "vertices": 417,
+      "triangles": 139
+    },
+    {
+      "name": "PC_0_-4_PC_M27",
+      "vertices": 246,
+      "triangles": 82
+    },
+    {
+      "name": "PC_0_3_PC_M03",
+      "vertices": 864,
+      "triangles": 288
+    },
+    {
+      "name": "PC_0_3_PC_M27",
+      "vertices": 549,
+      "triangles": 183
+    },
+    {
+      "name": "PC_2_-2_PC_M27",
+      "vertices": 114,
+      "triangles": 38
+    },
+    {
+      "name": "PC_-4_2_PC_M03",
+      "vertices": 786,
+      "triangles": 262
+    },
+    {
+      "name": "PC_-4_2_PC_M27",
+      "vertices": 702,
+      "triangles": 234
+    },
+    {
+      "name": "PC_-4_-2_PC_M03",
+      "vertices": 1110,
+      "triangles": 370
+    },
+    {
+      "name": "PC_-4_-2_PC_M27",
+      "vertices": 1008,
+      "triangles": 336
+    },
+    {
+      "name": "PC_-4_3_PC_M03",
+      "vertices": 198,
+      "triangles": 66
+    },
+    {
+      "name": "PC_-4_3_PC_M27",
+      "vertices": 159,
+      "triangles": 53
+    },
+    {
+      "name": "PC_-2_-4_PC_M04",
+      "vertices": 504,
+      "triangles": 168
+    },
+    {
+      "name": "PC_-3_-4_PC_M04",
+      "vertices": 606,
+      "triangles": 202
+    },
+    {
+      "name": "PC_-2_-3_PC_M04",
+      "vertices": 2319,
+      "triangles": 773
+    },
+    {
+      "name": "PC_-2_-2_PC_M04",
+      "vertices": 2097,
+      "triangles": 699
+    },
+    {
+      "name": "PC_-3_-2_PC_M04",
+      "vertices": 564,
+      "triangles": 188
+    },
+    {
+      "name": "PC_0_-2_PC_M04",
+      "vertices": 2040,
+      "triangles": 680
+    },
+    {
+      "name": "PC_-1_2_PC_M04",
+      "vertices": 777,
+      "triangles": 259
+    },
+    {
+      "name": "PC_-2_2_PC_M04",
+      "vertices": 1623,
+      "triangles": 541
+    },
+    {
+      "name": "PC_0_3_PC_M04",
+      "vertices": 612,
+      "triangles": 204
+    },
+    {
+      "name": "PC_1_3_PC_M04",
+      "vertices": 270,
+      "triangles": 90
+    },
+    {
+      "name": "PC_-3_0_PC_M04",
+      "vertices": 846,
+      "triangles": 282
+    },
+    {
+      "name": "PC_-3_2_PC_M04",
+      "vertices": 1206,
+      "triangles": 402
+    },
+    {
+      "name": "PC_1_-1_PC_M04",
+      "vertices": 4164,
+      "triangles": 1388
+    },
+    {
+      "name": "PC_1_0_PC_M04",
+      "vertices": 990,
+      "triangles": 330
+    },
+    {
+      "name": "PC_2_-1_PC_M04",
+      "vertices": 846,
+      "triangles": 282
+    },
+    {
+      "name": "PC_2_0_PC_M04",
+      "vertices": 1617,
+      "triangles": 539
+    },
+    {
+      "name": "PC_3_0_PC_M04",
+      "vertices": 51,
+      "triangles": 17
+    },
+    {
+      "name": "PC_1_-2_PC_M04",
+      "vertices": 2826,
+      "triangles": 942
+    },
+    {
+      "name": "PC_1_-3_PC_M04",
+      "vertices": 1614,
+      "triangles": 538
+    },
+    {
+      "name": "PC_2_-3_PC_M04",
+      "vertices": 681,
+      "triangles": 227
+    },
+    {
+      "name": "PC_2_-2_PC_M04",
+      "vertices": 825,
+      "triangles": 275
+    },
+    {
+      "name": "PC_3_-2_PC_M04",
+      "vertices": 1728,
+      "triangles": 576
+    },
+    {
+      "name": "PC_1_1_PC_M04",
+      "vertices": 1434,
+      "triangles": 478
+    },
+    {
+      "name": "PC_0_1_PC_M04",
+      "vertices": 138,
+      "triangles": 46
+    },
+    {
+      "name": "PC_-3_-1_PC_M04",
+      "vertices": 870,
+      "triangles": 290
+    },
+    {
+      "name": "PC_3_-1_PC_M26",
+      "vertices": 3387,
+      "triangles": 1129
+    },
+    {
+      "name": "PC_3_-2_PC_M26",
+      "vertices": 2469,
+      "triangles": 823
+    },
+    {
+      "name": "PC_2_-2_PC_M26",
+      "vertices": 51,
+      "triangles": 17
+    },
+    {
+      "name": "PC_2_-1_PC_M26",
+      "vertices": 675,
+      "triangles": 225
+    },
+    {
+      "name": "PC_4_-1_PC_M26",
+      "vertices": 840,
+      "triangles": 280
+    },
+    {
+      "name": "PC_4_0_PC_M26",
+      "vertices": 489,
+      "triangles": 163
+    },
+    {
+      "name": "PC_4_-2_PC_M26",
+      "vertices": 81,
+      "triangles": 27
+    },
+    {
+      "name": "PC_4_-1_PC_M27",
+      "vertices": 78,
+      "triangles": 26
+    },
+    {
+      "name": "PC_4_0_PC_M27",
+      "vertices": 48,
+      "triangles": 16
+    },
+    {
+      "name": "PC_3_1_PC_M26",
+      "vertices": 4818,
+      "triangles": 1606
+    },
+    {
+      "name": "PC_2_1_PC_M26",
+      "vertices": 1185,
+      "triangles": 395
+    },
+    {
+      "name": "PC_2_2_PC_M26",
+      "vertices": 4041,
+      "triangles": 1347
+    },
+    {
+      "name": "PC_3_2_PC_M26",
+      "vertices": 4503,
+      "triangles": 1501
+    },
+    {
+      "name": "PC_4_1_PC_M26",
+      "vertices": 618,
+      "triangles": 206
+    },
+    {
+      "name": "PC_4_2_PC_M26",
+      "vertices": 36,
+      "triangles": 12
+    },
+    {
+      "name": "PC_4_1_PC_M27",
+      "vertices": 63,
+      "triangles": 21
+    },
+    {
+      "name": "PC_3_3_PC_M26",
+      "vertices": 684,
+      "triangles": 228
+    },
+    {
+      "name": "PC_2_3_PC_M26",
+      "vertices": 3951,
+      "triangles": 1317
+    },
+    {
+      "name": "PC_1_2_PC_M26",
+      "vertices": 486,
+      "triangles": 162
+    },
+    {
+      "name": "PC_1_3_PC_M26",
+      "vertices": 4338,
+      "triangles": 1446
+    },
+    {
+      "name": "PC_0_3_PC_M26",
+      "vertices": 2856,
+      "triangles": 952
+    },
+    {
+      "name": "PC_0_4_PC_M26",
+      "vertices": 456,
+      "triangles": 152
+    },
+    {
+      "name": "PC_1_4_PC_M26",
+      "vertices": 381,
+      "triangles": 127
+    },
+    {
+      "name": "PC_1_4_PC_M27",
+      "vertices": 12,
+      "triangles": 4
+    },
+    {
+      "name": "PC_0_4_PC_M27",
+      "vertices": 30,
+      "triangles": 10
+    },
+    {
+      "name": "PC_-1_3_PC_M26",
+      "vertices": 2937,
+      "triangles": 979
+    },
+    {
+      "name": "PC_-2_3_PC_M26",
+      "vertices": 4797,
+      "triangles": 1599
+    },
+    {
+      "name": "PC_-1_4_PC_M26",
+      "vertices": 405,
+      "triangles": 135
+    },
+    {
+      "name": "PC_-2_4_PC_M26",
+      "vertices": 294,
+      "triangles": 98
+    },
+    {
+      "name": "PC_-1_4_PC_M27",
+      "vertices": 21,
+      "triangles": 7
+    },
+    {
+      "name": "PC_-3_3_PC_M26",
+      "vertices": 3762,
+      "triangles": 1254
+    },
+    {
+      "name": "PC_-4_2_PC_M26",
+      "vertices": 4455,
+      "triangles": 1485
+    },
+    {
+      "name": "PC_-4_3_PC_M26",
+      "vertices": 480,
+      "triangles": 160
+    },
+    {
+      "name": "PC_-5_1_PC_M26",
+      "vertices": 576,
+      "triangles": 192
+    },
+    {
+      "name": "PC_-5_2_PC_M26",
+      "vertices": 27,
+      "triangles": 9
+    },
+    {
+      "name": "PC_-4_0_PC_M26",
+      "vertices": 2964,
+      "triangles": 988
+    },
+    {
+      "name": "PC_-5_0_PC_M26",
+      "vertices": 630,
+      "triangles": 210
+    },
+    {
+      "name": "PC_-5_1_PC_M27",
+      "vertices": 24,
+      "triangles": 8
+    },
+    {
+      "name": "PC_-5_0_PC_M27",
+      "vertices": 51,
+      "triangles": 17
+    },
+    {
+      "name": "PC_-4_-1_PC_M26",
+      "vertices": 4425,
+      "triangles": 1475
+    },
+    {
+      "name": "PC_-4_-2_PC_M26",
+      "vertices": 5580,
+      "triangles": 1860
+    },
+    {
+      "name": "PC_-5_-1_PC_M26",
+      "vertices": 837,
+      "triangles": 279
+    },
+    {
+      "name": "PC_-5_-2_PC_M26",
+      "vertices": 477,
+      "triangles": 159
+    },
+    {
+      "name": "PC_-5_-1_PC_M27",
+      "vertices": 84,
+      "triangles": 28
+    },
+    {
+      "name": "PC_-3_-2_PC_M26",
+      "vertices": 2061,
+      "triangles": 687
+    },
+    {
+      "name": "PC_-3_-1_PC_M26",
+      "vertices": 6,
+      "triangles": 2
+    },
+    {
+      "name": "PC_-4_-3_PC_M26",
+      "vertices": 2106,
+      "triangles": 702
+    },
+    {
+      "name": "PC_-3_-3_PC_M26",
+      "vertices": 5328,
+      "triangles": 1776
+    },
+    {
+      "name": "PC_-5_-2_PC_M27",
+      "vertices": 9,
+      "triangles": 3
+    },
+    {
+      "name": "PC_-2_-3_PC_M26",
+      "vertices": 1995,
+      "triangles": 665
+    },
+    {
+      "name": "PC_-2_-4_PC_M26",
+      "vertices": 2004,
+      "triangles": 668
+    },
+    {
+      "name": "PC_-3_-4_PC_M26",
+      "vertices": 822,
+      "triangles": 274
+    },
+    {
+      "name": "PC_-1_-4_PC_M26",
+      "vertices": 2340,
+      "triangles": 780
+    },
+    {
+      "name": "PC_-1_-3_PC_M26",
+      "vertices": 1479,
+      "triangles": 493
+    },
+    {
+      "name": "PC_0_-4_PC_M26",
+      "vertices": 1797,
+      "triangles": 599
+    },
+    {
+      "name": "PC_0_-3_PC_M26",
+      "vertices": 1683,
+      "triangles": 561
+    },
+    {
+      "name": "PC_1_-4_PC_M26",
+      "vertices": 4197,
+      "triangles": 1399
+    },
+    {
+      "name": "PC_1_-3_PC_M26",
+      "vertices": 2415,
+      "triangles": 805
+    },
+    {
+      "name": "PC_2_-4_PC_M26",
+      "vertices": 1611,
+      "triangles": 537
+    },
+    {
+      "name": "PC_2_-3_PC_M26",
+      "vertices": 2664,
+      "triangles": 888
+    },
+    {
+      "name": "PC_1_-2_PC_M26",
+      "vertices": 3,
+      "triangles": 1
+    },
+    {
+      "name": "PC_3_-3_PC_M26",
+      "vertices": 2766,
+      "triangles": 922
+    },
+    {
+      "name": "PC_-4_-4_PC_M26",
+      "vertices": 3,
+      "triangles": 1
+    },
+    {
+      "name": "PC_-3_0_PC_M26",
+      "vertices": 654,
+      "triangles": 218
+    },
+    {
+      "name": "PC_-2_0_PC_M26",
+      "vertices": 213,
+      "triangles": 71
+    },
+    {
+      "name": "PC_-2_1_PC_M26",
+      "vertices": 591,
+      "triangles": 197
+    },
+    {
+      "name": "PC_-1_1_PC_M26",
+      "vertices": 75,
+      "triangles": 25
+    },
+    {
+      "name": "PC_0_0_PC_M26",
+      "vertices": 330,
+      "triangles": 110
+    },
+    {
+      "name": "PC_0_1_PC_M26",
+      "vertices": 537,
+      "triangles": 179
+    },
+    {
+      "name": "PC_-2_-2_PC_M26",
+      "vertices": 864,
+      "triangles": 288
+    },
+    {
+      "name": "PC_-8_4_PC_M35",
+      "vertices": 150,
+      "triangles": 50
+    },
+    {
+      "name": "PC_-7_4_PC_M35",
+      "vertices": 342,
+      "triangles": 114
+    },
+    {
+      "name": "PC_-6_4_PC_M35",
+      "vertices": 681,
+      "triangles": 227
+    },
+    {
+      "name": "PC_-8_5_PC_M35",
+      "vertices": 123,
+      "triangles": 41
+    },
+    {
+      "name": "PC_-7_5_PC_M35",
+      "vertices": 321,
+      "triangles": 107
+    },
+    {
+      "name": "PC_-6_5_PC_M35",
+      "vertices": 720,
+      "triangles": 240
+    },
+    {
+      "name": "PC_-5_4_PC_M35",
+      "vertices": 441,
+      "triangles": 147
+    },
+    {
+      "name": "PC_-5_5_PC_M35",
+      "vertices": 507,
+      "triangles": 169
+    },
+    {
+      "name": "PC_-6_6_PC_M35",
+      "vertices": 21,
+      "triangles": 7
+    },
+    {
+      "name": "PC_-4_4_PC_M35",
+      "vertices": 780,
+      "triangles": 260
+    },
+    {
+      "name": "PC_-4_5_PC_M35",
+      "vertices": 546,
+      "triangles": 182
+    },
+    {
+      "name": "PC_-3_4_PC_M35",
+      "vertices": 645,
+      "triangles": 215
+    },
+    {
+      "name": "PC_-3_5_PC_M35",
+      "vertices": 381,
+      "triangles": 127
+    },
+    {
+      "name": "PC_-4_3_PC_M35",
+      "vertices": 18,
+      "triangles": 6
+    },
+    {
+      "name": "PC_-3_3_PC_M35",
+      "vertices": 75,
+      "triangles": 25
+    },
+    {
+      "name": "PC_-2_3_PC_M35",
+      "vertices": 132,
+      "triangles": 44
+    },
+    {
+      "name": "PC_-2_4_PC_M35",
+      "vertices": 762,
+      "triangles": 254
+    },
+    {
+      "name": "PC_-1_4_PC_M35",
+      "vertices": 372,
+      "triangles": 124
+    },
+    {
+      "name": "PC_-2_5_PC_M35",
+      "vertices": 588,
+      "triangles": 196
+    },
+    {
+      "name": "PC_-1_5_PC_M35",
+      "vertices": 384,
+      "triangles": 128
+    },
+    {
+      "name": "PC_-1_3_PC_M35",
+      "vertices": 30,
+      "triangles": 10
+    },
+    {
+      "name": "PC_0_4_PC_M35",
+      "vertices": 675,
+      "triangles": 225
+    },
+    {
+      "name": "PC_0_5_PC_M35",
+      "vertices": 465,
+      "triangles": 155
+    },
+    {
+      "name": "PC_0_3_PC_M35",
+      "vertices": 69,
+      "triangles": 23
+    },
+    {
+      "name": "PC_1_3_PC_M35",
+      "vertices": 51,
+      "triangles": 17
+    },
+    {
+      "name": "PC_1_4_PC_M35",
+      "vertices": 621,
+      "triangles": 207
+    },
+    {
+      "name": "PC_1_5_PC_M35",
+      "vertices": 489,
+      "triangles": 163
+    },
+    {
+      "name": "PC_2_3_PC_M35",
+      "vertices": 21,
+      "triangles": 7
+    },
+    {
+      "name": "PC_2_4_PC_M35",
+      "vertices": 714,
+      "triangles": 238
+    },
+    {
+      "name": "PC_2_5_PC_M35",
+      "vertices": 450,
+      "triangles": 150
+    },
+    {
+      "name": "PC_0_6_PC_M35",
+      "vertices": 3,
+      "triangles": 1
+    },
+    {
+      "name": "PC_1_6_PC_M35",
+      "vertices": 24,
+      "triangles": 8
+    },
+    {
+      "name": "PC_2_6_PC_M35",
+      "vertices": 6,
+      "triangles": 2
+    },
+    {
+      "name": "PC_3_4_PC_M35",
+      "vertices": 567,
+      "triangles": 189
+    },
+    {
+      "name": "PC_3_5_PC_M35",
+      "vertices": 279,
+      "triangles": 93
+    },
+    {
+      "name": "PC_3_3_PC_M35",
+      "vertices": 27,
+      "triangles": 9
+    },
+    {
+      "name": "PC_4_4_PC_M35",
+      "vertices": 699,
+      "triangles": 233
+    },
+    {
+      "name": "PC_4_5_PC_M35",
+      "vertices": 438,
+      "triangles": 146
+    },
+    {
+      "name": "PC_4_3_PC_M35",
+      "vertices": 45,
+      "triangles": 15
+    },
+    {
+      "name": "PC_5_3_PC_M35",
+      "vertices": 48,
+      "triangles": 16
+    },
+    {
+      "name": "PC_5_4_PC_M35",
+      "vertices": 666,
+      "triangles": 222
+    },
+    {
+      "name": "PC_5_5_PC_M35",
+      "vertices": 543,
+      "triangles": 181
+    },
+    {
+      "name": "PC_6_3_PC_M35",
+      "vertices": 24,
+      "triangles": 8
+    },
+    {
+      "name": "PC_6_4_PC_M35",
+      "vertices": 624,
+      "triangles": 208
+    },
+    {
+      "name": "PC_6_5_PC_M35",
+      "vertices": 525,
+      "triangles": 175
+    },
+    {
+      "name": "PC_5_6_PC_M35",
+      "vertices": 36,
+      "triangles": 12
+    },
+    {
+      "name": "PC_4_6_PC_M35",
+      "vertices": 12,
+      "triangles": 4
+    },
+    {
+      "name": "PC_7_4_PC_M35",
+      "vertices": 210,
+      "triangles": 70
+    },
+    {
+      "name": "PC_7_5_PC_M35",
+      "vertices": 237,
+      "triangles": 79
+    },
+    {
+      "name": "PC_-8_5_PC_M36",
+      "vertices": 87,
+      "triangles": 29
+    },
+    {
+      "name": "PC_-7_4_PC_M36",
+      "vertices": 33,
+      "triangles": 11
+    },
+    {
+      "name": "PC_-7_5_PC_M36",
+      "vertices": 537,
+      "triangles": 179
+    },
+    {
+      "name": "PC_-6_5_PC_M36",
+      "vertices": 609,
+      "triangles": 203
+    },
+    {
+      "name": "PC_-8_6_PC_M36",
+      "vertices": 33,
+      "triangles": 11
+    },
+    {
+      "name": "PC_-7_6_PC_M36",
+      "vertices": 321,
+      "triangles": 107
+    },
+    {
+      "name": "PC_-6_6_PC_M36",
+      "vertices": 471,
+      "triangles": 157
+    },
+    {
+      "name": "PC_-6_4_PC_M36",
+      "vertices": 108,
+      "triangles": 36
+    },
+    {
+      "name": "PC_-5_4_PC_M36",
+      "vertices": 69,
+      "triangles": 23
+    },
+    {
+      "name": "PC_-5_5_PC_M36",
+      "vertices": 585,
+      "triangles": 195
+    },
+    {
+      "name": "PC_-5_6_PC_M36",
+      "vertices": 411,
+      "triangles": 137
+    },
+    {
+      "name": "PC_-4_4_PC_M36",
+      "vertices": 69,
+      "triangles": 23
+    },
+    {
+      "name": "PC_-4_5_PC_M36",
+      "vertices": 783,
+      "triangles": 261
+    },
+    {
+      "name": "PC_-4_6_PC_M36",
+      "vertices": 525,
+      "triangles": 175
+    },
+    {
+      "name": "PC_-3_4_PC_M36",
+      "vertices": 66,
+      "triangles": 22
+    },
+    {
+      "name": "PC_-3_5_PC_M36",
+      "vertices": 627,
+      "triangles": 209
+    },
+    {
+      "name": "PC_-2_4_PC_M36",
+      "vertices": 30,
+      "triangles": 10
+    },
+    {
+      "name": "PC_-2_5_PC_M36",
+      "vertices": 561,
+      "triangles": 187
+    },
+    {
+      "name": "PC_-3_6_PC_M36",
+      "vertices": 534,
+      "triangles": 178
+    },
+    {
+      "name": "PC_-2_6_PC_M36",
+      "vertices": 504,
+      "triangles": 168
+    },
+    {
+      "name": "PC_-1_5_PC_M36",
+      "vertices": 699,
+      "triangles": 233
+    },
+    {
+      "name": "PC_0_5_PC_M36",
+      "vertices": 645,
+      "triangles": 215
+    },
+    {
+      "name": "PC_-1_6_PC_M36",
+      "vertices": 540,
+      "triangles": 180
+    },
+    {
+      "name": "PC_0_6_PC_M36",
+      "vertices": 402,
+      "triangles": 134
+    },
+    {
+      "name": "PC_-1_4_PC_M36",
+      "vertices": 24,
+      "triangles": 8
+    },
+    {
+      "name": "PC_0_4_PC_M36",
+      "vertices": 81,
+      "triangles": 27
+    },
+    {
+      "name": "PC_1_4_PC_M36",
+      "vertices": 78,
+      "triangles": 26
+    },
+    {
+      "name": "PC_1_5_PC_M36",
+      "vertices": 648,
+      "triangles": 216
+    },
+    {
+      "name": "PC_1_6_PC_M36",
+      "vertices": 468,
+      "triangles": 156
+    },
+    {
+      "name": "PC_2_4_PC_M36",
+      "vertices": 9,
+      "triangles": 3
+    },
+    {
+      "name": "PC_2_5_PC_M36",
+      "vertices": 552,
+      "triangles": 184
+    },
+    {
+      "name": "PC_2_6_PC_M36",
+      "vertices": 384,
+      "triangles": 128
+    },
+    {
+      "name": "PC_3_5_PC_M36",
+      "vertices": 570,
+      "triangles": 190
+    },
+    {
+      "name": "PC_3_6_PC_M36",
+      "vertices": 570,
+      "triangles": 190
+    },
+    {
+      "name": "PC_4_5_PC_M36",
+      "vertices": 576,
+      "triangles": 192
+    },
+    {
+      "name": "PC_4_6_PC_M36",
+      "vertices": 537,
+      "triangles": 179
+    },
+    {
+      "name": "PC_5_5_PC_M36",
+      "vertices": 591,
+      "triangles": 197
+    },
+    {
+      "name": "PC_5_6_PC_M36",
+      "vertices": 426,
+      "triangles": 142
+    },
+    {
+      "name": "PC_3_7_PC_M36",
+      "vertices": 12,
+      "triangles": 4
+    },
+    {
+      "name": "PC_4_7_PC_M36",
+      "vertices": 15,
+      "triangles": 5
+    },
+    {
+      "name": "PC_5_7_PC_M36",
+      "vertices": 6,
+      "triangles": 2
+    },
+    {
+      "name": "PC_4_4_PC_M36",
+      "vertices": 60,
+      "triangles": 20
+    },
+    {
+      "name": "PC_5_4_PC_M36",
+      "vertices": 60,
+      "triangles": 20
+    },
+    {
+      "name": "PC_6_4_PC_M36",
+      "vertices": 60,
+      "triangles": 20
+    },
+    {
+      "name": "PC_6_5_PC_M36",
+      "vertices": 624,
+      "triangles": 208
+    },
+    {
+      "name": "PC_6_6_PC_M36",
+      "vertices": 390,
+      "triangles": 130
+    },
+    {
+      "name": "PC_7_4_PC_M36",
+      "vertices": 33,
+      "triangles": 11
+    },
+    {
+      "name": "PC_7_5_PC_M36",
+      "vertices": 330,
+      "triangles": 110
+    },
+    {
+      "name": "PC_7_6_PC_M36",
+      "vertices": 231,
+      "triangles": 77
+    },
+    {
+      "name": "PC_-8_5_PC_M37",
+      "vertices": 39,
+      "triangles": 13
+    },
+    {
+      "name": "PC_-7_5_PC_M37",
+      "vertices": 102,
+      "triangles": 34
+    },
+    {
+      "name": "PC_-6_5_PC_M37",
+      "vertices": 60,
+      "triangles": 20
+    },
+    {
+      "name": "PC_-8_6_PC_M37",
+      "vertices": 186,
+      "triangles": 62
+    },
+    {
+      "name": "PC_-6_6_PC_M37",
+      "vertices": 585,
+      "triangles": 195
+    },
+    {
+      "name": "PC_-7_6_PC_M37",
+      "vertices": 531,
+      "triangles": 177
+    },
+    {
+      "name": "PC_-8_7_PC_M37",
+      "vertices": 72,
+      "triangles": 24
+    },
+    {
+      "name": "PC_-7_7_PC_M37",
+      "vertices": 297,
+      "triangles": 99
+    },
+    {
+      "name": "PC_-6_7_PC_M37",
+      "vertices": 522,
+      "triangles": 174
+    },
+    {
+      "name": "PC_-5_6_PC_M37",
+      "vertices": 432,
+      "triangles": 144
+    },
+    {
+      "name": "PC_-5_7_PC_M37",
+      "vertices": 486,
+      "triangles": 162
+    },
+    {
+      "name": "PC_-4_6_PC_M37",
+      "vertices": 600,
+      "triangles": 200
+    },
+    {
+      "name": "PC_-3_6_PC_M37",
+      "vertices": 609,
+      "triangles": 203
+    },
+    {
+      "name": "PC_-4_7_PC_M37",
+      "vertices": 612,
+      "triangles": 204
+    },
+    {
+      "name": "PC_-3_7_PC_M37",
+      "vertices": 663,
+      "triangles": 221
+    },
+    {
+      "name": "PC_-5_8_PC_M37",
+      "vertices": 12,
+      "triangles": 4
+    },
+    {
+      "name": "PC_-4_8_PC_M37",
+      "vertices": 36,
+      "triangles": 12
+    },
+    {
+      "name": "PC_-4_5_PC_M37",
+      "vertices": 21,
+      "triangles": 7
+    },
+    {
+      "name": "PC_-3_5_PC_M37",
+      "vertices": 24,
+      "triangles": 8
+    },
+    {
+      "name": "PC_-3_8_PC_M37",
+      "vertices": 39,
+      "triangles": 13
+    },
+    {
+      "name": "PC_-2_6_PC_M37",
+      "vertices": 414,
+      "triangles": 138
+    },
+    {
+      "name": "PC_-2_7_PC_M37",
+      "vertices": 465,
+      "triangles": 155
+    },
+    {
+      "name": "PC_-2_8_PC_M37",
+      "vertices": 18,
+      "triangles": 6
+    },
+    {
+      "name": "PC_-1_6_PC_M37",
+      "vertices": 528,
+      "triangles": 176
+    },
+    {
+      "name": "PC_-1_7_PC_M37",
+      "vertices": 480,
+      "triangles": 160
+    },
+    {
+      "name": "PC_-1_8_PC_M37",
+      "vertices": 9,
+      "triangles": 3
+    },
+    {
+      "name": "PC_-1_5_PC_M37",
+      "vertices": 42,
+      "triangles": 14
+    },
+    {
+      "name": "PC_0_5_PC_M37",
+      "vertices": 27,
+      "triangles": 9
+    },
+    {
+      "name": "PC_0_6_PC_M37",
+      "vertices": 624,
+      "triangles": 208
+    },
+    {
+      "name": "PC_1_6_PC_M37",
+      "vertices": 570,
+      "triangles": 190
+    },
+    {
+      "name": "PC_0_7_PC_M37",
+      "vertices": 609,
+      "triangles": 203
+    },
+    {
+      "name": "PC_1_7_PC_M37",
+      "vertices": 435,
+      "triangles": 145
+    },
+    {
+      "name": "PC_2_6_PC_M37",
+      "vertices": 807,
+      "triangles": 269
+    },
+    {
+      "name": "PC_2_7_PC_M37",
+      "vertices": 495,
+      "triangles": 165
+    },
+    {
+      "name": "PC_2_5_PC_M37",
+      "vertices": 27,
+      "triangles": 9
+    },
+    {
+      "name": "PC_3_6_PC_M37",
+      "vertices": 678,
+      "triangles": 226
+    },
+    {
+      "name": "PC_3_7_PC_M37",
+      "vertices": 492,
+      "triangles": 164
+    },
+    {
+      "name": "PC_3_5_PC_M37",
+      "vertices": 18,
+      "triangles": 6
+    },
+    {
+      "name": "PC_4_5_PC_M37",
+      "vertices": 3,
+      "triangles": 1
+    },
+    {
+      "name": "PC_4_6_PC_M37",
+      "vertices": 567,
+      "triangles": 189
+    },
+    {
+      "name": "PC_4_7_PC_M37",
+      "vertices": 570,
+      "triangles": 190
+    },
+    {
+      "name": "PC_5_6_PC_M37",
+      "vertices": 501,
+      "triangles": 167
+    },
+    {
+      "name": "PC_5_7_PC_M37",
+      "vertices": 615,
+      "triangles": 205
+    },
+    {
+      "name": "PC_6_6_PC_M37",
+      "vertices": 510,
+      "triangles": 170
+    },
+    {
+      "name": "PC_6_7_PC_M37",
+      "vertices": 534,
+      "triangles": 178
+    },
+    {
+      "name": "PC_5_8_PC_M37",
+      "vertices": 3,
+      "triangles": 1
+    },
+    {
+      "name": "PC_7_6_PC_M37",
+      "vertices": 309,
+      "triangles": 103
+    },
+    {
+      "name": "PC_7_7_PC_M37",
+      "vertices": 234,
+      "triangles": 78
+    },
+    {
+      "name": "PC_6_5_PC_M37",
+      "vertices": 45,
+      "triangles": 15
+    },
+    {
+      "name": "PC_7_5_PC_M37",
+      "vertices": 27,
+      "triangles": 9
+    },
+    {
+      "name": "PC_-3_-1_PC_M05",
+      "vertices": 8,
+      "triangles": 4
+    },
+    {
+      "name": "PC_-2_0_PC_M05",
+      "vertices": 4,
+      "triangles": 2
+    },
+    {
+      "name": "PC_-2_-1_PC_M02",
+      "vertices": 73,
+      "triangles": 27
+    },
+    {
+      "name": "PC_-3_-1_PC_M11",
+      "vertices": 10080,
+      "triangles": 3360
+    },
+    {
+      "name": "PC_-3_0_PC_M11",
+      "vertices": 1728,
+      "triangles": 576
+    },
+    {
+      "name": "PC_-3_1_PC_M11",
+      "vertices": 2304,
+      "triangles": 768
+    }
+  ],
+  "triangles": 1248937,
+  "scale": 0.4,
+  "source": "ArtSource/Blender/PingchuanTown/PingchuanTown_v01.blend"
+}

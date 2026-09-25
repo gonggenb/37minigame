@@ -1,0 +1,36 @@
+{
+  "date": "2026-09-10",
+  "unity": "6000.5.4f1",
+  "scene": "MainPrototype",
+  "scope": "v02 DJ cue: controlled Editor Play Mode, not subjective listening or device approval",
+  "checks": [
+    {
+      "clip": "bgm_menu_wuxia_punk_dj_60s_v02",
+      "duration": 60,
+      "loadedNewClip": true,
+      "playing": true,
+      "loop": true,
+      "spatial": 0,
+      "loadType": "Streaming",
+      "musicState": "Menu",
+      "mutePass": true,
+      "mainTimer": 60
+    },
+    {
+      "loopWrapped": true,
+      "position": 5.86932,
+      "onlyMenu": true
+    },
+    {
+      "gamePhase": "OpeningIntro",
+      "menuFadeOutPass": true,
+      "gameplayMusicPass": true
+    },
+    {
+      "returnPass": true,
+      "oldMusicStopped": true,
+      "timer": 60
+    }
+  ],
+  "consoleErrors": 0
+}

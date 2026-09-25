@@ -69,9 +69,10 @@ Assets/
 
 ## 4. 场景建议
 
-当前有三个可运行场景：
+当前有一个轻量首页和三个可运行关卡场景：
 
 ```text
+Assets/Scenes/BootMenu.unity
 Assets/Scenes/TutorialLevel.unity
 Assets/Scenes/MainPrototype.unity
 Assets/Scenes/BambooValleyLevel.unity
@@ -84,8 +85,11 @@ Assets/Scenes/BambooValleyLevel.unity
 `sceneLoaded` 早于 `Start()` 执行而使关卡2状态再次被重置为首页。
 教学关卡使用独立的 30 秒时限；关卡2仍使用 60 秒主地图规则。完成教学后选择“下一关”，或点击“跳过”，直接调用 `LevelSequence` 的异步场景加载；难度提示合入加载页，不再进入 `Ready` 等待二次点击。
 `LevelLoadingScreen` 运行时自动创建并跨场景保留，复用随包字体、首页山景、共享九宫格与主题色。加载页至少显示 5 个真实秒，进度单调递增，场景完成且新场景 `Start()` 初始化完成后显示 100%，再揭示关卡。加载期间冻结计时并拦截底层界面与重复请求。
-关卡2自动开局意图使用本次运行中的一次性状态，不写 PlayerPrefs；只有教学完成解锁持久保存。明确返回主页的请求不会携带自动开局意图。无需新增场景或手动绑定。
-教学守关胜利后进入 `Result` 总结；关卡2最终 Boss 胜利时持久化第三关解锁，结算“下一关”进入 `BambooValleyLevel`。关卡3胜利后的下一关禁用。
+关卡2自动开局意图使用本次运行中的一次性状态，不写 PlayerPrefs；只有教学完成解锁持久保存。明确返回主页的请求不会携带自动开局意图。
+`BootMenu` 是构建首场景，复用现有首页、选关与序章 UI；不引用关卡地图和战斗素材。`LevelLoadingScreen` 先创建空的 `LevelTransition` 场景并卸载旧关，清理缓存和闲置资源后再加载目标；`sceneLoaded` 设置活动场景，随后 `Start()` 消费开局意图。五秒展示由常驻遮罩负责，不再挂起新场景激活而保留旧关。返回首页会释放主角动画缓存。
+场景和引用已经由 `37 MiniGame/Web Mobile/Apply Mobile Configuration` 自动生成，无需手动绑定；重复执行不会覆盖已有 `BootMenu`。Web 手机配置位于 `Assets/Settings/Build Profiles/Web Mobile.asset`，发布菜单为 `37 MiniGame/Web Mobile/Build Release`。设置、证据和真机验收边界见 [Web 手机优化验证](validation/webgl_mobile/README.md)。
+教学守关胜利后进入 `Result` 总结；关卡2最终 Boss 胜利时持久化第三关解锁，结算“下一关”进入 `BambooValleyLevel`。关卡3胜利后播放全部通关提示与制作人员名单，通关战果页以名单入口替代下一关按钮。
+`GameFlowController` 管理本次结局显示状态，`PrototypeHUDController.Ending` 复用主题面板、按钮和随包字体绘制；制作人员专名集中于 `GameTextCatalog`。不需要场景或 Inspector 绑定。专项验证菜单为 `37 MiniGame/Validate Game Ending Play Mode`，仅在 Play Mode 切换测试场景，结束后恢复原编辑场景；证据见 `docs/validation/game_ending/README.md`。
 第三关模型、碰撞、材质和验证说明见 [竹影幽谷第三关](bamboo_valley_level3.md)。
 
 第一关采用首次接触教学：首次触碰药草、宝箱、普通敌人或洞穴时，先显示用途与操作说明，点击主按钮后才执行原互动；首次升级时先解释修为与武学选择，再展示三选一。每种内容每次教学只提示一次，重玩教学会重置，关卡2不显示。阅读使用独立的 `TutorialLearning` 阶段，停止教学计时和移动，不提前消耗物品或开始战斗；确认后的普通战斗仍继续主时间，洞穴仍暂停主时间。开场补充移动与互动方式，弹窗保留设置和跳过入口。
@@ -125,6 +129,12 @@ Assets/Scenes/BambooValleyLevel.unity
 如果 Codex 只能生成脚本，不能可靠创建或绑定 Prefab，则必须明确告诉用户需要在 Unity Editor 中手动创建和绑定。
 
 ## 6. UI 原则
+
+`StudioSplashScreen` 在 `BeforeSceneLoad` 自动创建并跨场景保留，`SubsystemRegistration` 重置每次应用会话状态。
+Logo 从 `Resources/UI/Branding/logo_hakimi_group_v01` 加载，中文使用 `GameTextCatalog.StudioPresentation` 与随包字体。
+从首个实际绘制帧开始计真实时间，避免场景首次加载耗尽开屏时长；淡出时可看见不可交互的既有首页。
+不需要新增场景、Prefab 或 Inspector 绑定。验证入口 `37 MiniGame/Validate Studio Splash Play Mode`，详见
+[工作室开屏记录](validation/studio_splash/README.md)。
 
 初期 UI 以可测试为第一目标，不追求最终美术效果。
 
@@ -225,3 +235,23 @@ Debug 功能不得破坏正式玩法逻辑。
 ### 教学歇脚地地图接入
 
 `TutorialLevel.unity` 使用 `Assets/Prefabs/Environment/TutorialRestStop.prefab`，由 `TutorialRestStopBuilder` 在现有教学场景上适配。流程与验证见 [tutorial_rest_stop.md](tutorial_rest_stop.md)。不要用旧 `Build Tutorial Level` 覆盖已适配场景；重新生成旧教学壳后须再执行 `37 MiniGame/Adapt Tutorial Rest Stop`。
+
+
+## 平川山镇第二关环境
+
+`MainPrototype.unity` 已使用 `Assets/Prefabs/Environment/PingchuanTown.prefab`。环境来自
+`ArtSource/Blender/PingchuanTown`，0.4 倍导出，保持 Blender 高精度源文件。`PingchuanTownLayout`
+读取共享河道和桥位 JSON，`PlayerController.followPingchuanTownHeight` 仅改变显示层高度。
+`PingchuanTownLevelBuilder` 保存原遭遇模板并确定性重建 73 个遭遇/拾取点位。
+
+重建使用 `37 MiniGame/Build Pingchuan Town Level 2`；旧 `Expand Main Map` 与旧主地图河流菜单
+不适用于新环境。数量、碰撞可达性和真实 Play Mode 探针分别独立验证，详见
+[第二关接入记录](validation/pingchuan_town/README.md)。
+
+## 第二关挑战接入
+
+`GameFlowController.Challenges` 自动管理本局难度、Boss 倾向和两条精英悬赏；`RunChallengeCatalog` 分别集中中期/最终 Boss 数值，参数只施加于战斗副本。`ChallengeProgress` 用 `WuxiaRoguelite.ChallengeTierUnlocked.v1` 保存档位解锁并兼容旧第二关通关记录。
+
+`PrototypeHUDController.Challenges`、结算页和敌人头顶标记复用现有 UI 风格与随包中文字体。五张图标从 `Assets/Resources/ChallengeIcons` 加载，生成源和提示词在 `ArtSource/Raw/ChallengeIcons`，无需新场景绑定。
+
+专项菜单：`37 MiniGame/Validate Replay Challenges Play Mode`；平衡菜单：`37 MiniGame/Automated Run Statistics/Run 15 Replay Challenge Runs`。验证夹具及自动跑局会恢复测试前解锁存档。截图、首次平衡问题和修正后的逐局证据见 [重复挑战记录](validation/replay_challenges/README.md)。

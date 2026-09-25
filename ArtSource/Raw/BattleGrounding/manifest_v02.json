@@ -1,0 +1,98 @@
+[
+  {
+    "asset": "Assets/Art/Generated/Backgrounds/bg_battle_central_inn_v01.png",
+    "source": "ArtSource/Raw/BattleGrounding/bg_battle_central_inn_v02.png",
+    "backup": "ArtSource/Raw/BattleGrounding/Before/bg_battle_central_inn_v01.png",
+    "source_size": [
+      1672,
+      941
+    ],
+    "source_sha256": "d15dd914a0398f203ff7e33fe3bdd1d4a21dff47525bceb468851a58bb71ca2c",
+    "runtime_sha256": "d15dd914a0398f203ff7e33fe3bdd1d4a21dff47525bceb468851a58bb71ca2c",
+    "previous_sha256": "4341a6651671d46b7c10abb79d0d5b74edf55862c204793bd8b8a273451bcf00",
+    "status": "InEngineQA",
+    "normalization": "No pixel resampling; retain native generated dimensions; existing Unity import settings retained.",
+    "approved": false,
+    "validation": "docs/validation/battle_grounding/README.md"
+  },
+  {
+    "asset": "Assets/Art/Generated/Backgrounds/bg_battle_east_bamboo_v01.png",
+    "source": "ArtSource/Raw/BattleGrounding/bg_battle_east_bamboo_v02.png",
+    "backup": "ArtSource/Raw/BattleGrounding/Before/bg_battle_east_bamboo_v01.png",
+    "source_size": [
+      1672,
+      941
+    ],
+    "source_sha256": "e590597eadbcb52bbf3635a98db56bffd9455ae41de6b2374e1741aec3502c25",
+    "runtime_sha256": "e590597eadbcb52bbf3635a98db56bffd9455ae41de6b2374e1741aec3502c25",
+    "previous_sha256": "19f3ad03cbc878e8c66c8969aed02df0190a709294fd5a02e0b71943fb871a77",
+    "status": "InEngineQA",
+    "normalization": "No pixel resampling; retain native generated dimensions; existing Unity import settings retained.",
+    "approved": false,
+    "validation": "docs/validation/battle_grounding/README.md"
+  },
+  {
+    "asset": "Assets/Art/Generated/Backgrounds/bg_battle_north_pass_v01.png",
+    "source": "ArtSource/Raw/BattleGrounding/bg_battle_north_pass_v02.png",
+    "backup": "ArtSource/Raw/BattleGrounding/Before/bg_battle_north_pass_v01.png",
+    "source_size": [
+      1672,
+      941
+    ],
+    "source_sha256": "ad770018fc82cdad9cfc1e176eb7f929ee6bdd5a5aae46322fdeba56cd58570a",
+    "runtime_sha256": "ad770018fc82cdad9cfc1e176eb7f929ee6bdd5a5aae46322fdeba56cd58570a",
+    "previous_sha256": "2bcbb2256b63c42bb5c9c00f501f570ddae01306d15134696f78defae964d85f",
+    "status": "InEngineQA",
+    "normalization": "No pixel resampling; retain native generated dimensions; existing Unity import settings retained.",
+    "approved": false,
+    "validation": "docs/validation/battle_grounding/README.md"
+  },
+  {
+    "asset": "Assets/Art/Generated/Backgrounds/bg_battle_south_quarry_v01.png",
+    "source": "ArtSource/Raw/BattleGrounding/bg_battle_south_quarry_v02.png",
+    "backup": "ArtSource/Raw/BattleGrounding/Before/bg_battle_south_quarry_v01.png",
+    "source_size": [
+      1672,
+      941
+    ],
+    "source_sha256": "1a194a22ce5e845c71f62423938da65393b18322edfefd9fe68b613fed0cd02c",
+    "runtime_sha256": "1a194a22ce5e845c71f62423938da65393b18322edfefd9fe68b613fed0cd02c",
+    "previous_sha256": "00e605ac9847debaefcaaf0f0083d7fe758c73e7a13efd36fdff32c3c251d380",
+    "status": "InEngineQA",
+    "normalization": "No pixel resampling; retain native generated dimensions; existing Unity import settings retained.",
+    "approved": false,
+    "validation": "docs/validation/battle_grounding/README.md"
+  },
+  {
+    "asset": "Assets/Art/Generated/Backgrounds/bg_battle_west_forest_v01.png",
+    "source": "ArtSource/Raw/BattleGrounding/bg_battle_west_forest_v02.png",
+    "backup": "ArtSource/Raw/BattleGrounding/Before/bg_battle_west_forest_v01.png",
+    "source_size": [
+      1672,
+      941
+    ],
+    "source_sha256": "e2929b1738db23f01697e362db9b610afd35f55fa18cb2c52ee0891dbe5c9e04",
+    "runtime_sha256": "e2929b1738db23f01697e362db9b610afd35f55fa18cb2c52ee0891dbe5c9e04",
+    "previous_sha256": "7f9a7ca1bfaaaa9087457205b18b96544f76de679ae553551b7035582cb02d0a",
+    "status": "InEngineQA",
+    "normalization": "No pixel resampling; retain native generated dimensions; existing Unity import settings retained.",
+    "approved": false,
+    "validation": "docs/validation/battle_grounding/README.md"
+  },
+  {
+    "asset": "Assets/Art/Generated/Backgrounds/bg_boss_bloodmoon_temple_v01.png",
+    "source": "ArtSource/Raw/BattleGrounding/bg_boss_bloodmoon_temple_v02.png",
+    "backup": "ArtSource/Raw/BattleGrounding/Before/bg_boss_bloodmoon_temple_v01.png",
+    "source_size": [
+      1672,
+      941
+    ],
+    "source_sha256": "fbc8636d372efe632b4d3bb51bd8a66783fa983dcc4f92112886dbd631dda85c",
+    "runtime_sha256": "fbc8636d372efe632b4d3bb51bd8a66783fa983dcc4f92112886dbd631dda85c",
+    "previous_sha256": "62d398dd955c23423ca53d1a359e1da7be5c54d437126a4b324d549f02406d3a",
+    "status": "InEngineQA",
+    "normalization": "No pixel resampling; retain native generated dimensions; existing Unity import settings retained.",
+    "approved": false,
+    "validation": "docs/validation/battle_grounding/README.md"
+  }
+]

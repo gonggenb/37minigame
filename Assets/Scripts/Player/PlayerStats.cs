@@ -73,6 +73,8 @@ namespace WuxiaRoguelite.Player
         public PlayerEquipment equipment;
         public int level = 1;
         public int cultivation;
+        public int RunRevision { get; private set; }
+        public int CultivationEarned { get; private set; }
         public int copper;
         public int killCount;
         public int caveEntries;
@@ -120,6 +122,8 @@ namespace WuxiaRoguelite.Player
 
         public void ResetRun()
         {
+            RunRevision++;
+            CultivationEarned = 0;
             ClearTemporaryMoveSpeedBuffs();
             runtimeStats = baseStats.Clone();
             runtimeStats.ResetHealth();
@@ -149,7 +153,7 @@ namespace WuxiaRoguelite.Player
 
         public bool GainCultivation(int amount)
         {
-            cultivation += Mathf.Max(0, amount);
+            AddCultivationResource(amount);
             if (cultivation < NextLevelRequirement)
             {
                 return false;
@@ -158,6 +162,14 @@ namespace WuxiaRoguelite.Player
             cultivation -= NextLevelRequirement;
             level += 1;
             return true;
+        }
+
+        // Purchases retain their existing deferred breakthrough flow; all gains share feedback.
+        private void AddCultivationResource(int amount)
+        {
+            amount = Mathf.Max(0, amount);
+            cultivation += amount;
+            CultivationEarned += amount;
         }
 
         public void GainCopper(int amount)
@@ -416,7 +428,7 @@ namespace WuxiaRoguelite.Player
                     float healthGain = runtimeStats.maxHealth * 0.15f;
                     runtimeStats.maxHealth += healthGain;
                     runtimeStats.Heal(healthGain);
-                    runtimeStats.defense += 1f;
+                    runtimeStats.defense += WuxiaRoguelite.Battle.BossTalentCatalog.IronBodyDefensePerRank;
                     break;
                 case "吸星诀":
                     runtimeStats.lifeSteal = Mathf.Clamp01(runtimeStats.lifeSteal + 0.04f);
@@ -485,7 +497,7 @@ namespace WuxiaRoguelite.Player
                     copper += 4;
                     break;
                 case "meditation_mat":
-                    cultivation += 12;
+                    AddCultivationResource(12);
                     break;
                 case "broken_sword_tassel":
                     runtimeStats.attackSpeed += 0.08f;
@@ -537,7 +549,7 @@ namespace WuxiaRoguelite.Player
                     runtimeStats.Heal(healthGain);
                     break;
                 case "insight_incense":
-                    cultivation += 18;
+                    AddCultivationResource(18);
                     break;
             }
 

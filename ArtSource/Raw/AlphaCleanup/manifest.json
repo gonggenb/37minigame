@@ -1,0 +1,122 @@
+{
+  "Assets/Resources/Characters/HeroAttacks/spr_hero_attack_basic_golden_ember_right_8f_v01.png": {
+    "source_sha256": "464f112552914353df1b7e8b4193f69a09439315f680b60d9a254d58e6337b43",
+    "output_sha256": "41d4352e56b8364783d370856f23ff83e094db501a0325dfc17c8ef3511e51bd"
+  },
+  "Assets/Resources/Characters/HeroAttacks/spr_hero_attack_basic_ink_afterimage_right_8f_v01.png": {
+    "source_sha256": "4f949bf2034a60e2401c65f8807ae347c2956ff125aa5e8835ff4388ae7f95bb",
+    "output_sha256": "c84a6ac546011b528c6de3a8b4d9139035e3e716ea56cf246710627bd33edc0b"
+  },
+  "Assets/Resources/Characters/HeroAttacks/spr_hero_attack_basic_jade_crescent_right_8f_v01.png": {
+    "source_sha256": "03adda3ebdda4eff44bf013d3f3921089be96c14d6dc715d923c0c03e4bd8a18",
+    "output_sha256": "aecce348893cbcc22e2c1c20b0b0485183bb4204826236bfdd7bf065ce627a60"
+  },
+  "Assets/Resources/Characters/HeroAttacks/spr_hero_attack_basic_right_8f_v01.png": {
+    "source_sha256": "7739316240647862e41536dcfdaa0332ca5e86abe57cd9917cea89267990596b",
+    "output_sha256": "5fa4fadfb0abdf8baa4423bc612a392b272f7e332de92faae65d4cbdda69bef0"
+  },
+  "Assets/Resources/Characters/HeroAttacks/spr_hero_attack_blood_cleave_right_8f_v01.png": {
+    "source_sha256": "389f0edc80cefd658f6368a2de00e1d8c9015f0b024e44af14b57f0884a9fa4c",
+    "output_sha256": "15e42a48d3e344efb1dc8dcb50a6f64fbed1b9ecc2cc558134b8a5b4441bbef0"
+  },
+  "Assets/Resources/Characters/HeroAttacks/spr_hero_attack_sword_qi_right_8f_v01.png": {
+    "source_sha256": "382369b5d697d6332f73fab450ac51aa8e1d603f0ed6bbd2f11873bf0a7abef0",
+    "output_sha256": "25ba967996cc71e46f50299f2a5cc0ec78568f0279ad6539d1b2c61ee7d91d8b"
+  },
+  "Assets/Resources/Characters/HeroAttacks/spr_hero_attack_venom_palm_right_8f_v01.png": {
+    "source_sha256": "26c7a15284118607dfe89443a4af92a87e29110ba228ed256280a3ac78c9a33c",
+    "output_sha256": "eb6ae5c64b4ee9f2f307ab10437dc85fe30c20f9369135ea6713688a63eaffaf"
+  },
+  "Assets/Resources/Characters/HeroAttacks/spr_hero_ultimate_blood_domain_right_8f_v01.png": {
+    "source_sha256": "c850aafd012ec413137dfa07997855aa6a328d6b951c80f111aa6769433f3363",
+    "output_sha256": "d74f230db42cf58e0746448b13eb82e5a0b168f532482e8f55ee06ec8b7bb75b"
+  },
+  "Assets/Resources/Characters/HeroAttacks/spr_hero_ultimate_iron_guard_right_8f_v01.png": {
+    "source_sha256": "bdfe6a95c23fee8aa40d460a50e08e087d38f0a92d8aef1f2fb576c5a9c1b953",
+    "output_sha256": "bbb2f8426319fc404b02f43e09ac0dfde5c9df08924a6c4e43955bd60c25f88e"
+  },
+  "Assets/Resources/Characters/HeroAttacks/spr_hero_ultimate_shadow_moon_right_8f_v01.png": {
+    "source_sha256": "c29854a6cb6c37e085c31e815b7cf21455fd4e642ef00ad272164c7f0c17b2d4",
+    "output_sha256": "63c77f7ee48855576d64dad2d2eeeacb807976f88e77991cf3d7453261f7f2ee"
+  },
+  "Assets/Resources/Characters/HeroAttacks/spr_hero_ultimate_swift_sword_right_8f_v01.png": {
+    "source_sha256": "e743620532633aeb470ae3c08dd61e5fb4e39d2cb05db397fd410708e7db651f",
+    "output_sha256": "33d1ffee950fa2e0ff706360b90814844bbd973bcc8b72e0e85c3bbaa4734434"
+  },
+  "Assets/Resources/Characters/HeroAttacks/spr_hero_ultimate_venom_mist_right_8f_v01.png": {
+    "source_sha256": "e609b0a78004dbaa96186f18083d8e9964e55f13be4b22078e2d93e59b765396",
+    "output_sha256": "cf93be59b644179be49e2d9cf323825495e2819bb51723c2d1ed079ea0408a00"
+  },
+  "Assets/Resources/Characters/HeroEightDirections/spr_hero_idle_down_1f_v01.png": {
+    "source_sha256": "e0d13903cd876db5c538a5f39b12d1c9485d620fded9ebfb606dd49907d86e7d",
+    "output_sha256": "cd690a51d81a1adf8eb2ce5666b1338502a4243281c5bfed96ae0984ea0cd72b"
+  },
+  "Assets/Resources/Characters/HeroEightDirections/spr_hero_idle_down_left_1f_v01.png": {
+    "source_sha256": "e5080934b99f71a778f200e51aef0ea24eab1cce2f02f4137ed7f2a1423afc57",
+    "output_sha256": "d2f10a2a4a4d8436758264d0128ec0597f0d1c0ee97e78f567f2472d2d1d8151"
+  },
+  "Assets/Resources/Characters/HeroEightDirections/spr_hero_idle_down_right_1f_v01.png": {
+    "source_sha256": "bbab567df1c32a2399146463e02dbcbee5e7c5e80a9c2702bdabea06b1e5a1c9",
+    "output_sha256": "dba1a209ba6da2016421a2cfb6ef5ded18d100263da1fc7afee5735f1f43dd9b"
+  },
+  "Assets/Resources/Characters/HeroEightDirections/spr_hero_idle_left_1f_v01.png": {
+    "source_sha256": "d0dc264deec18afa3b6fc94d9c8b36880deec030e917cfbfc15d2cd585629b33",
+    "output_sha256": "3257e0d446529be26799598c201ab847a5e92c7485eef1b6f81bed4ba694316d"
+  },
+  "Assets/Resources/Characters/HeroEightDirections/spr_hero_idle_right_1f_v01.png": {
+    "source_sha256": "47c5e2809e7ed7a6b3d0164e98d87f337087db98b23577f3b60a229455619be1",
+    "output_sha256": "df1a29584b5dff5b66a5b377f30f0d6cbb32896d6628639dcc0bfd788f5d04f2"
+  },
+  "Assets/Resources/Characters/HeroEightDirections/spr_hero_idle_up_1f_v01.png": {
+    "source_sha256": "9709b1b112265ea0ceb5087ca034a9c0f025cd4d3bbb651dd04baaec63ad570c",
+    "output_sha256": "76e8a711dfc44db4da3c08ce5eaa5944c5628dab044e0b19b7f975aa628f47ff"
+  },
+  "Assets/Resources/Characters/HeroEightDirections/spr_hero_idle_up_left_1f_v01.png": {
+    "source_sha256": "313c99c354691f88d815141a49a091162546088071d5a4059b3516c6cb95db14",
+    "output_sha256": "e1828162c3cc02c4e0a72f74575db6ba2a6b5f8c536fab48c43b2755e7e851e6"
+  },
+  "Assets/Resources/Characters/HeroEightDirections/spr_hero_idle_up_right_1f_v01.png": {
+    "source_sha256": "e163c6cc8a8bc1cdacdeb77932187f33cb40445717a6fc5ebb7817d70b330ab2",
+    "output_sha256": "c12c8f1957e0f7d06cde22bfe53748464bacc0b68046e5d1d12ed5749a0f6d83"
+  },
+  "Assets/Resources/Characters/HeroEightDirections/spr_hero_run_down_8f_v01.png": {
+    "source_sha256": "d9fca26c72a8cdbfe85756b7d77744a24c7d4153c4f4081f2c8f4b47b39f7669",
+    "output_sha256": "7a81c14a6c275ffd9a2f6f0f26a84f184111e3201e0a2702bc1485dca7e09e38"
+  },
+  "Assets/Resources/Characters/HeroEightDirections/spr_hero_run_down_left_8f_v01.png": {
+    "source_sha256": "8a40c4561e4b9d5825298db0ca7f467fc05cb02c2139981c32442fb0589d69a7",
+    "output_sha256": "198a246063b36c670321fd2c708aa03351f879f16970a3effaf9b5bbcafbf4f4"
+  },
+  "Assets/Resources/Characters/HeroEightDirections/spr_hero_run_down_right_8f_v01.png": {
+    "source_sha256": "a06bb4e259b467719b3bc31effbc0b82f875b4bf3d503da40a728be3d47e561f",
+    "output_sha256": "9cc0f53358850ec46c3743c80908483620cdc3e7b9790c2776ee810ad8a479b8"
+  },
+  "Assets/Resources/Characters/HeroEightDirections/spr_hero_run_left_8f_v01.png": {
+    "source_sha256": "a4c8ded30d7a51150568d2695c9d53b9f3bb75cc33578685318c9e0bb90d5000",
+    "output_sha256": "53f26443d145baae4a4480f71ea84145595a7789f8e1696f482a61b337ec5119"
+  },
+  "Assets/Resources/Characters/HeroEightDirections/spr_hero_run_right_8f_v01.png": {
+    "source_sha256": "23def3df14608a376707c99c39c2e9ce3a050b0fddf32234e6fab562261d11b1",
+    "output_sha256": "7ca11d2bf348a988926dcbedde8ec5b90434ff9775c7529aabfb9fc2510c805d"
+  },
+  "Assets/Resources/Characters/HeroEightDirections/spr_hero_run_up_8f_v01.png": {
+    "source_sha256": "e04f690a70933bf65a37240ea4cfc91311f5593437de16b5e413700293960b4d",
+    "output_sha256": "d2331a01d9e1df70b3bf783e5343e53561c0d8f9b8a5bbd5ddacdb0e2b5dc93c"
+  },
+  "Assets/Resources/Characters/HeroEightDirections/spr_hero_run_up_left_8f_v01.png": {
+    "source_sha256": "f77a6a3ebc19f7815502945ecccafb82d4e46d87f5efe3d5a507fee1f0928a8a",
+    "output_sha256": "a6202d3292b85171a6cc046feab392cb25de3ae66b4c8516bbfeaa21eaddc181"
+  },
+  "Assets/Resources/Characters/HeroEightDirections/spr_hero_run_up_right_8f_v01.png": {
+    "source_sha256": "7ee20de4656c1138f91350adc8fe4594fbf3ebb57daae6a2a9d11fef1c9e9dc2",
+    "output_sha256": "9286b90105ca2e5d24d7f98439a48965a64d816f06cdee7c7a25e4e6b9f7c6c9"
+  },
+  "Assets/Resources/OpeningDialogue/portrait_fox_v01.png": {
+    "source_sha256": "458dd9c2dd786a9be487a7f5fc8f46034abcfd3e529c53dcede3bccba9ee4728",
+    "output_sha256": "bf6bdb0af54c17507761b27964cde12852edb065870ceb353e5a819b11912f31"
+  },
+  "Assets/Resources/OpeningDialogue/portrait_hero_v01.png": {
+    "source_sha256": "7a427c618ab3963c9443b8679dc136eb42b9e321094130814fb932243646a19a",
+    "output_sha256": "9a0e84d065743261faa15c223f650a9ec66f7ee86538cd3542d5c0d0547abf4e"
+  }
+}

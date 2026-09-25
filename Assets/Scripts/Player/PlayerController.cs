@@ -12,6 +12,7 @@ namespace WuxiaRoguelite.Player
         public PlayerStats stats;
         public float groundY = 0f;
         public bool followBambooValleyHeight;
+        public bool followPingchuanTownHeight;
         public bool followTutorialRestStopHeight;
         public Transform movementReference;
         [Header("Main Map Visual")]
@@ -49,7 +50,8 @@ namespace WuxiaRoguelite.Player
         private void Awake()
         {
             body = GetComponent<Rigidbody>();
-            spawnPosition = transform.position;
+            // Level two uses the authored road entrance, even if the editor player was moved.
+            spawnPosition = followPingchuanTownHeight ? PingchuanTownLayout.Spawn : transform.position;
             stats = stats == null ? GetComponent<PlayerStats>() : stats;
             body.useGravity = false;
             body.constraints = RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezeRotation;
@@ -77,6 +79,7 @@ namespace WuxiaRoguelite.Player
             }
 
             ApplyResponsiveVisualScale(true);
+            ResetToSpawn();
         }
 
         public void ResetToSpawn()
@@ -120,7 +123,9 @@ namespace WuxiaRoguelite.Player
             nextPosition.y = groundY;
             body.MovePosition(nextPosition);
 
-            float targetLift = followTutorialRestStopHeight
+            float targetLift = followPingchuanTownHeight
+                ? PingchuanTownLayout.SurfaceHeight(nextPosition.x, nextPosition.z)
+                : followTutorialRestStopHeight
                 ? TutorialRestStopLayout.SurfaceHeight(nextPosition.x, nextPosition.z)
                 : followBambooValleyHeight
                 ? BambooValleyLayout.SurfaceHeight(nextPosition.x, nextPosition.z)

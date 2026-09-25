@@ -1,0 +1,467 @@
+{
+  "frameSize": 256,
+  "footPixelY": 223,
+  "ppu": 160,
+  "pivot": [
+    0.5,
+    0.125
+  ],
+  "variants": [
+    {
+      "id": "jade_crescent",
+      "height": 112,
+      "sourceHeight": 204,
+      "foot": 503,
+      "bounds": [
+        0,
+        245,
+        530,
+        785,
+        1100,
+        1402,
+        1655,
+        1916,
+        2172
+      ],
+      "anchors": [
+        137,
+        405,
+        678,
+        908,
+        1186,
+        1481,
+        1764,
+        2052
+      ],
+      "scale": 0.5490196078431373,
+      "displayScale": 1.2142857142857142,
+      "filename": "spr_hero_attack_basic_jade_crescent_right_8f_v01.png",
+      "frames": [
+        {
+          "frame": 0,
+          "sourceBounds": {
+            "left": 53,
+            "top": 88,
+            "width": 106,
+            "height": 136
+          },
+          "placedBounds": {
+            "left": 66,
+            "top": 112,
+            "width": 87,
+            "height": 112
+          }
+        },
+        {
+          "frame": 1,
+          "sourceBounds": {
+            "left": 280,
+            "top": 307,
+            "width": 192,
+            "height": 196
+          },
+          "placedBounds": {
+            "left": 59,
+            "top": 115,
+            "width": 105,
+            "height": 108
+          }
+        },
+        {
+          "frame": 2,
+          "sourceBounds": {
+            "left": 571,
+            "top": 300,
+            "width": 178,
+            "height": 204
+          },
+          "placedBounds": {
+            "left": 69,
+            "top": 112,
+            "width": 98,
+            "height": 112
+          }
+        },
+        {
+          "frame": 3,
+          "sourceBounds": {
+            "left": 818,
+            "top": 305,
+            "width": 282,
+            "height": 199
+          },
+          "placedBounds": {
+            "left": 79,
+            "top": 114,
+            "width": 155,
+            "height": 109
+          }
+        },
+        {
+          "frame": 4,
+          "sourceBounds": {
+            "left": 1102,
+            "top": 277,
+            "width": 293,
+            "height": 227
+          },
+          "placedBounds": {
+            "left": 82,
+            "top": 99,
+            "width": 161,
+            "height": 125
+          }
+        },
+        {
+          "frame": 5,
+          "sourceBounds": {
+            "left": 1415,
+            "top": 308,
+            "width": 213,
+            "height": 196
+          },
+          "placedBounds": {
+            "left": 92,
+            "top": 116,
+            "width": 117,
+            "height": 108
+          }
+        },
+        {
+          "frame": 6,
+          "sourceBounds": {
+            "left": 1712,
+            "top": 310,
+            "width": 180,
+            "height": 194
+          },
+          "placedBounds": {
+            "left": 99,
+            "top": 117,
+            "width": 99,
+            "height": 107
+          }
+        },
+        {
+          "frame": 7,
+          "sourceBounds": {
+            "left": 53,
+            "top": 88,
+            "width": 106,
+            "height": 136
+          },
+          "placedBounds": {
+            "left": 66,
+            "top": 112,
+            "width": 87,
+            "height": 112
+          }
+        }
+      ]
+    },
+    {
+      "id": "golden_ember",
+      "height": 112,
+      "sourceHeight": 214,
+      "foot": 517,
+      "bounds": [
+        0,
+        250,
+        533,
+        770,
+        1088,
+        1378,
+        1671,
+        1907,
+        2172
+      ],
+      "anchors": [
+        145,
+        401,
+        673,
+        925,
+        1172,
+        1457,
+        1757,
+        2046
+      ],
+      "scale": 0.5233644859813084,
+      "displayScale": 1.2142857142857142,
+      "filename": "spr_hero_attack_basic_golden_ember_right_8f_v01.png",
+      "frames": [
+        {
+          "frame": 0,
+          "sourceBounds": {
+            "left": 53,
+            "top": 88,
+            "width": 106,
+            "height": 136
+          },
+          "placedBounds": {
+            "left": 66,
+            "top": 112,
+            "width": 87,
+            "height": 112
+          }
+        },
+        {
+          "frame": 1,
+          "sourceBounds": {
+            "left": 282,
+            "top": 321,
+            "width": 195,
+            "height": 197
+          },
+          "placedBounds": {
+            "left": 66,
+            "top": 120,
+            "width": 102,
+            "height": 103
+          }
+        },
+        {
+          "frame": 2,
+          "sourceBounds": {
+            "left": 565,
+            "top": 306,
+            "width": 184,
+            "height": 212
+          },
+          "placedBounds": {
+            "left": 71,
+            "top": 113,
+            "width": 96,
+            "height": 111
+          }
+        },
+        {
+          "frame": 3,
+          "sourceBounds": {
+            "left": 785,
+            "top": 246,
+            "width": 296,
+            "height": 272
+          },
+          "placedBounds": {
+            "left": 55,
+            "top": 81,
+            "width": 155,
+            "height": 142
+          }
+        },
+        {
+          "frame": 4,
+          "sourceBounds": {
+            "left": 1091,
+            "top": 207,
+            "width": 303,
+            "height": 311
+          },
+          "placedBounds": {
+            "left": 86,
+            "top": 61,
+            "width": 159,
+            "height": 163
+          }
+        },
+        {
+          "frame": 5,
+          "sourceBounds": {
+            "left": 1383,
+            "top": 304,
+            "width": 273,
+            "height": 214
+          },
+          "placedBounds": {
+            "left": 89,
+            "top": 112,
+            "width": 143,
+            "height": 112
+          }
+        },
+        {
+          "frame": 6,
+          "sourceBounds": {
+            "left": 1691,
+            "top": 321,
+            "width": 199,
+            "height": 197
+          },
+          "placedBounds": {
+            "left": 93,
+            "top": 120,
+            "width": 104,
+            "height": 103
+          }
+        },
+        {
+          "frame": 7,
+          "sourceBounds": {
+            "left": 53,
+            "top": 88,
+            "width": 106,
+            "height": 136
+          },
+          "placedBounds": {
+            "left": 66,
+            "top": 112,
+            "width": 87,
+            "height": 112
+          }
+        }
+      ]
+    },
+    {
+      "id": "ink_afterimage",
+      "height": 94,
+      "sourceHeight": 191,
+      "foot": 494,
+      "bounds": [
+        0,
+        247,
+        530,
+        780,
+        1088,
+        1454,
+        1737,
+        1940,
+        2172
+      ],
+      "anchors": [
+        140,
+        398,
+        651,
+        907,
+        1212,
+        1533,
+        1810,
+        2073
+      ],
+      "scale": 0.49214659685863876,
+      "displayScale": 1.446808510638298,
+      "filename": "spr_hero_attack_basic_ink_afterimage_right_8f_v01.png",
+      "frames": [
+        {
+          "frame": 0,
+          "sourceBounds": {
+            "left": 53,
+            "top": 88,
+            "width": 106,
+            "height": 136
+          },
+          "placedBounds": {
+            "left": 76,
+            "top": 130,
+            "width": 73,
+            "height": 94
+          }
+        },
+        {
+          "frame": 1,
+          "sourceBounds": {
+            "left": 274,
+            "top": 313,
+            "width": 240,
+            "height": 182
+          },
+          "placedBounds": {
+            "left": 67,
+            "top": 134,
+            "width": 118,
+            "height": 90
+          }
+        },
+        {
+          "frame": 2,
+          "sourceBounds": {
+            "left": 550,
+            "top": 310,
+            "width": 192,
+            "height": 185
+          },
+          "placedBounds": {
+            "left": 78,
+            "top": 132,
+            "width": 94,
+            "height": 91
+          }
+        },
+        {
+          "frame": 3,
+          "sourceBounds": {
+            "left": 806,
+            "top": 312,
+            "width": 272,
+            "height": 183
+          },
+          "placedBounds": {
+            "left": 78,
+            "top": 133,
+            "width": 134,
+            "height": 90
+          }
+        },
+        {
+          "frame": 4,
+          "sourceBounds": {
+            "left": 1093,
+            "top": 302,
+            "width": 358,
+            "height": 193
+          },
+          "placedBounds": {
+            "left": 69,
+            "top": 129,
+            "width": 176,
+            "height": 95
+          }
+        },
+        {
+          "frame": 5,
+          "sourceBounds": {
+            "left": 1457,
+            "top": 313,
+            "width": 263,
+            "height": 182
+          },
+          "placedBounds": {
+            "left": 91,
+            "top": 134,
+            "width": 129,
+            "height": 90
+          }
+        },
+        {
+          "frame": 6,
+          "sourceBounds": {
+            "left": 1756,
+            "top": 310,
+            "width": 155,
+            "height": 186
+          },
+          "placedBounds": {
+            "left": 101,
+            "top": 132,
+            "width": 76,
+            "height": 92
+          }
+        },
+        {
+          "frame": 7,
+          "sourceBounds": {
+            "left": 53,
+            "top": 88,
+            "width": 106,
+            "height": 136
+          },
+          "placedBounds": {
+            "left": 76,
+            "top": 130,
+            "width": 73,
+            "height": 94
+          }
+        }
+      ]
+    }
+  ]
+}

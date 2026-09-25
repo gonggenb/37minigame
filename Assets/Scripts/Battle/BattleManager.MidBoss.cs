@@ -175,7 +175,7 @@ namespace WuxiaRoguelite.Battle
             int shadowRank = playerStats.GetMartialArtRank("无相残影");
             int interval = shadowRank <= 0 ? int.MaxValue : 7 - shadowRank;
             bool forcedDodge = interval < int.MaxValue && EnemyAttackAttempts % interval == 0;
-            if (forcedDodge || UnityEngine.Random.value < player.dodgeChance)
+            if (forcedDodge || UnityEngine.Random.value < PlayerDodgeChance())
             {
                 LastAttackWasDodged = true;
                 LastVfxCues |= BattleVfxCue.Dodge;
@@ -189,7 +189,7 @@ namespace WuxiaRoguelite.Battle
                 return;
             }
 
-            float damage = Mathf.Max(1f, currentEnemy.attack * attackRatio - player.defense);
+            float damage = Mathf.Max(1f, currentEnemy.attack * attackRatio - EffectivePlayerDefense);
             damage *= GetPlayerIncomingDamageMultiplier(player);
             damage = RollDamage(damage);
             float shieldBefore = PlayerShield;
@@ -201,7 +201,7 @@ namespace WuxiaRoguelite.Battle
             player.TakeDamage(damage);
             LastDamage = damage;
             LastVfxCues |= BattleVfxCue.BasicHit;
-            if (damage > 0f)
+            if (damage > 0f || PlayerShield < shieldBefore)
             {
                 ApplyRetaliation(currentEnemy);
             }

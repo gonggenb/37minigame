@@ -1,0 +1,76 @@
+{
+  "status": "rendered_and_media_verified",
+  "file": "一炷江湖_90秒宣传片_v03.mp4",
+  "duration": 90.0,
+  "width": 1080,
+  "height": 1920,
+  "fps": "30/1",
+  "frames": "2700",
+  "video_codec": "h264",
+  "audio_codec": "aac",
+  "audio_sample_rate": "48000",
+  "audio_channels": 2,
+  "audio_dbfs": {
+    "mean_volume": -16.3,
+    "max_volume": -1.5
+  },
+  "decode_errors": "",
+  "bytes": 140661160,
+  "sha256": "a54e99d88a2250e6afbb4fe5b42201b2d8a5e708d4f0e8b1d328740d70eec7df",
+  "capture_reports": {
+    "capture": {
+      "success": true,
+      "runtimeErrors": [],
+      "sample_count": 46
+    },
+    "capture-boss": {
+      "success": true,
+      "runtimeErrors": [],
+      "sample_count": 14
+    },
+    "capture-combat": {
+      "success": true,
+      "runtimeErrors": [],
+      "sample_count": 5
+    }
+  },
+  "hyperframes_check": {
+    "passed": true,
+    "errors": 0,
+    "warnings": 0,
+    "contrast_checks": 12,
+    "intentional_info": [
+      "camera overscan clipped by scene",
+      "short transition label overlap"
+    ]
+  },
+  "final_frame_review_times": [
+    1,
+    6,
+    10.5,
+    14,
+    19,
+    23,
+    28,
+    33.4,
+    36.2,
+    40,
+    50,
+    55,
+    59.5,
+    73,
+    81,
+    88
+  ],
+  "visual_review": "16 final MP4 frames inspected: CG, handoff, both combat takes, choices, Boss and endcard; no missing assets or unreadable headline text",
+  "human_device_audio_platform_QA": "not performed",
+  "cg_method": "AI still keyframes, seek-safe camera moves and separate VFX; no continuous articulated character animation",
+  "gameplay_method": "staged actual Editor capture, normal speed, legal build application, multiple takes",
+  "editor_post_capture": {
+    "isPlaying": false,
+    "sceneDirty": false,
+    "captureFramerate": 0,
+    "consoleErrors": 0
+  },
+  "keyframe_diagnostic": "Sword handoff trajectory verified. Static keyframe parser did not resolve loop-generated camera/SVG selectors; actual runtime snapshots and final MP4 frames were inspected instead."
+}

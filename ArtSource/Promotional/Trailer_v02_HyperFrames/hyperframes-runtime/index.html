@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-resolution="portrait">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=1080, height=1920">
+<title>一炷江湖 · 宣传片 v02</title>
+<script src="assets/gsap.min.js"></script>
+<style>
+@font-face{font-family:'Wuxia Sans SC';src:url('assets/wuxia-bold.ttf') format('truetype');font-weight:700;font-display:block}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1080px;height:1920px;overflow:hidden;background:#0E1112}
+#root{width:100%;height:100%;position:relative;overflow:hidden;background:#0E1112;color:#E9DFC3;font-family:'Wuxia Sans SC';font-weight:700}
+.scene{position:absolute;inset:0;overflow:hidden;background:#0E1112}
+#fox{z-index:1}#hero{z-index:2;opacity:0}#play{z-index:3;opacity:0}
+.art{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform-origin:50% 38%}
+#hero-art{transform-origin:53% 44%}
+.shade-bottom{position:absolute;left:0;right:0;bottom:0;height:700px;background:linear-gradient(0deg,rgba(14,17,18,.97),rgba(14,17,18,.83) 39%,rgba(14,17,18,0))}
+.shade-top{position:absolute;left:0;right:0;top:0;height:340px;background:radial-gradient(ellipse at 50% 0,rgba(14,17,18,.78),rgba(14,17,18,0) 75%)}
+.scene-content{position:relative;width:100%;height:100%;padding:105px 90px 265px;display:flex;flex-direction:column;align-items:center;gap:24px}
+.brand{font-size:42px;color:#D1AA5A;letter-spacing:12px;text-shadow:0 2px 6px #0E1112}
+.spacer{flex:1}.caption{font-size:64px;white-space:nowrap;text-shadow:0 3px 8px #0E1112}.tag{font-size:27px;color:#E9DFC3;letter-spacing:6px}
+.fog{position:absolute;left:-270px;bottom:150px;width:1600px;height:700px;background:radial-gradient(ellipse at 25% 60%,rgba(233,223,195,.14),transparent 48%),radial-gradient(ellipse at 74% 35%,rgba(233,223,195,.09),transparent 45%);pointer-events:none}
+#hero-fog{bottom:330px;opacity:.75}
+.moon-glow{position:absolute;left:130px;top:180px;width:840px;height:750px;background:radial-gradient(ellipse,rgba(150,58,49,.18),transparent 67%);mix-blend-mode:screen;opacity:.45}
+#fire-glow{position:absolute;left:210px;top:350px;width:220px;height:220px;background:radial-gradient(circle,rgba(233,223,195,.2),rgba(150,58,49,.12) 22%,transparent 65%);mix-blend-mode:screen}
+#blade-glint{position:absolute;left:445px;top:880px;width:760px;height:5px;transform:rotate(-32deg);transform-origin:left center}
+#blade-glint-inner{width:100%;height:100%;background:linear-gradient(90deg,transparent,#E9DFC3,transparent);box-shadow:0 0 16px 3px rgba(233,223,195,.55);opacity:0;transform-origin:left center}
+#sword-wipe{position:absolute;inset:0;z-index:4;pointer-events:none;opacity:0;overflow:hidden}
+#sword-band{position:absolute;left:-550px;top:-1300px;width:2400px;height:110px;transform:rotate(-32deg);background:linear-gradient(0deg,transparent,rgba(78,139,115,.28) 26%,rgba(233,223,195,.92) 48%,#E9DFC3 50%,rgba(209,170,90,.4) 66%,transparent)}
+#gameplay{width:100%;height:100%;object-fit:contain}
+</style>
+</head>
+<body><div data-hf-id="hf-lo8x" id="root" data-composition-id="main" data-start="0" data-duration="30" data-width="1080" data-height="1920" data-fps="30">
+<section data-hf-id="hf-jlyd" class="scene" id="fox">
+<img data-hf-id="hf-ogfw" id="fox-art" class="art" src="assets/fox_bloodmoon.png" alt="血月下的九尾妖狐" data-layout-ignore="">
+<div data-hf-id="hf-j937" id="moon-glow" class="moon-glow" data-layout-ignore=""></div><div data-hf-id="hf-989u" id="fire-glow" data-layout-ignore=""></div><div data-hf-id="hf-eqmt" id="fox-fog" class="fog" data-layout-ignore=""></div>
+<div data-hf-id="hf-0bww" class="shade-bottom" data-layout-ignore=""></div><div data-hf-id="hf-0cq0" class="shade-top" data-layout-ignore=""></div>
+<div data-hf-id="hf-cn5c" class="scene-content"><div data-hf-id="hf-yjgo" id="fox-brand" class="brand" data-layout-allow-overlap>一炷江湖</div><div data-hf-id="hf-x5ec" class="spacer"></div><div data-hf-id="hf-d5n8" id="fox-caption" class="caption">六十秒后，强敌来袭</div><div data-hf-id="hf-lqsp" id="fox-tag" class="tag">动画演绎</div></div>
+</section>
+<section data-hf-id="hf-3m9u" class="scene" id="hero">
+<img data-hf-id="hf-g8p0" id="hero-art" class="art" src="assets/hero_draws_sword.png" alt="蓝白衣剑客持剑迎战" data-layout-ignore="">
+<div data-hf-id="hf-tivc" id="hero-fog" class="fog" data-layout-ignore=""></div><div data-hf-id="hf-h9ol" id="blade-glint" data-layout-ignore=""><div data-hf-id="hf-s3d9" id="blade-glint-inner"></div></div>
+<div data-hf-id="hf-2q7c" class="shade-bottom" data-layout-ignore=""></div><div data-hf-id="hf-pk68" class="shade-top" data-layout-ignore=""></div>
+<div data-hf-id="hf-o0eg" class="scene-content"><div data-hf-id="hf-wkhp" id="hero-brand" class="brand" data-layout-allow-overlap>一炷江湖</div><div data-hf-id="hf-1ing" class="spacer"></div><div data-hf-id="hf-v3p6" id="hero-caption" class="caption">这一局，你如何破局？</div><div data-hf-id="hf-scrq" id="hero-tag" class="tag">动画演绎</div></div>
+</section>
+<section data-hf-id="hf-v7xk" class="scene" id="play"><video data-hf-id="hf-0ste" id="gameplay" class="clip" src="assets/gameplay-edit.mp4" muted playsinline preload="auto" data-start="6" data-duration="24" data-media-start="6" data-track-index="0"></video></section>
+<div data-hf-id="hf-3xx1" id="sword-wipe" data-layout-ignore=""><div data-hf-id="hf-mj70" id="sword-band"></div></div>
+<audio data-hf-id="hf-uh9s" id="soundtrack" src="assets/bgm-and-sfx.m4a" data-start="0" data-duration="30" data-track-index="1" data-volume="1"></audio>
+</div>
+<script>
+const tl=gsap.timeline({paused:true});
+// Opening: artwork first, then the threat, then its animation label.
+tl.fromTo('#fox-art',{scale:1},{scale:1.075,duration:3.12,ease:'sine.inOut'},.12);
+tl.from('#fox-brand',{opacity:0,y:-16,duration:.6,ease:'power2.out'},.15);
+tl.from('#fox-caption',{opacity:0,y:32,duration:.7,ease:'expo.out'},.28);
+tl.from('#fox-tag',{opacity:0,x:12,duration:.6,ease:'sine.out'},.42);
+tl.fromTo('#fox-fog',{x:-75},{x:90,duration:3.12,ease:'none'},.12);
+tl.fromTo('#moon-glow',{opacity:.25},{opacity:.6,duration:1.4,yoyo:true,repeat:1,ease:'sine.inOut'},.15);
+tl.fromTo('#fire-glow',{scale:.85,opacity:.3},{scale:1.1,opacity:.8,duration:1.1,yoyo:true,repeat:1,ease:'sine.inOut'},.4);
+// Dark-mist dissolve. The outgoing content remains visible until this transition.
+tl.fromTo('#hero',{opacity:0},{opacity:1,duration:.52,ease:'power2.inOut'},2.78);
+tl.to('#fox',{opacity:0,duration:.52,ease:'power2.inOut'},2.78);
+tl.fromTo('#hero-art',{scale:1.005,y:10},{scale:1.065,y:-8,duration:3.32,ease:'sine.inOut'},2.8);
+tl.from('#hero-brand',{opacity:0,x:-18,duration:.45,ease:'power2.out'},2.96);
+tl.from('#hero-caption',{opacity:0,y:26,duration:.55,ease:'expo.out'},3.1);
+tl.from('#hero-tag',{opacity:0,scale:.96,duration:.5,ease:'sine.out'},3.24);
+tl.fromTo('#hero-fog',{x:60},{x:-85,duration:3.1,ease:'none'},3.0);
+tl.fromTo('#blade-glint-inner',{scaleX:.05,opacity:0},{scaleX:1,opacity:.65,duration:.38,ease:'power3.out'},4.45);
+tl.to('#blade-glint-inner',{opacity:0,duration:.45,ease:'sine.in'},4.83);
+// A single diagonal sword-light reveals the exact existing edit from source t=6.
+tl.set('#play',{opacity:1},6);
+tl.fromTo('#play',{clipPath:'polygon(0% 0%,0% 0%,0% 0%,0% 0%)'},{clipPath:'polygon(0% 0%,300% 0%,0% 170%,0% 100%)',duration:.34,ease:'power2.inOut'},6);
+tl.set('#play',{clipPath:'none'},6.34);
+tl.set('#hero',{opacity:0},6.34);
+tl.set('#sword-wipe',{opacity:1},5.98);
+tl.fromTo('#sword-band',{y:0},{y:3650,duration:.42,ease:'power3.inOut'},5.98);
+tl.set('#sword-wipe',{opacity:0},6.4);
+window.__timelines=window.__timelines||{};
+window.__timelines.main=tl;
+</script></body></html>

@@ -22,6 +22,15 @@ namespace WuxiaRoguelite.Map
         public int cultivationReward = 10;
         public int copperReward = 2;
 
+        [Header("Exploration Rewards")]
+        [Tooltip("Baked collision-aware route length from spawn. -1 keeps original rewards.")]
+        public float rewardRouteDistance = -1f;
+
+        public int ExplorationRewardTier => ExplorationRewardTuning.Tier(rewardRouteDistance);
+        public int GrantedCultivationReward => ExplorationRewardTuning.Scale(cultivationReward, rewardRouteDistance);
+        public int GrantedCopperReward => ExplorationRewardTuning.Scale(copperReward, rewardRouteDistance);
+        public bool GrantsMartialArtUpgrade => encounterType == EncounterType.Treasure && ExplorationRewardTier == 2;
+
         [Header("Map Pickup")]
         public float healRatio = 0.35f;
         public HerbEffectType herbEffect = HerbEffectType.Heal;
@@ -68,9 +77,21 @@ namespace WuxiaRoguelite.Map
             }
         }
 
+        public WuxiaRoguelite.Battle.EnemyTrait Trait
+        {
+            get
+            {
+                var authored = gameObject.scene.name == LevelSequence.LevelTwoSceneName && encounterType == EncounterType.NormalEnemy
+                    ? WuxiaRoguelite.Battle.EnemyTraits.ForVisual(enemyStats.visualId) : WuxiaRoguelite.Battle.EnemyTrait.None;
+                return GameFlowController.Instance != null ? GameFlowController.Instance.ChallengeTrait(this, authored) : authored;
+            }
+        }
+
         public CombatantStats CreateEnemyStats()
         {
             CombatantStats clone = enemyStats.Clone();
+            clone.enemyTrait = Trait;
+            GameFlowController.Instance?.ApplyChallengeEncounter(this, clone);
             clone.ResetHealth();
             return clone;
         }

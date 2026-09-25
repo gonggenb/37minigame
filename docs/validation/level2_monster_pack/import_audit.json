@@ -1,0 +1,12 @@
+{
+  "playing": false,
+  "dirty": true,
+  "total": 73,
+  "normals": 40,
+  "originalMonsters": 22,
+  "newMonsters": 18,
+  "originalAppearancesRestored": true,
+  "newProfiles": 6,
+  "uniqueProfiles": true,
+  "allFrames": true
+}

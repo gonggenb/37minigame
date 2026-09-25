@@ -1,0 +1,206 @@
+{
+  "scene": "Pingchuan Town | 平川山镇 · 大地图",
+  "file": "PingchuanTown_v01.blend",
+  "units": "meters",
+  "north_axis": "+Y",
+  "up_axis": "+Z",
+  "design_extent_m": [
+    240,
+    220
+  ],
+  "objects": 1721,
+  "mesh_objects": 1535,
+  "mesh_polygons": 3488481,
+  "triangles": 5911614,
+  "buildings": 25,
+  "market_stalls": 9,
+  "cave_entrances": 5,
+  "bridges": 8,
+  "trees": 290,
+  "bamboo_culms": 136,
+  "grass_tufts": 14629,
+  "cameras": [
+    "CAM 01 / full valley overview",
+    "CAM 02 / north-up plan",
+    "CAM 03 / town market street",
+    "CAM 04 / western cave group",
+    "CAM 05 / foothill garrison",
+    "CAM 06 / northern pass",
+    "CAM 07 / open training plain",
+    "CAM 08 / old entry road"
+  ],
+  "landmarks": [
+    {
+      "name": "Town / market street",
+      "position_m": [
+        -25.0,
+        0.0,
+        0.16519695520401
+      ]
+    },
+    {
+      "name": "Town / inn front",
+      "position_m": [
+        -20.0,
+        2.799999952316284,
+        0.19978225231170654
+      ]
+    },
+    {
+      "name": "Plain / training arena",
+      "position_m": [
+        35.0,
+        -10.0,
+        0.5669642090797424
+      ]
+    },
+    {
+      "name": "Camp / command tent",
+      "position_m": [
+        67.0,
+        -61.0,
+        0.4486280083656311
+      ]
+    },
+    {
+      "name": "Cave 1 / entrance",
+      "position_m": [
+        -83.95081329345703,
+        54.114646911621094,
+        0.1627565622329712
+      ]
+    },
+    {
+      "name": "Cave 2 / entrance",
+      "position_m": [
+        -66.28388214111328,
+        71.06462860107422,
+        0.39140206575393677
+      ]
+    },
+    {
+      "name": "Cave 3 / entrance",
+      "position_m": [
+        0.0,
+        73.0,
+        0.38025927543640137
+      ]
+    },
+    {
+      "name": "Cave 4 / entrance",
+      "position_m": [
+        90,
+        22,
+        0.2596952499679808
+      ]
+    },
+    {
+      "name": "Cave 5 / entrance",
+      "position_m": [
+        -92.37158966064453,
+        31.242509841918945,
+        0.2789151668548584
+      ]
+    },
+    {
+      "name": "Pass / north exit",
+      "position_m": [
+        27.0,
+        95.0,
+        0.42041900753974915
+      ]
+    },
+    {
+      "name": "Bridge / Entry",
+      "position_m": [
+        -36.63811492919922,
+        -46.14630889892578,
+        0.5378444790840149
+      ]
+    },
+    {
+      "name": "Bridge / East",
+      "position_m": [
+        -6.337672233581543,
+        -14.526789665222168,
+        0.2757517099380493
+      ]
+    },
+    {
+      "name": "Bridge / Camp",
+      "position_m": [
+        -8.415701866149902,
+        -35.13677978515625,
+        0.32031622529029846
+      ]
+    },
+    {
+      "name": "Bridge / NorthField",
+      "position_m": [
+        33.735530853271484,
+        58.47340774536133,
+        0.20277102291584015
+      ]
+    },
+    {
+      "name": "Bridge / WestLoop",
+      "position_m": [
+        -79.4542465209961,
+        -26.967159271240234,
+        0.46075111627578735
+      ]
+    },
+    {
+      "name": "Spawn / southwest old road",
+      "position_m": [
+        -64.0,
+        -103.0,
+        0.3401044011116028
+      ]
+    }
+  ],
+  "checks": {
+    "nonfinite_meshes": [],
+    "empty_meshes": [],
+    "meshes_without_materials": [],
+    "zero_area_faces_removed": 250,
+    "east_cave_faces_basin": true,
+    "references_packed": true,
+    "cave_tunnel_roofs_covered": true,
+    "shared_road_cross_sections": true,
+    "perimeter_slopes_clear_of_landmarks": true,
+    "field_rails_grounded": true,
+    "final_zero_area_faces": 0,
+    "final_nonfinite_coordinates": 0,
+    "entry_tea_clearing_checked": true
+  },
+  "unity_imported": true,
+  "physics_validated": true,
+  "mobile_performance_validated": false,
+  "texture_baking_completed": false,
+  "human_visual_approved": false,
+  "notes": [
+    "Blender master retained; Unity gameplay export has 1248937 triangles at 0.4 scale.",
+    "Second level replaced at the user's explicit request; third and tutorial scene assets unchanged.",
+    "All 8 bridges passed real Rigidbody movement; 73 encounters passed collision reachability.",
+    "Physics validation is controlled Editor Play Mode, not final device acceptance."
+  ],
+  "preview_views": [
+    "01 overview",
+    "02 plan",
+    "03 market",
+    "04 caves",
+    "05 camp",
+    "06 pass",
+    "07 plain",
+    "08 entry"
+  ],
+  "blender_visual_review": "Reviewed camera views and corrected visible modeling defects; final human art approval pending.",
+  "unity_integration": {
+    "scene": "Assets/Scenes/MainPrototype.unity",
+    "normal_enemies": 40,
+    "elite_enemies": 10,
+    "caves": 5,
+    "report": "docs/validation/pingchuan_town/README.md"
+  }
+}
