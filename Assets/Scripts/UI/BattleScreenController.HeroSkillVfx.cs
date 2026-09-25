@@ -27,7 +27,7 @@ namespace WuxiaRoguelite.UI
             {
                 int count = 0;
                 foreach (var effect in heroSkillEffects)
-                    if (effect.active && Time.unscaledTime - effect.startedAt < effect.duration) count++;
+                    if (effect.active && Time.time - effect.startedAt < effect.duration) count++;
                 return count;
             }
         }
@@ -41,11 +41,15 @@ namespace WuxiaRoguelite.UI
         private void QueueHeroSkillVfx(BattleVfxCue cues, float poseDuration)
         {
             if (CurrentHeroAttackForm == HeroAttackForm.Basic) return;
+            // Dedicated settlement clips replace generic combo and non-poison armor projectiles.
+            if ((cues & BattleVfxCue.SwiftCombo) != 0 ||
+                (CurrentHeroAttackForm == HeroAttackForm.VenomPalm &&
+                 (cues & BattleVfxCue.ArmorBreak) != 0 && (cues & BattleVfxCue.PoisonApplied) == 0)) return;
             heroSkillEffects[nextHeroSkillEffect] = new HeroSkillEffect
             {
                 active = true, form = CurrentHeroAttackForm, cues = cues,
                 // Release with the swing and finish before its recovery ends, even at high speed.
-                startedAt = Time.unscaledTime + poseDuration * 0.22f,
+                startedAt = Time.time + poseDuration * 0.22f,
                 duration = poseDuration * 0.72f,
                 viewport = new Vector2(Screen.width, Screen.height)
             };
@@ -58,7 +62,7 @@ namespace WuxiaRoguelite.UI
             for (int index = 0; index < heroSkillEffects.Length; index++)
             {
                 var effect = heroSkillEffects[index];
-                float age = Time.unscaledTime - effect.startedAt;
+                float age = Time.time - effect.startedAt;
                 if (!effect.active || age < 0f || age >= effect.duration) continue;
                 // A cached launch point belongs to one layout; don't carry it across rotation.
                 if (effect.viewport != new Vector2(Screen.width, Screen.height)) continue;

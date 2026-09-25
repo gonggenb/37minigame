@@ -34,7 +34,7 @@ namespace WuxiaRoguelite.UI
                 seenBite = seenVenomTick = seenArmorBreak = seenEnemyAttempts = 0;
                 biteAt = venomTickAt = armorBreakAt = heavyAt = -100f;
             }
-            float now = Time.unscaledTime;
+            float now = Time.time;
             if (battleManager.VenomBiteSequence > seenBite) biteAt = now;
             if (battleManager.VenomTickSequence > seenVenomTick) venomTickAt = now;
             if (battleManager.OpeningArmorBreakSequence > seenArmorBreak) armorBreakAt = now;
@@ -101,7 +101,7 @@ namespace WuxiaRoguelite.UI
         private void DrawGuardAura(Rect actor, Color color)
         {
             EnsureCombatShapes();
-            float pulse = 1f + Mathf.Sin(Time.unscaledTime * 3f) * .025f;
+            float pulse = 1f + Mathf.Sin(Time.time * 3f) * .025f;
             Rect shell = new Rect(actor.center.x - actor.width * .25f * pulse,
                 actor.y + actor.height * .27f, actor.width * .50f * pulse, actor.height * .64f);
             DrawCombatShape(shell, guardRing, color);
@@ -110,7 +110,7 @@ namespace WuxiaRoguelite.UI
         private void DrawEnemyTraitFeedback(Rect player, Rect enemy, float ground)
         {
             if (battleManager.CurrentEnemyTrait == EnemyTrait.None) return;
-            float now = Time.unscaledTime;
+            float now = Time.time;
             float windup = HeavyOpeningWindup;
             if (windup > 0f)
             {

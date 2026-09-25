@@ -65,7 +65,8 @@ namespace WuxiaRoguelite.UI
             WuxiaUiComponents.Text(new Rect(player.x + 8, player.y + 67, player.width - 16, 20),
                 $"{CombatNumberDisplay.Format(playerStats.runtimeStats.currentHealth)} / {CombatNumberDisplay.Format(playerStats.runtimeStats.maxHealth)}", 14);
             WuxiaUiComponents.Timer(new Rect(s.center.x - 51, s.y + 6, 102, 102),
-                gameFlow.mainTimeRemaining, gameFlow.mainTimeLimit, gameFlow.CurrentPhase == GamePhase.LevelUpPaused);
+                gameFlow.mainTimeRemaining, gameFlow.mainTimeLimit, gameFlow.CurrentPhase == GamePhase.LevelUpPaused,
+                gameFlow.IsEndlessMode ? $"第{gameFlow.EndlessRound}轮" : null);
 
             Rect xp = new Rect(player.x + 8, player.yMax - 6, player.width - 16, 3);
             FillRect(xp, PanelLight);

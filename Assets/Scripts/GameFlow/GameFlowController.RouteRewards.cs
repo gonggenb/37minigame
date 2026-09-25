@@ -30,17 +30,19 @@ namespace WuxiaRoguelite.GameFlow
 
         public string RouteProgress(RouteSpecialty route)
         {
-            if (claimedRoutes.Contains(route)) return "本局奖励已领取";
-            if (route == RouteSpecialty.Cave) return "完成事件后离洞领取·每局一次";
+            string period = IsEndlessMode ? "每轮一次" : "每局一次";
+            if (claimedRoutes.Contains(route)) return IsEndlessMode ? "本轮奖励已领取" : "本局奖励已领取";
+            if (route == RouteSpecialty.Cave) return "完成事件后离洞领取·" + period;
             int count = routeVictories.Count(e => e != null && PingchuanRouteCatalog.ForEncounter(e) == route);
-            return $"连胜进度 {count}/{PingchuanRouteCatalog.RequiredWins} · 每局一次";
+            return $"连胜进度 {count}/{PingchuanRouteCatalog.RequiredWins} · {period}";
         }
 
-        private void ResetRouteProgress()
+        private void ResetRouteProgress(bool resetRunReview = true)
         {
             pendingRouteEncounter = currentRouteCave = null;
-            SelectedPursuit = 0;
-            routeVictories.Clear(); claimedRoutes.Clear(); battleManager?.ResetRunReview();
+            if (resetRunReview) SelectedPursuit = 0;
+            routeVictories.Clear(); claimedRoutes.Clear();
+            if (resetRunReview) battleManager?.ResetRunReview();
             if (!HasRouteSpecialties) return;
             var encounters = FindObjectsByType<EncounterTrigger>(FindObjectsInactive.Include, FindObjectsSortMode.None);
             foreach (var route in new[] { RouteSpecialty.Practice, RouteSpecialty.Camp, RouteSpecialty.Cave })
@@ -54,7 +56,7 @@ namespace WuxiaRoguelite.GameFlow
                 go.transform.position = e.transform.position + new Vector3(-2, 0, 1);
                 var guide = go.AddComponent<MainMapRegionGuide>();
                 guide.regionName = PingchuanRouteCatalog.Name(route); guide.specialty = route;
-                guide.routeTheme = PingchuanRouteCatalog.Reward(route); guide.riskLabel = "每局一次";
+                guide.routeTheme = PingchuanRouteCatalog.Reward(route); guide.riskLabel = IsEndlessMode ? "每轮一次" : "每局一次";
                 guide.detailDistance = 15; guide.maxVisibleDistance = 22;
             }
         }

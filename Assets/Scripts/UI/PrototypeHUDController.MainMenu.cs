@@ -172,6 +172,8 @@ namespace WuxiaRoguelite.UI
             GUI.Label(new Rect(area.x, area.y, width, 24), "江 湖 行 卷", coverCaption);
             GUI.Label(new Rect(area.x, area.y + 28, width, 42), "选择关卡", coverHeading);
             FillRect(new Rect(area.x, area.y + 78, width, 1), WithAlpha(WuxiaUiTheme.Brass, 0.6f));
+            if (GUI.Button(new Rect(area.xMax - 156, area.y + 22, 156, 48),
+                EndlessProgressionCatalog.Title, WuxiaUiComponents.TouchButton())) OpenEndlessProgression();
             Rect viewport = new Rect(area.x, area.y + 94, width, height - (portrait ? 174 : 154));
             if (portrait)
             {
@@ -187,8 +189,17 @@ namespace WuxiaRoguelite.UI
                     DrawChapterCard(new Rect(area.x + i * (cardWidth + 12), viewport.y, cardWidth, viewport.height), i + 1);
             }
             if (GUI.Button(new Rect(area.x, area.yMax - (portrait ? PortraitUiLayout.ActionHeight : 44),
-                portrait ? width : 120, portrait ? PortraitUiLayout.ActionHeight : 44), "返回主页", actionButtonStyle))
+                portrait ? (width - 12) / 2 : 120, portrait ? PortraitUiLayout.ActionHeight : 44), "返回主页", actionButtonStyle))
                 gameFlow.CloseLevelSelection();
+            bool enabled = GUI.enabled;
+            GUI.enabled = enabled && gameFlow.IsLevelTwoUnlocked;
+            float endlessWidth = portrait ? (width - 12) / 2 : 280;
+            if (GUI.Button(new Rect(area.xMax - endlessWidth,
+                area.yMax - (portrait ? PortraitUiLayout.ActionHeight : 44), endlessWidth,
+                portrait ? PortraitUiLayout.ActionHeight : 44),
+                GameTextCatalog.EndlessModeName + (gameFlow.IsLevelTwoUnlocked ? "" : " · 未解锁"), mainMenuButtonStyle))
+                gameFlow.SelectEndlessMode();
+            GUI.enabled = enabled;
         }
 
         private void DrawChapterCard(Rect rect, int chapter)

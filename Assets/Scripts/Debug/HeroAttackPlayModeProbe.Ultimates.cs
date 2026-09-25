@@ -120,7 +120,7 @@ public sealed partial class HeroAttackPlayModeProbe
                     float[] sample={.02f,.10f,.21f,.32f,.46f,.63f,.80f,.94f};
                     for(int frame=0;frame<8;frame++)
                     {
-                        Set(screen,"ultimateStartedAt",Time.unscaledTime-sample[frame]*MartialUltimateCatalog.PresentationDuration);
+                        Set(screen,"ultimateStartedAt",Time.time-sample[frame]*MartialUltimateCatalog.PresentationDuration);
                         Check(screen.CurrentUltimatePoseFrame==frame,id+": authored cast frame "+frame);
                         yield return new WaitForEndOfFrame();
                         ScreenCapture.CaptureScreenshot(poseOutput+"/pose_"+MartialUltimateCatalog.TextureIds[i]+"_"+frame+".png");
@@ -128,7 +128,7 @@ public sealed partial class HeroAttackPlayModeProbe
                     }
                 }
                 yield return new WaitForSecondsRealtime(.10f);
-                Set(screen,"ultimateStartedAt",Time.unscaledTime-.60f);
+                Set(screen,"ultimateStartedAt",Time.time-.60f);
                 yield return new WaitForEndOfFrame();
                 ScreenCapture.CaptureScreenshot(output+"/"+MartialUltimateCatalog.TextureIds[i]+
                     (portrait ? "_portrait" : "_landscape")+".png");
@@ -139,7 +139,7 @@ public sealed partial class HeroAttackPlayModeProbe
                     id+": character naturally returns to current normal animation after the cast");
                 Invoke(battle,"RegisterMartialArtActivation",id);
                 Check(battle.UltimateVisualSequence==sequence,id+": visual cooldown outlasts animation");
-                Set(battle,"nextUltimateVisualAt",Time.unscaledTime-.01f);
+                Set(battle,"nextUltimateVisualAt",Time.time-.01f);
                 Invoke(battle,"RegisterMartialArtActivation",id);Invoke(screen,"TrackUltimate");
                 Check(battle.UltimateVisualSequence==sequence+1 && screen.IsUltimatePlaying,
                     id+": next real activation can rearm after visual cooldown");

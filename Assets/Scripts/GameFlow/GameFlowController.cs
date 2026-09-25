@@ -74,6 +74,7 @@ namespace WuxiaRoguelite.GameFlow
 
         public GamePhase CurrentPhase { get; private set; } = GamePhase.Ready;
         public bool IsCharacterMenuPaused { get; private set; }
+        public bool IsDebugInfiniteTime { get; private set; }
         public bool IsBossTransitionPending { get; private set; }
         public bool IsMidBossTransitionPending { get; private set; }
         public bool IsBossIntroActive { get; private set; }
@@ -98,7 +99,7 @@ namespace WuxiaRoguelite.GameFlow
              ((CurrentPhase == GamePhase.MainMapRunning || CurrentPhase == GamePhase.NormalBattleRunning) &&
               MidBossCountdownRemaining <= midBossWarningDuration));
         public bool CanContinueToNextLevel =>
-            CurrentPhase == GamePhase.Result &&
+            !IsEndlessMode && CurrentPhase == GamePhase.Result &&
             (IsTutorialCompletionSummary ||
              (bossDefeated && UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == LevelSequence.LevelTwoSceneName));
         public bool IsGameCompleted =>
@@ -121,6 +122,7 @@ namespace WuxiaRoguelite.GameFlow
         }
 
         public string CurrentLevelDisplayName =>
+            IsEndlessMode ? $"{GameTextCatalog.EndlessModeName} · 第{EndlessRound}轮" :
             IsTutorialLevel ? $"关卡1 · {GameTextCatalog.TutorialLevelName}" :
             LevelSequence.IsLevelThreeScene ? $"关卡3 · {GameTextCatalog.BambooValleyLevelName}" :
             $"关卡2 · {GameTextCatalog.MainLevelName}";
@@ -272,6 +274,7 @@ namespace WuxiaRoguelite.GameFlow
                 battleManager.playerStats = playerStats;
             }
 
+            IsDebugInfiniteTime = false;
             mainTimeRemaining = mainTimeLimit;
             midBossBattleTime = 0f;
             bossBattleTime = 0f;
@@ -291,6 +294,7 @@ namespace WuxiaRoguelite.GameFlow
             }
             if (!IsTutorialLevel && LevelSequence.ConsumeAutoStartRequest())
             {
+                IsEndlessMode = LevelSequence.ConsumeEndlessModeRequest();
                 BeginLevelTwoAfterTransition();
                 return;
             }
@@ -318,7 +322,10 @@ namespace WuxiaRoguelite.GameFlow
 
             if (CurrentPhase == GamePhase.MainMapRunning || CurrentPhase == GamePhase.NormalBattleRunning)
             {
-                mainTimeRemaining -= Time.deltaTime;
+                if (!IsDebugInfiniteTime)
+                {
+                    mainTimeRemaining -= Time.deltaTime;
+                }
                 if (ShouldTriggerMidBoss())
                 {
                     if (CurrentPhase == GamePhase.NormalBattleRunning)
@@ -386,6 +393,7 @@ namespace WuxiaRoguelite.GameFlow
 
         public void StartRun()
         {
+            ResetEndlessRun();
             ResetRouteProgress();
             ResetTutorialLessons();
             if (battleManager != null)
@@ -398,6 +406,7 @@ namespace WuxiaRoguelite.GameFlow
             if (playerStats != null)
             {
                 playerStats.ResetRun();
+                ApplyEndlessProgression();
             }
 
             playerController?.ResetToSpawn();
@@ -408,6 +417,7 @@ namespace WuxiaRoguelite.GameFlow
                 encounter.ResetEncounter(rerollCaveContent: true);
             }
 
+            IsDebugInfiniteTime = false;
             mainTimeRemaining = mainTimeLimit;
             midBossBattleTime = 0f;
             bossBattleTime = 0f;
@@ -465,6 +475,7 @@ namespace WuxiaRoguelite.GameFlow
             }
 
             IsLevelSelectionOpen = false;
+            IsEndlessMode = false;
             launchTutorialAfterOpeningIntro = true;
             StartRun();
         }
@@ -501,6 +512,7 @@ namespace WuxiaRoguelite.GameFlow
             }
 
             IsTutorialNoticeActive = false;
+            IsDebugInfiniteTime = false;
             mainTimeRemaining = mainTimeLimit;
             tutorialTransitionPending = false;
             SetPhase(GamePhase.MainMapRunning);
@@ -544,6 +556,9 @@ namespace WuxiaRoguelite.GameFlow
         public void ReturnToMainMenu()
         {
             if (WuxiaRoguelite.UI.LevelLoadingScreen.IsLoading) return;
+            SaveEndlessRewards();
+            IsEndlessMode = false;
+            EndlessRound = 0;
             // A menu visit must not retain a gameplay scene and its serialized assets.
             if (!LevelSequence.IsMenuScene && Application.CanStreamedLevelBeLoaded(LevelSequence.MenuSceneName))
             {
@@ -575,6 +590,7 @@ namespace WuxiaRoguelite.GameFlow
                 encounter.ResetEncounter(rerollCaveContent: true);
             }
 
+            IsDebugInfiniteTime = false;
             mainTimeRemaining = mainTimeLimit;
             midBossBattleTime = 0f;
             bossBattleTime = 0f;
@@ -771,6 +787,20 @@ namespace WuxiaRoguelite.GameFlow
             statusMessage = "调试：获得 25 修为。";
         }
 
+        public void SetDebugInfiniteTime(bool enabled)
+        {
+            // Freeze only the map clock; combat, movement and Boss clocks keep running.
+            // An already expired clock or queued Boss transition cannot be rewound.
+            if (enabled && (mainTimeRemaining <= 0f || IsBossTransitionPending || IsMidBossTransitionPending))
+            {
+                statusMessage = "调试：强敌已到来，请重新开始后开启无限时间。";
+                return;
+            }
+
+            IsDebugInfiniteTime = enabled;
+            statusMessage = enabled ? "调试：无限时间已开启。" : "调试：无限时间已关闭。";
+        }
+
         public void AddDebugPower()
         {
             playerStats.runtimeStats.attack += 10f;
@@ -859,6 +889,7 @@ namespace WuxiaRoguelite.GameFlow
             }
 
             playerStats.killCount += 1;
+            RecordEndlessReward(pendingEnemyType == EncounterType.EliteEnemy ? EndlessReward.Elite : EndlessReward.Normal);
             bool gainedMomentumRank = playerStats.RegisterMapBattleVictory(
                 pendingEnemyType == EncounterType.EliteEnemy,
                 out float recoveredHealth);
@@ -961,6 +992,8 @@ namespace WuxiaRoguelite.GameFlow
                 return;
             }
 
+            enemy = enemy.Clone();
+            ApplyEndlessEnemy(enemy);
             enemy.displayName = string.IsNullOrEmpty(enemy.displayName) ? "守洞武人" : enemy.displayName;
             statusMessage = $"洞穴战斗：{enemy.displayName}。主地图倒数保持暂停。";
             battleManager.BeginBattle(enemy, playerWon =>
@@ -973,6 +1006,7 @@ namespace WuxiaRoguelite.GameFlow
                 }
 
                 playerStats.killCount += 1;
+                RecordEndlessReward(EndlessReward.Cave);
                 GiveRewards(Mathf.Max(25, cultivationReward), Mathf.Max(8, copperReward));
                 statusMessage = "洞穴战斗胜利，主地图倒数仍暂停。";
                 onComplete?.Invoke(true);
@@ -1098,6 +1132,7 @@ namespace WuxiaRoguelite.GameFlow
             pendingMidBoss = midBossStats.Clone();
             pendingMidBoss.bossTalent = MidBossTalent;
             if (HasRunChallenge) RunChallengeCatalog.ApplyBoss(pendingMidBoss, ChallengeRun.tier, ChallengeRun.approach, false);
+            ApplyEndlessEnemy(pendingMidBoss);
             pendingMidBoss.ResetHealth();
             SetPhase(GamePhase.MidBossBattle);
             statusMessage = $"中期战力检验：{midBossStats.displayName}镇守前路，主香暂停。";
@@ -1115,6 +1150,7 @@ namespace WuxiaRoguelite.GameFlow
 
             midBossDefeated = true;
             playerStats.killCount += 1;
+            RecordEndlessReward(EndlessReward.MidBoss);
             if (IsBossTransitionPending || mainTimeRemaining <= 0f)
             {
                 BeginBossBattle();
@@ -1153,6 +1189,7 @@ namespace WuxiaRoguelite.GameFlow
             pendingBoss = bossStats.Clone();
             pendingBoss.bossTalent = FinalBossTalent;
             if (HasRunChallenge) RunChallengeCatalog.ApplyBoss(pendingBoss, ChallengeRun.tier, ChallengeRun.approach, true);
+            ApplyEndlessEnemy(pendingBoss);
             pendingMidBoss = null;
             pendingBoss.ResetHealth();
             SetPhase(GamePhase.BossBattle);
@@ -1185,6 +1222,13 @@ namespace WuxiaRoguelite.GameFlow
 
         private void OnBossBattleFinished(bool playerWon)
         {
+            if (IsEndlessMode && playerWon)
+            {
+                playerStats.killCount += 1;
+                RecordEndlessReward(EndlessReward.Round);
+                BeginNextEndlessRound();
+                return;
+            }
             if (IsTutorialLevel && playerWon)
             {
                 CompleteTutorial();
@@ -1201,6 +1245,8 @@ namespace WuxiaRoguelite.GameFlow
         {
             playerStats.GainCopper(copperReward);
             bool leveledUp = playerStats.GainCultivation(cultivationReward);
+            // A long endless run can max every art. Keep XP/level gains without opening an empty modal.
+            if (leveledUp && IsEndlessMode && GetEligibleMartialArts().Count == 0) return false;
             if (leveledUp)
             {
                 EnterLevelUp();
@@ -1415,6 +1461,7 @@ namespace WuxiaRoguelite.GameFlow
 
         private void EndRun(bool victory, string reason)
         {
+            SaveEndlessRewards();
             IsChallengeBriefingActive = false;
             battleManager?.CaptureFinalEnemy();
             IsBossTransitionPending = false;
@@ -1433,7 +1480,7 @@ namespace WuxiaRoguelite.GameFlow
             IsTutorialCompletionSummary = false;
             bossDefeated = victory;
             SetPhase(GamePhase.Result);
-            statusMessage = reason;
+            statusMessage = IsEndlessMode ? $"{EndlessResultSummary} · {reason}" : reason;
         }
 
         private void MarkBossTransitionPending()
@@ -1484,6 +1531,7 @@ namespace WuxiaRoguelite.GameFlow
 
         private void BeginLevelTwoAfterTransition()
         {
+            ResetEndlessRun();
             ResetTutorialLessons();
             ResetRouteProgress();
             IsBossIntroActive = false;
@@ -1496,6 +1544,7 @@ namespace WuxiaRoguelite.GameFlow
 
             caveRoom?.ResetRoom();
             playerStats?.ResetRun();
+            ApplyEndlessProgression();
             playerController?.ResetToSpawn();
             cameraFollow?.ResetVision();
             foreach (EncounterTrigger encounter in FindObjectsByType<EncounterTrigger>(FindObjectsInactive.Include))
@@ -1503,6 +1552,7 @@ namespace WuxiaRoguelite.GameFlow
                 encounter.ResetEncounter(rerollCaveContent: true);
             }
 
+            IsDebugInfiniteTime = false;
             mainTimeRemaining = mainTimeLimit;
             midBossBattleTime = 0f;
             bossBattleTime = 0f;

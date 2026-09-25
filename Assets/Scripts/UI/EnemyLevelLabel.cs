@@ -18,6 +18,23 @@ namespace WuxiaRoguelite.UI
         private GUIStyle labelStyle;
         private GUIStyle shadowStyle;
         private GUIStyle edgeStyle;
+        private int cachedRound = -1, cachedLevel;
+        private RunChallengeState cachedChallenge;
+        private int DisplayLevel
+        {
+            get
+            {
+                var flow = GameFlowController.Instance;
+                if (flow == null || !flow.IsEndlessMode) return encounter.enemyStats.DisplayLevel;
+                if (cachedRound != flow.EndlessRound || cachedChallenge != flow.ChallengeRun)
+                {
+                    cachedRound = flow.EndlessRound;
+                    cachedChallenge = flow.ChallengeRun;
+                    cachedLevel = encounter.CreateEnemyStats().DisplayLevel;
+                }
+                return cachedLevel;
+            }
+        }
 
         private void Awake()
         {
@@ -83,7 +100,7 @@ namespace WuxiaRoguelite.UI
             string trait = WuxiaRoguelite.Battle.EnemyTraits.Label(encounter.Trait);
             float width = string.IsNullOrEmpty(trait) ? 52 : 164;
             Rect labelRect = new Rect(guiPoint.x - width / 2, guiPoint.y - 9f, width, 18f);
-            string levelText = $"{encounter.enemyStats.DisplayLevel}级" + (string.IsNullOrEmpty(trait) ? "" : " · " + trait);
+            string levelText = $"{DisplayLevel}级" + (string.IsNullOrEmpty(trait) ? "" : " · " + trait);
             Matrix4x4 originalGuiMatrix = ResponsiveGui.ApplyScale(guiScale);
             var bounty = gameFlow.HasRunChallenge ? gameFlow.ChallengeRun.Find(encounter) : null;
             if (bounty != null && !bounty.completed)
@@ -132,14 +149,15 @@ namespace WuxiaRoguelite.UI
             Vector2 markerPoint = WorldIndicatorUtility.GetClampedGuiPoint(
                 worldCamera, anchor, guiScale, out Vector2 direction);
             string arrow = WorldIndicatorUtility.DirectionArrow(direction);
-            string label = $"{arrow} {encounter.enemyStats.DisplayLevel}级  {Mathf.CeilToInt(playerDistance)}步";
+            int enemyLevel = DisplayLevel;
+            string label = $"{arrow} {enemyLevel}级  {Mathf.CeilToInt(playerDistance)}步";
             var flow = GameFlowController.Instance;
             if (flow != null && flow.HasRunChallenge && flow.ChallengeRun.Find(encounter) != null)
                 label = $"{arrow} 悬赏  {Mathf.CeilToInt(playerDistance)}步";
             Rect panel = new Rect(markerPoint.x - 54f, markerPoint.y - 13f, 108f, 26f);
 
             int playerLevel = playerStats != null ? playerStats.level : 1;
-            int levelDelta = encounter.enemyStats.DisplayLevel - playerLevel;
+            int levelDelta = enemyLevel - playerLevel;
             Color riskColor = levelDelta >= 2
                 ? new Color(1f, 0.38f, 0.32f, 0.96f)
                 : levelDelta == 1

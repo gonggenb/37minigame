@@ -13,7 +13,7 @@ namespace WuxiaRoguelite.UI
         private float ultimateStartedAt = -100f;
         private int currentUltimateIndex = -1;
         public string CurrentUltimateArtId => currentUltimateIndex < 0 ? null : MartialUltimateCatalog.ArtIds[currentUltimateIndex];
-        public float UltimateProgress => Mathf.Clamp01((Time.unscaledTime-ultimateStartedAt)/MartialUltimateCatalog.PresentationDuration);
+        public float UltimateProgress => Mathf.Clamp01((Time.time-ultimateStartedAt)/MartialUltimateCatalog.PresentationDuration);
         public bool IsUltimatePlaying => battleManager != null && battleManager.IsBattleActive &&
             currentUltimateIndex >= 0 && UltimateProgress < 1f;
         public bool IsUltimatePosePlaying => IsUltimatePlaying && HeroUltimateArt.Frames(currentUltimateIndex).Length == 8;
@@ -32,7 +32,7 @@ namespace WuxiaRoguelite.UI
             if (!battleManager.IsBattleActive || observedUltimateSequence == battleManager.UltimateVisualSequence) return;
             observedUltimateSequence = battleManager.UltimateVisualSequence;
             currentUltimateIndex = MartialUltimateCatalog.IndexOf(battleManager.LastUltimateArtId);
-            ultimateStartedAt = Time.unscaledTime;
+            ultimateStartedAt = Time.time;
             ClearHeroSkillVfx();
         }
 
@@ -71,7 +71,7 @@ namespace WuxiaRoguelite.UI
                 if (p>.18f) DrawUltimateRelease(localPlayer,localEnemy,from,to,foot,size,release,WithAlpha(tint,alpha));
                 // Boss telegraphs retain the shared upper-stage title space.
                 float bossBannerAge=battleManager.IsBossBattle && battleManager.IsFinalBossActionActive
-                    ? battleManager.FinalBossActionElapsed : Time.unscaledTime-battleManager.LastBossSkillTriggeredAt;
+                    ? battleManager.FinalBossActionElapsed : Time.time-battleManager.LastBossSkillTriggeredAt;
                 bool bossBanner=battleManager.IsBossEncounter && battleManager.LastBossSkill!=BossSkillId.None &&
                     bossBannerAge>=0f && bossBannerAge<=1.15f;
                 if (p<.66f && !bossBanner)
@@ -162,10 +162,14 @@ namespace WuxiaRoguelite.UI
                     DrawHeroArc(from,size*.36f,size*.36f,-140f+p*110f,30f+p*110f,5f,WithAlpha(tint,tint.a*burst));
                     break;
                 case 4:
-                    DrawSlashTrail(enemy,p,tint,-48f,2.1f);
-                    if(p>.20f)DrawSlashTrail(enemy,(p-.20f)/.8f,core,42f,1.8f);
-                    DrawHeroArc(to,size*(.18f+p*.32f),size*(.12f+p*.25f),-130f+p*80f,100f+p*80f,6f,
-                        WithAlpha(tint,tint.a*burst*.72f));
+                    // Reuse the authored cleave instead of oversized straight crossbars.
+                    // Keep the blood wheel at the caster, with one focused impact on the target.
+                    DrawHeroExternalSprite(HeroAttackForm.BloodCleave, to,
+                        Mathf.Clamp(enemy.width * .92f, 90f, 190f), p,
+                        new Color(1f, .72f, .65f, tint.a));
+                    DrawHeroArc(to, enemy.width * (.15f + p * .16f), enemy.height * (.12f + p * .13f),
+                        -130f + p * 80f, 100f + p * 80f, 3f,
+                        WithAlpha(tint, tint.a * burst * .48f));
                     break;
             }
         }

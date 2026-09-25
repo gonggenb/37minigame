@@ -15,7 +15,8 @@ namespace WuxiaRoguelite.UI
         private readonly System.Random heroBasicRandom = new System.Random();
         public int CurrentHeroBasicVariant { get; private set; } = -1;
         public HeroAttackForm CurrentHeroAttackForm { get; private set; }
-        public float HeroAttackProgress => Mathf.Clamp01((Time.unscaledTime - heroAttackStartedAt) / heroAttackDuration);
+        // Share Unity game time with combat: settings pause must freeze every visual layer.
+        public float HeroAttackProgress => Mathf.Clamp01((Time.time - heroAttackStartedAt) / heroAttackDuration);
         public bool IsHeroAttackPlaying => battleManager != null && battleManager.IsBattleActive && HeroAttackProgress < 1f;
 
         private void Awake()
@@ -23,6 +24,7 @@ namespace WuxiaRoguelite.UI
             // BootMenu reuses the dialogue view without loading combat animation strips.
             if (gameObject.scene.name == GameFlow.LevelSequence.MenuSceneName) return;
             HeroExternalVfxArt.Preload();
+            MartialProcVfxArt.Preload();
             Sprite[] basic = HeroAttackArt.Frames(HeroAttackForm.Basic);
             if (basic.Length == 8)
             {
@@ -57,7 +59,7 @@ namespace WuxiaRoguelite.UI
             // Match faster builds without delaying combat or queueing stale poses.
             float interval = battleManager.PlayerAttackCooldownDuration / Mathf.Max(0.01f, battleManager.BattleSpeedMultiplier);
             heroAttackDuration = Mathf.Clamp(interval * 0.90f, 0.14f, HeroAttackArt.Duration(CurrentHeroAttackForm));
-            heroAttackStartedAt = Time.unscaledTime;
+            heroAttackStartedAt = Time.time;
             if (!IsUltimatePosePlaying) QueueHeroSkillVfx(battleManager.PlayerAttackVisualCues, heroAttackDuration);
         }
 

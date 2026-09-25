@@ -24,6 +24,7 @@ namespace WuxiaRoguelite.Battle
         BloodBurst = 1 << 15,
         Foxfire = 1 << 16,
         MountainBreaker = 1 << 17,
-        DoubleCleave = 1 << 18
+        DoubleCleave = 1 << 18,
+        LifeDrain = 1 << 19
     }
 }

@@ -1,0 +1,124 @@
+{
+  "status": "static concept checks only; no Unity integration",
+  "images": [
+    {
+      "file": "raw/A1_armor_pierce.png",
+      "dimensions": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "transparent_fraction": 0.8718,
+      "opaque_fraction": 0.0005,
+      "alpha_range": [
+        0,
+        255
+      ]
+    },
+    {
+      "file": "raw/A2_armor_crush.png",
+      "dimensions": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "transparent_fraction": 0.7512,
+      "opaque_fraction": 0.0004,
+      "alpha_range": [
+        0,
+        255
+      ]
+    },
+    {
+      "file": "raw/B1_swift_swallow.png",
+      "dimensions": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "transparent_fraction": 0.8294,
+      "opaque_fraction": 0.0013,
+      "alpha_range": [
+        0,
+        255
+      ]
+    },
+    {
+      "file": "raw/B2_swift_scissor.png",
+      "dimensions": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "transparent_fraction": 0.8493,
+      "opaque_fraction": 0.0007,
+      "alpha_range": [
+        0,
+        255
+      ]
+    },
+    {
+      "file": "raw/C1_retaliation_wave.png",
+      "dimensions": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "transparent_fraction": 0.898,
+      "opaque_fraction": 0.0006,
+      "alpha_range": [
+        0,
+        255
+      ]
+    },
+    {
+      "file": "raw/C2_retaliation_petals.png",
+      "dimensions": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "transparent_fraction": 0.8403,
+      "opaque_fraction": 0.0012,
+      "alpha_range": [
+        0,
+        255
+      ]
+    },
+    {
+      "file": "raw/D1_lifesteal_beads.png",
+      "dimensions": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "transparent_fraction": 0.9607,
+      "opaque_fraction": 0.0003,
+      "alpha_range": [
+        0,
+        255
+      ]
+    },
+    {
+      "file": "raw/D2_lifesteal_silk.png",
+      "dimensions": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "transparent_fraction": 0.9421,
+      "opaque_fraction": 0.0002,
+      "alpha_range": [
+        0,
+        255
+      ]
+    }
+  ],
+  "browser_checks": [
+    "8 images decode",
+    "8 candidate selections",
+    "96 px slider update",
+    "visibility toggle"
+  ],
+  "visual_review": "8 landscape + portrait static compositions reviewed"
+}

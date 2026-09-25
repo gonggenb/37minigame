@@ -43,11 +43,11 @@ namespace WuxiaRoguelite.UI
             var badge = ChallengeArt.Get("challenge_badge");
             if (badge != null) GUI.DrawTexture(new Rect(panel.x + 20, panel.y + 16, 54, 54), badge, ScaleMode.ScaleToFit, true);
             WuxiaUiComponents.Text(new Rect(panel.x + 86, panel.y + 18, panel.width - 106, 32),
-                opening ? "入局前 · 先观敌势" : "本局情报与悬赏", 25, Paper);
+                gameFlow.IsEndlessMode ? gameFlow.EndlessRoundLabel : opening ? "入局前 · 先观敌势" : "本局情报与悬赏", 25, Paper);
             WuxiaUiComponents.Text(new Rect(panel.x + 86, panel.y + 50, panel.width - 106, 22),
-                opening ? "选武学后开始六十息 · 逐档通关解锁" : "查看期间暂停 · 关闭后继续探索", 13, Muted);
+                gameFlow.IsEndlessMode ? "每轮六十息 · 胜后保留成长继续 · 死亡结束" : opening ? "选武学后开始六十息 · 逐档通关解锁" : "查看期间暂停 · 关闭后继续探索", 13, Muted);
             float tileWidth = (panel.width - 56) / 3;
-            for (int i = 0; i < RunChallengeCatalog.TierCount; i++)
+            for (int i = 0; !gameFlow.IsEndlessMode && i < RunChallengeCatalog.TierCount; i++)
             {
                 bool unlocked = i <= ChallengeProgress.HighestUnlocked;
                 GUI.enabled = opening && unlocked;
@@ -55,6 +55,9 @@ namespace WuxiaRoguelite.UI
                 if (GUI.Button(new Rect(panel.x + 20 + i * (tileWidth + 8), panel.y + 84, tileWidth, portrait ? PortraitUiLayout.ActionHeight : 46),
                     label, portrait ? WuxiaUiComponents.TouchTab(i == run.tier) : i == run.tier ? activeTabStyle : actionButtonStyle)) gameFlow.SelectChallengeTier(i);
             }
+            if (gameFlow.IsEndlessMode)
+                WuxiaUiComponents.Text(new Rect(panel.x + 24, panel.y + 84, panel.width - 48, portrait ? 68 : 46),
+                    "每轮气血×1.30 · 攻击×1.20\n防御×1.12+1 · 攻速递增（最高五倍）", 14, Gold, TextAnchor.UpperLeft, true);
             GUI.enabled = true;
             WuxiaUiComponents.Text(new Rect(panel.x + 24, panel.y + (portrait ? 160 : 140), panel.width - 48, 76),
                 RunChallengeCatalog.TierDescription(run.tier) + "\n中期：" + BossTalentCatalog.Summary(gameFlow.MidBossTalent) +

@@ -92,6 +92,9 @@ namespace WuxiaRoguelite.Map
             CombatantStats clone = enemyStats.Clone();
             clone.enemyTrait = Trait;
             GameFlowController.Instance?.ApplyChallengeEncounter(this, clone);
+            // Cave opponents are scaled after fallback/trial tuning in BeginCaveBattle.
+            if (encounterType == EncounterType.NormalEnemy || encounterType == EncounterType.EliteEnemy)
+                GameFlowController.Instance?.ApplyEndlessEnemy(clone);
             clone.ResetHealth();
             return clone;
         }

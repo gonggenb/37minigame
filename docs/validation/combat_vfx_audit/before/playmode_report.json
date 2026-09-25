@@ -1,0 +1,17 @@
+{
+    "success": false,
+    "error": "System.Exception: speed buff emits while moving False\n  at CombatVfxAuditProbe.Check (System.Boolean passed, System.String message) [0x00016] in /Users/gongyuyang/Documents/37minigame/Assets/Scripts/Debug/CombatVfxAuditProbe.cs:110 \n  at CombatVfxAuditProbe+<Suite>d__38.MoveNext () [0x00e2f] in /Users/gongyuyang/Documents/37minigame/Assets/Scripts/Debug/CombatVfxAuditProbe.cs:275 \n  at CombatVfxAuditProbe+<Start>d__20.MoveNext () [0x0007a] in /Users/gongyuyang/Documents/37minigame/Assets/Scripts/Debug/CombatVfxAuditProbe.cs:77 ",
+    "checks": [
+        "resume completes sword_landscape",
+        "resume completes sword_portrait"
+    ],
+    "runtimeErrors": [],
+    "findings": [
+        "pause freezes hero pose and emitted sword_landscape",
+        "pause freezes ultimate pose and backdrop_landscape",
+        "pause freezes hero pose and emitted sword_portrait",
+        "pause freezes ultimate pose and backdrop_portrait"
+    ],
+    "capturedAt": "2026-09-25T08:17:35.2116350Z",
+    "scope": "Unity Editor Play Mode with controlled inputs, collision isolation and combat fixtures. Device/touch feel and final art approval remain separate."
+}

@@ -13,8 +13,9 @@ namespace WuxiaRoguelite.UI
             FillRect(new Rect(0, 0, ResponsiveGui.Width, ResponsiveGui.Height), WithAlpha(WuxiaUiTheme.BackgroundInk, .94f));
             Rect p = PortraitUiLayout.Modal(ResponsiveGui.IsPortrait ? 790 : 490, ResponsiveGui.IsPortrait ? 492 : 660);
             bool won = gameFlow.IsTutorialCompletionSummary || gameFlow.bossDefeated;
+            bool showChallengeActions = gameFlow.HasRunChallenge && !gameFlow.IsEndlessMode;
             DrawPanel(p, Ink, won ? Gold : Crimson, WuxiaPanelKind.Boss);
-            WuxiaUiComponents.Text(new Rect(p.x + 24, p.y + 14, p.width - 48, 38), gameFlow.IsGameCompleted ? GameTextCatalog.GameCompletedTitle + " · 此行战果" : won ? "闯关功成 · 此行战果" : "江湖路断 · 此行战果", 26);
+            WuxiaUiComponents.Text(new Rect(p.x + 24, p.y + 14, p.width - 48, 38), gameFlow.IsEndlessMode ? GameTextCatalog.EndlessModeName + " · 此行战果" : gameFlow.IsGameCompleted ? GameTextCatalog.GameCompletedTitle + " · 此行战果" : won ? "闯关功成 · 此行战果" : "江湖路断 · 此行战果", 26);
             WuxiaUiComponents.Text(new Rect(p.x + 24, p.y + 54, p.width - 48, 34), string.IsNullOrEmpty(gameFlow.ChallengeResult) ? gameFlow.statusMessage : gameFlow.ChallengeResult, 15,
                 string.IsNullOrEmpty(gameFlow.ChallengeResult) ? Muted : Gold, TextAnchor.UpperLeft, true);
             Rect view = new Rect(p.x + 24, p.y + 96, p.width - 48, Mathf.Max(60, p.height - (ResponsiveGui.IsPortrait ? 272 : 240)));
@@ -22,7 +23,10 @@ namespace WuxiaRoguelite.UI
             float contentHeight = 280 + playerStats.learnedMartialArts.Count * 46 + (gameFlow.HasRouteSpecialties ? 150 : 0);
             if (gameFlow.HasRunChallenge) contentHeight += 144;
             if (gameFlow.HasBossTalents) contentHeight += 84;
+            if (gameFlow.IsEndlessMode) contentHeight += 144;
             reviewScroll = GUI.BeginScrollView(view, reviewScroll, new Rect(0, 0, width, Mathf.Max(view.height, contentHeight)));
+            if (gameFlow.IsEndlessMode) DrawEndlessRewardSummary(width);
+            GUI.BeginGroup(new Rect(0, gameFlow.IsEndlessMode ? 144 : 0, width, contentHeight));
             var review = gameFlow.battleManager.RunReview;
             WuxiaUiComponents.Text(new Rect(0, 0, width, 28), $"等级 {playerStats.level} · 击杀 {playerStats.killCount} · 洞穴 {playerStats.caveEntries} · 决战 {gameFlow.bossBattleTime:0.0}秒", 15);
             WuxiaUiComponents.Text(new Rect(0, 36, width, 24), "本局输出前三项（含破盾）", 17, Gold);
@@ -65,10 +69,11 @@ namespace WuxiaRoguelite.UI
                 WuxiaUiComponents.Text(new Rect(50, y, width - 50, 38), $"{id} · {RankName(playerStats.GetMartialArtRank(id))}", 16);
                 y += 46;
             }
+            GUI.EndGroup();
             GUI.EndScrollView();
-            float nextWidth = gameFlow.HasRunChallenge ? (p.width - 60) / 2 : p.width - 48;
+            float nextWidth = showChallengeActions ? (p.width - 60) / 2 : p.width - 48;
             float nextX = p.x + 24;
-            if (gameFlow.HasRunChallenge)
+            if (showChallengeActions)
             {
                 int tier = gameFlow.ChallengeRun.tier;
                 GUI.enabled = won && tier < 2 && tier + 1 <= GameFlow.ChallengeProgress.HighestUnlocked;
@@ -81,16 +86,17 @@ namespace WuxiaRoguelite.UI
                 }
                 nextX += nextWidth + 12;
             }
-            GUI.enabled = gameFlow.CanContinueToNextLevel || gameFlow.IsGameCompleted;
-            if (GUI.Button(ResponsiveGui.IsPortrait ? PortraitUiLayout.BottomAction(p, 1, nextX > p.x + 24 ? 1 : 0, gameFlow.HasRunChallenge ? 2 : 1) : new Rect(nextX, p.yMax - 130, nextWidth, 48),
-                gameFlow.IsGameCompleted ? GameTextCatalog.CreditsTitle : gameFlow.CanContinueToNextLevel ? "下一关" : "下一关尚未开放", ResponsiveGui.IsPortrait ? WuxiaUiComponents.TouchButton(true) : mainMenuButtonStyle))
+            GUI.enabled = gameFlow.IsEndlessMode || gameFlow.CanContinueToNextLevel || gameFlow.IsGameCompleted;
+            if (GUI.Button(ResponsiveGui.IsPortrait ? PortraitUiLayout.BottomAction(p, 1, nextX > p.x + 24 ? 1 : 0, showChallengeActions ? 2 : 1) : new Rect(nextX, p.yMax - 130, nextWidth, 48),
+                gameFlow.IsEndlessMode ? EndlessProgressionCatalog.Title + " · 兑换与升级" : gameFlow.IsGameCompleted ? GameTextCatalog.CreditsTitle : gameFlow.CanContinueToNextLevel ? "下一关" : "下一关尚未开放", ResponsiveGui.IsPortrait ? WuxiaUiComponents.TouchButton(true) : mainMenuButtonStyle))
             {
-                if (gameFlow.IsGameCompleted) gameFlow.ShowEndingCredits();
+                if (gameFlow.IsEndlessMode) OpenEndlessProgression();
+                else if (gameFlow.IsGameCompleted) gameFlow.ShowEndingCredits();
                 else gameFlow.ContinueToNextLevel();
             }
             GUI.enabled = true;
             float buttonWidth = (p.width - 60) / 2;
-            if (GUI.Button(ResponsiveGui.IsPortrait ? PortraitUiLayout.BottomAction(p, 0, 0, 2) : new Rect(p.x + 24, p.yMax - 70, buttonWidth, 46), GameTextCatalog.RetryCurrentLevel, WuxiaUiComponents.TouchButton()))
+            if (GUI.Button(ResponsiveGui.IsPortrait ? PortraitUiLayout.BottomAction(p, 0, 0, 2) : new Rect(p.x + 24, p.yMax - 70, buttonWidth, 46), gameFlow.IsEndlessMode ? "从第一轮再战" : GameTextCatalog.RetryCurrentLevel, WuxiaUiComponents.TouchButton()))
             {
                 reviewScroll = Vector2.zero; portraitSelectedArt = null;
                 gameFlow.RetryCurrentLevel();

@@ -43,13 +43,39 @@ namespace WuxiaRoguelite.UI
                 ? battleManager.MidBossImpactIndex * 3 + Mathf.Min(2, Mathf.FloorToInt(age / duration * 3f))
                 : Mathf.Min(frames.Length - 1, Mathf.FloorToInt(age / duration * frames.Length));
             if (index >= frames.Length) return;
-            float size = Mathf.Max(playerRect.width, enemyRect.width) * (doubleCleave ? 1.45f : 1.72f);
-            Vector2 center = new Vector2(
-                Mathf.Lerp(enemyRect.center.x, playerRect.center.x, 0.52f),
-                Mathf.Lerp(enemyRect.yMax, playerRect.yMax, 0.5f) - size * 0.34f);
-            DrawEffectSprite(new Rect(center.x - size * 0.5f, center.y - size * 0.5f, size, size),
-                frames[index], new Color(1f, 1f, 1f, 1f - age / duration * 0.42f),
-                ShouldFlipDirectionalEffect(enemyRect, playerRect, sourceFacesLeft: true));
+            float size = Mathf.Max(playerRect.width, enemyRect.width) * (doubleCleave ? 1.12f : 1.20f);
+            bool flip = ShouldFlipDirectionalEffect(enemyRect, playerRect, sourceFacesLeft: doubleCleave);
+            Vector2 center;
+            if (doubleCleave)
+            {
+                center = new Vector2(Mathf.Lerp(enemyRect.center.x, playerRect.center.x, .60f),
+                    playerRect.y + playerRect.height * .57f);
+            }
+            else
+            {
+                // The authored contact point moves inside the six cells. Pin that point
+                // (not the transparent cell center) to the floor in front of the player.
+                Vector2 contact = MountainBreakerContact(index);
+                if (flip) contact.x = 1f - contact.x;
+                Vector2 groundHit = new Vector2(playerRect.center.x + playerRect.width * .18f,
+                    playerRect.y + playerRect.height * .875f);
+                center = groundHit - (contact - Vector2.one * .5f) * size;
+            }
+            DrawEffectSprite(new Rect(center.x - size * .5f, center.y - size * .5f, size, size),
+                frames[index], new Color(1f, 1f, 1f, 1f - age / duration * .55f), flip);
+        }
+
+        private static Vector2 MountainBreakerContact(int frame)
+        {
+            return frame switch
+            {
+                0 => new Vector2(128f, 138f) / 256f,
+                1 => new Vector2(128f, 154f) / 256f,
+                2 => new Vector2(171f, 161f) / 256f,
+                3 => new Vector2(207f, 173f) / 256f,
+                4 => new Vector2(182f, 166f) / 256f,
+                _ => new Vector2(154f, 152f) / 256f
+            };
         }
 
         private void DrawMidBossWard(Rect enemyRect)
@@ -71,7 +97,8 @@ namespace WuxiaRoguelite.UI
             }
             else return;
             float size = enemyRect.width * 0.74f;
-            float foot = enemyRect.y + enemyRect.height * 0.875f;
+            // This boss uses legacy bottom-edge feet, unlike the fox and hero strips.
+            float foot = enemyRect.yMax;
             DrawEffectSprite(new Rect(enemyRect.center.x - size * 0.5f, foot - size * 0.94f, size, size),
                 ironGuardEffectFrames[frame], new Color(1f, 1f, 1f, alpha));
         }

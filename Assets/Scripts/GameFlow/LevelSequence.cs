@@ -21,12 +21,14 @@ namespace WuxiaRoguelite.GameFlow
         private const string LevelTwoCompletedKey = "WuxiaRoguelite.LevelTwoCompleted.v1";
         private static string autoStartScene;
         private static bool showSelectionOnMenu;
+        private static bool pendingEndlessMode;
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
         private static void ResetSession()
         {
             autoStartScene = null;
             showSelectionOnMenu = false;
+            pendingEndlessMode = false;
         }
 
         public static bool IsTutorialScene =>
@@ -74,6 +76,20 @@ namespace WuxiaRoguelite.GameFlow
             Load(LevelTwoSceneName, GameTextCatalog.MainLevelName, true);
         }
 
+        public static void LoadEndlessMode()
+        {
+            if (!TutorialCompleted) return;
+            Load(LevelTwoSceneName, GameTextCatalog.EndlessModeName, true,
+                "每轮六十息 · 击败强敌后继续 · 直到气血耗尽", endless: true);
+        }
+
+        public static bool ConsumeEndlessModeRequest()
+        {
+            bool endless = pendingEndlessMode && SceneManager.GetActiveScene().name == LevelTwoSceneName;
+            pendingEndlessMode = false;
+            return endless;
+        }
+
         public static void LoadLevelSelection()
         {
             LoadMainMenu(true);
@@ -96,6 +112,7 @@ namespace WuxiaRoguelite.GameFlow
         public static void CancelPendingRequest()
         {
             autoStartScene = null;
+            pendingEndlessMode = false;
             showSelectionOnMenu = false;
         }
 
@@ -105,12 +122,13 @@ namespace WuxiaRoguelite.GameFlow
             Load(LevelThreeSceneName, GameTextCatalog.BambooValleyLevelName, true);
         }
 
-        private static void Load(string scene, string title, bool startRun, string subtitle = null)
+        private static void Load(string scene, string title, bool startRun, string subtitle = null, bool endless = false)
         {
             // Reject duplicate requests before they can overwrite the destination intent.
             if (LevelLoadingScreen.IsLoading) return;
             autoStartScene = startRun ? scene : null;
-            if (!LevelLoadingScreen.Load(scene, title, subtitle)) autoStartScene = null;
+            pendingEndlessMode = endless;
+            if (!LevelLoadingScreen.Load(scene, title, subtitle)) CancelPendingRequest();
         }
 
         /// <summary>

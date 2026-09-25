@@ -22,13 +22,13 @@ namespace WuxiaRoguelite.Battle
         {
             if (!IsBattleActive || playerStats == null || currentEnemy == null ||
                 !MartialUltimateCatalog.IsEligible(artId, playerStats.GetMartialArtRank(artId)) ||
-                Time.unscaledTime < nextUltimateVisualAt) return;
+                Time.time < nextUltimateVisualAt) return;
 
             // A shared visual cooldown prevents simultaneous builds from covering the
             // battlefield repeatedly. Actual skill effects continue at their normal rate.
             LastUltimateArtId = artId;
             UltimateVisualSequence++;
-            nextUltimateVisualAt = Time.unscaledTime + MartialUltimateCatalog.PresentationCooldown;
+            nextUltimateVisualAt = Time.time + MartialUltimateCatalog.PresentationCooldown;
         }
     }
 }

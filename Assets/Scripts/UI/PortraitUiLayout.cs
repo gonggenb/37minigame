@@ -79,7 +79,7 @@ namespace WuxiaRoguelite.UI
         public static Color TimeColor(float ratio) => ratio <= 1f / 3f ? WuxiaUiTheme.Danger :
             ratio <= 2f / 3f ? WuxiaUiTheme.Brass : WuxiaUiTheme.Jade;
 
-        public static void Timer(Rect rect, float seconds, float limit, bool paused)
+        public static void Timer(Rect rect, float seconds, float limit, bool paused, string caption = null)
         {
             float ratio = Mathf.Clamp01(seconds / Mathf.Max(1f, limit));
             Color accent = paused ? WuxiaUiTheme.Paused : TimeColor(ratio);
@@ -110,7 +110,7 @@ namespace WuxiaRoguelite.UI
                 rect.height * 0.43f), Mathf.CeilToInt(seconds).ToString("00"),
                 Mathf.RoundToInt(rect.width * 0.33f), WuxiaUiTheme.TextPrimary, TextAnchor.MiddleCenter);
             Text(new Rect(rect.x + 12, rect.y + rect.height * 0.64f, rect.width - 24, 18),
-                paused ? "暂停" : "秒", 12, accent, TextAnchor.MiddleCenter);
+                paused ? "暂停" : caption ?? "秒", 12, accent, TextAnchor.MiddleCenter);
         }
 
         internal static Matrix4x4 TimerTickMatrix(Matrix4x4 parent, Vector2 center, int tick)

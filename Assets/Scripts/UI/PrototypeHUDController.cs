@@ -365,6 +365,11 @@ namespace WuxiaRoguelite.UI
                     finally { GUI.enabled = enabled; }
                     return;
                 }
+                if (endlessProgressionOpen)
+                {
+                    if (gameFlow.CanManageEndlessProgression) { DrawEndlessProgression(); return; }
+                    endlessProgressionOpen = false;
+                }
                 if (gameFlow.IsLevelTwoDifficultyNoticeActive)
                 {
                     DrawLevelTwoDifficultyNotice();
@@ -888,7 +893,7 @@ namespace WuxiaRoguelite.UI
             ResponsiveGui.DrawSingleLineLabel(
                 new Rect(dial.x + 8f, dial.y + (portraitLayout ? 7f : 10f),
                     dial.width - 16f, 15f),
-                paused ? "主时间暂停" : "江湖时限", timerCaptionStyle, 8);
+                gameFlow.IsDebugInfiniteTime ? "GM无限时间" : paused ? "主时间暂停" : gameFlow.IsEndlessMode ? $"第{gameFlow.EndlessRound}轮" : "江湖时限", timerCaptionStyle, 8);
             ResponsiveGui.DrawSingleLineLabel(
                 new Rect(dial.x + 8f, dial.yMax - (portraitLayout ? 19f : 25f),
                     dial.width - 16f, 13f),
@@ -1129,7 +1134,7 @@ namespace WuxiaRoguelite.UI
 
             float activationAge = battleManager == null
                 ? 100f
-                : Time.unscaledTime - battleManager.GetMartialArtLastActivationTime(artId);
+                : Time.time - battleManager.GetMartialArtLastActivationTime(artId);
             bool highlighted = activationAge >= 0f && activationAge < SkillReadyHighlightDuration;
             if (highlighted)
             {
@@ -2122,7 +2127,7 @@ namespace WuxiaRoguelite.UI
             bool bossActive = gameFlow.CurrentPhase == GamePhase.BossBattle &&
                               gameFlow.battleManager != null &&
                               gameFlow.battleManager.IsBattleActive;
-            Rect panel = new Rect(safe.x + 14f, safe.y + 158f, 180f, bossActive ? 302f : 238f);
+            Rect panel = new Rect(safe.x + 14f, safe.y + 158f, 180f, bossActive ? 354f : 290f);
             DrawPanel(panel, Ink, new Color(0.55f, 0.55f, 0.55f));
             if (GUI.Button(new Rect(panel.x + 8f, panel.y + 8f, panel.width - 16f, 26f), "重新开始", actionButtonStyle)) gameFlow.StartRun();
             if (GUI.Button(new Rect(panel.x + 8f, panel.y + 40f, panel.width - 16f, 26f), "增加修为", actionButtonStyle)) gameFlow.AddDebugCultivation();
@@ -2131,11 +2136,16 @@ namespace WuxiaRoguelite.UI
             if (GUI.Button(new Rect(panel.x + 8f, panel.y + 136f, panel.width - 16f, 26f), "敌人洞穴", actionButtonStyle)) gameFlow.DebugEnterCave(CaveContentType.Enemy);
             if (GUI.Button(new Rect(panel.x + 8f, panel.y + 168f, panel.width - 16f, 26f), "商人洞穴", actionButtonStyle)) gameFlow.DebugEnterCave(CaveContentType.Merchant);
             if (GUI.Button(new Rect(panel.x + 8f, panel.y + 200f, panel.width - 16f, 26f), "宝箱洞穴", actionButtonStyle)) gameFlow.DebugEnterCave(CaveContentType.Treasure);
-            if (bossActive && GUI.Button(new Rect(panel.x + 8f, panel.y + 232f, panel.width - 16f, 26f), "Boss 至 70%", actionButtonStyle))
+            if (GUI.Button(new Rect(panel.x + 8f, panel.y + 232f, panel.width - 16f, 44f),
+                    gameFlow.IsDebugInfiniteTime ? "无限时间：开" : "无限时间：关", actionButtonStyle))
+            {
+                gameFlow.SetDebugInfiniteTime(!gameFlow.IsDebugInfiniteTime);
+            }
+            if (bossActive && GUI.Button(new Rect(panel.x + 8f, panel.y + 284f, panel.width - 16f, 26f), "Boss 至 70%", actionButtonStyle))
             {
                 gameFlow.battleManager.DebugSetBossHealthRatio(BossV2Tuning.PhaseTwoHealthRatio);
             }
-            if (bossActive && GUI.Button(new Rect(panel.x + 8f, panel.y + 264f, panel.width - 16f, 26f), "Boss 至 35%", actionButtonStyle))
+            if (bossActive && GUI.Button(new Rect(panel.x + 8f, panel.y + 316f, panel.width - 16f, 26f), "Boss 至 35%", actionButtonStyle))
             {
                 gameFlow.battleManager.DebugSetBossHealthRatio(BossV2Tuning.PhaseThreeHealthRatio);
             }

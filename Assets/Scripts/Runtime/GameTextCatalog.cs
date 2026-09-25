@@ -6,6 +6,7 @@ namespace WuxiaRoguelite.Runtime
     /// </summary>
     public static class GameTextCatalog
     {
+        public const string EndlessModeName = "无尽模式";
         public const string UltimateTierName = "至高绝学";
         public const string ChallengeTraining = "历练";
         public const string ChallengeDangerous = "险境";

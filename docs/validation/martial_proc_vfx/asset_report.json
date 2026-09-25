@@ -1,0 +1,208 @@
+{
+  "frameSize": 256,
+  "framesPerClip": 6,
+  "pivot": [
+    0.5,
+    0.5
+  ],
+  "ppu": 256,
+  "normalization": "3x2 equal cells; common 224px scale centered in 256px; nearest neighbor; alpha preserved",
+  "clips": [
+    {
+      "id": "armor_break",
+      "source": "ArtSource/MartialProcVfx/raw/armor_break.png",
+      "output": "spr_vfx_proc_armor_break_6f_v01.png",
+      "frames": [
+        {
+          "frame": 0,
+          "transparent": 246832,
+          "visible": 9141,
+          "clippedEdgePixels": 0,
+          "sha256": "ea47ff3d7b40d8e850f4de6f568bf07e1c9d3eb27938e93a0dcd724b08b0ae89"
+        },
+        {
+          "frame": 1,
+          "transparent": 229864,
+          "visible": 21032,
+          "clippedEdgePixels": 0,
+          "sha256": "eadcf0a3880e218b41fd6d2291bebee6eeecf4119f9c0fa120f1ac9dca09061b"
+        },
+        {
+          "frame": 2,
+          "transparent": 218138,
+          "visible": 27919,
+          "clippedEdgePixels": 0,
+          "sha256": "bdaba58b1ba6bb36974d9248f1b82af31f1028da221d860b5860912f01a4a550"
+        },
+        {
+          "frame": 3,
+          "transparent": 235025,
+          "visible": 16618,
+          "clippedEdgePixels": 0,
+          "sha256": "b748d5d3c71741925643275b956fc0559ab22414bfaa8543a78e9773918b8213"
+        },
+        {
+          "frame": 4,
+          "transparent": 246578,
+          "visible": 7708,
+          "clippedEdgePixels": 0,
+          "sha256": "d084a0210bb751dcc97566b057962a429359af5964f530efd25a54d5041e96e7"
+        },
+        {
+          "frame": 5,
+          "transparent": 260048,
+          "visible": 713,
+          "clippedEdgePixels": 0,
+          "sha256": "c978e4254001549eea381c1cb37442f437e265e726295105b6132d44833e040c"
+        }
+      ]
+    },
+    {
+      "id": "swift_combo",
+      "source": "ArtSource/MartialProcVfx/raw/swift_combo.png",
+      "output": "spr_vfx_proc_swift_combo_6f_v01.png",
+      "frames": [
+        {
+          "frame": 0,
+          "transparent": 250600,
+          "visible": 5811,
+          "clippedEdgePixels": 0,
+          "sha256": "93b1a460102c93f7065b89208ac2761a421b0d9f56bfa55e21723c9e97cbaa4f"
+        },
+        {
+          "frame": 1,
+          "transparent": 226643,
+          "visible": 23450,
+          "clippedEdgePixels": 0,
+          "sha256": "dab1e15ee452e0764ba74827f8121f4007a6b2b13b7dbeee3b75ad6bf6315525"
+        },
+        {
+          "frame": 2,
+          "transparent": 201617,
+          "visible": 42457,
+          "clippedEdgePixels": 0,
+          "sha256": "2d9ecd5aed600d87c60d154aa72fb70242a5604f50f34dd6d6b298fc776f087f"
+        },
+        {
+          "frame": 3,
+          "transparent": 195248,
+          "visible": 47242,
+          "clippedEdgePixels": 0,
+          "sha256": "7e325980d06d4f274044c43dc01ba9cb63773a0bde06c34f3cdd85c8455d99b8"
+        },
+        {
+          "frame": 4,
+          "transparent": 223787,
+          "visible": 22403,
+          "clippedEdgePixels": 0,
+          "sha256": "6888222791088d6574a0835335b6e6b48cf0b348f67e9a5afff035fbd7654212"
+        },
+        {
+          "frame": 5,
+          "transparent": 253554,
+          "visible": 2542,
+          "clippedEdgePixels": 0,
+          "sha256": "1ce0188ec94d21598abea612239040c9d5f1ff45a5f6df6ba431761ccff1db90"
+        }
+      ]
+    },
+    {
+      "id": "retaliation",
+      "source": "ArtSource/MartialProcVfx/raw/retaliation.png",
+      "output": "spr_vfx_proc_retaliation_6f_v01.png",
+      "frames": [
+        {
+          "frame": 0,
+          "transparent": 218796,
+          "visible": 29009,
+          "clippedEdgePixels": 0,
+          "sha256": "4a85d471d486eddec4ad81ed07c2ba1f1ee90f3e4c5fd078b6527da7a9b39bd4"
+        },
+        {
+          "frame": 1,
+          "transparent": 214414,
+          "visible": 32189,
+          "clippedEdgePixels": 0,
+          "sha256": "72ea4ec28fe8c3454258dae2318f9df426487b757c4b27ee03d6728ad6b7267a"
+        },
+        {
+          "frame": 2,
+          "transparent": 202545,
+          "visible": 40874,
+          "clippedEdgePixels": 0,
+          "sha256": "319ffe8e855253715f96ab5cc47af78ad09d45cc1219de541b7a580a8ccadd11"
+        },
+        {
+          "frame": 3,
+          "transparent": 202095,
+          "visible": 39099,
+          "clippedEdgePixels": 0,
+          "sha256": "cf3ab023b13548208b2f3c5ebf1d9bb20c6af5b4958b7753bef384e0fa4de739"
+        },
+        {
+          "frame": 4,
+          "transparent": 210866,
+          "visible": 31971,
+          "clippedEdgePixels": 0,
+          "sha256": "e149c2f1e5d1e9f91a78ed2b164314635c20f52b836da8c25883bfa6ac4f6262"
+        },
+        {
+          "frame": 5,
+          "transparent": 220156,
+          "visible": 25187,
+          "clippedEdgePixels": 0,
+          "sha256": "31902a4692be03d754b499ff47da7cd9835ea8685f9ced3f4e3e96320d70e534"
+        }
+      ]
+    },
+    {
+      "id": "life_drain",
+      "source": "ArtSource/MartialProcVfx/raw/life_drain.png",
+      "output": "spr_vfx_proc_life_drain_6f_v01.png",
+      "frames": [
+        {
+          "frame": 0,
+          "transparent": 249164,
+          "visible": 7086,
+          "clippedEdgePixels": 0,
+          "sha256": "4252d0914108f8e4a41e9642b446e79fbec0023f4610e63f03073d78138826b7"
+        },
+        {
+          "frame": 1,
+          "transparent": 242927,
+          "visible": 10685,
+          "clippedEdgePixels": 0,
+          "sha256": "7a0316cc312d8e7b7cab94e0bd156d4b1395d20b0457c28d9a64589c0253dde3"
+        },
+        {
+          "frame": 2,
+          "transparent": 242649,
+          "visible": 10994,
+          "clippedEdgePixels": 0,
+          "sha256": "ca3001ff00af91e3e808377a26b6608e04aabc9dd037b363781f368330e7845d"
+        },
+        {
+          "frame": 3,
+          "transparent": 240212,
+          "visible": 12187,
+          "clippedEdgePixels": 0,
+          "sha256": "e47d9cba4370e2f60f82353977d49e6abb4513febb97dc935bd61364f0e2efd0"
+        },
+        {
+          "frame": 4,
+          "transparent": 247579,
+          "visible": 8971,
+          "clippedEdgePixels": 0,
+          "sha256": "e720f2ebf6a1645a16e99cc851fd85592aff54b101386c349941f73759d77823"
+        },
+        {
+          "frame": 5,
+          "transparent": 253455,
+          "visible": 4837,
+          "clippedEdgePixels": 0,
+          "sha256": "ba68f7272c212475015e774762a6c8e78243aabda331da92dda89087e11440c0"
+        }
+      ]
+    }
+  ]
+}

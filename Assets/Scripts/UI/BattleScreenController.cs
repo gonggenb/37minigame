@@ -141,6 +141,7 @@ namespace WuxiaRoguelite.UI
             if (LevelLoadingScreen.IsLoading || StudioSplashScreen.IsBlocking) return;
             UpdateOpeningPresentation();
             TrackHeroAttack();
+            TrackMartialProcs();
             TrackUltimate();
         }
 
@@ -167,6 +168,7 @@ namespace WuxiaRoguelite.UI
 
             TrackLatestAttack();
             TrackHeroAttack();
+            TrackMartialProcs();
             TrackUltimate();
             TrackHealthChanges();
             TrackEnemyTraitFeedback();
@@ -265,7 +267,7 @@ namespace WuxiaRoguelite.UI
             }
             // Visual pacing is intentionally independent from BattleManager's attack cadence.
             // A new resolved attack can replace the current pose, but never delays damage or timers.
-            float actionAge = Time.unscaledTime - attackStartedAt;
+            float actionAge = Time.time - attackStartedAt;
             bool midBossAction = battleManager.IsMidBossSkillActive;
             bool finalBossAction = battleManager.IsFinalBossActionActive;
             float actionProgress = Mathf.Clamp01(actionAge / Mathf.Max(0.01f, attackVisualDuration));
@@ -338,6 +340,8 @@ namespace WuxiaRoguelite.UI
                 enemyVisual != null ? enemyVisual.flipHorizontally : true);
             DrawEnemyTraitFeedback(playerRect, enemyRect, baseY);
             GUI.BeginGroup(stageRect);
+            DrawMartialProcs(OffsetRect(playerRect, -stageRect.x, -stageRect.y),
+                OffsetRect(enemyRect, -stageRect.x, -stageRect.y));
             DrawHeroSkillVfx(OffsetRect(playerRect, -stageRect.x, -stageRect.y),
                 OffsetRect(enemyRect, -stageRect.x, -stageRect.y));
             GUI.EndGroup();
@@ -422,13 +426,13 @@ namespace WuxiaRoguelite.UI
             }
 
             observedAttackSequence = battleManager.AttackSequence;
-            attackStartedAt = Time.unscaledTime;
+            attackStartedAt = Time.time;
             activeVfxCues = battleManager.LastVfxCues;
             activeSkillVfxName = battleManager.LastSkillVfxName;
             activePoisonStackDelta = battleManager.LastPoisonStackDelta;
             activePoisonStacks = battleManager.EnemyPoisonStacks;
             activePoisonDamage = battleManager.LastPoisonDamage;
-            hitFeedbackStartedAt = Time.unscaledTime;
+            hitFeedbackStartedAt = Time.time;
             hitFeedbackWasCritical = battleManager.LastAttackWasCritical;
             hitFeedbackWasDodged = battleManager.LastAttackWasDodged;
             hitFeedbackTargetedPlayer = !battleManager.LastAttackWasPlayer;
@@ -441,7 +445,7 @@ namespace WuxiaRoguelite.UI
                 return Vector2.zero;
             }
 
-            float age = Time.unscaledTime - hitFeedbackStartedAt;
+            float age = Time.time - hitFeedbackStartedAt;
             float shakeDuration = Mathf.Max(0.01f, exceptionalScreenShakeDuration);
             if (age < 0f || age >= shakeDuration)
             {
@@ -479,14 +483,14 @@ namespace WuxiaRoguelite.UI
             if (currentPlayer.currentHealth < previousPlayerHealth - 0.01f)
             {
                 playerDamageAmount = previousPlayerHealth - currentPlayer.currentHealth;
-                playerDamageStartedAt = Time.unscaledTime;
+                playerDamageStartedAt = Time.time;
                 playerDamageWasCritical = !battleManager.LastAttackWasPlayer && battleManager.LastAttackWasCritical;
             }
 
             if (currentEnemy.currentHealth < previousEnemyHealth - 0.01f)
             {
                 enemyDamageAmount = previousEnemyHealth - currentEnemy.currentHealth;
-                enemyDamageStartedAt = Time.unscaledTime;
+                enemyDamageStartedAt = Time.time;
                 enemyDamageWasCritical = battleManager.LastAttackWasPlayer && battleManager.LastAttackWasCritical;
             }
 
@@ -943,7 +947,7 @@ namespace WuxiaRoguelite.UI
 
             int index = attacking
                 ? Mathf.Min(Mathf.FloorToInt(actionProgress * frames.Length), frames.Length - 1)
-                : Mathf.FloorToInt(Time.unscaledTime * 10f) % frames.Length;
+                : Mathf.FloorToInt(Time.time * 10f) % frames.Length;
             return frames[index];
         }
 
@@ -1042,7 +1046,7 @@ namespace WuxiaRoguelite.UI
             float recentDamage,
             float damageStartedAt)
         {
-            float hitAge = Time.unscaledTime - damageStartedAt;
+            float hitAge = Time.time - damageStartedAt;
             float flash = 1f - Mathf.Clamp01(hitAge / HealthFlashDuration);
             if (recentDamage > 0f && flash > 0f)
             {
@@ -1090,7 +1094,7 @@ namespace WuxiaRoguelite.UI
                     new Color(1f, 0.62f, 0.38f, 0.42f));
             }
 
-            float damageAge = Time.unscaledTime - damageStartedAt;
+            float damageAge = Time.time - damageStartedAt;
             if (recentDamage > 0f && damageAge < DamageDisplayDuration && stats.maxHealth > 0f)
             {
                 float beforeHitRatio = Mathf.Clamp01((stats.currentHealth + recentDamage) / stats.maxHealth);
@@ -1212,7 +1216,7 @@ namespace WuxiaRoguelite.UI
 
         private void DrawDamagePopup(Rect targetRect, float damage, float startedAt, bool critical, bool playerTarget)
         {
-            float age = Time.unscaledTime - startedAt;
+            float age = Time.time - startedAt;
             if (damage <= 0f || age < 0f || age >= DamageDisplayDuration)
             {
                 return;
@@ -1249,7 +1253,7 @@ namespace WuxiaRoguelite.UI
 
         private void DrawImpactMarker(Rect targetRect, float damage, float startedAt, bool critical, bool playerTarget)
         {
-            float age = Time.unscaledTime - startedAt;
+            float age = Time.time - startedAt;
             if (damage <= 0f || age < 0f || age >= ImpactMarkerDuration)
             {
                 return;
@@ -1292,18 +1296,18 @@ namespace WuxiaRoguelite.UI
             if (battleManager.EnemyPoisonStacks > 0 && poisonEffectFrames != null &&
                 poisonEffectFrames.Length > 0)
             {
-                int frameIndex = Mathf.FloorToInt(Time.unscaledTime * 7f) % poisonEffectFrames.Length;
+                int frameIndex = Mathf.FloorToInt(Time.time * 7f) % poisonEffectFrames.Length;
                 float stackRatio = Mathf.Clamp01(
                     battleManager.EnemyPoisonStacks /
                     (float)Mathf.Max(1, battleManager.EnemyPoisonMaxStacks));
-                float pulse = 0.12f + stackRatio * 0.10f +
-                              Mathf.Abs(Mathf.Sin(Time.unscaledTime * 3.2f)) * 0.08f;
-                float size = enemyRect.width * Mathf.Lerp(1.02f, 1.18f, stackRatio);
+                float pulse = 0.08f + stackRatio * 0.06f +
+                              Mathf.Abs(Mathf.Sin(Time.time * 3.2f)) * 0.04f;
+                float size = enemyRect.width * Mathf.Lerp(.78f, .94f, stackRatio);
                 Rect auraRect = new Rect(enemyRect.center.x - size * 0.5f,
-                    enemyRect.center.y - size * 0.5f, size, size);
+                    enemyRect.y + enemyRect.height * .66f - size * 0.5f, size, size);
                 DrawEffectSprite(auraRect, poisonEffectFrames[frameIndex],
                     new Color(1f, 1f, 1f, pulse));
-                DrawPoisonMotes(enemyRect, Time.unscaledTime, stackRatio, pulse * 1.7f);
+                DrawPoisonMotes(enemyRect, Time.time, stackRatio, pulse * 1.7f);
             }
 
             if (battleManager.PlayerShield > 0f)
@@ -1317,7 +1321,7 @@ namespace WuxiaRoguelite.UI
                               playerStats.GetSecretRank("血铸金身") > 0);
             if (bloodAura && impactEffectFrames != null && impactEffectFrames.Length > 0)
             {
-                float pulse = 0.10f + Mathf.Abs(Mathf.Sin(Time.unscaledTime * 5f)) * 0.09f;
+                float pulse = 0.10f + Mathf.Abs(Mathf.Sin(Time.time * 5f)) * 0.09f;
                 float size = playerRect.width * 1.15f;
                 DrawEffectSprite(new Rect(playerRect.center.x - size * 0.5f,
                         playerRect.center.y - size * 0.5f, size, size),
@@ -1327,10 +1331,10 @@ namespace WuxiaRoguelite.UI
 
         private void DrawBattleSkillVfx(Rect playerRect, Rect enemyRect, bool enemyFacesLeft)
         {
-            bool debugPreview = Time.unscaledTime < debugPreviewVfxUntil;
+            bool debugPreview = Time.time < debugPreviewVfxUntil;
             float age = debugPreview
-                ? Mathf.Repeat(Time.unscaledTime, 0.48f)
-                : Time.unscaledTime - attackStartedAt;
+                ? Mathf.Repeat(Time.time, 0.48f)
+                : Time.time - attackStartedAt;
             if (age < 0f || age > 0.82f || DisplayVfxCues == BattleVfxCue.None)
             {
                 return;
@@ -1388,32 +1392,36 @@ namespace WuxiaRoguelite.UI
 
             if ((debugPreview && HasCue(BattleVfxCue.PoisonApplied)) || HasCue(BattleVfxCue.PoisonTick))
             {
-                float scale = HasCue(BattleVfxCue.PoisonMist) ? 1.28f : 0.92f;
-                DrawBurst(enemyRect, poisonEffectFrames, age, 0.66f, Color.white, scale, 0f);
-                float progress = Mathf.Clamp01(age / 0.66f);
-                DrawPulseOutline(enemyRect, progress, Poison,
-                    HasCue(BattleVfxCue.PoisonMist) ? 1.34f : 1.05f);
+                float scale = HasCue(BattleVfxCue.PoisonMist) ? .86f : .72f;
+                DrawBurst(enemyRect, poisonEffectFrames, age, 0.54f,
+                    new Color(1f, 1f, 1f, .56f), scale, .14f);
+                float progress = Mathf.Clamp01(age / .54f);
+                // A low qi ripple reads as poison without a targeting-box silhouette.
+                Vector2 foot = new Vector2(enemyRect.center.x, enemyRect.y + enemyRect.height * .87f);
+                float radius = enemyRect.width * Mathf.Lerp(.20f, .38f, progress);
+                DrawHeroArc(foot, radius, radius * .23f, 0f, 360f, 2f,
+                    WithAlpha(Poison, .50f * (1f - progress)));
                 DrawPoisonMotes(enemyRect, age * 2.4f,
-                    HasCue(BattleVfxCue.PoisonMist) ? 1f : 0.58f, 0.84f * (1f - progress));
+                    HasCue(BattleVfxCue.PoisonMist) ? .65f : .40f, .50f * (1f - progress));
             }
 
             if (HasCue(BattleVfxCue.ArmorBreak) && (debugPreview || HasCue(BattleVfxCue.PoisonTick)))
             {
                 DrawBurst(enemyRect, impactEffectFrames, age, 0.38f,
-                    new Color(0.94f, 0.72f, 0.30f, 0.86f), 0.72f, 0.08f);
+                    new Color(0.94f, 0.72f, 0.30f, 0.50f), 0.48f, 0.08f);
                 DrawRadialShards(enemyRect, Mathf.Clamp01(age / 0.38f),
-                    new Color(0.94f, 0.72f, 0.30f, 0.82f));
+                    new Color(0.94f, 0.72f, 0.30f, 0.55f));
             }
 
             if (HasCue(BattleVfxCue.ShieldImpact))
             {
                 DrawBurst(playerRect, impactEffectFrames, age, 0.46f,
-                    new Color(0.98f, 0.82f, 0.34f, 0.82f), 1.06f, 0f);
+                    new Color(0.98f, 0.82f, 0.34f, 0.62f), .64f, .10f);
                 DrawGuardAura(playerRect, new Color(0.94f, 0.80f, 0.45f,
                     0.72f * (1f - Mathf.Clamp01(age / 0.46f))));
             }
 
-            if (HasCue(BattleVfxCue.Retaliation))
+            if (debugPreview && HasCue(BattleVfxCue.Retaliation))
             {
                 DrawBurst(enemyRect, impactEffectFrames, age, 0.44f,
                     new Color(0.82f, 0.92f, 1f, 0.88f), 0.82f, -0.12f);
@@ -1421,7 +1429,7 @@ namespace WuxiaRoguelite.UI
                     new Color(0.68f, 0.88f, 0.94f, 0.82f), 34f, 0.94f);
             }
 
-            if (HasCue(BattleVfxCue.Heal))
+            if (HasCue(BattleVfxCue.Heal) && !HasCue(BattleVfxCue.LifeDrain))
             {
                 DrawBurst(playerRect, impactEffectFrames, age, 0.58f,
                     new Color(0.38f, 1f, 0.64f, 0.72f), 0.62f, -0.22f);
@@ -1459,7 +1467,7 @@ namespace WuxiaRoguelite.UI
                 return;
             }
 
-            float age = Time.unscaledTime - attackStartedAt;
+            float age = Time.time - attackStartedAt;
             if (age < 0f || age >= SkillCalloutDuration)
             {
                 return;
@@ -1506,7 +1514,7 @@ namespace WuxiaRoguelite.UI
                 return;
             }
 
-            float age = Time.unscaledTime - attackStartedAt;
+            float age = Time.time - attackStartedAt;
             if (age < 0f || age >= PoisonPopupDuration)
             {
                 return;
@@ -1557,9 +1565,12 @@ namespace WuxiaRoguelite.UI
             int stacks = battleManager.EnemyPoisonStacks;
             int maxStacks = Mathf.Max(1, battleManager.EnemyPoisonMaxStacks);
             float ratio = Mathf.Clamp01(stacks / (float)maxStacks);
-            float pulse = 0.82f + Mathf.Abs(Mathf.Sin(Time.unscaledTime * 3.2f)) * 0.18f;
+            float pulse = 0.82f + Mathf.Abs(Mathf.Sin(Time.time * 3.2f)) * 0.18f;
             float width = 78f;
-            Rect badge = new Rect(enemyRect.xMax - width * 0.82f,
+            // Large bosses extend beyond the portrait lane; keep the stack count on screen.
+            float badgeX = Mathf.Clamp(enemyRect.xMax - width * .82f,
+                ResponsiveGui.SafeArea.x + 6f, ResponsiveGui.SafeArea.xMax - width - 6f);
+            Rect badge = new Rect(badgeX,
                 enemyRect.y + enemyRect.height * 0.64f, width, 31f);
             FillRect(badge, PoisonDark);
             DrawOutline(badge, new Color(Poison.r, Poison.g, Poison.b, 0.72f * pulse), 2f);
@@ -1702,7 +1713,7 @@ namespace WuxiaRoguelite.UI
             return (DisplayVfxCues & cue) != 0;
         }
 
-        private BattleVfxCue DisplayVfxCues => Time.unscaledTime < debugPreviewVfxUntil
+        private BattleVfxCue DisplayVfxCues => Time.time < debugPreviewVfxUntil
             ? debugPreviewVfxCues
             : activeVfxCues;
 
@@ -1710,7 +1721,7 @@ namespace WuxiaRoguelite.UI
         {
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
             debugPreviewVfxCues = cues;
-            debugPreviewVfxUntil = Time.unscaledTime + Mathf.Max(0.1f, duration);
+            debugPreviewVfxUntil = Time.time + Mathf.Max(0.1f, duration);
 #endif
         }
 
@@ -1760,7 +1771,7 @@ namespace WuxiaRoguelite.UI
         private static bool ShouldFlipDirectionalEffect(Rect caster, Rect target, bool sourceFacesLeft)
         {
             // Sprite import/character flipping is unrelated to a VFX's authored direction.
-            // Sword qi and the midboss slash sheets lead left; compare with the actual target.
+            // Compare the sheet's authored direction with the actual target, independently of the actor.
             if (Mathf.Approximately(caster.center.x, target.center.x)) return false;
             return sourceFacesLeft != (target.center.x < caster.center.x);
         }
@@ -1792,7 +1803,7 @@ namespace WuxiaRoguelite.UI
 
         private void DrawPlayerHitOverlay(float width, float height)
         {
-            float age = Time.unscaledTime - playerDamageStartedAt;
+            float age = Time.time - playerDamageStartedAt;
             if (playerDamageAmount <= 0f || age < 0f || age >= ImpactMarkerDuration)
             {
                 return;
@@ -1969,7 +1980,7 @@ namespace WuxiaRoguelite.UI
                 return tint;
             }
 
-            float pulse = 0.5f + Mathf.Sin(Time.unscaledTime * 4.2f) * 0.5f;
+            float pulse = 0.5f + Mathf.Sin(Time.time * 4.2f) * 0.5f;
             Color poisonTint = Color.Lerp(
                 new Color(0.66f, 1f, 0.54f, 1f),
                 new Color(0.88f, 0.58f, 1f, 1f),
@@ -1998,7 +2009,7 @@ namespace WuxiaRoguelite.UI
                 _ => battleManager.LastBossSkillName
             };
             float age = finalAction ? battleManager.FinalBossActionElapsed
-                : Time.unscaledTime - battleManager.LastBossSkillTriggeredAt;
+                : Time.time - battleManager.LastBossSkillTriggeredAt;
             if (age < 0f || age > 1.15f)
             {
                 return;

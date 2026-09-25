@@ -277,8 +277,8 @@ public sealed partial class HeroAttackPlayModeProbe : MonoBehaviour
         Invoke(F,"BeginNormalBattle",enemy.Clone(),0,0,EncounterType.NormalEnemy);
         float main=F.mainTimeRemaining;
         int peakEffects = 0;
-        float observeUntil = Time.unscaledTime + .6f;
-        while (Time.unscaledTime < observeUntil)
+        float observeUntil = Time.time + .6f;
+        while (Time.time < observeUntil)
         {
             peakEffects = Mathf.Max(peakEffects, screen.ActiveHeroSkillVfxCount);
             yield return null;
@@ -319,7 +319,7 @@ public sealed partial class HeroAttackPlayModeProbe : MonoBehaviour
     private static void PinHeroSample(BattleScreenController screen, float progress)
     {
         float duration = (float)screen.GetType().GetField("heroAttackDuration", Flags).GetValue(screen);
-        float started = Time.unscaledTime - duration * progress;
+        float started = Time.time - duration * progress;
         Set(screen, "heroAttackStartedAt", started);
         var effects = (Array)screen.GetType().GetField("heroSkillEffects", Flags).GetValue(screen);
         int next = (int)screen.GetType().GetField("nextHeroSkillEffect", Flags).GetValue(screen);

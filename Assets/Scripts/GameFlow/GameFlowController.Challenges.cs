@@ -31,7 +31,8 @@ namespace WuxiaRoguelite.GameFlow
             MidBossTalent = HasRouteSpecialties ? BossTalentCatalog.Roll() : BossTalent.None;
             IsChallengeBriefingActive = HasBossTalents;
             if (!HasRouteSpecialties) return;
-            if (selectedChallengeTier < 0) selectedChallengeTier = ChallengeProgress.HighestUnlocked;
+            if (IsEndlessMode) selectedChallengeTier = 0;
+            else if (selectedChallengeTier < 0) selectedChallengeTier = ChallengeProgress.HighestUnlocked;
             selectedChallengeTier = Mathf.Clamp(selectedChallengeTier, 0, ChallengeProgress.HighestUnlocked);
             int seed = Random.Range(1, int.MaxValue);
             var random = new System.Random(seed);
@@ -60,6 +61,7 @@ namespace WuxiaRoguelite.GameFlow
 
         public void SelectChallengeTier(int tier)
         {
+            if (IsEndlessMode) return;
             if (!HasRunChallenge || !IsChallengeBriefingActive || CurrentPhase != GamePhase.LevelUpPaused ||
                 !isOpeningMartialArtChoice || tier < 0 || tier > ChallengeProgress.HighestUnlocked) return;
             selectedChallengeTier = ChallengeRun.tier = tier;
