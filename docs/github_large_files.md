@@ -2,7 +2,9 @@
 
 GitHub 普通 Git 单文件上限为 100 MiB（104857600 字节）。超限的原始资产使用 Git LFS：工作目录保留完整文件，Git 提交保存小型指针，原文件由 LFS 上传。
 
-当前 `.gitattributes` 覆盖平川镇 `PingchuanTown_v01.blend` 和宣传片 `一炷江湖_90秒宣传片_v03.mp4`。规则不会改变文件内容、Unity GUID 或引用。规则按路径匹配，改名或新增大文件时需要重新配置。
+当前 `.gitattributes` 将 PNG、JPG、GIF、WAV、OGG、M4A、MP4、Blender、FBX 和 TTF 二进制资产交给 Git LFS，另保留两个最初超限文件的路径规则。文件内容、Unity GUID 和引用保持不变。新增其他类型的大文件时需补充 LFS 规则。
+
+2026-09-25 上传检查发现：虽然单文件限制已解决，原本待上传提交的 Git pack 仍约为 2478 MiB，超过 GitHub 单次推送 2 GiB 限制。因此仅对尚未上传的一次本地提交迁移二进制资产；已发布历史保持不变。原提交保留在本地备份分支 `codex/backup-before-lfs-upload-20260925`，该分支不需要推送。
 
 ## 开发电脑准备
 
