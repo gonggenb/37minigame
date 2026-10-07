@@ -1,0 +1,16 @@
+{
+  "scope": "Unity Editor native mouse interaction using cua_repl; controlled Play Mode.",
+  "selection": {
+    "art": "百毒心经",
+    "selectedByMouse": true,
+    "rankBeforeConfirmation": 0,
+    "phase": "LevelUpPaused"
+  },
+  "confirmation": {
+    "clickedByMouse": true,
+    "rankAfterConfirmation": 1,
+    "phase": "MainMapRunning"
+  },
+  "chineseFontValidation": "passed via ValidateOrThrow after script compilation",
+  "deviceAcceptance": false
+}

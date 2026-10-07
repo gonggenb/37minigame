@@ -198,7 +198,7 @@ namespace WuxiaRoguelite.UI
                 ? new Rect(safe.xMax - 16f - healthWidth, healthTop, healthWidth, healthHeight)
                 : new Rect(width - sidePadding - healthWidth, healthTop, healthWidth, healthHeight);
             if (portrait && battleManager.IsBossBattle)
-                enemyHealthRect = new Rect(safe.x + 16f, safe.y + 58f, safe.width - 32f, 106f);
+                enemyHealthRect = new Rect(safe.x + 16f, safe.y + 82f, safe.width - 32f, 106f);
             // The player health bar now lives in PrototypeHUDController's unified
             // health + martial-art HUD. Keep the enemy panel here so combat still
             // has a clear target readout without duplicating the player's health.
@@ -595,13 +595,17 @@ namespace WuxiaRoguelite.UI
             bool finalBoss = gameFlow.CurrentPhase == GamePhase.BossBattle;
             bool midBoss = gameFlow.CurrentPhase == GamePhase.MidBossBattle;
             bool cave = gameFlow.CurrentPhase == GamePhase.CaveRunning;
-            Rect header = new Rect(safe.x + 16, safe.y + 8, safe.width - 88, finalBoss ? 42 : 126);
+            Rect header = new Rect(safe.x + 16, safe.y + 8, safe.width - 88, finalBoss ? 66 : 126);
             WuxiaUiTheme.DrawCompactSurface(header, new Color(0.035f, 0.04f, 0.035f, 0.94f),
                 cave ? WuxiaUiTheme.Paused : Gold);
             if (finalBoss)
             {
-                WuxiaUiComponents.Text(new Rect(header.x + 12, header.y, header.width - 24, 42),
-                    $"{(gameFlow.IsTutorialLevel ? "新手试炼" : "决战")}独立计时  {gameFlow.bossBattleTime:0.0} 秒", 22, Gold);
+                Rect clock = new Rect(header.xMax - 114, header.y, 114, 66);
+                WuxiaUiComponents.ElapsedTimer(clock, gameFlow.bossBattleTime);
+                WuxiaUiComponents.Text(new Rect(header.x + 12, header.y + 4, header.width - 138, 28),
+                    gameFlow.IsTutorialLevel ? "新手试炼" : "最终强敌", 18, Gold);
+                WuxiaUiComponents.Text(new Rect(header.x + 12, header.y + 32, header.width - 138, 28),
+                    "独立计时", 14, WuxiaUiTheme.TextSecondary);
                 return;
             }
             if (midBoss)
@@ -737,7 +741,7 @@ namespace WuxiaRoguelite.UI
             {
                 ResponsiveGui.DrawSingleLineLabel(
                     new Rect(headerRect.x, headerRect.y + 30f, headerRect.width, 20f),
-                    $"决战独立计时  {gameFlow.bossBattleTime:0.0} 秒", timerStyle, 9);
+                    $"战斗用时  {WuxiaUiComponents.ElapsedText(gameFlow.bossBattleTime)}", timerStyle, 9);
                 ResponsiveGui.DrawSingleLineLabel(
                     new Rect(headerRect.x, headerRect.y + 51f, headerRect.width, 15f),
                     gameFlow.IsTutorialLevel ? "主时间停止 · 击败后完成教学"
@@ -749,7 +753,7 @@ namespace WuxiaRoguelite.UI
             {
                 ResponsiveGui.DrawSingleLineLabel(
                     new Rect(headerRect.x, headerRect.y + 30f, headerRect.width, 20f),
-                    $"战力检验  {gameFlow.midBossBattleTime:0.0} 秒", timerStyle, 9);
+                    $"战斗用时  {WuxiaUiComponents.ElapsedText(gameFlow.midBossBattleTime)}", timerStyle, 9);
                 ResponsiveGui.DrawSingleLineLabel(
                     new Rect(headerRect.x, headerRect.y + 51f, headerRect.width, 15f),
                     "主时间停止 · 击败后恢复", captionStyle, 8);
@@ -1056,7 +1060,7 @@ namespace WuxiaRoguelite.UI
 
             bool boss = battleManager.IsBossEncounter;
             bool compact = ResponsiveGui.IsPortrait || rect.height <= 66f;
-            Color accent = boss ? new Color(0.92f, 0.50f, 0.18f) : EnemyColor;
+            Color accent = boss ? WuxiaUiTheme.Brass : WuxiaUiTheme.Danger;
             WuxiaUiTheme.DrawPanel(rect,
                 new Color(0.035f, 0.025f, 0.025f, 0.92f), accent,
                 boss ? WuxiaPanelKind.Boss : WuxiaPanelKind.Combat);
@@ -1080,12 +1084,12 @@ namespace WuxiaRoguelite.UI
             float innerWidth = bar.width - 4f;
             float currentRatio = stats.HealthRatio;
             Color currentHealthColor = currentRatio <= 0.25f
-                ? new Color(0.88f, 0.19f, 0.13f)
+                ? WuxiaUiTheme.Danger
                 : currentRatio <= 0.5f
-                    ? new Color(0.92f, 0.62f, 0.16f)
+                    ? WuxiaUiTheme.Warning
                     : boss
-                        ? new Color(0.76f, 0.12f, 0.16f)
-                        : new Color(0.82f, 0.23f, 0.14f);
+                        ? WuxiaUiTheme.Danger
+                        : WuxiaUiTheme.Danger;
             FillRect(new Rect(bar.x + 2f, bar.y + 2f, innerWidth * currentRatio, bar.height - 4f),
                 currentHealthColor);
             if (currentRatio > 0f)

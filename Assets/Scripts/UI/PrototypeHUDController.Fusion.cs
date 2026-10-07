@@ -28,14 +28,10 @@ namespace WuxiaRoguelite.UI
             MartialArtChoiceInsight.FusionPreviews(playerStats, id, fusionPreviews);
             if (!expanded)
             {
-                int ready = 0;
-                foreach (var preview in fusionPreviews) if (preview.Ready) ready++;
-                WuxiaUiComponents.Text(new Rect(card.x + 12, card.y + 103, card.width - 24, 20),
-                    ready > 0 ? $"可领悟 / 升重 {ready} 项秘传 · 点选查看" : "点选查看融合路线", 14, ready > 0 ? Gold : Muted);
                 return;
             }
             for (int i = 0; i < fusionPreviews.Count; i++)
-                DrawFusionRecipe(new Rect(card.x + 10, card.y + 110 + i * 118, card.width - 20, 112), fusionPreviews[i]);
+                DrawFusionRecipe(new Rect(card.x + 10, card.y + 110 + i * 114, card.width - 20, 108), fusionPreviews[i]);
             WuxiaUiComponents.Text(new Rect(card.x + 12, card.yMax - 24, card.width - 24, 18),
                 "流派总重数达标自动领悟 · 原武学保留", 11, Muted);
         }

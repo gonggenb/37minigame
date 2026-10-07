@@ -20,7 +20,7 @@ namespace WuxiaRoguelite.UI
         }
 
         public static float CombatHealthTop(GamePhase phase) =>
-            phase == GamePhase.BossBattle ? 174f : phase == GamePhase.MidBossBattle ? 140f : 154f;
+            phase == GamePhase.BossBattle ? 204f : phase == GamePhase.MidBossBattle ? 140f : 154f;
 
         public static Rect Modal(float preferredHeight, float preferredWidth = 492f)
         {
@@ -32,7 +32,7 @@ namespace WuxiaRoguelite.UI
     }
 
     /// <summary>Reusable text, timer and row components; no gameplay state or baked text.</summary>
-    public static class WuxiaUiComponents
+    public static partial class WuxiaUiComponents
     {
         private static readonly Dictionary<int, GUIStyle> labels = new Dictionary<int, GUIStyle>();
         private static GUIStyle touchButton;

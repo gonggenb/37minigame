@@ -33,6 +33,8 @@ namespace WuxiaRoguelite.UI
         public static readonly Color TextPrimary = Hex(0xE9DFC3);
         public static readonly Color TextSecondary = Hex(0xA9ADA3);
         public static readonly Color TextDisabled = Hex(0x6F746E);
+        public static readonly Color Paper = Hex(0xD8CBA5);
+        public static readonly Color TextOnPaper = Hex(0x30271E);
         public static readonly Color Brass = Hex(0xB58A46);
         public static readonly Color Gold = Hex(0xD1AA5A);
         public static readonly Color Jade = Hex(0x4E8B73);
@@ -42,7 +44,6 @@ namespace WuxiaRoguelite.UI
         public static readonly Color Paused = Hex(0x536F7A);
 
         private static Texture2D panelDefault;
-        private static Texture2D panelPaper;
         private static Texture2D panelBoss;
         private static Texture2D slotFrame;
         private static Texture2D timerDial;
@@ -53,7 +54,6 @@ namespace WuxiaRoguelite.UI
         private static Texture2D buttonPrimary;
         private static Texture2D buttonPrimaryHover;
         private static GUIStyle panelDefaultStyle;
-        private static GUIStyle panelPaperStyle;
         private static GUIStyle panelBossStyle;
         private static GUIStyle slotStyle;
 
@@ -79,7 +79,7 @@ namespace WuxiaRoguelite.UI
                 fontStyle = FontStyle.Bold,
                 alignment = alignment,
                 wordWrap = false,
-                border = new RectOffset(26, 26, 14, 14),
+                border = new RectOffset(20, 20, 16, 16),
                 padding = kind == WuxiaButtonKind.Icon
                     ? new RectOffset(7, 7, 7, 7)
                     : new RectOffset(12, 12, 6, 6)
@@ -117,15 +117,14 @@ namespace WuxiaRoguelite.UI
             FillRect(rect, background);
 
             Color previous = GUI.color;
-            GUI.color = kind == WuxiaPanelKind.Paper
-                ? new Color(0.25f, 0.27f, 0.26f, 1f)
-                : new Color(1f, 1f, 1f, Mathf.Clamp01(0.76f + background.a * 0.24f));
+            GUI.color = new Color(1f, 1f, 1f, Mathf.Clamp01(0.76f + background.a * 0.24f));
             GUI.Box(rect, GUIContent.none, GetPanelStyle(kind));
             GUI.color = previous;
 
             Rect inner = new Rect(rect.x + 3f, rect.y + 3f,
                 Mathf.Max(0f, rect.width - 6f), Mathf.Max(0f, rect.height - 6f));
             DrawOutline(inner, new Color(accent.r, accent.g, accent.b, 0.42f), 1f);
+            if (kind == WuxiaPanelKind.Boss) DrawCornerMarks(rect, Brass);
         }
 
         /// <summary>
@@ -219,30 +218,29 @@ namespace WuxiaRoguelite.UI
             }
 
             panelDefault = Resources.Load<Texture2D>(
-                "UI/Theme/tex_ui_panel_default_v02");
-            panelPaper = Resources.Load<Texture2D>(
-                "UI/Theme/tex_ui_panel_paper_v02");
+                "UI/Theme/tex_ui_panel_default_v03") ??
+                Resources.Load<Texture2D>("UI/Theme/tex_ui_panel_default_v02");
             panelBoss = Resources.Load<Texture2D>(
-                "UI/Theme/tex_ui_panel_boss_v02");
+                "UI/Theme/tex_ui_panel_boss_v03") ??
+                Resources.Load<Texture2D>("UI/Theme/tex_ui_panel_boss_v02");
             slotFrame = Resources.Load<Texture2D>(
                 "UI/Theme/tex_ui_slot_default_v02");
             buttonNormal = Resources.Load<Texture2D>(
-                "UI/Theme/tex_ui_button_normal_v02");
+                "UI/Theme/tex_ui_button_normal_v03");
             buttonHover = Resources.Load<Texture2D>(
-                "UI/Theme/tex_ui_button_hover_v02");
+                "UI/Theme/tex_ui_button_hover_v03");
             buttonPressed = Resources.Load<Texture2D>(
-                "UI/Theme/tex_ui_button_pressed_v02");
+                "UI/Theme/tex_ui_button_pressed_v03");
             buttonSelected = Resources.Load<Texture2D>(
-                "UI/Theme/tex_ui_button_selected_v02");
+                "UI/Theme/tex_ui_button_selected_v03");
             buttonPrimary = Resources.Load<Texture2D>(
-                "UI/Theme/tex_ui_button_primary_v02");
+                "UI/Theme/tex_ui_button_primary_v03");
             buttonPrimaryHover = Resources.Load<Texture2D>(
-                "UI/Theme/tex_ui_button_primary_hover_v02");
+                "UI/Theme/tex_ui_button_primary_hover_v03");
 
             // PLACEHOLDER_UI: only used if a formal Resources asset is missing.
             panelDefault ??= CreateMaterialOverlay(64, 64, true,
                 "PLACEHOLDER_UI_PanelMaterial");
-            panelPaper ??= panelDefault;
             panelBoss ??= panelDefault;
             slotFrame ??= CreateMaterialOverlay(32, 32, false,
                 "PLACEHOLDER_UI_SlotMaterial");
@@ -260,9 +258,8 @@ namespace WuxiaRoguelite.UI
             buttonPrimaryHover ??= CreateButtonTexture(
                 Hex(0x443724), Hex(0x29231B), Gold, "PLACEHOLDER_UI_Button_PrimaryHover");
 
-            panelDefaultStyle = FrameStyle(panelDefault, new RectOffset(14, 14, 14, 14));
-            panelPaperStyle = FrameStyle(panelPaper, new RectOffset(14, 14, 14, 14));
-            panelBossStyle = FrameStyle(panelBoss, new RectOffset(14, 14, 14, 14));
+            panelDefaultStyle = FrameStyle(panelDefault, new RectOffset(18, 18, 18, 18));
+            panelBossStyle = FrameStyle(panelBoss, new RectOffset(20, 20, 20, 20));
             slotStyle = FrameStyle(slotFrame, new RectOffset(8, 8, 8, 8));
         }
 
@@ -270,7 +267,9 @@ namespace WuxiaRoguelite.UI
         {
             return kind switch
             {
-                WuxiaPanelKind.Paper => panelPaperStyle,
+                // Paper is an inset with its own dark ink text. The outer window
+                // shares the dark frame so existing white labels keep their contrast.
+                WuxiaPanelKind.Paper => panelDefaultStyle,
                 WuxiaPanelKind.Boss => panelBossStyle,
                 _ => panelDefaultStyle
             };

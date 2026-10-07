@@ -605,6 +605,15 @@ No text, icon, character, scenery, watermark, baked shadow, or asymmetrical ligh
 
 ### 18.0 第一、二批迁移状态
 
+2026-10-06 按用户确认的 `ArtSource/Previews/UI/StyleConcept_20261006/` 完成 UI / UX 风格替换：
+
+- 新增 v03 共享暗色框体、Boss 框体、六态黑铁铜边按钮，覆盖原有共享主题页面；纸张用于局部详情并配深墨文字。
+- 探索 HUD 收紧为气血、等级、铜钱、修为细线与实时刻度表盘；状态说明短暂显示，快捷入口配可见文字。
+- 武学横竖屏统一点选预览再确认；商店横竖屏统一货架选择、纸张详情、独立购买、售罄和刷新状态。
+- 最终 Boss 使用独立累计用时，普通倒计时与洞穴暂停语义不变。未改变地图、角色、战斗数值或三条时间规则。
+- 已完成编译、中文字体校验、横竖屏 Editor Play Mode 回归与原生鼠标选择确认；资源状态 `InEngineQA`，手机真机与本轮发布构建尚未验收。
+- 文件、运行入口、截图与验证范围见 [本轮接入记录](validation/ui_concept_20261006/README.md)。
+
 2026-08-13 已开始主地图 HUD 第一批迁移：
 
 - `ArtSource/Previews/UI/MainHUD/hud_mainmap_visual_mockup_v01.png`：`Generated`，只作为视觉方向参考，不直接作为运行时贴图。

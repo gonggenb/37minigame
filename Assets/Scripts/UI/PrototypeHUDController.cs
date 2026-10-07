@@ -686,7 +686,7 @@ namespace WuxiaRoguelite.UI
         {
             Rect safe = ResponsiveGui.SafeArea;
             Rect settingsRect = new Rect(safe.xMax - 58f, safe.y + 10f, 48f, 48f);
-            if (GUI.Button(settingsRect, new GUIContent(runtimeSettingsIcon, "设置"), iconButtonStyle))
+            if (WuxiaUiComponents.IconAction(settingsRect, runtimeSettingsIcon, "设置"))
             {
                 SetSettingsOpen(true);
             }
@@ -858,17 +858,7 @@ namespace WuxiaRoguelite.UI
             Rect loadoutRow = new Rect(hud.x, detailRow.yMax + 4f, hud.width, loadoutHeight);
             DrawLoadoutStrip(loadoutRow, false);
 
-            float preferredStatusWidth =
-                ResponsiveGui.PreferredSingleLineWidth(gameFlow.statusMessage, bodyStyle, 28f);
-            float statusWidth = Mathf.Clamp(preferredStatusWidth,
-                ResponsiveGui.IsPortrait ? 260f : 360f, safe.width - 28f);
-            float messageY = ResponsiveGui.IsPortrait ? safe.yMax - 48f : safe.yMax - 44f;
-            Rect message = new Rect(safe.x + (safe.width - statusWidth) * 0.5f,
-                messageY, statusWidth, 30f);
-            DrawPanel(message, new Color(0.03f, 0.04f, 0.04f, 0.84f), Gold);
-            ResponsiveGui.DrawSingleLineLabel(
-                new Rect(message.x + 12f, message.y + 3f, message.width - 24f, message.height - 6f),
-                gameFlow.statusMessage, bodyStyle, 10);
+            DrawExplorationStatus();
         }
 
         private void DrawMainTimerWidget(
@@ -878,32 +868,10 @@ namespace WuxiaRoguelite.UI
             bool paused,
             Color accent)
         {
-            float dialSize = portraitLayout ? 64f : 86f;
-            float top = safe.y + 4f;
-            Rect dial = new Rect(safe.center.x - dialSize * 0.5f, top, dialSize, dialSize);
-            WuxiaUiTheme.DrawTimerDial(dial, accent);
-
-            timeSecondsStyle.normal.textColor = accent;
-            ResponsiveGui.DrawSingleLineLabel(
-                new Rect(dial.x + 10f, dial.y + (portraitLayout ? 19f : 24f),
-                    dial.width - 20f, portraitLayout ? 31f : 38f),
-                Mathf.CeilToInt(gameFlow.mainTimeRemaining).ToString("00"), timeSecondsStyle,
-                portraitLayout ? 18 : 20);
-            timerCaptionStyle.normal.textColor = paused ? WuxiaUiTheme.Paused : Muted;
-            ResponsiveGui.DrawSingleLineLabel(
-                new Rect(dial.x + 8f, dial.y + (portraitLayout ? 7f : 10f),
-                    dial.width - 16f, 15f),
-                gameFlow.IsDebugInfiniteTime ? "GM无限时间" : paused ? "主时间暂停" : gameFlow.IsEndlessMode ? $"第{gameFlow.EndlessRound}轮" : "江湖时限", timerCaptionStyle, 8);
-            ResponsiveGui.DrawSingleLineLabel(
-                new Rect(dial.x + 8f, dial.yMax - (portraitLayout ? 19f : 25f),
-                    dial.width - 16f, 13f),
-                "秒", timerCaptionStyle, 8);
-
-            float trackWidth = portraitLayout ? 112f : 138f;
-            Rect track = new Rect(safe.center.x - trackWidth * 0.5f,
-                dial.yMax - (portraitLayout ? 3f : 4f), trackWidth,
-                portraitLayout ? 16f : 20f);
-            DrawMainTimeTrack(track, timeRatio, paused);
+            float size = portraitLayout ? 102f : 92f;
+            Rect dial = new Rect(safe.center.x - size * .5f, safe.y + 8, size, size);
+            WuxiaUiComponents.Timer(dial, gameFlow.mainTimeRemaining, gameFlow.mainTimeLimit, paused,
+                gameFlow.IsDebugInfiniteTime ? "无限" : gameFlow.IsEndlessMode ? $"第{gameFlow.EndlessRound}轮" : null);
         }
 
         private void DrawUnifiedCombatHud()
@@ -911,7 +879,7 @@ namespace WuxiaRoguelite.UI
             Rect safe = ResponsiveGui.SafeArea;
             bool portraitLayout = ResponsiveGui.IsPortrait;
             float width = portraitLayout
-                ? Mathf.Max(218f, (safe.width - 44f) * 0.5f)
+                ? (safe.width - 44f) * 0.5f
                 : Mathf.Min(286f, safe.width * 0.30f);
             float healthTop = portraitLayout
                 ? safe.y + PortraitUiLayout.CombatHealthTop(gameFlow.CurrentPhase)
@@ -924,7 +892,7 @@ namespace WuxiaRoguelite.UI
                 : gameFlow.CurrentPhase == GamePhase.MidBossBattle
                     ? new Color(0.78f, 0.43f, 0.16f)
                 : gameFlow.CurrentPhase == GamePhase.CaveRunning
-                    ? new Color(0.30f, 0.66f, 0.90f)
+                    ? WuxiaUiTheme.Paused
                     : Jade;
 
             DrawPanel(hud, new Color(0.025f, 0.035f, 0.038f, 0.94f), accent);
@@ -1691,11 +1659,11 @@ namespace WuxiaRoguelite.UI
             Rect safe = ResponsiveGui.SafeArea;
             Rect statusRect = new Rect(safe.xMax - 58f, safe.y + 68f, 48f, 48f);
             Rect equipmentRect = new Rect(safe.xMax - 58f, safe.y + 122f, 48f, 48f);
-            if (GUI.Button(statusRect, new GUIContent(statusIcon), iconButtonStyle))
+            if (WuxiaUiComponents.IconAction(statusRect, statusIcon, "角色"))
             {
                 ToggleCharacterPanel(CharacterView.Status);
             }
-            if (GUI.Button(equipmentRect, new GUIContent(equipmentIcon), iconButtonStyle))
+            if (WuxiaUiComponents.IconAction(equipmentRect, equipmentIcon, "装备"))
             {
                 ToggleCharacterPanel(CharacterView.Equipment);
             }
@@ -1963,40 +1931,44 @@ namespace WuxiaRoguelite.UI
         private void DrawLevelUpPanel()
         {
             if (ResponsiveGui.IsPortrait) { DrawPortraitLevelUp(); return; }
-            FillRect(new Rect(0f, 0f, ResponsiveGui.Width, ResponsiveGui.Height),
-                new Color(0.02f, 0.025f, 0.025f, 0.72f));
-            Rect panel = CenteredRect(820f, 480f);
-            DrawPanel(panel, new Color(0.09f, 0.105f, 0.105f, 1f), Gold,
-                WuxiaPanelKind.Paper);
-            GUI.Label(new Rect(panel.x + 18f, panel.y + 12f, 145f, 32f), "修为突破", titleStyle);
-            if (!string.IsNullOrEmpty(gameFlow.RouteOpeningHint))
-                WuxiaUiComponents.Text(new Rect(panel.x + 170, panel.y + 17, panel.width - 188, 24), gameFlow.RouteOpeningHint, 13, Gold);
-
-            Rect choicesArea = new Rect(panel.x + 18f, panel.y + 54f,
-                panel.width - 36f, panel.height - 112f);
+            FillRect(new Rect(0, 0, ResponsiveGui.Width, ResponsiveGui.Height), WithAlpha(Ink, .76f));
+            Rect panel = CenteredRect(820, 500);
+            DrawPanel(panel, Ink, Gold);
+            WuxiaUiComponents.Text(new Rect(panel.x + 24, panel.y + 14, 180, 34), "修为突破", 24);
+            WuxiaUiComponents.Text(new Rect(panel.x + 214, panel.y + 14, panel.width - 238, 34),
+                string.IsNullOrEmpty(gameFlow.RouteOpeningHint) ? "选择一门武学 · 选择期间暂停" : gameFlow.RouteOpeningHint,
+                14, WuxiaUiTheme.Paused);
             int count = gameFlow.currentChoices.Count;
-            float cardWidth = (choicesArea.width - Mathf.Max(0, count - 1) * 12f) / Mathf.Max(1, count);
+            if (!gameFlow.currentChoices.Contains(portraitSelectedArt))
+                portraitSelectedArt = gameFlow.currentChoices.FirstOrDefault();
+            Rect choicesArea = new Rect(panel.x + 24, panel.y + 58, panel.width - 48, panel.height - 140);
+            float cardWidth = (choicesArea.width - Mathf.Max(0, count - 1) * 12) / Mathf.Max(1, count);
             for (int i = 0; i < count; i++)
             {
                 string id = gameFlow.currentChoices[i];
-                Rect card = new Rect(choicesArea.x + i * (cardWidth + 12f), choicesArea.y,
-                    cardWidth, choicesArea.height);
-                bool selected = GUI.Button(card, GUIContent.none, actionButtonStyle);
+                Rect card = new Rect(choicesArea.x + i * (cardWidth + 12), choicesArea.y, cardWidth, choicesArea.height);
+                bool selected = portraitSelectedArt == id;
+                if (GUI.Button(card, GUIContent.none, selected ? activeTabStyle : actionButtonStyle)) portraitSelectedArt = id;
                 DrawFusionChoiceCard(card, id);
-                if (selected)
-                {
-                    gameFlow.ChooseMartialArt(i);
-                    return;
-                }
+                WuxiaUiComponents.Selection(card, portraitSelectedArt == id);
             }
-
-            GUI.enabled = gameFlow.martialArtRerollsRemaining > 0;
-            if (GUI.Button(new Rect(choicesArea.x, panel.yMax - 52f, choicesArea.width, 44f),
-                    $"重观残页（剩余 {gameFlow.martialArtRerollsRemaining}）", actionButtonStyle))
+            Rect refresh = new Rect(panel.x + 24, panel.yMax - 66, (panel.width - 60) * .5f, 44);
+            Rect confirm = new Rect(refresh.xMax + 12, refresh.y, refresh.width, 44);
+            bool enabled = GUI.enabled;
+            GUI.enabled = enabled && gameFlow.martialArtRerollsRemaining > 0;
+            if (GUI.Button(refresh, $"重观残页 · 剩余 {gameFlow.martialArtRerollsRemaining}", actionButtonStyle))
             {
+                portraitSelectedArt = null;
                 gameFlow.RerollMartialArtChoices();
             }
-            GUI.enabled = true;
+            GUI.enabled = enabled && gameFlow.currentChoices.Contains(portraitSelectedArt);
+            if (GUI.Button(confirm, "确认武学", mainMenuButtonStyle))
+            {
+                int index = gameFlow.currentChoices.IndexOf(portraitSelectedArt);
+                portraitSelectedArt = null;
+                if (index >= 0) gameFlow.ChooseMartialArt(index);
+            }
+            GUI.enabled = enabled;
         }
 
         private void DrawMartialArtTile(Rect rect, string artId)
@@ -2036,8 +2008,7 @@ namespace WuxiaRoguelite.UI
 
         private static void DrawIcon(Rect rect, Texture icon, Color accent)
         {
-            FillRect(rect, new Color(0.035f, 0.04f, 0.04f, 0.95f));
-            FillRect(new Rect(rect.x, rect.y, 2f, rect.height), accent);
+            WuxiaUiTheme.DrawSlot(rect, Ink, accent);
             if (icon != null)
             {
                 GUI.DrawTexture(new Rect(rect.x + 3f, rect.y + 3f, rect.width - 6f, rect.height - 6f),
@@ -2183,7 +2154,7 @@ namespace WuxiaRoguelite.UI
                 ? 0.5f + 0.5f * Mathf.Abs(Mathf.Sin(Time.unscaledTime * 7f))
                 : 0f;
             Color borderColor = ratio <= 0.25f
-                ? new Color(0.88f, 0.15f + lowHealthPulse * 0.18f, 0.10f, 1f)
+                ? Color.Lerp(WuxiaUiTheme.Danger, WuxiaUiTheme.Warning, lowHealthPulse * .3f)
                 : new Color(0.68f, 0.49f, 0.24f, 1f);
             FillRect(rect, new Color(0.025f, 0.02f, 0.018f, 0.98f));
             DrawRectOutline(rect, borderColor, ratio <= 0.25f ? 2f : 1f);
@@ -2203,9 +2174,9 @@ namespace WuxiaRoguelite.UI
             }
 
             Color healthColor = ratio <= 0.25f
-                ? new Color(0.88f, 0.12f, 0.09f)
+                ? WuxiaUiTheme.Danger
                 : ratio <= 0.5f
-                    ? new Color(0.88f, 0.34f, 0.12f)
+                    ? WuxiaUiTheme.Warning
                     : Crimson;
             Rect current = new Rect(track.x, track.y, track.width * ratio, track.height);
             FillRect(current, healthColor);

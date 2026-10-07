@@ -1,0 +1,33 @@
+{
+    "success": true,
+    "error": "",
+    "checks": [
+        "v03 shared panel imported",
+        "v03 boss frame imported",
+        "normal button imported",
+        "hover button imported",
+        "pressed button imported",
+        "selected button imported",
+        "primary button imported",
+        "primary_hover button imported",
+        "choice preview and orientation preserve paused timer",
+        "selection does not grant a martial art before confirmation",
+        "confirmed choice matches real 2+2 fusion threshold",
+        "exploration status fades instead of occupying the playfield permanently",
+        "player and timer fit safe area (540.00, 960.00)",
+        "player and timer fit safe area (390.00, 844.00)",
+        "player and timer fit safe area (375.00, 667.00)",
+        "settings pause exploration",
+        "merchant hides movement and pauses main time",
+        "selecting merchant stock does not spend copper",
+        "purchase deducts actual price and marks stock sold",
+        "sold offer cannot be purchased twice",
+        "normal combat continues main countdown",
+        "real cave combat pauses main countdown",
+        "final boss uses independent elapsed clock",
+        "elapsed timer supports durations beyond sixty seconds"
+    ],
+    "runtimeErrors": [],
+    "externalToolErrors": [],
+    "scope": "Controlled Unity Editor Play Mode in both orientations; not natural-route balance or device acceptance."
+}

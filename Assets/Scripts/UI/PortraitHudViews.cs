@@ -19,6 +19,8 @@ namespace WuxiaRoguelite.UI
         private float levelNoticeRemaining;
         private int observedMomentumRank;
         private float momentumNoticeRemaining;
+        private string observedStatusMessage;
+        private float statusNoticeRemaining;
 
         // Presentation-only clocks advance while exploration is visible, never the run clock.
         private void UpdateExplorationNotices()
@@ -29,13 +31,21 @@ namespace WuxiaRoguelite.UI
                 explorationNoticeStarted = false;
                 levelNoticeRemaining = momentumNoticeRemaining = 0f;
                 observedMomentumRank = 0;
+                observedStatusMessage = null;
+                statusNoticeRemaining = 0f;
                 return;
             }
             if (playerStats.combatMomentumRank > observedMomentumRank)
                 momentumNoticeRemaining = 3f;
             observedMomentumRank = playerStats.combatMomentumRank;
             if (gameFlow.CurrentPhase != GamePhase.MainMapRunning || settingsOpen ||
-                characterPanelOpen || gameFlow.IsTutorialNoticeActive || !ResponsiveGui.IsPortrait) return;
+                characterPanelOpen || gameFlow.IsTutorialNoticeActive) return;
+            if (observedStatusMessage != gameFlow.statusMessage)
+            {
+                observedStatusMessage = gameFlow.statusMessage;
+                statusNoticeRemaining = 4f;
+            }
+            statusNoticeRemaining = Mathf.Max(0f, statusNoticeRemaining - Time.deltaTime);
             if (!explorationNoticeStarted)
             {
                 explorationNoticeStarted = true;
@@ -49,46 +59,68 @@ namespace WuxiaRoguelite.UI
 
         private void DrawPortraitExploration()
         {
-            Rect s = ResponsiveGui.SafeArea;
-            float leftWidth = s.width * 0.5f - 66f;
-            Rect player = new Rect(s.x + 12, s.y + 12, leftWidth, 96);
-            WuxiaUiTheme.DrawCompactSurface(player, Ink, Gold);
-            Rect portrait = new Rect(player.x + 4, player.y + 4, 46, 46);
+            Rect safe = ResponsiveGui.SafeArea;
+            Rect player = ConceptExplorationPlayerRect(safe);
+            Rect dial = ConceptExplorationTimerRect(safe);
+            WuxiaUiTheme.DrawPanel(player, Ink, WuxiaUiTheme.Brass);
+            Rect portrait = new Rect(player.x + 8, player.y + 8, 44, 44);
+            WuxiaUiTheme.DrawSlot(portrait, Ink, WuxiaUiTheme.Brass);
             if (playerPortrait != null) GUI.DrawTexture(portrait, playerPortrait, ScaleMode.ScaleToFit, true);
-            WuxiaUiComponents.Text(new Rect(portrait.xMax + 6, player.y + 4, player.width - 60, 24),
+            WuxiaUiComponents.Text(new Rect(portrait.xMax + 8, player.y + 8, player.width - 68, 24),
                 $"等级 {playerStats.level}", 16);
-            Rect coin = new Rect(portrait.xMax + 6, player.y + 30, 20, 20);
+            Rect coin = new Rect(portrait.xMax + 8, player.y + 34, 18, 18);
             if (copperHudIcon != null) GUI.DrawTexture(coin, copperHudIcon, ScaleMode.ScaleToFit, true);
             WuxiaUiComponents.Text(new Rect(coin.xMax + 4, coin.y, player.xMax - coin.xMax - 12, 20),
                 playerStats.copper.ToString(), 14, Gold);
-            DrawHealthBar(new Rect(player.x + 8, player.y + 55, player.width - 16, 10), playerStats.runtimeStats.HealthRatio);
-            WuxiaUiComponents.Text(new Rect(player.x + 8, player.y + 67, player.width - 16, 20),
-                $"{CombatNumberDisplay.Format(playerStats.runtimeStats.currentHealth)} / {CombatNumberDisplay.Format(playerStats.runtimeStats.maxHealth)}", 14);
-            WuxiaUiComponents.Timer(new Rect(s.center.x - 51, s.y + 6, 102, 102),
-                gameFlow.mainTimeRemaining, gameFlow.mainTimeLimit, gameFlow.CurrentPhase == GamePhase.LevelUpPaused,
-                gameFlow.IsEndlessMode ? $"第{gameFlow.EndlessRound}轮" : null);
-
-            Rect xp = new Rect(player.x + 8, player.yMax - 6, player.width - 16, 3);
+            Rect health = new Rect(player.x + 10, player.y + 60, player.width - 20, 22);
+            DrawHealthBar(health, playerStats.runtimeStats.HealthRatio);
+            ResponsiveGui.DrawSingleLineLabel(health,
+                $"{CombatNumberDisplay.Format(playerStats.runtimeStats.currentHealth)} / {CombatNumberDisplay.Format(playerStats.runtimeStats.maxHealth)}", hudValueStyle, 12);
+            Rect xp = new Rect(player.x + 10, player.yMax - 10, player.width - 20, 4);
             FillRect(xp, PanelLight);
             FillRect(new Rect(xp.x, xp.y, xp.width * Mathf.Clamp01((float)playerStats.cultivation /
                 Mathf.Max(1, playerStats.NextLevelRequirement)), xp.height), Jade);
-            DrawExplorationTimedBuffs(new Vector2(player.x, player.yMax + 8), s.width - 88);
+            WuxiaUiComponents.Timer(dial, gameFlow.mainTimeRemaining, gameFlow.mainTimeLimit,
+                gameFlow.CurrentPhase == GamePhase.LevelUpPaused,
+                gameFlow.IsDebugInfiniteTime ? "无限" : gameFlow.IsEndlessMode ? $"第{gameFlow.EndlessRound}轮" : null);
+            DrawExplorationTimedBuffs(new Vector2(player.x, player.yMax + 8), safe.width - 88);
             if (gameFlow.CurrentPhase == GamePhase.MainMapRunning && !characterPanelOpen &&
                 (momentumNoticeRemaining > 0f || levelNoticeRemaining > 0f))
             {
                 string notice = momentumNoticeRemaining > 0f
                     ? $"连战磨砺 {observedMomentumRank}/{PlayerStats.MaxCombatMomentumRank} · 战力提升"
                     : gameFlow.CurrentLevelDisplayName;
-                Rect toast = new Rect(s.center.x - 164, s.yMax - 124, 328, 32);
-                WuxiaUiTheme.DrawCompactSurface(toast, Ink, Gold);
-                WuxiaUiComponents.Text(toast, notice, 16, Paper, TextAnchor.MiddleCenter);
+                float width = Mathf.Min(328, safe.width - 32);
+                Rect toast = new Rect(safe.center.x - width / 2, safe.yMax - 122, width, 32);
+                WuxiaUiComponents.StatusBadge(toast, notice, Gold);
             }
-            Rect message = new Rect(s.x + 20, s.yMax - 82, s.width - 40, 42);
-            WuxiaUiTheme.DrawCompactSurface(message, new Color(0.04f, 0.05f, 0.045f, 0.88f), Jade);
-            WuxiaUiComponents.Text(new Rect(message.x + 12, message.y + 4, message.width - 24, 34),
-                gameFlow.statusMessage, 14, Paper, TextAnchor.MiddleLeft, true);
-            WuxiaUiComponents.Text(new Rect(s.x, s.yMax - 34, s.width, 22),
+            DrawExplorationStatus();
+            WuxiaUiComponents.Text(new Rect(safe.x, safe.yMax - 34, safe.width, 22),
                 "滑动屏幕移动", 14, Muted, TextAnchor.MiddleCenter);
+        }
+
+        // These pure layout functions are also used by the safe-area Play Mode check.
+        internal static Rect ConceptExplorationTimerRect(Rect safe)
+        {
+            float size = Mathf.Min(102, safe.width * .25f);
+            return new Rect(safe.xMax - 68 - size, safe.y + 8, size, size);
+        }
+
+        internal static Rect ConceptExplorationPlayerRect(Rect safe)
+        {
+            Rect timer = ConceptExplorationTimerRect(safe);
+            return new Rect(safe.x + 12, safe.y + 12, timer.x - safe.x - 20, 96);
+        }
+
+        private void DrawExplorationStatus()
+        {
+            if (statusNoticeRemaining <= 0 || string.IsNullOrEmpty(observedStatusMessage)) return;
+            Rect safe = ResponsiveGui.SafeArea;
+            float width = Mathf.Min(460, safe.width - 40);
+            Rect message = new Rect(safe.center.x - width / 2, safe.yMax - 82, width, 42);
+            WuxiaUiTheme.DrawCompactSurface(message, Ink, Jade);
+            WuxiaUiComponents.Text(new Rect(message.x + 12, message.y + 4, message.width - 24, 34),
+                observedStatusMessage, 14, Paper, TextAnchor.MiddleLeft, true);
         }
 
         private void DrawExplorationTimedBuffs(Vector2 origin, float width)
@@ -119,13 +151,16 @@ namespace WuxiaRoguelite.UI
             PortraitBackdrop();
             Rect p = PortraitUiLayout.Modal(880);
             DrawPanel(p, Ink, Gold);
-            WuxiaUiComponents.Text(new Rect(p.x + 24, p.y + 20, p.width - 48, 40), "修为突破", 28);
-            WuxiaUiComponents.Text(new Rect(p.x + 24, p.y + 65, p.width - 48, 24),
-                string.IsNullOrEmpty(gameFlow.RouteOpeningHint) ? "选择一门武学 · 选择期间暂停" : gameFlow.RouteOpeningHint, 14, WuxiaUiTheme.Paused);
+            WuxiaUiComponents.Text(new Rect(p.x + 24, p.y + 20, p.width - 168, 40), "修为突破", 28);
+            WuxiaUiComponents.StatusBadge(new Rect(p.xMax - 142, p.y + 24, 118, 28),
+                "选择期间暂停", WuxiaUiTheme.Paused);
+            WuxiaUiComponents.Text(new Rect(p.x + 24, p.y + 65, p.width - 48, 36),
+                string.IsNullOrEmpty(gameFlow.RouteOpeningHint) ? "选择一门武学" : gameFlow.RouteOpeningHint,
+                14, WuxiaUiTheme.TextSecondary, TextAnchor.MiddleLeft, true);
             if (!gameFlow.currentChoices.Contains(portraitSelectedArt))
                 portraitSelectedArt = gameFlow.currentChoices.FirstOrDefault();
-            const float expandedHeight = 368, collapsedHeight = 128;
-            Rect choiceView = new Rect(p.x + 24, p.y + 106, p.width - 48, p.height - 282);
+            const float expandedHeight = 364, collapsedHeight = 104;
+            Rect choiceView = new Rect(p.x + 24, p.y + 112, p.width - 48, p.height - 288);
             float choicesHeight = expandedHeight + Mathf.Max(0, gameFlow.currentChoices.Count - 1) * (collapsedHeight + 10);
             bool scrollChoices = choicesHeight > choiceView.height;
             string nextSelection = null;
@@ -139,7 +174,7 @@ namespace WuxiaRoguelite.UI
                 float cardHeight = selected ? expandedHeight : collapsedHeight;
                 Rect card = new Rect(0, cardY, choiceView.width - (scrollChoices ? 20 : 0), cardHeight);
                 if (GUI.Button(card, GUIContent.none, selected ? activeTabStyle : actionButtonStyle)) nextSelection = id;
-                if (selected) WuxiaUiTheme.DrawOutline(new Rect(card.x + 3, card.y + 3, card.width - 6, card.height - 6), Gold, 2);
+                WuxiaUiComponents.Selection(card, selected);
                 DrawFusionChoiceCard(card, id, selected);
                 cardY += cardHeight + 10;
             }
@@ -150,7 +185,7 @@ namespace WuxiaRoguelite.UI
                 portraitChoiceScroll.y = Mathf.Clamp(gameFlow.currentChoices.IndexOf(nextSelection) * (collapsedHeight + 10),
                     0, Mathf.Max(0, choicesHeight - choiceView.height));
             }
-            if (GUI.Button(PortraitUiLayout.BottomAction(p, 1), "领悟此诀", mainMenuButtonStyle))
+            if (GUI.Button(PortraitUiLayout.BottomAction(p, 1), "确认武学", mainMenuButtonStyle))
             {
                 int index = gameFlow.currentChoices.IndexOf(portraitSelectedArt);
                 portraitSelectedArt = null;

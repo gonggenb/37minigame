@@ -22,13 +22,12 @@ namespace WuxiaRoguelite.UI
             if (!gameFlow.HasBossTalents) return;
             Rect safe = ResponsiveGui.SafeArea;
             Rect button = new Rect(safe.xMax - 58, safe.y + 176, 48, 48);
-            if (GUI.Button(button, new GUIContent(ChallengeArt.Get("bounty_writ"), "本局情报与悬赏"), iconButtonStyle))
+            if (WuxiaUiComponents.IconAction(button, ChallengeArt.Get("bounty_writ"), "情报"))
             {
                 challengeLedgerOpen = true;
                 challengeBriefScroll = Vector2.zero;
                 gameFlow.SetCharacterMenuPaused(true);
             }
-            WuxiaUiComponents.Text(new Rect(button.x - 4, button.yMax, 56, 20), "情报", 12, Gold, TextAnchor.MiddleCenter);
         }
 
         private void DrawChallengeBriefing()
